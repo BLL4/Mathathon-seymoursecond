@@ -1,21 +1,36 @@
 The folder \texttt{SeymourLean/} is a Lean~4 project using Mathlib (tag
-\texttt{v4.35.0}). The definitions follow the paper: a finite type with a
-decidable relation that is irreflexive and asymmetric, $\Nout$, $\Ntwo$,
-forward images, strict concavity and the grid operators $\Ff,\Fs$. The
-statement of \cref{lem:pruning} is a Lean proposition \texttt{PruningLemma}.
-The following is checked by \texttt{lake build}, with no \texttt{sorry} and
-only Lean's standard axioms (\texttt{propext}, \texttt{Classical.choice},
-\texttt{Quot.sound}):
+\texttt{v4.35.0}) that formalizes the \emph{entire} proof of
+\cref{thm:main}. The main formal statement is
+\begin{center}\small
+\texttt{theorem Seymour.seymour\_second\_neighbourhood (V : Type) [Fintype V]
+[DecidableEq V] [Nonempty V] (adj : V $\to$ V $\to$ Prop) [DecidableRel adj]
+(hor : IsOriented adj) : $\exists$ v, (N1 adj v).card $\le$ (N2 adj v).card}
+\end{center}
+where \texttt{IsOriented} means irreflexive and asymmetric, \texttt{N1 v} is
+the set of out-neighbors, and \texttt{N2 v} is the set of $w\ne v$ with
+$v\not\to w$ and $v\to u\to w$ for some $u$. \texttt{lake build} checks it with
+no \texttt{sorry}, and \texttt{\#print axioms} reports only Lean's standard
+axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. The
+files follow the paper:
 \begin{itemize}
-\item the minimal-counterexample argument, \cref{lem:strong} and the subset
-deficit \cref{lem:subset-deficit} (file \texttt{Reduction.lean});
-\item the blow-up \cref{lem:blowup} (file \texttt{BlowUp.lean});
-\item \cref{prop:no-concave}, assuming \texttt{PruningLemma} (file
-\texttt{Contradiction.lean});
-\item the assembly \texttt{seymour\_of\_pruningLemma :
-PruningLemma $\to$ SeymourStatement} (file \texttt{Main.lean}).
+\item \texttt{Reduction.lean}: minimal counterexample, \cref{lem:strong} and
+\cref{lem:subset-deficit};
+\item \texttt{BlowUp.lean}: \cref{lem:blowup};
+\item \texttt{Contradiction.lean}: \cref{prop:no-concave} from the pruning lemma;
+\item \texttt{Konig.lean}, \texttt{Gamma.lean}: K\H{o}nig's theorem (derived from
+Mathlib's Hall theorem) and \cref{cl:cover-to-pruning};
+\item \texttt{LinAlg.lean}, \texttt{Generic.lean}, \texttt{MatchingCore.lean},
+\texttt{MatchingBound.lean}: Sylvester's inequality, the kernel lemma
+(\cref{lem:kernel}), $NL=AB$, \cref{cl:conflict-kernel},
+\cref{prop:matching-bound}, and \cref{lem:pruning};
+\item \texttt{Final.lean}: the unconditional theorem.
 \end{itemize}
-So everything except the pruning lemma is formally verified, and the pruning
-lemma enters only as an explicit hypothesis. Work on formalizing the pruning
-lemma itself (the graph $\Gamma$, K\H{o}nig's theorem and the linear algebra)
-is in progress in separate files that are not yet part of the checked chain.
+A few steps are argued differently in Lean. Generic coefficients are taken
+as the variables themselves in the fraction field of a polynomial ring
+rather than as a real point. Only $\rank L\ge\ell$ is used, obtained from
+Hall's theorem and an exchange argument, instead of the full statement
+$\rank L=\nu(\Gamma_L)$. Strong connectivity is replaced by ``every nonempty
+proper set has an arc leaving it''. The formalization found no mathematical
+error in the paper. It also shows that the pruning lemma holds for an
+arbitrary relation and that orientation is used exactly at the places listed
+in \cref{rem:hypotheses}.

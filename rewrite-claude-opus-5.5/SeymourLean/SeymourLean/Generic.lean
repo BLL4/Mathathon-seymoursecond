@@ -19,6 +19,7 @@ We work over the field `K = Frac(ℚ[x_v : v ∈ Bool × X × X])`. For an arrow
 -/
 
 open Finset Module
+open scoped Matrix
 
 set_option linter.unusedSectionVars false
 
@@ -69,7 +70,7 @@ lemma generic_indep (Q : Matrix κ ι (MvPolynomial σ ℚ)) (s : Finset ι) (g 
     rw [← RingHom.map_det]
     exact (map_ne_zero_iff _ (IsFractionRing.injective _ F)).mpr h2
   intro w hw c hc
-  have hmv : ((algebraMap _ F).mapMatrix Qs) *ᵥ (fun c : s => w c) = 0 := by
+  have hmv : ((algebraMap _ F).mapMatrix Qs) *ᵥ (fun (c : s) => w c.1) = 0 := by
     ext c'
     have := hw (g c')
     rw [← sum_coe_sort s] at this
@@ -136,9 +137,10 @@ lemma block_indep (tag : Bool) (βκ πκ : κ → X) (βι πι : ι → X)
     · subst hcc
       have hadj := (hgP ⟨c'.1, hs0s c'.2⟩).2
       simp only [g0] at hadj ⊢
-      rw [if_pos hadj, MvPolynomial.eval_X, if_pos rfl]
+      rw [if_pos hadj, MvPolynomial.eval_X]
       simp only [ev]
-      rw [if_pos ⟨rfl, c', rfl, rfl⟩]
+      rw [if_pos ⟨by trivial, c', rfl, rfl⟩]
+      simp
     · rw [if_neg hcc]
       split_ifs with hadj
       · rw [MvPolynomial.eval_X]
@@ -150,7 +152,7 @@ lemma block_indep (tag : Bool) (βκ πκ : κ → X) (βι πι : ι → X)
           rw [(hgP ⟨c''.1, hs0s c''.2⟩).1, (hgP ⟨c'.1, hs0s c'.2⟩).1, hblk c'', hblk c']) h2
         have e3 : c'' = c' := by
           have := hg e2
-          exact Subtype.ext (congrArg Subtype.val this)
+          exact Subtype.ext (by simpa using congrArg Subtype.val this)
         exact hcc (e3 ▸ Subtype.ext e1)
       · simp
   have hind := generic_indep Q s0 g0 ev hev
@@ -202,7 +204,7 @@ lemma generic_kernel (tag : Bool) (πκ : κ → X) (πι : ι → X)
     rintro _ ⟨w, rfl⟩
     refine ⟨w - (w c0 / u c0) • u, ?_⟩
     simp only [Matrix.mulVecLin_apply]
-    rw [hΨ', Matrix.add_mulVec, Matrix.mulVec_sub, Matrix.mulVec_smul, hu, hE, hE]
+    rw [hΨ', Matrix.add_mulVec, Matrix.mulVec_sub, Matrix.mulVec_smul, hu, hE]
     ext x
     simp only [Pi.add_apply, Pi.sub_apply, Pi.smul_apply, Pi.zero_apply, smul_eq_mul]
     split_ifs

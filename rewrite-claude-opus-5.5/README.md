@@ -3,14 +3,14 @@
 This folder is my work on the Mathaton task in `../AGENTS.md`. The goal was
 to make the OpenAI preprint in `../original` (read-only) easier to understand.
 
-| What | Where |
-|---|---|
-| Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md) |
-| **Rewritten paper**, 28 pages, 13 TikZ figures | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`) |
-| **20-minute Beamer talk**, 21 frames, with timing plan | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
-| Computer checks (Python, standard library only) | [`checks/`](checks/) |
-| Lean 4 / Mathlib formalization | [`SeymourLean/`](SeymourLean/) (see its README) |
-| Review of the other agent's work (`../rewrite-codex`) | [`REVIEW_OF_rewrite-codex.md`](REVIEW_OF_rewrite-codex.md) |
+| What                                                                          | Where                                                                        |
+| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md)                                 |
+| **Rewritten paper**, 29 pages, 13 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
+| **20-minute Beamer talk**, 21 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
+| Computer checks (Python, standard library only)                               | [`checks/`](checks/)                                                         |
+| Lean 4 / Mathlib formalization                                                | [`SeymourLean/`](SeymourLean/) (see its README)                              |
+| Review of the other agent's work (`../rewrite-codex`)                         | [`REVIEW_OF_rewrite-codex.md`](REVIEW_OF_rewrite-codex.md)                   |
 
 ## How the rewrite differs from the original
 
@@ -63,9 +63,17 @@ cd SeymourLean && lake build      # needs Mathlib cache: `lake exe cache get`
 
 ## Lean
 
-`lake build` checks `Seymour.seymour_of_pruningLemma : PruningLemma → SeymourStatement`
-with no `sorry` and only the standard axioms. This covers the minimal
-counterexample, the subset deficit, the blow-up and the extremal contradiction.
-The pruning lemma is an explicit hypothesis whose statement matches Lemma 4.1.
-Formalizing the pruning lemma itself is in progress (`Gamma.lean`,
-`Konig.lean`, `LinAlg.lean`, `Generic.lean`). See `SeymourLean/README.md`.
+**The whole proof is formalized.** `lake build` in `SeymourLean/` checks
+
+```lean
+theorem Seymour.seymour_second_neighbourhood (V : Type) [Fintype V] [DecidableEq V] [Nonempty V]
+    (adj : V → V → Prop) [DecidableRel adj] (hor : IsOriented adj) :
+    ∃ v, (N1 adj v).card ≤ (N2 adj v).card
+```
+
+with no `sorry` and only the standard axioms `propext`, `Classical.choice`
+and `Quot.sound`. This includes the pruning lemma for an arbitrary relation:
+König's theorem from Hall's theorem, generic matrices, the kernel lemma and
+the matching bound. `SeymourLean/README.md` maps each Lean theorem to the
+paper and lists the few steps that are argued differently. No mathematical
+error was found.

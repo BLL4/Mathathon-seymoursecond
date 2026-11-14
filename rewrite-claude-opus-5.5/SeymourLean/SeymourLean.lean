@@ -3,3 +3,10 @@ import SeymourLean.Contradiction
 import SeymourLean.Reduction
 import SeymourLean.BlowUp
 import SeymourLean.Main
+import SeymourLean.Konig
+import SeymourLean.Gamma
+import SeymourLean.LinAlg
+import SeymourLean.Generic
+import SeymourLean.MatchingCore
+import SeymourLean.MatchingBound
+import SeymourLean.Final
