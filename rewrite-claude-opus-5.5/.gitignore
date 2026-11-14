@@ -15,3 +15,4 @@ SeymourLean/.lake/
 build.log
 # Python
 __pycache__/
+.DS_Store
