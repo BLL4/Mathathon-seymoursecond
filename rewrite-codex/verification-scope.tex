@@ -48,7 +48,10 @@ remaining frontier of the separate Codex development.
 
 \paragraph{A useful consequence to keep separate from the core.}
 The directed-cycle corollaries use only the proved second-neighborhood
-assertion and a partition of the vertex set. The weighted forms additionally
+assertion and a partition of the vertex set. Their Lean verification now
+reuses the cycle companion from the DeepSeep4.1 rewrite, with checked
+neighborhood-definition bridges and the good vertex supplied by the full
+reference theorem. The weighted forms additionally
 use the externally cited equivalences and Farkas alternative. A reader
 checking the new pruning argument need not accept those external inputs to
 check the unweighted implication. The normalized weighting in the second

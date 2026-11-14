@@ -3,7 +3,9 @@
 The question concerns \emph{distinct vertices}, not the number of paths.
 The proof answers a local question about one vertex by introducing sets of
 vertices, then sets of ordered pairs, then matrices. Each change of language
-has a specific purpose. Keep the following chain in view.
+has a specific purpose. Write $F(S)=\{y:x\to y\text{ for some }x\in S\}$
+and $F^2(S)=F(F(S))$; these are set images with no subtraction.
+Keep the following chain in view.
 \begin{figure}[ht]
 \centering
 \begin{tikzpicture}[>=Stealth,box/.style={draw,rounded corners,text width=10.8cm,align=center,inner sep=6pt},node distance=7mm]
@@ -15,6 +17,20 @@ has a specific purpose. Keep the following chain in view.
 \end{tikzpicture}
 \caption{The dependency chain. The last step uses the pruning lemma, which is proved independently for arbitrary finite relations.}
 \end{figure}
+
+\paragraph{Choose a reading route.}
+For a five-minute overview, follow the dependency figure, the main theorem,
+and the accounting diagram in Section~\ref{sec:incompatibility}.
+For a longer first reading, follow the two passes below, accepting pruning
+before examining its proof. For a complete verification, use the correctness
+ledger and the Lean status document alongside the formal statements. These
+routes are adapted from the reading levels in the DeepSeep4.1 rewrite.
+
+\paragraph{Check the ambient set as well as the subsets.}
+The main theorem, the graph produced by the reduction, and the no-concavity
+proposition all require a nonempty vertex set. A universal claim about
+nonempty proper subsets says nothing when the ambient set is empty. The
+pruning lemma, in contrast, is valid for an empty ambient set too.
 
 \paragraph{A first pass.}
 Read the definitions, the two reduction statements, the pruning statement,

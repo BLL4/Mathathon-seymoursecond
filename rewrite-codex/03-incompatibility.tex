@@ -21,6 +21,15 @@ improvement would be strictly greater than $(\lambda-1)(d'-d)$. We have no
 comparison between $d$ and $d'$. Choosing $\lambda=1$ removes both unknown
 terms and makes the strict improvement automatic.
 
+\paragraph{A numerical budget trace.}
+To see the cancellation with numbers, suppose $M=10$, $d=2$, and $d'=3$.
+The gain estimate would give at least $15$ members before pruning, since
+$|\mathcal L|+|\mathcal R|>M+2d=14$. At most $d+d'=5$ are deleted,
+leaving at least $10$ members. Adding the new uncovered count gives a new
+objective at least $10+3=13$, exceeding the old $10+2=12$.
+These are illustrative budget values, not an asserted graph satisfying
+the contradictory hypotheses.
+
 \begin{figure}[ht]\centering\input{figures/objective}
 \caption{The accounting of the contradiction. The second uncovered count $d'$ belongs to the retained families, so it must occur in both the deletion bound and the new objective.}
 \end{figure}

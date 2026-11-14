@@ -53,7 +53,7 @@ Some vertex satisfies $|N_1^+(v)|\le |N_2^+(v)|$.
 \item That cost contradicts a maximum of $|P|+|Q|+d$.
 \end{enumerate}
 \medskip
-Here $F(S)$ is the union of out-neighbors, with no subtraction.
+Here $F(S)=\{y:x\to y\text{ for some }x\in S\}$ and $F^2(S)=F(F(S))$; no subtraction.
 \begin{alertblock}{Why the middle term is the difficult part}
 The deletion cost depends on the points uncovered \emph{after} pruning.
 \end{alertblock}
@@ -76,6 +76,7 @@ Choose a counterexample of minimum order, then minimum arc count.
 \end{frame}
 
 \begin{frame}{4. The gain/loss identity makes the deficit telescope}
+\small Put $I=F(S)\cap S$, $E=F(S)\setminus S$. Goal: $|F^2(S)\setminus F(S)|<|E|$.
 \begin{center}\input{figures/deletion}\end{center}
 \[
  g(T)=|F(T)\setminus(I\cup T)|,\qquad

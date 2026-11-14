@@ -1,0 +1,15 @@
+{
+  "source": "rewrite-openmath-DeepSeep4.1/lean/Seymour",
+  "snapshot_utc": "2026-11-14T12:54:00.303483+00:00",
+  "files": {
+    "Basic.lean": "02677e3781748d275727d5d809fd003eb9168bfdb38d2dc0fe2f5d0b3535c5e4",
+    "Statements.lean": "f0c6f1d64c49f23d47dc02c613845493f614e61e8a3d6fa2cb3046d055a7d7e7",
+    "Cycles.lean": "c7c8e436eb22736d4d14d907d91743e25bd544b874f9a7c9f6ebcdd1842cff2f"
+  },
+  "compiled_files": {
+    "Basic.lean": "61c194ac2d7924ff40ce217d5ab5707d48125eb07e774cc218018fbe9a05ae7a",
+    "Statements.lean": "f0c6f1d64c49f23d47dc02c613845493f614e61e8a3d6fa2cb3046d055a7d7e7",
+    "Cycles.lean": "c7c8e436eb22736d4d14d907d91743e25bd544b874f9a7c9f6ebcdd1842cff2f"
+  },
+  "import_adaptation": "Basic.lean: import Mathlib replaced by finite-set/fintype modules and Std; all mathematical bodies unchanged"
+}

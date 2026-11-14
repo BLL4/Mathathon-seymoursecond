@@ -1,0 +1,11 @@
+'SecondNeighborhoodStatementAudit.no_concavity_statement_false' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodStatementAudit.reduction_statement_without_inputs' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodStatementAudit.no_nonempty_minimal_counterexample' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodStatementAudit.blowup_statement_false' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodStatementAudit.pruning_statement_false' depends on axioms: [propext, Classical.choice, Quot.sound]

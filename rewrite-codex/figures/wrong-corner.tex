@@ -1,0 +1,11 @@
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small},v/.style={circle,draw,minimum size=6mm},member/.style={draw,rounded corners,inner sep=4pt}]
+\node[v] (a) at (0,.8) {$0$};\node[v] (b) at (0,-.8) {$1$};\node[v] (c) at (2,0) {$2$};
+\draw[->] (a)--(c);\draw[->] (b)--(c);
+\node at (1,-1.65) {base relation};
+\node[member] (l1) at (4,1) {$(0,2)$};\node[member] (l2) at (4,-1) {$(1,2)$};
+\node[member] (r1) at (8,1) {$(2,0)$};\node[member] (r2) at (8,-1) {$(2,1)$};
+\node[draw,circle,inner sep=4pt] (z) at (6,0) {$z=(2,2)$};
+\draw[->] (l1)--(z);\draw[->] (l2)--(z);\draw[->] (r1)--(z);\draw[->] (r2)--(z);
+\node at (4,1.65) {left family};\node at (8,1.65) {right family};
+\node at (6,-1.65) {$|H|=4$, $|Z|=1$: all four members cover $z$};
+\end{tikzpicture}

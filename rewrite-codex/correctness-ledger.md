@@ -115,3 +115,35 @@ All three revised PDFs compile with no layout or reference warnings. The
 changed figures, grid frames, final slide, and formalization appendix were
 rendered and visually inspected. The notes PDF was rebuilt with the
 reordered frames and new timing plan.
+
+## Later November 14 cross-review
+
+Read the remaining DeepSeep4.1 companion and Claude's review of it. The
+wrong Z charge was confirmed with a simpler four-member acyclic example;
+all sixteen retained-subfamily pairs were checked independently in Python.
+The Lean audit imports the actual statement bodies and proves the wrong
+pruning proposition false. It also exposes additional empty-graph issues:
+the no-concavity statement and blowup statement are false, the reduction is
+trivial, and the minimality domain includes the empty competitor.
+Consequently the blowup specification is not merely vacuous, contrary to
+the earlier review's description. The original paper's statements remain
+correct; these are specification errors in the companion.
+
+Also recorded two repairable explanation errors: the cover contains the
+forced copy of a covered point, not its surviving original member, and the
+rank perturbation parameter must be nonzero. The correct cycle lemmas were
+reused with attribution and definition bridges, replacing their assumed
+main theorem by the rebuilt complete reference result. The resulting cycle
+corollaries and all statement-audit results print only standard Lean axioms.
+
+Adopted short reading routes and next-use annotations from DeepSeep, and a
+local goal / explicit image definition from Claude's newer slides. Added a
+reverse-fork H/Z figure and clarified that retained-neighbor classes in the
+deletion schematic need not be nonempty. All writes remain in this folder.
+See `updates-review.md`, `review-case-results.json`, and the review build logs.
+
+Final update check at `99e1cbb`: the live companion repairs the H/Z charge
+and specifies the actual blowup in `f6f6460`. Those two refutations concern
+our recorded earlier snapshot. Its live empty-graph issues remain; see
+`updates-review.md`. A numerical budget trace was added in response to the
+new critique of our older snapshot.

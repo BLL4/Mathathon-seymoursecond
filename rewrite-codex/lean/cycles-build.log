@@ -1,0 +1,4 @@
+'SecondNeighborhoodAdoptedCycles.good_vertex' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodAdoptedCycles.triangle_free_vertex_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodAdoptedCycles.triangle_of_semidegrees' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodAdoptedCycles.regular_triangle_free_order' depends on axioms: [propext, Classical.choice, Quot.sound]

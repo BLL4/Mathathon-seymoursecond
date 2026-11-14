@@ -2,7 +2,7 @@
 
 This folder contains a modified, illustrated exposition of the supplied OpenAI preprint of September 23, 2026. Original source files were not changed. The original work is licensed under Apache 2.0; see [the repository license](../LICENSE).
 
-- [Illustrated article](main.pdf), with [LaTeX entry point](main.tex). It retains the complete argument, reorganizes the pruning proof into seven claims, and adds a reading guide, ten figures, proof explanations, a worked pruning example, and a direct explanation of the vertex-weighted consequence.
+- [Illustrated article](main.pdf), with [LaTeX entry point](main.tex). It retains the complete argument, reorganizes the pruning proof into seven claims, and adds a reading guide, eleven figures, proof explanations, a worked pruning example, and a direct explanation of the vertex-weighted consequence.
 - [Twenty-minute Beamer presentation](talk.pdf), with [source and timed speaker notes](talk.tex): sixteen frames, with a separate [speaker-notes PDF](talk-notes.pdf). Notes allocate 0:00–20:00; this is a planned duration, not a measured rehearsal.
 - [Readability plan](readability-plan.md): initial draft, self-review, and revised specification, written before the mathematical rewrite.
 - [Correctness ledger](correctness-ledger.md): mathematical dependencies, finite checks, presentation revisions, and limitations.
@@ -13,6 +13,8 @@ This folder contains a modified, illustrated exposition of the supplied OpenAI p
 - [Formalization status](formalization-status.md) separates the full reference proof from the independent component checks.
 - [Response to the review](review-response.md) records the second revision.
 - [Snapshot review of the other work directory](other-work-review.md).
+- [Latest cross-review](updates-review.md) records newly checked specification errors, a correction to an earlier review, and the adopted readability improvements.
+- [Lean statement audit](lean/ReviewCounterexamples.lean) and [adopted cycle consequences](lean/AdoptedCycleConsequences.lean) verify the new review findings and discharge the cycle companion's main-theorem hypothesis.
 - [Finite-check program](check_finite.py) and [recorded results](finite-results.json).
 
 ## Build and verify
@@ -43,7 +45,7 @@ The seven component files compile without warnings, unfinished proofs, or custom
 
 ## What was checked
 
-The finite experiments cover every labeled oriented graph through five vertices (59,809 graphs total), all 4,096 two-point relation/family triples for pruning, 1,000 deterministic larger samples, and 10,000 potential-increment identities. All passed. The article, slides, and speaker-notes PDFs were compiled, all ten figures were rendered and inspected, and all sixteen slides were visually checked. The ledger records mathematical checks at the proof's interfaces.
+The finite experiments cover every labeled oriented graph through five vertices (59,809 graphs total), all 4,096 two-point relation/family triples for pruning, 1,000 deterministic larger samples, and 10,000 potential-increment identities. All passed. The article, slides, and speaker-notes PDFs were compiled, all eleven figures were rendered and inspected, and all sixteen slides were visually checked. The ledger records mathematical checks at the proof's interfaces.
 
 A **complete attributed reference formalization** is now included under `lean/reference/`. It is an unchanged source snapshot of Claude Opus 5.5's formalization from the other work directory, rebuilt here without copying its compiled objects. The build checks the snapshot hashes, compiles the graph reductions, blowup, pruning, and extremal contradiction, and checks our definition bridge:
 
@@ -56,6 +58,17 @@ python3 lean/check-reference.py --mathlib-root ../rewrite-claude-opus-5.5/Seymou
 The separate Codex algebra development remains conditional at its frontier: `kernel_dimension_from_pruning_data` assumes the square identity, maximum auxiliary support ranks, and coverage-spanning conditions, then constructs the normalized lifts and derives the kernel-dimension bound. Further files now check simultaneous nonvanishing of selected polynomial minors and a matching certificate for a sparse minor. They have not yet been assembled into a separate Codex proof of the full graph theorem. The reference proof uses a rational function field for generic coefficients; the exposition's real-assignment route is supported by our additional polynomial checks.
 
 The historical survey and externally cited equivalences are retained from the supplied source; this project did not independently verify the current literature or those external papers.
+
+## Reproduce the new review checks
+
+The review snapshot and import-only adapter are documented in [lean/review-target/README.md](lean/review-target/README.md). To check the exact reviewed definitions, their counterexamples, and the adopted cycle consequences:
+
+```sh
+python3 check_review_cases.py
+python3 lean/check-review.py --mathlib-root /path/to/mathlib --cycles
+```
+
+The checker verifies original and adapted source hashes, confirms that only imports differ, and builds any missing objects locally. The cycle bridge uses the complete reference proof; the checker builds that prerequisite if absent. `--force` recompiles current local objects as well. `review-checks.txt`, `lean/review-build.log`, and `lean/cycles-build.log` record the checks. These review proofs are separate from the seven Codex component files and the full reference theorem.
 
 ## Maintenance
 

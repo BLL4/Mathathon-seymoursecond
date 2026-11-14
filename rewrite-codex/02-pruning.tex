@@ -69,6 +69,26 @@ $3=|H|+q$. The lemma promises a suitable pruning, not that every smallest
 cover of the original conflict graph works. This example explains why the
 augmented graph is needed.
 
+\paragraph{The two corner sets cannot be interchanged.}
+The previous example has $|H|=1$ and $|Z|=4$. For the reverse imbalance,
+let the only arcs be $0\to2$ and $1\to2$, and take
+\[
+\mathcal R=\{(0,2),(1,2)\},\qquad
+\mathcal C=\{(2,0),(2,1)\}.
+\]
+Now $H=\{0,1\}\times\{0,1\}$, while $Z=\{(2,2)\}$.
+Every left member conflicts with every right member, and every member
+covers the sole point of $Z$. Any conflict-free pruning with a survivor
+therefore has $q=0$ and at least two deletions. With no survivors it has
+$q=1$ and four deletions. Thus replacing $|H|+q$ by $|Z|+q$ would fail
+in both cases, even for this acyclic oriented graph. The correct bound
+allows keeping all of $\mathcal R$ and deleting $\mathcal C$, at cost
+$2\le |H|=4$. In words, $Z$ records where the original images meet;
+$H$ records the opposite corners charged by the lemma.
+\begin{figure}[H]\centering\input{figures/wrong-corner}
+\caption{The reverse fork gives a four-member counterexample to the incorrect $|Z|+q$ bound. The right-hand incidence graph shows coverage links, not graph arcs or coordinate-grid positions. Every left--right pair conflicts. The correctly stated pruning lemma uses $|H|+q$.}
+\end{figure}
+
 The proof will bound a matching in an augmented bipartite graph by using
 matrix ranks.  We first record the elementary rank fact that makes the
 argument work.  For finite index sets $I,J$, a matrix supported on

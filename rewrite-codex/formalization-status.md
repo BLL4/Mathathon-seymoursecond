@@ -73,3 +73,31 @@ python3 lean/check-reference.py --mathlib-root /path/to/mathlib
 The helper recognizes mathlib installations whose dependencies live inside
 the checkout or alongside it in a Lake packages directory. All compiled
 outputs and logs are written inside `rewrite-codex`.
+
+## Additional cross-review and adopted consequences
+
+`ReviewCounterexamples.lean` imports a hash-recorded snapshot of the
+DeepSeep4.1 statements and proves their `PruningStatement`,
+`NoConcavityStatement`, and `BlowupStatement` false as written. It also
+proves that their reduction can always choose the empty target and that
+an empty competitor rules out nonempty graphs under their minimality
+specification. These are statements about that companion's definitions,
+not counterexamples to the original paper or the complete reference proof.
+
+`AdoptedCycleConsequences.lean` reuses the companion's correct cycle lemmas,
+checks first- and second-neighborhood equality with the full reference
+formalization, and supplies the good vertex from the main theorem. The
+triangle-free degree bound, semidegree triangle conclusion, and regular
+order bound are thereby checked without an unproved main-theorem input.
+
+Only imports were narrowed in the compiled review snapshot; mathematical
+bodies are unchanged and checked against their originals. The corresponding
+originals, hashes, adaptation, build instructions, and attribution are in
+`lean/review-target/`. The audit and cycle theorems print only standard Lean
+axioms. They are not included in the count of 39 component theorems above.
+
+Final update check at `99e1cbb`: the live companion repairs the H/Z charge
+and specifies the actual blowup in `f6f6460`. Those two refutations concern
+our recorded earlier snapshot. Its live empty-graph issues remain; see
+`updates-review.md`. A numerical budget trace was added in response to the
+new critique of our older snapshot.

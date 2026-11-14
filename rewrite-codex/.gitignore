@@ -28,3 +28,6 @@ __pycache__/
 !lean/reference/*-build.log
 *.olean.*
 *.ilean.*
+!lean/review-build.log
+!lean/cycles-build.log
+!lean/review-target/*-build.log

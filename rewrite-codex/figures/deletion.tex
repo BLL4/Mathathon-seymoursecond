@@ -4,7 +4,7 @@
 \node[box] (q) at (3,-1.1) {$Q$};
 \node[box] (f) at (7,1.1) {$I\cup T\cup F(T)$};
 \node[box] (c) at (7,-1.1) {$C$};
-\draw[->] (v)--node[above,sloped] {retained} (t);
+\draw[->] (v)--node[above,sloped] {may remain} (t);
 \draw[->,dashed] (v)--node[below,sloped] {deleted} (q);
 \draw[->] (t)--(f);\draw[->] (q)--node[below] {old paths} (c);
 \end{tikzpicture}

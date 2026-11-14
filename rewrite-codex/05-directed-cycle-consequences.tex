@@ -69,3 +69,13 @@ when \(3\) divides \(n\).  Finally, directed girth four excludes directed
 \(3\)-cycles; in the regular case the count in \textup{(i)} becomes
 \(n-1\geq3r\), proving \textup{(iii)}.
 \end{proof}
+
+
+\begin{remark}
+The order count in \textup{(iii)} only needs triangle-freeness. Thus every
+nonempty triangle-free oriented graph with $d^+=d^-=r$ satisfies
+$n\ge3r+1$, even without specifying its girth. The directed $4$-cycle
+attains equality when $r=1$. The companion Lean checks now verify this
+stronger form by combining the DeepSeep4.1 cycle lemmas with the rebuilt
+reference main theorem and explicit neighborhood-definition bridges.
+\end{remark}

@@ -52,3 +52,12 @@ I also read the later November 14 addendum recommending reuse of the
 completed formalization. The attributed snapshot, clean local rebuild,
 and definition bridge implement that suggestion; the independent Codex
 component proofs remain separately identified.
+
+## Later DeepSeep critique
+
+The critique of snapshot `16f8281` repeats several points now addressed
+above. A numerical budget trace now supplements the qualitative objective
+figure. Its proposed equality for zero-weight blowups is false when an
+intermediate block is empty; the path with weights 1,0,1 is a counterexample.
+The containment in our direct weighted argument is intentional. See
+`updates-review.md` for the complete response and review of subsequent fixes.

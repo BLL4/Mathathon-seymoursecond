@@ -1,0 +1,5 @@
+Basic: checked (current local object)
+Statements: checked (current local object)
+ReviewCounterexamples: checked (current local object)
+Cycles: checked (current local object)
+AdoptedCycleConsequences: checked (current local object)

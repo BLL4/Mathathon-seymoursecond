@@ -42,7 +42,7 @@ a nonempty batch $Q$ of new vertices. The potential $g(T)$ measures the
 unprocessed image outside $I\cup T$, not all of $F(T)$. Its increment is
 smaller than the batch size, so these local inequalities telescope.
 \begin{figure}[ht]\centering\input{figures/deletion}
-\caption{Schematic for a deletion step. The dashed arcs from $v$ to $Q$ are removed. Every surviving two-step endpoint lies in the top-right set. The set $C$ consists of old endpoints through $Q$ outside that set and outside $Q$, so all of $C$ is lost. Other arcs are unspecified.}
+\caption{Schematic for a deletion step. The dashed arcs from $v$ to $Q$ are removed. Every surviving two-step endpoint lies in the top-right set. The set $C$ consists of old endpoints through $Q$ outside that set and outside $Q$, so all of $C$ is lost. Arrows indicate possible endpoint classes; the retained class may be empty. Other arcs are unspecified.}
 \end{figure}
 
 \begin{lemma}[Subset deficit]
@@ -58,6 +58,10 @@ every vertex has positive indegree, and
   \qquad\text{for every }\varnothing\ne S\subsetneq V(D).
 \end{equation}
 \end{lemma}
+
+\noindent\emph{Used next:} the integer deficit in
+\eqref{eq:subset-deficit} is amplified in Lemma~\ref{lem:blowup}; it is the
+reason a block size $m>|V(D)|$ can dominate the internal error.
 
 \begin{proof}
 A sink satisfies the second-neighborhood inequality, so $D$ has no sink

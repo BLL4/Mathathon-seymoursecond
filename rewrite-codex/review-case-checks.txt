@@ -1,0 +1,122 @@
+{
+  "oriented_fork": {
+    "arcs": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "left": [
+      [
+        0,
+        2
+      ],
+      [
+        1,
+        2
+      ]
+    ],
+    "right": [
+      [
+        2,
+        0
+      ],
+      [
+        2,
+        1
+      ]
+    ],
+    "H": [
+      [
+        0,
+        0
+      ],
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        1
+      ]
+    ],
+    "Z": [
+      [
+        2,
+        2
+      ]
+    ],
+    "retained_pairs_examined": 16,
+    "compatible_pairs": 7,
+    "wrong_Z_bound_witnesses": 0,
+    "correct_H_bound_witnesses": 7,
+    "compatible_cases": [
+      {
+        "left_survivors": 0,
+        "right_survivors": 0,
+        "deletions": 4,
+        "uncovered_Z": 1
+      },
+      {
+        "left_survivors": 0,
+        "right_survivors": 1,
+        "deletions": 3,
+        "uncovered_Z": 0
+      },
+      {
+        "left_survivors": 0,
+        "right_survivors": 1,
+        "deletions": 3,
+        "uncovered_Z": 0
+      },
+      {
+        "left_survivors": 0,
+        "right_survivors": 2,
+        "deletions": 2,
+        "uncovered_Z": 0
+      },
+      {
+        "left_survivors": 1,
+        "right_survivors": 0,
+        "deletions": 3,
+        "uncovered_Z": 0
+      },
+      {
+        "left_survivors": 1,
+        "right_survivors": 0,
+        "deletions": 3,
+        "uncovered_Z": 0
+      },
+      {
+        "left_survivors": 2,
+        "right_survivors": 0,
+        "deletions": 2,
+        "uncovered_Z": 0
+      }
+    ]
+  },
+  "empty_graph": {
+    "positive_indegree_vacuous": true,
+    "strict_subset_condition_vacuous": true
+  },
+  "unrelated_triangle": {
+    "U": [
+      0
+    ],
+    "F_U": [
+      1
+    ],
+    "F2_U": [
+      2
+    ],
+    "strict_defect": 0
+  }
+}
