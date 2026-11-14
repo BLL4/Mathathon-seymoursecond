@@ -481,6 +481,10 @@ conflict), so these are exactly the conflict points that pruning uncovered.
   \draw[famL,-{Stealth[length=1.6mm]},thick] (r2)--(2,-0.75);
   \draw[famR,-{Stealth[length=1.6mm]},thick] (c1)--(2.25,-1);
   \draw[famR,-{Stealth[length=1.6mm]},thick] (c2)--(2.25,-2);
+  \draw[famL,-{Stealth[length=1.6mm]},thick] (r1) to[bend right=35] (0.92,-1.8);
+  \draw[famL,-{Stealth[length=1.6mm]},thick] (r2) to[bend right=35] (1.92,-1.8);
+  \draw[famR,-{Stealth[length=1.6mm]},thick] (c1) to[bend right=35] (1.2,-0.92);
+  \draw[famR,-{Stealth[length=1.6mm]},thick] (c2) to[bend left=35] (1.2,-2.08);
   \begin{scope}[yshift=-4.3cm,xshift=-4.2cm,font=\footnotesize]
    \node[Lpt] at (0,0) {}; \node[anchor=west] at (0.2,0) {$\Rf$ (left members)};
    \node[Rpt] at (0,-0.55) {}; \node[anchor=west] at (0.2,-0.55) {$\Cf$ (right members)};
