@@ -1,0 +1,217 @@
+\section{Introduction}\label{sec:intro}
+
+\subsection{The conjecture}
+
+An \emph{oriented graph} is a finite directed graph $D$ with no loops, no
+multiple arcs, and no pair of opposite arcs: for distinct vertices $x,y$ at
+most one of $x\to y$ and $y\to x$ is an arc. Equivalently, it is an
+orientation of a simple undirected graph. The underlying graph need not be
+connected or complete.
+
+For a vertex $v$ we write
+\[
+ \Nout(v)=\{u: v\to u\},\qquad
+ \Ntwo(v)=\{w:\ w\ne v,\ w\notin\Nout(v),\ \text{and } v\to u\to w \text{ for some } u\}.
+\]
+So $\Nout(v)$ is the set of vertices at directed distance exactly one, and
+$\Ntwo(v)$ is the set of vertices at directed distance \emph{exactly} two.
+A vertex counts once in $\Ntwo(v)$ however many two-step paths reach it,
+and a vertex that can be reached in one step does not count in $\Ntwo(v)$
+even if it can also be reached in two steps (see \cref{fig:neighborhoods}).
+
+\begin{theorem}[Seymour's second-neighborhood conjecture]\label{thm:main}
+Every nonempty finite oriented graph $D$ has a vertex $v$ with
+\[
+ \abs{\Nout(v)}\le\abs{\Ntwo(v)}.
+\]
+\end{theorem}
+
+Following the literature, a vertex satisfying this inequality is called a
+\emph{Seymour vertex}. A sink (a vertex of outdegree $0$) is trivially a
+Seymour vertex, so the content of the theorem lies in graphs where every
+vertex has an out-neighbor.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1]
+ \begin{scope}
+ \node[vtx,fill=black!10] (v) at (0,0) {$v$};
+ \node[vtx] (u1) at (2,1.2) {$u_1$};
+ \node[vtx] (u2) at (2,0) {$u_2$};
+ \node[vtx] (u3) at (2,-1.2) {$u_3$};
+ \node[vtx] (w1) at (4,0.6) {$w_1$};
+ \node[vtx] (w2) at (4,-0.6) {$w_2$};
+ \foreach \u in {u1,u2,u3} \draw[arc] (v)--(\u);
+ \draw[arc] (u1)--(w1); \draw[arc] (u2)--(w1); \draw[arc] (u3)--(w2);
+ \draw[arc,black!45] (u1)--(u2);
+ \draw[arc,black!45] (w2) to[out=-110,in=-60,looseness=1.6] (v);
+ \begin{scope}[on background layer]
+  \node[draw=famL,fill=famL!10,rounded corners,fit=(u1)(u3),inner sep=4pt,
+        label={[famL!80!black,font=\small]above:$\Nout(v)$}] {};
+  \node[draw=famR,fill=famR!10,rounded corners,fit=(w1)(w2),inner sep=4pt,
+        label={[famR!80!black,font=\small]above:$\Ntwo(v)$}] {};
+ \end{scope}
+ \node[font=\small,align=center] at (2,-2.75) {(a) $\abs{\Nout(v)}=3>2=\abs{\Ntwo(v)}$};
+ \end{scope}
+ \begin{scope}[xshift=7.6cm]
+ \node[vtx] (a) at (90:1.1) {$a$};
+ \node[vtx] (b) at (210:1.1) {$b$};
+ \node[vtx] (c) at (330:1.1) {$c$};
+ \draw[arc] (a)--(c); \draw[arc] (c)--(b); \draw[arc] (b)--(a);
+ \node[font=\small,align=center] at (0,-2.75) {(b) directed triangle:\\
+   $\abs{\Nout(x)}=\abs{\Ntwo(x)}=1$ for all $x$};
+ \end{scope}
+\end{tikzpicture}
+\caption{(a) The first and second out-neighborhoods of $v$. The arc
+$u_1\to u_2$ does not put $u_2$ into $\Ntwo(v)$, because $u_2$ is already at
+distance one. The arc $w_2\to v$ is irrelevant for $v$. In this picture $v$
+is not a Seymour vertex, but $w_1$ (a sink) is. (b) In a directed
+triangle every vertex is a Seymour vertex with equality, so the inequality
+of \cref{thm:main} cannot be made strict.}
+\label{fig:neighborhoods}
+\end{figure}
+
+\subsection{Background}
+
+The conjecture was stated by Seymour and recorded by Dean and
+Latka~\cite{DeanLatka1995}. For \emph{tournaments} (an arc between every
+pair of vertices) it is Dean's conjecture, proved by
+Fisher~\cite{Fisher1996} with a probability distribution obtained from
+Farkas' lemma, and later combinatorially by Havet and
+Thomass\'e~\cite{HavetThomasse2000} using median orders. It was extended
+to tournaments missing a matching, a star or a
+clique~\cite{FidlerYuster2007}, generalized stars~\cite{Ghazal2012},
+a matching together with a star~\cite{DaraFrancisJacobNarayanan2022}, and
+two stars~\cite{DaamouchAlMninyGhazal2025}. It is known for minimum
+outdegree at most six~\cite{KanekoLocke2001} (and, by a computer-assisted
+preprint, seven~\cite{SadhukhanSandeepSen2026}). In general, some vertex has
+$\abs{\Ntwo(v)}\ge\gamma\abs{\Nout(v)}$ with
+$\gamma\approx0.657$~\cite{ChenShenYuster2003}, improved to
+$\gamma\approx0.7155$~\cite{HuangPeng2024}. Orientations of random graphs
+were treated in~\cite{BotlerMouraNaia2023,EspunyDiazEtAl2025} and dense
+graphs in~\cite{Brukhman2026}.
+The proof below builds on two earlier ideas: the minimal counterexample and
+graph-product (blow-up) method of Brantner, Brockman, Kay and
+Snively~\cite{BrantnerBrockmanKaySnively2009}, and Seacrest's idea of
+studying the conjecture for \emph{sets} of vertices~\cite{Seacrest2019}.
+
+\subsection{The proof at a glance}\label{sec:glance}
+
+The proof is by contradiction and has three stages, shown in
+\cref{fig:proofmap}. Throughout, for a digraph $D$ and a set $S$ of
+vertices we use the \emph{forward image}
+\[
+ F(S)=F_D(S)=\{y:\ x\to y \text{ for some } x\in S\},\qquad F^2(S)=F(F(S)).
+\]
+Note that $F(S)$ may intersect $S$. Since an oriented graph has no
+directed closed walk of length two, $v\notin F^2(\{v\})$ and therefore
+$\Ntwo(v)=F^2(\{v\})\setminus F(\{v\})$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  box/.style={draw,rounded corners,align=center,font=\small,fill=boxbg,minimum height=13mm,text width=34mm},
+  key/.style={box,fill=ideabg,draw=ideabg!50!black},
+  lab/.style={font=\footnotesize,align=center,text width=22mm},
+  every edge/.style={draw,-{Stealth[length=2.6mm]},thick}]
+ \node[box] (ce) at (0,0) {\textbf{Counterexample} $D$\\ (fewest vertices,\\ then fewest arcs)};
+ \node[box] (sd) at (5.7,0) {\textbf{Subset deficit}\\ $\abs{F^2S\setminus FS}<\abs{FS\setminus S}$\\ for all $\varnothing\ne S\subsetneq V$};
+ \node[box] (cc) at (11.4,0) {\textbf{Strict concavity}\\ $\abs U+\abs{F^2U}<2\abs{FU}$\\ in a blow-up $G$};
+ \node[key] (pr) at (5.7,-3.4) {\textbf{Pruning lemma}\\ (any finite relation)\\ \cref{sec:pruning}};
+ \node[box,fill=red!8,draw=red!50!black] (con) at (11.4,-3.4) {\textbf{Contradiction}\\ an extremal pair of\\ families of pairs};
+ \draw (ce) edge node[lab,above=2pt] {delete arcs\\\cref{lem:subset-deficit}} (sd);
+ \draw (sd) edge node[lab,above=2pt] {blow up\\\cref{lem:blowup}} (cc);
+ \draw (cc) edge node[lab,right=1pt,text width=24mm] {\cref{sec:pairs,sec:contradiction}} (con);
+ \draw (pr) edge (con);
+ \node[font=\footnotesize,text=black!60] at (5.7,-1.35) {\cref{sec:reduction}: elementary counting};
+ \draw[black!30,decorate,decoration={brace,amplitude=5pt,mirror}] (-1.7,-0.95)--(13.1,-0.95);
+\end{tikzpicture}
+\caption{Map of the proof. The top row (\cref{sec:reduction}) is a
+reduction that uses only elementary counting. The genuinely new ingredient
+is the pruning lemma (\cref{sec:pruning}), which holds for every finite
+binary relation. \Cref{sec:contradiction} combines the two.}
+\label{fig:proofmap}
+\end{figure}
+
+\paragraph{Stage 1: from one vertex to all sets (\cref{sec:reduction}).}
+Take a counterexample $D$ with the fewest vertices and, among those, the
+fewest arcs. Deleting arcs creates a smaller graph, which must therefore
+have a Seymour vertex; analysing what that vertex lost shows that every
+nonempty proper set $S$ of vertices of $D$ satisfies the \emph{subset
+deficit}
+\[
+ \abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}.
+\]
+In words: no set ``grows'' as much in its second step as in its first.
+
+\paragraph{Stage 2: a cleaner inequality (\cref{sec:reduction}).}
+The subset deficit is awkward to sum over many sets because of the error
+term $\abs{S\setminus F(S)}$ explained in \cref{rem:error-term}. Replacing
+every vertex by a large transitive tournament drowns this error term and
+produces an oriented graph $G$ in which all indegrees are positive and every
+nonempty proper set $U$ is \emph{strictly concave}:
+\[
+ \abs{U}+\abs{F^2(U)}<2\abs{F(U)}.
+\]
+This says the sequence $\abs U,\abs{F(U)},\abs{F^2(U)}$ is strictly concave:
+the second increment is smaller than the first.
+
+\paragraph{Stage 3: no graph is strictly concave
+(\cref{sec:pairs,sec:pruning,sec:contradiction}).}
+This is the heart of the proof. We work with \emph{sets of ordered pairs}
+of vertices, drawn as subsets of a grid $X\times X$. On pairs there are two
+natural image operators: $\Ff$ moves the first coordinate along an arc and
+$\Fs$ moves the second. We consider pairs $(P,Q)$ of such families that are
+\emph{compatible} ($\Ff P$ and $\Fs Q$ are disjoint), both containing the
+diagonal, and we pick one maximizing
+\[
+ \val(P,Q)=\abs P+\abs Q+\#\{\text{grid points covered by neither }\Ff P\text{ nor }\Fs Q\}.
+\]
+Strict concavity, applied to every column of $P$ and every row of $Q$,
+produces new families that are larger by a definite amount. They may fail to
+be compatible, but the \emph{pruning lemma} restores compatibility at a cost
+that is paid exactly by the gain. The new pair has a larger value, a
+contradiction.
+
+\begin{idea}[Where is the novelty?]
+Stages~1 and~2 adapt known techniques (Seacrest's arc-deletion argument and
+the blow-up of Brantner et al.) and are elementary. The new idea is
+Stage~3 and, in particular, the pruning lemma. It is a statement about an
+arbitrary finite relation and has nothing to do with orientations. Its proof
+bounds the size of a matching in an auxiliary bipartite graph by linear
+algebra: a single ``conflict matrix'' is factored in two different ways, and
+a generic choice of coefficients turns the combinatorics into rank
+inequalities. The key feature of the lemma is that its cost depends on the
+points that are left \emph{uncovered after} pruning; this is what makes
+the accounting in Stage~3 close up.
+\end{idea}
+
+\subsection{Conventions}
+
+All graphs and sets are finite. $\abs{S}$ is the size of $S$. For an
+integer-valued quantity, a strict inequality $a<b$ is often used in the form
+$a\le b-1$. The table below lists the main notation. It mostly agrees with
+the original preprint, and \cref{app:dictionary} lists the few changes.
+
+\begin{center}
+\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+Symbol & Meaning & Introduced in\\
+\midrule
+$\Nout(v),\ \Ntwo(v)$ & vertices at distance exactly one, exactly two & \cref{sec:intro}\\
+$F(S),\ F^2(S)$ & forward image of a vertex set, and its iterate & \cref{sec:glance}\\
+$I,\ E,\ T,\ Q,\ C$ & sets in the arc-deletion argument & \cref{sec:subset-deficit}\\
+$G=D[T_m]$ & blow-up by transitive tournaments & \cref{sec:blowup}\\
+$X\times X$, $\Delta$ & grid of ordered pairs, its diagonal & \cref{sec:pairs}\\
+$\Ff,\ \Fs$ & move first / second coordinate along an arc & \cref{def:coord-images}\\
+$P_j,\ Q_i$ & column $j$ of $P$, row $i$ of $Q$ & \cref{def:coord-images}\\
+\cL{$P,\ \Rf,\ P'$} / \cR{$Q,\ \Cf,\ Q'$} & left / right families (blue / orange in figures) & \cref{sec:pairs}\\
+conflict, compatible & $\Ff\{r\}\cap\Fs\{c\}\ne\varnothing$; no conflicts & \cref{def:conflict}\\
+$\unc(P,Q)$, $\val(P,Q)$ & number of uncovered points; $\abs P+\abs Q+\unc(P,Q)$ & \cref{def:value}\\
+\cZ{$Z$} / \cH{$H$} & conflict points / opposite corners (green / purple) & \cref{def:ZH}\\
+$\Gamma$, $\Mm$ & augmented bipartite graph, a maximum matching & \cref{sec:gamma}\\
+$L,N,A,B$ & four coefficient matrices with $NL=AB$ & \cref{sec:matrices}\\
+\bottomrule
+\end{tabular}
+\end{center}

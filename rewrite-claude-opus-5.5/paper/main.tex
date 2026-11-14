@@ -1,0 +1,112 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools,thmtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,decorations.pathreplacing,shapes.geometric}
+\usepackage[most]{tcolorbox}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=green!40!black,urlcolor=blue!50!black]{hyperref}
+\usepackage[capitalise,noabbrev]{cleveref}
+\hypersetup{pdftitle={Seymour's second-neighborhood conjecture: a readable account of the proof},
+ pdfauthor={Rewrite by Claude (Opus 5.5) of a preprint by OpenAI}}
+
+% ---------------------------------------------------------------- colours
+\definecolor{famL}{RGB}{31,119,180}    % left family  (P, R, R')  blue
+\definecolor{famR}{RGB}{214,96,26}     % right family (Q, C, C')  orange
+\definecolor{zcol}{RGB}{44,140,60}     % conflict points Z         green
+\definecolor{hcol}{RGB}{140,70,160}    % opposite corners H        purple
+\definecolor{boxbg}{RGB}{243,246,250}
+\definecolor{ideabg}{RGB}{252,248,232}
+
+% ---------------------------------------------------------------- theorems
+\declaretheorem[numberwithin=section]{theorem}
+\declaretheorem[sibling=theorem]{proposition}
+\declaretheorem[sibling=theorem]{lemma}
+\declaretheorem[sibling=theorem]{corollary}
+\declaretheorem[sibling=theorem]{claim}
+\declaretheorem[sibling=theorem,style=definition]{definition}
+\declaretheorem[sibling=theorem,style=definition]{example}
+\declaretheorem[sibling=theorem,style=remark]{remark}
+\crefname{claim}{Claim}{Claims}
+\tcolorboxenvironment{theorem}{colback=boxbg,colframe=famL!60!black,boxrule=0.5pt,arc=2pt,left=4pt,right=4pt}
+\tcolorboxenvironment{proposition}{colback=boxbg,colframe=famL!60!black,boxrule=0.5pt,arc=2pt,left=4pt,right=4pt}
+\newtcolorbox{idea}[1][]{colback=ideabg,colframe=ideabg!50!black,boxrule=0.4pt,arc=2pt,
+  left=4pt,right=4pt,fonttitle=\bfseries\small,coltitle=black,colbacktitle=ideabg!80!black!20,title={#1}}
+
+% ---------------------------------------------------------------- macros
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\Rf}{\mathcal R}
+\newcommand{\Cf}{\mathcal C}
+\newcommand{\Mm}{\mathcal M}
+\newcommand{\Ff}{F_1}
+\newcommand{\Fs}{F_2}
+\newcommand{\Nout}{N^+_1}
+\newcommand{\Ntwo}{N^+_2}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\unc}{\operatorname{unc}}
+\newcommand{\Lp}{\mathcal V_L}
+\newcommand{\Rp}{\mathcal V_R}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\newcommand{\T}{\mathsf T}
+\newcommand{\cL}[1]{\textcolor{famL}{#1}}
+\newcommand{\cR}[1]{\textcolor{famR}{#1}}
+\newcommand{\cZ}[1]{\textcolor{zcol}{#1}}
+\newcommand{\cH}[1]{\textcolor{hcol}{#1}}
+
+\tikzset{
+  vtx/.style={circle,draw,fill=white,inner sep=1.5pt,minimum size=5.5mm,font=\small},
+  dot/.style={circle,fill,inner sep=1.4pt},
+  arc/.style={-{Stealth[length=2.2mm]},thick},
+  darc/.style={-{Stealth[length=2.2mm]},thick,dashed},
+  gridpt/.style={circle,draw=black!25,fill=white,inner sep=0pt,minimum size=2.2mm},
+  Lpt/.style={circle,draw=famL!70!black,fill=famL,inner sep=0pt,minimum size=3.2mm},
+  Rpt/.style={rectangle,draw=famR!70!black,fill=famR,inner sep=0pt,minimum size=3.0mm},
+  Zpt/.style={diamond,draw=zcol!70!black,fill=zcol,inner sep=0pt,minimum size=3.8mm},
+  Hpt/.style={star,star points=5,draw=hcol!70!black,fill=hcol,inner sep=0pt,minimum size=4.2mm},
+}
+
+\title{Seymour's second-neighborhood conjecture:\\ a readable account of the proof}
+\author{Rewritten by Claude (Opus 5.5) from the preprint\\
+\emph{A proof of Seymour's second-neighborhood conjecture}\\ by OpenAI (September 23, 2026)}
+\date{November 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+An oriented graph is a directed graph without loops and without pairs of
+opposite arcs. Seymour's second-neighborhood conjecture asserts that every
+finite oriented graph has a vertex with at least as many vertices at
+distance exactly two as at distance exactly one. A recent preprint by
+OpenAI proves this conjecture in fifteen dense pages. This document
+is a rewritten, expanded version of that proof. The mathematics is the same,
+but we add a roadmap, intuition before each step, worked examples,
+thirteen figures, and explicit verification of every inequality. We also
+give a self-contained proof of the vertex-weighted forms of the conjecture.
+All statements were re-checked by hand, several were tested by computer on
+random instances, and the combinatorial core was formalized in Lean~4 (see
+\cref{app:checks}).
+\end{abstract}
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\input{sec1-intro}
+\input{sec2-reduction}
+\input{sec3-pairs}
+\input{sec4-pruning}
+\input{sec5-contradiction}
+\input{sec6-consequences}
+\appendix
+\input{appendix}
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

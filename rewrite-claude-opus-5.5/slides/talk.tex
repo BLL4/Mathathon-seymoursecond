@@ -1,0 +1,596 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric}
+
+\definecolor{famL}{RGB}{31,119,180}
+\definecolor{famR}{RGB}{214,96,26}
+\definecolor{zcol}{RGB}{44,140,60}
+\definecolor{hcol}{RGB}{140,70,160}
+\definecolor{ink}{RGB}{30,40,60}
+\definecolor{soft}{RGB}{243,246,250}
+\definecolor{ideabg}{RGB}{252,246,226}
+
+\usetheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamercolor{structure}{fg=famL!80!black}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{footline}{\hfill\color{black!45}\scriptsize\insertframenumber\,/\,\inserttotalframenumber\hspace{4mm}\vspace{2mm}}
+\setbeamercolor{block title}{bg=famL!15,fg=ink}
+\setbeamercolor{block body}{bg=soft}
+\setbeamercolor{block title alerted}{bg=famR!20,fg=ink}
+\setbeamercolor{block body alerted}{bg=ideabg}
+
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\Rf}{\mathcal R}
+\newcommand{\Cf}{\mathcal C}
+\newcommand{\Nout}{N^+_1}
+\newcommand{\Ntwo}{N^+_2}
+\newcommand{\val}{\operatorname{val}}
+\newcommand{\unc}{\operatorname{unc}}
+\DeclareMathOperator{\rank}{rank}
+\newcommand{\cL}[1]{\textcolor{famL}{#1}}
+\newcommand{\cR}[1]{\textcolor{famR}{#1}}
+\newcommand{\cZ}[1]{\textcolor{zcol}{#1}}
+\newcommand{\cH}[1]{\textcolor{hcol}{#1}}
+
+\tikzset{
+  vtx/.style={circle,draw,fill=white,inner sep=1.5pt,minimum size=5.5mm,font=\small},
+  dot/.style={circle,fill,inner sep=1.4pt},
+  arc/.style={-{Stealth[length=2.2mm]},thick},
+  gridpt/.style={circle,draw=black!25,fill=white,inner sep=0pt,minimum size=2.2mm},
+  Lpt/.style={circle,draw=famL!70!black,fill=famL,inner sep=0pt,minimum size=3.2mm},
+  Rpt/.style={rectangle,draw=famR!70!black,fill=famR,inner sep=0pt,minimum size=3.0mm},
+  Zpt/.style={diamond,draw=zcol!70!black,fill=zcol,inner sep=0pt,minimum size=3.8mm},
+  Hpt/.style={star,star points=5,draw=hcol!70!black,fill=hcol,inner sep=0pt,minimum size=4.2mm},
+  box/.style={draw,rounded corners,align=center,font=\small,fill=soft,minimum height=12mm,text width=33mm},
+}
+
+\title{A proof of Seymour's second-neighborhood conjecture}
+\subtitle{How the proof works: three stages and one new lemma}
+\author{Talk based on the OpenAI preprint (Sept.\ 23, 2026)\\[2pt]\footnotesize prepared by Claude (Opus 5.5)}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The conjecture}
+\begin{columns}[T]
+\begin{column}{0.55\textwidth}
+\emph{Oriented graph}: finite digraph, no loops, no 2-cycles $x\to y\to x$.
+
+\medskip
+$\Nout(v)$ = vertices at distance exactly $1$,\\
+$\Ntwo(v)$ = vertices at distance exactly $2$.
+
+\begin{block}{Theorem (Seymour's second-neighborhood conjecture)}
+Every nonempty finite oriented graph has a vertex $v$ with
+\[\abs{\Nout(v)}\le\abs{\Ntwo(v)}.\]
+\end{block}
+\small A \emph{Seymour vertex}. Sinks are Seymour vertices. In a directed
+triangle every vertex has equality.
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.9]
+ \node[vtx,fill=black!10] (v) at (0,0) {$v$};
+ \node[vtx] (u1) at (2,1.2) {}; \node[vtx] (u2) at (2,0) {}; \node[vtx] (u3) at (2,-1.2) {};
+ \node[vtx] (w1) at (4,0.6) {}; \node[vtx] (w2) at (4,-0.6) {};
+ \foreach \u in {u1,u2,u3} \draw[arc] (v)--(\u);
+ \draw[arc] (u1)--(w1); \draw[arc] (u2)--(w1); \draw[arc] (u3)--(w2);
+ \draw[arc,black!40] (u1)--(u2);
+ \begin{scope}[on background layer]
+  \node[draw=famL,fill=famL!10,rounded corners,fit=(u1)(u3),inner sep=3pt,label={[famL!80!black]above:$\Nout(v)$}] {};
+  \node[draw=famR,fill=famR!10,rounded corners,fit=(w1)(w2),inner sep=3pt,label={[famR!80!black]above:$\Ntwo(v)$}] {};
+ \end{scope}
+ \node[font=\small] at (2,-2.1) {here $3>2$: $v$ is not a Seymour vertex};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Before this proof}
+\begin{itemize}
+\item \textbf{Tournaments} (Dean's conjecture): Fisher 1996 (Farkas' lemma),
+Havet--Thomass\'e 2000 (median orders).
+\item Tournaments minus a matching / star / clique / two stars \ldots
+\item Minimum outdegree $\le 6$ (Kaneko--Locke), $=7$ (computer-assisted).
+\item Ratio versions: some $v$ has $\abs{\Ntwo(v)}\ge\gamma\abs{\Nout(v)}$,
+$\gamma\approx0.657\to0.7155$.
+\item Two tools that the proof builds on:
+ \begin{itemize}
+ \item minimal counterexample + \textbf{blow-up} (Brantner--Brockman--Kay--Snively 2009),
+ \item the conjecture for \textbf{sets of vertices} (Seacrest).
+ \end{itemize}
+\end{itemize}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The proof at a glance}
+\centering
+\begin{tikzpicture}[every edge/.style={draw,-{Stealth[length=2.6mm]},thick},
+  lab/.style={font=\scriptsize,align=center}]
+ \node[box] (ce) at (0,0) {\textbf{Counterexample}\\ minimal};
+ \node[box] (sd) at (5.0,0) {\textbf{Subset deficit}\\ $\abs{F^2S\setminus FS}<\abs{FS\setminus S}$};
+ \node[box] (cc) at (10.0,0) {\textbf{Strict concavity}\\ $\abs U+\abs{F^2U}<2\abs{FU}$};
+ \node[box,fill=ideabg] (pr) at (5.0,-2.9) {\textbf{Pruning lemma}\\ any finite relation};
+ \node[box,fill=red!8] (con) at (10.0,-2.9) {\textbf{Contradiction}\\ extremal pair of families};
+ \draw (ce) edge node[lab,above=1pt] {delete\\arcs} (sd);
+ \draw (sd) edge node[lab,above=1pt] {blow\\up} (cc);
+ \draw (cc) edge node[lab,right] {pairs} (con);
+ \draw (pr) edge (con);
+ \node[font=\footnotesize,text=black!55,align=center] at (0,-2.9) {Stages 1--2:\\ elementary counting\\[3pt] Stage 3:\\ the new idea};
+\end{tikzpicture}
+
+\medskip
+\small Notation: $F(S)=\{y: x\to y,\ x\in S\}$ (may meet $S$), \quad
+$\Ntwo(v)=F^2\{v\}\setminus F\{v\}$.
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Stage 1: from one vertex to all sets}
+\begin{block}{Lemma (subset deficit)}
+In a counterexample with fewest vertices, then fewest arcs,
+\[\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}\qquad\text{for all }\varnothing\ne S\subsetneq V.\]
+\end{block}
+For $S=\{v\}$ this is just ``$v$ is not a Seymour vertex''.
+
+\medskip
+\textbf{Why fewest vertices first?} The minimal counterexample is strongly
+connected (a sink component would be a smaller one), so $F(S)\setminus S\ne\varnothing$.
+
+\medskip
+\textbf{Why fewest arcs?} Deleting arcs gives a graph that \emph{has} a
+Seymour vertex, and we can analyze what that vertex lost.
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Stage 1: the deletion step}
+\begin{columns}[c]
+\begin{column}{0.47\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.64]
+ \draw[thick,fill=famL!8] (0,0) ellipse (1.5 and 2.2);
+ \node[famL!80!black] at (-1.0,2.25) {$S$};
+ \draw[fill=famL!22,draw=famL] (0,1.0) ellipse (0.9 and 0.65); \node at (0,1.0) {$I$};
+ \node[vtx,fill=black!10] (v) at (0,-1.1) {$v$};
+ \draw[thick,rounded corners,fill=zcol!7] (3.2,-2.2) rectangle (5.4,2.2);
+ \node[zcol!70!black] at (4.3,2.55) {$E=F(S)\setminus S$};
+ \draw[rounded corners,fill=zcol!20] (3.4,0.8) rectangle (5.2,2.0); \node at (4.3,1.4) {$T$};
+ \draw[rounded corners,fill=famR!25,draw=famR] (3.4,-0.6) rectangle (5.2,0.6); \node at (4.3,0) {$Q$};
+ \draw[rounded corners,fill=hcol!12,draw=hcol] (7.0,-1.0) rectangle (8.4,1.0); \node at (7.7,0) {$C$};
+ \draw[arc,red!70!black,densely dashed] (v) to[out=30,in=200] (3.45,-0.2);
+ \draw[arc,red!70!black,densely dashed] (v) to[out=-5,in=190] (3.45,-1.5);
+ \draw[arc] (v) to[out=60,in=230] (3.45,1.2);
+ \draw[arc] (5.2,0) -- (7.0,0);
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.5\textwidth}
+\small
+\begin{itemize}
+\item $I=F(S)\cap S$, $E=F(S)\setminus S$. Grow $T$ from $\varnothing$ to $E$; delete all arcs $S\to E\setminus T$.
+\item Fewer arcs $\Rightarrow$ a Seymour vertex $v$; it must be in $S$ and lose
+its out-neighbors $Q\subseteq E\setminus T$.
+\item $v$ \emph{loses} $C$ (reached only via $Q$) and gains $\le\abs{Q\cap F(T)}$.
+\item Since $v$ was \emph{not} Seymour in $D$:
+\[ g(T\cup Q)-g(T)=\abs C-\abs{Q\cap F(T)}<\abs Q,\]
+where $g(T)=\abs{F(T)\setminus(I\cup T)}$.
+\item Sum over batches: $\abs{F^2S\setminus FS}=g(E)<\abs E$.
+\end{itemize}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Stage 2: drowning the error term}
+We want a quantity that \emph{adds up} over many sets:
+\[
+ \kappa(S)=\abs S-2\abs{FS}+\abs{F^2S}\ \le\ \underbrace{\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)}_{\le-1\text{ by Stage 1}}+\underbrace{\abs{S\setminus FS}}_{\text{error}}.
+\]
+\begin{columns}[c]
+\begin{column}{0.48\textwidth}
+\textbf{Blow-up} $G=D[T_m]$: each vertex becomes a transitive tournament
+on $m>n$ vertices.
+\begin{itemize}
+\item main term $\times m$,
+\item error $\le1$ per block, since $\abs{f(T)}\ge\abs T-1$ in $T_m$.
+\end{itemize}
+Result: $\kappa_G(U)\le -m+n<0$ when the support of $U$ is proper\\ {\small(the other case is immediate).}
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.76]
+  \foreach \nm/\ang in {x/90,y/210,z/330}{
+   \begin{scope}[shift={(\ang:1.8)}]
+    \draw[rounded corners,fill=black!4] (-0.4,-0.95) rectangle (0.4,0.95);
+    \node[dot] (\nm1) at (0,0.6) {}; \node[dot] (\nm2) at (0,0) {}; \node[dot] (\nm3) at (0,-0.6) {};
+    \draw[-{Stealth[length=1.4mm]}] (\nm1)--(\nm2); \draw[-{Stealth[length=1.4mm]}] (\nm2)--(\nm3);
+    \draw[-{Stealth[length=1.4mm]}] (\nm1) to[bend right=55] (\nm3);
+   \end{scope}}
+  \draw[-{Stealth[length=3mm]},line width=2pt,black!35] ($(90:1.8)+(0.5,-0.4)$) -- ($(330:1.8)+(-0.2,0.9)$);
+  \draw[-{Stealth[length=3mm]},line width=2pt,black!35] ($(330:1.8)+(-0.5,-0.6)$) -- ($(210:1.8)+(0.5,-0.6)$);
+  \draw[-{Stealth[length=3mm]},line width=2pt,black!35] ($(210:1.8)+(0.2,0.9)$) -- ($(90:1.8)+(-0.5,-0.4)$);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{After Stages 1--2}
+\begin{alertblock}{What remains to show}
+There is no nonempty oriented graph $G$ such that
+\begin{itemize}
+\item[(G1)] every vertex has an in-neighbor, and
+\item[(G2)] every nonempty proper $U\subseteq V(G)$ is \emph{strictly concave}:
+\[\abs U+\abs{F^2U}<2\abs{FU}.\]
+\end{itemize}
+\end{alertblock}
+\begin{itemize}
+\item (G2) says that the sequence $\abs U,\ \abs{FU},\ \abs{F^2U}$ has
+a smaller second increment than its first.
+\item Single sets will not give a contradiction. Instead we look at
+\textbf{families of pairs of vertices} and apply (G2) to all of their
+rows and columns at once.
+\end{itemize}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Stage 3: the grid $X\times X$}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+Pair $(i,j)$: row $i$, column $j$. Two image operators:
+\begin{itemize}
+\item $F_1$: move the \textbf{first} coordinate along an arc (vertical);
+\item $F_2$: move the \textbf{second} coordinate along an arc (horizontal).
+\end{itemize}
+They act line by line: $(F_1P)_j=F(P_j)$ for every column $P_j$.
+
+\medskip
+So if every column is nonempty and proper, (G2) applied column by column gives
+\[\abs P+\abs{F_1^2P}<2\abs{F_1P}.\]
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.85]
+  \foreach \k in {1,...,4} {\node[font=\small] at (\k,-0.3) {$\k$}; \node[font=\small] at (0.3,-\k-0.6) {$\k$};}
+  \foreach \i in {1,...,4} \foreach \j in {1,...,4} \node[gridpt] at (\j,-\i-0.6) {};
+  \node[Lpt] (r) at (3,-1.6) {}; \node[Rpt] (c) at (1,-2.6) {}; \node[Zpt] (z) at (3,-2.6) {};
+  \node[circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm] (r3) at (3,-3.6) {};
+  \node[rectangle,draw=famR,thick,inner sep=0pt,minimum size=3.4mm] (c2) at (2,-2.6) {};
+  \draw[-{Stealth[length=2mm]},famL,thick] (r) -- (z);
+  \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=35] (r3);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) -- (c2);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend right=35] (z);
+  \node[font=\footnotesize] at (5.4,-2.2) {arcs:};
+  \node[font=\footnotesize] at (5.4,-2.6) {$1{\to}2,\ 1{\to}3$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Conflicts and compatibility}
+\begin{columns}[c]
+\begin{column}{0.55\textwidth}
+A left member $\cL{r=(p,j)}$ and a right member $\cR{c=(i,s)}$
+\textbf{conflict} if
+\[ p\to i\quad\text{and}\quad s\to j,\]
+i.e.\ their images $F_1\{r\}$, $F_2\{c\}$ meet, at $\cZ{z=(i,j)}$.
+
+\medskip
+$(P,Q)$ is \textbf{compatible} if there is no conflict:
+$F_1P\cap F_2Q=\varnothing$.
+
+\medskip
+Every conflict spans a rectangle. Its fourth corner $\cH{h=(p,s)}$ will be
+important.
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.76]
+  \node[Hpt,label={[hcol!80!black]above left:$h=(p,s)$}] (h) at (0,0) {};
+  \node[Lpt,label={[famL!80!black]above right:$r=(p,j)$}] (rr) at (2.6,0) {};
+  \node[Rpt,label={[famR!80!black]below left:$c=(i,s)$}] (cc) at (0,-2.4) {};
+  \node[Zpt,label={[zcol!70!black]below right:$z=(i,j)$}] (zz) at (2.6,-2.4) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (rr) -- node[right,font=\footnotesize,black] {$p\to i$} (zz);
+  \draw[-{Stealth[length=2mm]},thick,famR] (cc) -- node[below,font=\footnotesize,black] {$s\to j$} (zz);
+  \draw[black!40,dashed] (h)--(rr); \draw[black!40,dashed] (h)--(cc);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The extremal set-up}
+\textbf{Admissible pair}: $(P,Q)$ compatible, with the diagonal $\Delta\subseteq P\cap Q$.\\
+\small $(\Delta,\Delta)$ is admissible: a conflict would need $i\to j$ and $j\to i$, i.e.\ two opposite arcs.
+
+\normalsize
+\begin{block}{The objective}
+\[
+\val(P,Q)=\abs P+\abs Q+\unc(P,Q),\qquad \unc=\#\text{points covered by neither }F_1P\text{ nor }F_2Q.
+\]
+\end{block}
+Take $(P,Q)$ admissible with \textbf{maximum value}; $\mu=\abs P+\abs Q$, $d=\unc(P,Q)$.
+
+\medskip
+\textbf{Goal:} build an admissible $(P',Q')$ with larger value.
+\begin{enumerate}
+\item every column $P_j$ and row $Q_i$ is nonempty and proper (diagonal, (G1));
+\item so (G2) applies line by line.
+\end{enumerate}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The improvement step}
+New families, as complements of the \textbf{second} images (note the swap):
+\[
+ \cL{\Rf}=(X\times X)\setminus F_2^2Q,\qquad \cR{\Cf}=(X\times X)\setminus F_1^2P.
+\]
+\begin{itemize}
+\item \textbf{Gain.} Concavity on all lines:\quad $\abs\Rf+\abs\Cf>\mu+2d$.
+\item \textbf{The diagonal survives} and is conflict-free.
+\item \textbf{Opposite corners were uncovered.}\quad $H\cap(F_1P\cup F_2Q)=\varnothing$,\quad so $\abs H\le d$.
+\end{itemize}
+\begin{columns}[c]
+\begin{column}{0.5\textwidth}
+\small All three are \emph{two-step path} arguments. For example, if $h\in F_1P$ via
+$(u,s)\in P$, then one more step down puts $c$ in $F_1^2P$. But
+$c\in\Cf$, the complement.
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.75]
+  \node[Lpt,label={[font=\footnotesize]right:$(u,s)\in P$}] (us) at (1.6,0) {};
+  \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h$}] (h) at (1.6,-1.3) {};
+  \node[Rpt,label={[font=\footnotesize]right:$c\in\Cf$}] (c) at (1.6,-2.6) {};
+  \node[Rpt,label={[font=\footnotesize]left:$(p,t)\in Q$}] (pt) at (0,-1.3) {};
+  \node[Lpt,label={[font=\footnotesize]above:$r\in\Rf$}] (r) at (3.2,-1.3) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (us) -- (h);
+  \draw[-{Stealth[length=2mm]},thick,famL,dashed] (h) -- (c);
+  \draw[-{Stealth[length=2mm]},thick,famR] (pt) -- (h);
+  \draw[-{Stealth[length=2mm]},thick,famR,dashed] (h) -- (r);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The new ingredient: the pruning lemma}
+\begin{alertblock}{Pruning lemma (any finite relation $\to$ on $X$, any $\Rf,\Cf\subseteq X\times X$)}
+One can delete members so that no conflicts remain, keeping every member
+that was in no conflict, with
+\[
+ \#\text{deleted}\ \le\ \abs{\cH H}+\#\{z\in \cZ Z:\ z\text{ uncovered \emph{after} pruning}\}.
+\]
+\end{alertblock}
+\begin{itemize}
+\item $\cZ Z$ = conflict points, $\cH H$ = opposite corners of conflicts.
+\item The cost depends on the \textbf{outcome} of the pruning, not only on the input.
+\item No orientation is used: this is a statement about arbitrary relations.
+\end{itemize}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{An exchange rate, not a minimum}
+\begin{columns}[c]
+\begin{column}{0.4\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \begin{scope}[xshift=-2.9cm,yshift=-1.0cm]
+  \node[vtx] (x0) at (0,0) {$0$}; \node[vtx] (x1) at (1.0,0.7) {$1$}; \node[vtx] (x2) at (1.0,-0.7) {$2$};
+  \draw[arc] (x0)--(x1); \draw[arc] (x0)--(x2);
+  \end{scope}
+  \foreach \k in {0,1,2} {\node[font=\small] at (\k,0.5) {$\k$}; \node[font=\small] at (-0.5,-\k) {$\k$};}
+  \foreach \i in {1,2} \foreach \j in {1,2} \node[Zpt] at (\j,-\i) {};
+  \node[Hpt] at (0,0) {};
+  \node[Lpt] (r1) at (1,0) {}; \node[Lpt] (r2) at (2,0) {};
+  \node[Rpt] (c1) at (0,-1) {}; \node[Rpt] (c2) at (0,-2) {};
+\end{tikzpicture}
+\end{column}
+\begin{column}{0.58\textwidth}
+\small
+$\Rf=\{01,02\}$, $\Cf=\{10,20\}$, arcs $0\to1,\ 0\to2$.
+\begin{itemize}
+\item All $4$ pairs conflict; $\abs Z=4$, $\abs H=1$.
+\item Cheapest pruning: delete one side ($2$ deletions). But then all of $Z$
+stays covered, and $2>\abs H+0$.
+\item Delete all $4$: then all $4$ points of $Z$ are uncovered, and $4\le1+4$. \checkmark
+\end{itemize}
+\textbf{Moral:} extra deletions are allowed if they are paid for with
+uncovered points. In our objective, uncovered points are worth exactly as
+much as members.
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The ledger closes up}
+\begin{columns}[c]
+\begin{column}{0.5\textwidth}
+Prune $(\Rf,\Cf)$ to $(P',Q')$, admissible, with $d'=\unc(P',Q')$:
+\begin{align*}
+ \val(P',Q')&\ge\abs\Rf+\abs\Cf-(\abs H+d')+d'\\
+ &>\mu+2d-d=\val(P,Q).
+\end{align*}
+Contradiction with maximality, so \textbf{no strictly concave graph exists}
+and the theorem follows.
+
+\medskip
+\small Why weight $1$ on $\unc$? With weight $\lambda$ the bound becomes
+$\mu+d+(\lambda-1)d'$, to be compared with $\mu+\lambda d$. Only $\lambda=1$
+always works.
+\end{column}
+\begin{column}{0.48\textwidth}
+\centering
+\begin{tikzpicture}[yscale=0.36,xscale=0.5]
+ \draw[dashed,thick] (-0.4,6) node[left,font=\scriptsize] {$\mu{+}d$} --(10.6,6);
+ \fill[famL!45] (0,0) rectangle (1.1,4); \fill[black!18] (0,4) rectangle (1.1,6);
+ \fill[famR!45] (2.4,0) rectangle (3.5,8.4);
+ \fill[red!35] (4.8,4.9) rectangle (5.9,8.4);
+ \fill[zcol!40] (7.2,4.9) rectangle (8.3,6.4);
+ \fill[famL!25] (9.1,0) rectangle (10.2,6.4);
+ \node[font=\scriptsize] at (0.55,2) {$\mu$}; \node[font=\scriptsize] at (0.55,5) {$d$};
+ \node[font=\scriptsize] at (2.95,3) {$>\!\mu{+}2d$};
+ \node[font=\scriptsize] at (5.35,7.4) {$-\abs H$}; \node[font=\scriptsize] at (5.35,5.6) {$-d'$};
+ \node[font=\scriptsize] at (7.75,5.3) {$+d'$};
+ \node[font=\scriptsize] at (9.65,3) {new};
+ \node[font=\scriptsize,align=center] at (0.55,-1.4) {old};
+ \node[font=\scriptsize,align=center] at (2.95,-1.4) {gain};
+ \node[font=\scriptsize,align=center] at (5.35,-1.4) {prune};
+ \node[font=\scriptsize,align=center] at (7.75,-1.4) {unc};
+ \node[font=\scriptsize,align=center] at (9.65,-1.4) {new};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Proving the pruning lemma, I: a matching bound}
+\begin{columns}[c]
+\begin{column}{0.52\textwidth}
+Bipartite graph $\Gamma$: left $\Rf\sqcup Z_L$, right $\Cf\sqcup Z_R$.
+\begin{itemize}
+\item[E1] $r\,c$ for conflicts,
+\item[E2] $r\,z_R$ if $r$ covers $z$,
+\item[E3] $z_L\,c$ if $c$ covers $z$.
+\end{itemize}
+A vertex cover $K$, $\abs K\le\abs Z+\abs H$, gives the pruning: delete
+$K\cap(\Rf\cup\Cf)$. Each $z$ that stays covered forces a copy of $z$ into $K$.
+
+\medskip
+By K\H{o}nig, it suffices to prove
+\[\boxed{\ \nu(\Gamma)\le\abs Z+\abs H\ }\]
+\end{column}
+\begin{column}{0.45\textwidth}
+\centering
+\begin{tikzpicture}[ov/.style={circle,draw,inner sep=1pt,minimum size=7mm,font=\footnotesize},
+  cv/.style={rectangle,draw,inner sep=1pt,minimum size=6mm,font=\footnotesize}]
+  \node[cv,fill=zcol!25] (zl) at (0,0) {$z_L$};
+  \node[ov,fill=famR!30] (c) at (1.5,0) {$c$};
+  \node[ov,fill=famL!30] (r) at (3.0,0) {$r$};
+  \node[cv,fill=zcol!25] (zr) at (4.5,0) {$z_R$};
+  \draw[thick,famR] (zl) -- node[above,font=\scriptsize,black] {E3} (c);
+  \draw[thick] (c) -- node[above,font=\scriptsize] {E1} (r);
+  \draw[thick,famL] (r) -- node[above,font=\scriptsize,black] {E2} (zr);
+  \node[font=\footnotesize,align=center] at (2.25,-1.0) {each conflict forces\\ this path};
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Proving the pruning lemma, II: two factorizations}
+\begin{columns}[c]
+\begin{column}{0.5\textwidth}
+Variables $a_{xy},b_{xy}$ on the arcs. Four matrices:
+\begin{itemize}
+\item $L:\RR^{\Rf}\!\to\RR^Z$ and $A:\RR^H\!\to\RR^{\Cf}$ move the first coordinate ($a_{pi}$);
+\item $B:\RR^{\Rf}\!\to\RR^H$ and $N:\RR^Z\!\to\RR^{\Cf}$ move the second ($b_{sj}$).
+\end{itemize}
+Both routes from $r$ to $c$ give $a_{pi}b_{sj}$ exactly on conflicts:
+\[\boxed{\ NL=AB\ }\]
+The conflict matrix factors through $\RR^Z$ \emph{and} through $\RR^H$.
+\end{column}
+\begin{column}{0.47\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.95]
+  \node[Lpt,label={[famL!80!black]above right:$r$}] (r) at (3,0) {};
+  \node[Hpt,label={[hcol!80!black]above left:$h$}] (h) at (0,0) {};
+  \node[Zpt,label={[zcol!70!black]below right:$z$}] (z) at (3,-2.4) {};
+  \node[Rpt,label={[famR!80!black]below left:$c$}] (c) at (0,-2.4) {};
+  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[right] {$L$} (z);
+  \draw[-{Stealth[length=2.4mm]},thick] (z) -- node[below] {$N$} (c);
+  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[above] {$B$} (h);
+  \draw[-{Stealth[length=2.4mm]},thick] (h) -- node[left] {$A$} (c);
+\end{tikzpicture}
+\end{column}
+\end{columns}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Proving the pruning lemma, III: counting dimensions}
+Take a maximum matching with the fewest conflict edges:
+$k$ conflict edges, $\ell$ E2 edges, $t$ E3 edges.
+
+\medskip
+Choose \textbf{generic} real values for the variables (a finite product of
+nonzero polynomials is nonzero somewhere). Then
+\[
+ \rank L=\ell,\qquad \rank N=t\qquad\text{(Edmonds: generic rank = matching number)}.
+\]
+If also $\dim\ker A\ge k$, then
+\[
+ \abs H=\dim\ker A+\rank A\ \ge\ k+\rank(AB)=k+\rank(NL)\ \ge\ k+\ell+t-\abs Z
+\]
+by Sylvester's inequality. So $\nu(\Gamma)=k+\ell+t\le\abs Z+\abs H$. \checkmark
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Proving the pruning lemma, IV: the kernel trick}
+\textbf{Kernel lemma.} If $\Phi$ has maximum rank for its zero pattern $T$, then
+$x\in\ker\Phi$, $y\in\ker\Phi^{\mathsf T}$ satisfy $x_jy_s=0$ for all $(s,j)\in T$.
+\\{\small (Otherwise perturbing the entry $(s,j)$ would increase the rank.)}
+
+\medskip
+Applied to small blocks of $B$ and $N^{\mathsf T}$:
+\[
+ u\in\ker B,\ v\in\ker N^{\mathsf T},\ (r,c)\text{ conflict}\ \Longrightarrow\ u_rv_c=0.
+\]
+For each matched conflict edge $(r,c)$:
+\begin{itemize}
+\item $u^r\in\ker L$ with $u^r_r=1$ (since $r$ is not used by the E2 edges),
+\item $v^c\in\ker N^{\mathsf T}$ with $v^c_c=1$.
+\end{itemize}
+Then $Bu^r\in\ker A$ (as $ABu^r=NLu^r=0$), and these $k$ vectors are
+independent: any relation gives $u\in\ker B$ with $u_r\ne0=u_rv^c_c$.
+So $\dim\ker A\ge k$.
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{The main inventions}
+\begin{enumerate}
+\item \textbf{Upgrade to sets, then to concavity.} Minimal counterexample $\to$
+subset deficit $\to$ blow-up $\to$ $\abs U+\abs{F^2U}<2\abs{FU}$, which can be
+summed over lines.
+\item \textbf{Lift to pairs.} Families in $X\times X$ with two independent
+image operators. Compatibility is $F_1P\cap F_2Q=\varnothing$, and $(\Delta,\Delta)$ is
+compatible exactly because the graph is oriented.
+\item \textbf{The right potential.} Maximize $\abs P+\abs Q+\#$uncovered.
+Complementing second images gains $\mu+2d$.
+\item \textbf{Pruning with an outcome-dependent cost.} Pay $\abs H$ (old uncovered
+points) plus the points left uncovered after pruning.
+\item \textbf{Linear algebra for a matching bound.} The conflict matrix factors as
+$NL=AB$, generic coefficients are used, and a kernel lemma completes the count.
+\end{enumerate}
+\end{frame}
+
+% ------------------------------------------------------------------
+\begin{frame}{Consequences}
+\begin{itemize}
+\item \textbf{Weighted forms} (Seacrest's equivalences): for every weighting
+$\eta\ge0$ some $v$ has $\eta(\Nout(v))\le\eta(\Ntwo(v))$. Also, some probability
+weighting works for all $v$ at once (Farkas), and there is an arc-weighted
+version.
+\item \textbf{Directed triangles.} With no directed triangle,
+$\Ntwo(v)\subseteq$ non-neighbors, so some $v$ has $n-1\ge2d^+(v)+d^-(v)$.
+\begin{itemize}
+\item $\delta^+,\delta^-\ge n/3\ \Rightarrow$ a directed triangle exists;
+\item $r$-regular with directed girth $4$ $\Rightarrow$ $n\ge3r+1$.
+\end{itemize}
+\end{itemize}
+\vfill
+\centering\small The full write-up, with figures and all details, is in the accompanying paper.
+\end{frame}
+
+\end{document}

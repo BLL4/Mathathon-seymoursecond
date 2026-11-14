@@ -1,0 +1,250 @@
+\section{Pairs of vertices: the grid picture}\label{sec:pairs}
+
+\begin{idea}[What this section does]
+We introduce the language of the rest of the proof: subsets of the grid
+$X\times X$, the two coordinate images $\Ff,\Fs$, conflicts and compatibility,
+and the quantity $\val(P,Q)$ that will be maximized. We then explain
+\emph{heuristically} why maximizing $\val$ leads to a contradiction. The
+explanation is made rigorous in \cref{sec:contradiction}, and the one
+missing tool, the pruning lemma, is proved in \cref{sec:pruning}.
+\end{idea}
+
+\subsection{Coordinate images}
+
+In this section and the next, $X$ is a finite set with an arbitrary binary
+relation $\to$. Loops $x\to x$ and pairs of opposite arrows are
+allowed; this generality is needed for the pruning lemma. In
+\cref{sec:contradiction} the relation will be the arc relation of the graph
+$G$ from \cref{prop:reduction}. We write $F(U)=\{y: x\to y\text{ for some }x\in U\}$
+as before.
+
+\emph{Drawing convention.} A pair $(i,j)\in X\times X$ is drawn in
+\textbf{row $i$ and column $j$} of a square grid. So the first coordinate is
+vertical and the second is horizontal.
+
+\begin{definition}[Coordinate images, columns, rows]\label{def:coord-images}
+For $S\subseteq X\times X$ let
+\begin{align*}
+ \Ff S&=\{(i,j):\ (p,j)\in S\text{ and }p\to i\text{ for some }p\}
+ &&\text{(move the first coordinate),}\\
+ \Fs S&=\{(i,j):\ (i,s)\in S\text{ and }s\to j\text{ for some }s\}
+ &&\text{(move the second coordinate),}
+\end{align*}
+and $\Ff^2=\Ff\circ\Ff$, $\Fs^2=\Fs\circ\Fs$. The \emph{column} $j$ of $P$ and the
+\emph{row} $i$ of $Q$ are
+\[
+ P_j=\{p:(p,j)\in P\},\qquad Q_i=\{s:(i,s)\in Q\}.
+\]
+\end{definition}
+
+So $\Ff$ moves points \emph{vertically} inside their column and $\Fs$ moves
+points \emph{horizontally} inside their row (\cref{fig:coord}). Each
+operator acts on the lines of the grid independently, by the ordinary
+image $F$:
+\begin{equation}\label{eq:columnwise}
+ (\Ff P)_j=F(P_j),\quad (\Ff^2P)_j=F^2(P_j),\qquad
+ (\Fs Q)_i=F(Q_i),\quad (\Fs^2Q)_i=F^2(Q_i).
+\end{equation}
+In particular $\abs{\Ff P}=\sum_j\abs{F(P_j)}$ and $\abs{\Fs Q}=\sum_i\abs{F(Q_i)}$.
+This is how an inequality about vertex sets, such as strict concavity,
+becomes an inequality about sets of pairs: apply it to every column (or
+row) and add.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.9]
+ % relation
+ \begin{scope}[xshift=-3.2cm,yshift=-2.2cm]
+  \node[vtx] (n1) at (0,1.2) {$1$};
+  \node[vtx] (n2) at (-1,0) {$2$};
+  \node[vtx] (n3) at (1,0) {$3$};
+  \node[vtx] (n4) at (0,-1.2) {$4$};
+  \draw[arc] (n1)--(n2); \draw[arc] (n1)--(n3); \draw[arc] (n3)--(n4);
+  \node[font=\small] at (0,-2.0) {the relation};
+ \end{scope}
+ % grid
+ \begin{scope}
+  \foreach \k in {1,...,4} {
+   \node[font=\small] at (\k,0.1) {$\k$};
+   \node[font=\small] at (0.2,-\k) {$\k$};
+  }
+  \node[font=\footnotesize,text=black!60] at (2.5,0.55) {column $j$ (second coordinate)};
+  \node[font=\footnotesize,text=black!60,rotate=90] at (-0.35,-2.5) {row $i$ (first coord.)};
+  \foreach \i in {1,...,4} \foreach \j in {1,...,4} \node[gridpt] at (\j,-\i) {};
+  \node[Lpt,label={[famL!80!black,font=\small]above right:$r$}] (r) at (3,-1) {};
+  \node[Rpt,label={[famR!80!black,font=\small]below left:$c$}] (c) at (1,-2) {};
+  \node[Zpt,label={[zcol!70!black,font=\small]above right:$z$}] (z) at (3,-2) {};
+  \node[circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm] (r3) at (3,-3) {};
+  \node[rectangle,draw=famR,thick,inner sep=0pt,minimum size=3.4mm] (c2) at (2,-2) {};
+  \draw[-{Stealth[length=2mm]},famL,thick] (r) -- (z);
+  \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=35] (r3);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) -- (c2);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend right=35] (z);
+  \node[font=\small,align=center] at (2.5,-5.0) {$r=(1,3)$: $\Ff\{r\}=\{(2,3),(3,3)\}$\\
+   $c=(2,1)$: $\Fs\{c\}=\{(2,2),(2,3)\}$};
+ \end{scope}
+ % abstract rectangle
+ \begin{scope}[xshift=7.8cm,yshift=-0.9cm]
+  \node[Hpt,label={[hcol!80!black,font=\small]above left:$h=(p,s)$}] (h) at (0,0) {};
+  \node[Lpt,label={[famL!80!black,font=\small]above right:$r=(p,j)$}] (rr) at (2.6,0) {};
+  \node[Rpt,label={[famR!80!black,font=\small]below left:$c=(i,s)$}] (cc) at (0,-2.4) {};
+  \node[Zpt,label={[zcol!70!black,font=\small]below right:$z=(i,j)$}] (zz) at (2.6,-2.4) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (rr) -- node[right,font=\footnotesize,black] {$p\to i$} (zz);
+  \draw[-{Stealth[length=2mm]},thick,famR] (cc) -- node[below,font=\footnotesize,black] {$s\to j$} (zz);
+  \draw[black!40,dashed] (h)--(rr); \draw[black!40,dashed] (h)--(cc);
+  \node[font=\small,align=center] at (1.3,-4.1) {a conflict and its\\ two ``free'' corners};
+ \end{scope}
+\end{tikzpicture}
+\caption{Left: a relation on $X=\{1,2,3,4\}$. Middle: the grid $X\times X$
+(row $=$ first coordinate). The blue point $r$ moves vertically under $\Ff$,
+the orange point $c$ moves horizontally under $\Fs$, and their images meet
+at the green point $z$. So $r$ and $c$ \emph{conflict}. Right: in general a
+conflict between $r=(p,j)$ and $c=(i,s)$ spans a rectangle. The meeting
+point $z=(i,j)$ is the opposite corner to the purple point $h=(p,s)$.}
+\label{fig:coord}
+\end{figure}
+
+\subsection{Conflicts and compatibility}
+
+Throughout, we deal with a \emph{left} family (drawn blue: $P$, $\Rf$, $P'$),
+to which $\Ff$ is applied, and a \emph{right} family (drawn orange: $Q$,
+$\Cf$, $Q'$), to which $\Fs$ is applied.
+
+\begin{definition}[Conflict, compatibility]\label{def:conflict}
+A left member $r=(p,j)$ and a right member $c=(i,s)$ \emph{conflict} if
+\[
+ p\to i\qquad\text{and}\qquad s\to j.
+\]
+A left family $P$ and a right family $Q$ are \emph{compatible} if no member
+of $P$ conflicts with a member of $Q$.
+\end{definition}
+
+\begin{lemma}\label{lem:conflict-geometry}
+\begin{enumerate}[label=(\alph*)]
+\item $r=(p,j)$ and $c=(i,s)$ conflict if and only if $\Ff\{r\}\cap\Fs\{c\}\ne\varnothing$,
+and then $\Ff\{r\}\cap\Fs\{c\}=\{(i,j)\}$.
+\item $P$ and $Q$ are compatible if and only if $\Ff P\cap\Fs Q=\varnothing$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) $\Ff\{r\}$ lies in column $j$ and $\Fs\{c\}$ lies in row $i$, so they can
+only meet at $(i,j)$. This point is in $\Ff\{r\}$ if and only if $p\to i$, and
+in $\Fs\{c\}$ if and only if $s\to j$. (b) follows from (a), since
+$\Ff P=\bigcup_{r\in P}\Ff\{r\}$ and $\Fs Q=\bigcup_{c\in Q}\Fs\{c\}$.
+\end{proof}
+
+We say that a left member $r$ \emph{covers} the points of $\Ff\{r\}$, and a
+right member $c$ covers the points of $\Fs\{c\}$. So the points covered by a
+pair of families $(P,Q)$ are those of $\Ff P\cup\Fs Q$.
+
+\begin{definition}[Conflict points and opposite corners]\label{def:ZH}
+For a left family $\Rf$ and a right family $\Cf$ let
+\begin{align*}
+ \cZ{Z}&=\{(i,j):\ (p,j)\in\Rf\text{ conflicts with }(i,s)\in\Cf\text{ for some }p,s\},\\
+ \cH{H}&=\{(p,s):\ (p,j)\in\Rf\text{ conflicts with }(i,s)\in\Cf\text{ for some }i,j\}.
+\end{align*}
+\end{definition}
+
+So every conflict spans a rectangle with corners $r,z,c,h$ as in
+\cref{fig:coord}. The conflict point $z$ is the point both members cover,
+and $h$ is the remaining corner. Conversely, $z$ and $h$ determine the
+conflict: $r=(h_1,z_2)$ and $c=(z_1,h_2)$.
+
+\subsection{The extremal set-up}
+
+Now let the relation be the arc relation of a nonempty oriented graph $G$
+with vertex set $X$, and let $\Delta=\{(v,v):v\in X\}$ be the diagonal.
+
+\begin{definition}[Uncovered points, value, admissible pairs]\label{def:value}
+For compatible families $P,Q\subseteq X\times X$ put
+\[
+ \unc(P,Q)=\abs X^2-\abs{\Ff P}-\abs{\Fs Q},\qquad
+ \val(P,Q)=\abs P+\abs Q+\unc(P,Q).
+\]
+By \cref{lem:conflict-geometry}(b), $\unc(P,Q)$ is the number of grid points
+covered by \emph{neither} family. A pair $(P,Q)$ is \emph{admissible} if it
+is compatible and $\Delta\subseteq P\cap Q$.
+\end{definition}
+
+\begin{lemma}\label{lem:diag-compatible}
+$(\Delta,\Delta)$ is admissible. In particular admissible pairs exist, and since
+there are finitely many, some admissible pair maximizes $\val$.
+\end{lemma}
+
+\begin{proof}
+A point $(i,j)\in\Ff\Delta\cap\Fs\Delta$ would require $j\to i$ (from
+$(j,j)\in\Delta$) and $i\to j$ (from $(i,i)\in\Delta$). These are opposite
+arcs, which an oriented graph does not have.
+\end{proof}
+
+\subsection{Why maximizing the value leads to a contradiction}\label{sec:ledger}
+
+Here is the plan of \cref{sec:contradiction}, with the verifications
+postponed. Let $(P,Q)$ be an admissible pair of maximum value, write
+$\mu=\abs P+\abs Q$ and $d=\unc(P,Q)$, so $\val(P,Q)=\mu+d$.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=*]
+\item \textbf{Concavity on every line.} Every column $P_j$ and every row $Q_i$ is a
+nonempty proper subset of $X$. Applying strict concavity to each and adding
+(using~\eqref{eq:columnwise}) gives
+\[
+ \abs P+\abs{\Ff^2P}<2\abs{\Ff P},\qquad \abs Q+\abs{\Fs^2Q}<2\abs{\Fs Q}.
+\]
+\item \textbf{Complement.} Let $\Rf=(X\times X)\setminus\Fs^2Q$ and $\Cf=(X\times X)\setminus\Ff^2P$.
+Adding the two inequalities shows $\abs\Rf+\abs\Cf>\mu+2d$. This is a gain of
+more than $d$ over the old value.
+\item \textbf{Repair.} $(\Rf,\Cf)$ contains the diagonal but may have conflicts. The
+pruning lemma deletes some members to remove all conflicts. The number
+deleted is at most $\abs H$ plus the number of points of $Z$ left
+uncovered. We will see that $\abs H\le d$, and the uncovered points number
+at most $d'$, the value of $\unc$ for the new pair.
+\item \textbf{New value.} The new pair $(P',Q')$ is admissible and
+\[
+ \val(P',Q')\ \ge\ (\abs\Rf+\abs\Cf)-(d+d')+d'\ >\ \mu+2d-d=\mu+d=\val(P,Q),
+\]
+contradicting maximality.
+\end{enumerate}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[yscale=0.42,xscale=1.0]
+ \def\bw{1.1}
+ % levels: mu=4, d=2, d'=1.5 ; R+C = 8.4
+ \draw[black!30] (-0.4,0)--(10.2,0);
+ \draw[dashed,thick] (-0.4,6)--(10.5,6) node[right,font=\footnotesize] {$\mu+d$};
+ \fill[famL!45] (0,0) rectangle (\bw,4); \fill[black!18] (0,4) rectangle (\bw,6);
+ \node[font=\footnotesize] at (0.55,2) {$\mu$}; \node[font=\footnotesize] at (0.55,5) {$d$};
+ \node[font=\footnotesize,align=center] at (0.55,-1.6) {old value\\$\val(P,Q)$};
+ \fill[famR!45] (2.4,0) rectangle (2.4+\bw,8.4);
+ \node[font=\footnotesize,align=center] at (2.95,4.2) {$>$\\$\mu{+}2d$};
+ \node[font=\footnotesize,align=center] at (2.95,-1.6) {$\abs\Rf+\abs\Cf$};
+ \fill[red!35] (4.8,4.9) rectangle (4.8+\bw,8.4);
+ \node[font=\footnotesize,align=center] at (5.35,6.65) {$-\abs H$\\$-q$};
+ \node[font=\footnotesize,align=center] at (5.35,-1.6) {pruning\\cost};
+ \fill[zcol!40] (7.2,4.9) rectangle (7.2+\bw,6.4);
+ \node[font=\footnotesize] at (7.75,5.65) {$+d'$};
+ \node[font=\footnotesize,align=center] at (7.75,-1.6) {new\\uncovered};
+ \fill[famL!25] (9.1,0) rectangle (9.1+\bw,6.4);
+ \node[font=\footnotesize,align=center] at (9.65,3.2) {new\\value};
+ \node[font=\footnotesize,align=center] at (9.65,-1.6) {$\val(P',Q')$};
+ \draw[black!40] (\bw,6)--(2.4,6); \draw[black!40] (2.4+\bw,8.4)--(4.8,8.4);
+ \draw[black!40] (4.8+\bw,4.9)--(7.2,4.9); \draw[black!40] (7.2+\bw,6.4)--(9.1,6.4);
+\end{tikzpicture}
+\caption{The ledger of \cref{sec:contradiction}. Complementation gains more
+than $\mu+2d$. Pruning loses at most $\abs H+q\le d+d'$, where $q\le d'$ is the
+number of conflict points left uncovered. Because uncovered points are
+\emph{part of the value}, the new pair gets $d'$ back. The new value
+therefore exceeds the old one.}
+\label{fig:ledger}
+\end{figure}
+
+\begin{remark}[Why this particular value]\label{rem:why-value}
+If we maximized only $\abs P+\abs Q$, the ledger would give a new size
+$>\mu+d-d'$, which need not exceed $\mu$. If we used $\abs P+\abs Q+\lambda\,\unc$
+for some $\lambda>0$, the ledger would give $\val_\lambda(P',Q')>\mu+d+(\lambda-1)d'$
+against the old value $\mu+\lambda d$. This closes up for every $d,d'\ge 0$ only
+when $\lambda=1$. So it is essential that the pruning cost is charged partly
+to points left uncovered \emph{after} pruning ($d'$), and that this charge
+enters with the same weight as the uncovered points in the value.
+\end{remark}

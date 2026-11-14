@@ -1,0 +1,17 @@
+# Lean build outputs and the multi-GB Mathlib cache
+SeymourLean/.lake/
+# LaTeX intermediates (PDFs are kept)
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.snm
+*.toc
+*.synctex.gz
+build.log
+# Python
+__pycache__/

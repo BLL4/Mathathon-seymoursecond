@@ -1,0 +1,185 @@
+\section{The contradiction}\label{sec:contradiction}
+
+\begin{idea}[What this section does]
+We carry out the plan of \cref{sec:ledger}. The graph $G$ only needs
+properties (G1) and (G2) from the end of \cref{sec:reduction}. All the
+checks below are short ``two-step path'' arguments in the grid. The one
+non-trivial input is the pruning lemma.
+\end{idea}
+
+\begin{proposition}\label{prop:no-concave}
+There is no nonempty oriented graph $G$ in which every vertex has an
+in-neighbor and
+\begin{equation}\label{eq:concave-again}
+ \abs U+\abs{F^2(U)}<2\abs{F(U)}\qquad\text{for every }\varnothing\ne U\subsetneq V(G).
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+Suppose $G$ is such a graph, let $X=V(G)$, and use the arc relation of $G$ in
+the definitions of \cref{sec:pairs}. By \cref{lem:diag-compatible} we can fix
+an admissible pair $(P,Q)$ of maximum value. Write
+\[
+ \mu=\abs P+\abs Q,\qquad d=\unc(P,Q)=\abs X^2-\abs{\Ff P}-\abs{\Fs Q}.
+\]
+The proof is a sequence of claims.
+
+\begin{claim}\label{cl:lines-proper}
+Every column $P_j$ and every row $Q_i$ is a nonempty proper subset of $X$.
+\end{claim}
+
+\begin{proof}
+$j\in P_j$ and $i\in Q_i$ because $\Delta\subseteq P\cap Q$. Suppose $P_j=X$. Every
+vertex has an in-neighbor, so $F(X)=X$ and column $j$ of $\Ff P$ is all of
+$X$ by~\eqref{eq:columnwise}. Choose $w\to j$. Then $(w,w)\in Q$ gives
+$(w,j)\in\Fs Q$, while $(w,j)\in\Ff P$, contradicting compatibility. If $Q_i=X$, then
+row $i$ of $\Fs Q$ is all of $X$. For $w\to i$, $(w,w)\in P$ gives $(i,w)\in\Ff P$, again a
+contradiction.
+\end{proof}
+
+\begin{claim}\label{cl:fiber-sums}
+$\abs P+\abs{\Ff^2P}<2\abs{\Ff P}$ and $\abs Q+\abs{\Fs^2Q}<2\abs{\Fs Q}$.
+\end{claim}
+
+\begin{proof}
+Apply~\eqref{eq:concave-again} to each column $U=P_j$, which is allowed by
+\cref{cl:lines-proper}, and sum over the $\abs X\ge1$ columns
+using~\eqref{eq:columnwise}:
+\begin{equation}\label{eq:fiber-sum}
+ \abs P+\abs{\Ff^2P}=\sum_j\bigl(\abs{P_j}+\abs{F^2(P_j)}\bigr)<\sum_j2\abs{F(P_j)}=2\abs{\Ff P}.
+\end{equation}
+The same argument over the rows of $Q$ gives the second inequality.
+\end{proof}
+
+Now define the new families as complements of the second iterated images:
+\[
+ \Rf=(X\times X)\setminus\Fs^2Q,\qquad\Cf=(X\times X)\setminus\Ff^2P .
+\]
+Note the swap: the new \emph{left} family is built from the old \emph{right} one.
+
+\begin{claim}[Gain]\label{cl:gain}
+$\abs\Rf+\abs\Cf>\mu+2d$.
+\end{claim}
+
+\begin{proof}
+By \cref{cl:fiber-sums},
+$\abs\Rf+\abs\Cf=2\abs X^2-\abs{\Fs^2Q}-\abs{\Ff^2P}
+>2\abs X^2+\abs P+\abs Q-2\abs{\Ff P}-2\abs{\Fs Q}=\mu+2d$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.0]
+ \begin{scope}
+  \node[font=\small] at (0,0.75) {$t$}; \node[font=\small] at (1.6,0.75) {$s$}; \node[font=\small] at (3.2,0.75) {$j$};
+  \node[font=\small] at (-0.8,0) {$u$}; \node[font=\small] at (-0.8,-1.5) {$p$}; \node[font=\small] at (-0.8,-3.0) {$i$};
+  \foreach \x/\y in {1.6/0,0/-1.5,1.6/-1.5,3.2/-1.5,1.6/-3.0} \node[gridpt] at (\x,\y) {};
+  \node[Lpt,label={[font=\footnotesize]right:$(u,s)\in P$}] (us) at (1.6,0) {};
+  \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h$}] (h) at (1.6,-1.5) {};
+  \node[Rpt,label={[font=\footnotesize]below:$c\in\Cf$}] (c) at (1.6,-3.0) {};
+  \node[Rpt,label={[font=\footnotesize]below:$(p,t)\in Q$}] (pt) at (0,-1.5) {};
+  \node[Lpt,label={[font=\footnotesize]below:$r\in\Rf$}] (r) at (3.2,-1.5) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (us) -- node[left,font=\footnotesize,black] {$u{\to}p$} (h);
+  \draw[-{Stealth[length=2mm]},thick,famL,dashed] (h) -- node[left,font=\footnotesize,black] {$p{\to}i$} (c);
+  \draw[-{Stealth[length=2mm]},thick,famR] (pt) -- node[above,font=\footnotesize,black] {$t{\to}s$} (h);
+  \draw[-{Stealth[length=2mm]},thick,famR,dashed] (h) -- node[above,font=\footnotesize,black] {$s{\to}j$} (r);
+  \node[font=\small,align=center] at (1.6,-4.3) {(a) why $h\notin\Ff P\cup\Fs Q$};
+ \end{scope}
+ \begin{scope}[xshift=7.5cm]
+  \node[font=\small] at (0,0.7) {$s$}; \node[font=\small] at (2.1,0.7) {$v$};
+  \node[font=\small] at (-0.8,0) {$s$}; \node[font=\small] at (-0.8,-1.4) {$v$}; \node[font=\small] at (-0.8,-2.8) {$i$};
+  \foreach \x/\y in {0/0,0/-2.8,2.1/-1.4} \node[gridpt] at (\x,\y) {};
+  \node[Lpt,label={[font=\footnotesize]right:$(s,s)\in P$}] (ss) at (0,0) {};
+  \node[gridpt,draw=black] (vs) at (0,-1.4) {};
+  \node[Rpt,label={[font=\footnotesize]below:$(i,s)\in\Cf$}] (is) at (0,-2.8) {};
+  \node[Lpt,label={[font=\footnotesize]below:$(v,v)\in\Rf$}] (vv) at (2.1,-1.4) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (ss) -- node[left,font=\footnotesize,black] {$s{\to}v$} (vs);
+  \draw[-{Stealth[length=2mm]},thick,famL] (vs) -- node[left,font=\footnotesize,black] {$v{\to}i$} (is);
+  \node[font=\small,align=center] at (1.0,-4.3) {(b) diagonal members\\ are conflict-free};
+ \end{scope}
+\end{tikzpicture}
+\caption{The two-step path arguments of \cref{cl:diag-free,cl:H-uncovered},
+drawn in the grid (rows $=$ first coordinate). (a) For a conflict
+$(r,c)$ with opposite corner $h=(p,s)$: if $h\in\Ff P$ via $(u,s)\in P$, then one
+more vertical step puts $c$ in $\Ff^2P$; if $h\in\Fs Q$ via $(p,t)\in Q$, then one
+more horizontal step puts $r$ in $\Fs^2Q$. Both are impossible. (b) A
+conflict of $(v,v)$ with $(i,s)$ would put $(i,s)$ in $\Ff^2P$ via the
+diagonal point $(s,s)$.}
+\label{fig:twostep}
+\end{figure}
+
+\begin{claim}[The diagonal survives]\label{cl:diag-free}
+$\Delta\subseteq\Rf\cap\Cf$, and no diagonal member of $\Rf$ or $\Cf$ is in a conflict.
+\end{claim}
+
+\begin{proof}
+\emph{$\Delta\subseteq\Rf$.} If $(v,v)\in\Fs^2Q$, there are $s\to v$ with
+$(v,s)\in\Fs Q$. But $(s,s)\in P$ and $s\to v$ give $(v,s)\in\Ff P$, contradicting
+compatibility. \emph{$\Delta\subseteq\Cf$.} If $(v,v)\in\Ff^2P$, there are $p\to v$ with
+$(p,v)\in\Ff P$, while $(p,p)\in Q$ gives $(p,v)\in\Fs Q$. Again a contradiction.
+
+\emph{Diagonal members are conflict-free.} If the left member $(v,v)$ conflicted
+with $(i,s)\in\Cf$, then $v\to i$ and $s\to v$, so the path $s\to v\to i$ moves
+$(s,s)\in P$ to $(i,s)\in\Ff^2P$ (\cref{fig:twostep}(b)), contradicting
+$(i,s)\in\Cf$. If $(p,j)\in\Rf$ conflicted with the right member $(v,v)$, then $p\to v$
+and $v\to j$, and the path $p\to v\to j$ moves $(p,p)\in Q$ to $(p,j)\in\Fs^2Q$,
+contradicting $(p,j)\in\Rf$.
+\end{proof}
+
+Let $Z$ and $H$ be the conflict points and opposite corners of $(\Rf,\Cf)$
+(\cref{def:ZH}).
+
+\begin{claim}[Opposite corners were uncovered]\label{cl:H-uncovered}
+$H\cap(\Ff P\cup\Fs Q)=\varnothing$. Hence $\abs H\le d$.
+\end{claim}
+
+\begin{proof}
+Let $(p,j)\in\Rf$ and $(i,s)\in\Cf$ conflict, so $p\to i$ and $s\to j$, with
+$h=(p,s)$. If $h\in\Ff P$, pick $(u,s)\in P$ with $u\to p$. The path $u\to p\to i$
+puts $(i,s)\in\Ff^2P$, contradicting $(i,s)\in\Cf$. If $h\in\Fs Q$, pick $(p,t)\in Q$
+with $t\to s$. The path $t\to s\to j$ puts $(p,j)\in\Fs^2Q$, contradicting
+$(p,j)\in\Rf$ (\cref{fig:twostep}(a)). Since $\Ff P$ and $\Fs Q$ are disjoint,
+$X^2\setminus(\Ff P\cup\Fs Q)$ has exactly $d$ points, so $\abs H\le d$.
+\end{proof}
+
+\emph{Pruning.} Apply \cref{lem:pruning} to $\Rf,\Cf$ and the arc relation of $G$.
+We obtain $P'\subseteq\Rf$ and $Q'\subseteq\Cf$ satisfying \ref{P1}--\ref{P3}. Let
+$d'=\unc(P',Q')$.
+
+\begin{claim}\label{cl:new-admissible}
+$(P',Q')$ is admissible, and
+$\bigl\lvert Z\setminus(\Ff P'\cup\Fs Q')\bigr\rvert\le d'$.
+\end{claim}
+
+\begin{proof}
+$P',Q'$ are compatible by \ref{P1}. They contain $\Delta$ by
+\cref{cl:diag-free} and \ref{P2}. By \cref{lem:conflict-geometry}(b),
+$\Ff P'\cap\Fs Q'=\varnothing$, so exactly $d'$ points of $X^2$ are outside
+$\Ff P'\cup\Fs Q'$, and in particular at most $d'$ points of $Z$ are.
+\end{proof}
+
+\emph{Conclusion.} By \ref{P3} and \cref{cl:H-uncovered,cl:new-admissible},
+at most $\abs H+d'\le d+d'$ members were deleted. With \cref{cl:gain}:
+\[
+ \val(P',Q')=\abs{P'}+\abs{Q'}+d'\ \ge\ \abs\Rf+\abs\Cf-(d+d')+d'\ >\ \mu+2d-d=\val(P,Q).
+\]
+This contradicts the maximality of $\val(P,Q)$ among admissible pairs.
+\end{proof}
+
+\begin{proof}[Proof of \cref{thm:main}]
+If the theorem failed, \cref{prop:reduction} would give a graph that
+\cref{prop:no-concave} rules out.
+\end{proof}
+
+\begin{remark}[Where the hypotheses were used]\label{rem:hypotheses}
+\emph{Orientation} (no opposite arcs) is used four times: in
+$\Ntwo(v)=F^2\{v\}\setminus F\{v\}$; in $C\subseteq\Ntwo(v)$ in
+\cref{lem:subset-deficit}; to make the blow-up oriented; and in
+\cref{lem:diag-compatible} ($\Delta$ is compatible with itself).
+\emph{Positive indegrees} of $G$ are used in \cref{cl:lines-proper} (lines
+are proper) and in the case $S=V(D)$ of \cref{lem:blowup}.
+\emph{Strictness} of~\eqref{eq:concave-again} is used only in
+\cref{cl:gain}. Without it the gain would be $\ge\mu+2d$, and the final
+inequality would no longer be strict. The pruning lemma itself uses none
+of these hypotheses.
+\end{remark}

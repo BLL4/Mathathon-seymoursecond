@@ -1,0 +1,603 @@
+\section{The pruning lemma}\label{sec:pruning}
+
+\begin{idea}[What this section does]
+Given a left family $\Rf$ and a right family $\Cf$ that may conflict, we
+delete some members so that no conflicts remain. The pruning lemma bounds
+the number of deletions by $\abs H$ plus the number of conflict points that
+end up uncovered. The proof has two parts.
+(1)~A purely combinatorial reduction: it suffices to show that a certain
+bipartite graph $\Gamma$ has no matching larger than $\abs Z+\abs H$
+(\cref{sec:gamma}).
+(2)~A linear-algebra proof of this matching bound
+(\cref{sec:strategy,sec:matrices,sec:rank,sec:generic,sec:kernel}).
+Nothing in this section uses orientation. The relation $\to$ on $X$ is
+arbitrary.
+\end{idea}
+
+\subsection{Statement and examples}
+
+Recall from \cref{sec:pairs} that a left member $r$ covers $\Ff\{r\}$, a right
+member $c$ covers $\Fs\{c\}$, and $Z$ and $H$ are the conflict points and
+opposite corners of the conflicts between $\Rf$ and $\Cf$
+(\cref{def:ZH}).
+
+\begin{lemma}[Pruning lemma]\label{lem:pruning}
+Let $X$ be a finite set with an arbitrary relation $\to$, and let
+$\Rf,\Cf\subseteq X\times X$. There are $\Rf'\subseteq\Rf$ and $\Cf'\subseteq\Cf$ such that
+\begin{enumerate}[label=\textup{(P\arabic*)}]
+\item\label{P1} $\Rf'$ and $\Cf'$ are compatible;
+\item\label{P2} every member of $\Rf\cup\Cf$ that conflicts with no member of the
+other family is kept;
+\item\label{P3} the number of deleted members satisfies
+\begin{equation}\label{eq:pruning-bound}
+ \abs{\Rf\setminus\Rf'}+\abs{\Cf\setminus\Cf'}\ \le\ \abs H+\bigl\lvert Z\setminus(\Ff\Rf'\cup\Fs\Cf')\bigr\rvert .
+\end{equation}
+\end{enumerate}
+\end{lemma}
+
+The last term counts the conflict points that no kept member covers. The
+two families are always counted separately, even when a pair belongs to both.
+
+\begin{example}[One conflict]\label{ex:one-conflict}
+If $\Rf=\{r\}$ and $\Cf=\{c\}$ conflict, then $Z=\{z\}$ and $H=\{h\}$ as in
+\cref{fig:coord}. Deleting $r$ costs $1\le\abs H$.
+\end{example}
+
+\begin{example}[Deleting more can be cheaper]\label{ex:K22}
+Let $X=\{0,1,2\}$ with the two arrows $0\to1$, $0\to2$, and
+\[
+ \Rf=\{(0,1),(0,2)\},\qquad \Cf=\{(1,0),(2,0)\}
+\]
+(\cref{fig:K22grid}). A left member $(0,j)$ and a right member $(i,0)$
+conflict because $0\to i$ and $0\to j$. So all four pairs conflict, and
+\[
+ Z=\{1,2\}\times\{1,2\},\qquad H=\{(0,0)\}.
+\]
+Compatible subfamilies must have $\Rf'=\varnothing$ or $\Cf'=\varnothing$.
+Deleting one whole family costs $2$, but then every point of $Z$ is still
+covered by the other family: $(i,0)$ covers $(i,1),(i,2)$. So the right side
+of~\eqref{eq:pruning-bound} is only $\abs H=1$. The bound fails for the
+\emph{cheapest} pruning! It holds for deleting three members ($3\le1+2$) or
+all four ($4\le1+4$). The construction in the proof deletes all four.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.0]
+ \begin{scope}
+  \node[vtx] (x0) at (0,0) {$0$};
+  \node[vtx] (x1) at (1.2,0.8) {$1$};
+  \node[vtx] (x2) at (1.2,-0.8) {$2$};
+  \draw[arc] (x0)--(x1); \draw[arc] (x0)--(x2);
+ \end{scope}
+ \begin{scope}[xshift=3.6cm,yshift=1.6cm]
+  \foreach \k in {0,1,2} {\node[font=\small] at (\k,0.55) {$\k$}; \node[font=\small] at (-0.6,-\k) {$\k$};}
+  \foreach \i in {0,1,2} \foreach \j in {0,1,2} \node[gridpt] at (\j,-\i) {};
+  \foreach \i in {1,2} \foreach \j in {1,2} \node[Zpt] at (\j,-\i) {};
+  \node[Hpt] at (0,0) {};
+  \node[Lpt] (r1) at (1,0) {}; \node[Lpt] (r2) at (2,0) {};
+  \node[Rpt] (c1) at (0,-1) {}; \node[Rpt] (c2) at (0,-2) {};
+  \draw[famL,-{Stealth[length=1.8mm]},thick] (r1)--(1,-0.8);
+  \draw[famL,-{Stealth[length=1.8mm]},thick] (r2)--(2,-0.8);
+  \draw[famR,-{Stealth[length=1.8mm]},thick] (c1)--(0.8,-1);
+  \draw[famR,-{Stealth[length=1.8mm]},thick] (c2)--(0.8,-2);
+ \end{scope}
+ \begin{scope}[xshift=7.4cm,yshift=0.9cm,font=\small]
+  \node[Lpt] at (0,0) {}; \node[anchor=west] at (0.3,0) {$\Rf$ (left family)};
+  \node[Rpt] at (0,-0.6) {}; \node[anchor=west] at (0.3,-0.6) {$\Cf$ (right family)};
+  \node[Zpt] at (0,-1.2) {}; \node[anchor=west] at (0.3,-1.2) {$Z$ (conflict points)};
+  \node[Hpt] at (0,-1.8) {}; \node[anchor=west] at (0.3,-1.8) {$H$ (opposite corners)};
+ \end{scope}
+\end{tikzpicture}
+\caption{\Cref{ex:K22}. The left members (blue, row $0$) cover the green
+points below them. The right members (orange, column $0$) cover the green
+points to their right. Each of the four conflicts has the same opposite
+corner $(0,0)$. Removing all conflicts cheaply is impossible relative to
+$\abs H=1$. The lemma pays for the deletions with the green points that are
+left uncovered.}
+\label{fig:K22grid}
+\end{figure}
+
+\Cref{ex:K22} shows that \ref{P3} is \emph{not} an upper bound on the
+minimum number of deletions. It is an exchange rate. Every deletion beyond
+$\abs H$ must be paid for by a conflict point that becomes uncovered. In the
+application (\cref{sec:contradiction}) uncovered points count in the
+objective exactly like members, so such trades are free.
+
+\subsection{Reduction to a matching bound}\label{sec:gamma}
+
+\begin{definition}[The augmented graph]\label{def:gamma}
+Let $Z_L$ and $Z_R$ be two disjoint copies of $Z$; write $z_L,z_R$ for the
+copies of $z\in Z$. The bipartite graph $\Gamma$ has sides
+\[
+ \Lp=\Rf\sqcup Z_L,\qquad \Rp=\Cf\sqcup Z_R,
+\]
+and three kinds of edges:
+\begin{itemize}
+\item[(E1)] $r\,c$ for every conflicting $r\in\Rf$, $c\in\Cf$ (\emph{conflict edges});
+\item[(E2)] $r\,z_R$ whenever $z\in Z$ and $r\in\Rf$ covers $z$;
+\item[(E3)] $z_L\,c$ whenever $z\in Z$ and $c\in\Cf$ covers $z$.
+\end{itemize}
+\end{definition}
+
+Every conflict $(r,c)$ with conflict point $z$ produces the path
+$z_L - c - r - z_R$ in $\Gamma$, since both $r$ and $c$ cover $z$
+(\cref{fig:gamma}). Different conflicts may share vertices and edges. We
+write $\nu(\Gamma)$ for the maximum size of a matching.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[
+  ov/.style={circle,draw,inner sep=1pt,minimum size=7mm,font=\footnotesize},
+  cv/.style={rectangle,draw,inner sep=1pt,minimum size=6mm,font=\footnotesize}]
+ \begin{scope}
+  \node[cv,fill=zcol!25] (zl) at (0,0) {$z_L$};
+  \node[ov,fill=famR!30] (c) at (2,0) {$c$};
+  \node[ov,fill=famL!30] (r) at (4,0) {$r$};
+  \node[cv,fill=zcol!25] (zr) at (6,0) {$z_R$};
+  \draw[thick,famR] (zl) -- node[above,font=\footnotesize,black] {E3} (c);
+  \draw[thick] (c) -- node[above,font=\footnotesize] {E1} (r);
+  \draw[thick,famL] (r) -- node[above,font=\footnotesize,black] {E2} (zr);
+  \node[font=\footnotesize,text=black!60] at (0,-0.65) {$\Lp$};
+  \node[font=\footnotesize,text=black!60] at (2,-0.65) {$\Rp$};
+  \node[font=\footnotesize,text=black!60] at (4,-0.65) {$\Lp$};
+  \node[font=\footnotesize,text=black!60] at (6,-0.65) {$\Rp$};
+  \node[font=\small] at (3,-1.4) {(a) one conflict};
+ \end{scope}
+ \begin{scope}[xshift=8.6cm,yshift=1.9cm]
+  \node[font=\footnotesize] at (0,0.75) {$\Lp$}; \node[font=\footnotesize] at (4,0.75) {$\Rp$};
+  \node[ov,fill=famL!30,ultra thick,draw=red!70!black] (r1) at (0,0) {$01$};
+  \node[ov,fill=famL!30,ultra thick,draw=red!70!black] (r2) at (0,-0.9) {$02$};
+  \node[ov,fill=famR!30,ultra thick,draw=red!70!black] (c1) at (4,0) {$10$};
+  \node[ov,fill=famR!30,ultra thick,draw=red!70!black] (c2) at (4,-0.9) {$20$};
+  \foreach \z/\y in {11/-2.0,12/-2.75,21/-3.5,22/-4.25} {
+   \node[cv,fill=zcol!25] (L\z) at (0,\y) {$\z$};
+   \node[cv,fill=zcol!25] (R\z) at (4,\y) {$\z$};
+  }
+  \foreach \a in {r1,r2} \foreach \b in {c1,c2} \draw (\a)--(\b);
+  \draw[famL] (r1)--(R11); \draw[famL] (r1)--(R21);
+  \draw[famL] (r2)--(R12); \draw[famL] (r2)--(R22);
+  \draw[famR] (L11)--(c1); \draw[famR] (L12)--(c1);
+  \draw[famR] (L21)--(c2); \draw[famR] (L22)--(c2);
+  \node[font=\footnotesize,text=black!60] at (-0.85,-3.1) {$Z_L$};
+  \node[font=\footnotesize,text=black!60] at (4.85,-3.1) {$Z_R$};
+  \node[font=\small,align=center] at (2,-5.15) {(b) \cref{ex:K22}; red: a minimum\\ vertex cover ($4$ vertices)};
+ \end{scope}
+\end{tikzpicture}
+\caption{The augmented graph $\Gamma$. (a) A single conflict $(r,c)$ with
+conflict point $z$ forces a path of three edges. (b) The graph for
+\cref{ex:K22} (pairs written $ij$). Here $\nu(\Gamma)=4\le\abs Z+\abs H=5$. The
+minimum vertex cover consists of the four original members, so the proof
+deletes all of them.}
+\label{fig:gamma}
+\end{figure}
+
+\begin{claim}\label{cl:isolated}
+A member of $\Rf\cup\Cf$ that is in no conflict is an isolated vertex of $\Gamma$.
+\end{claim}
+
+\begin{proof}
+Let $r=(p,j)\in\Rf$ be in no conflict. It has no E1 edges. Suppose it had an E2
+edge to $z_R$, with $z=(i,j)\in Z$ and $p\to i$. Since $z\in Z$, some conflict has
+conflict point $z$, so there is $(i,s)\in\Cf$ with $s\to j$. But then $r$ and
+$(i,s)$ conflict, a contradiction. The argument for $\Cf$ is symmetric.
+\end{proof}
+
+\begin{claim}[Covers give prunings]\label{cl:cover-to-pruning}
+Let $K$ be a vertex cover of $\Gamma$ (every edge has an endpoint in $K$) that
+contains no isolated vertex and has $\abs K\le\abs Z+\abs H$. Then
+$\Rf'=\Rf\setminus K$ and $\Cf'=\Cf\setminus K$ satisfy \ref{P1}--\ref{P3}.
+\end{claim}
+
+\begin{proof}
+\ref{P1}: every conflict edge has an endpoint in $K$, which is deleted.
+\ref{P2}: by \cref{cl:isolated} such members are isolated, hence not in $K$.
+\ref{P3}: let $Z_{\mathrm{cov}}=Z\cap(\Ff\Rf'\cup\Fs\Cf')$. If $z\in Z_{\mathrm{cov}}$ is
+covered by a kept $r\in\Rf'$, then the edge $r\,z_R$ forces $z_R\in K$. If it
+is covered by a kept $c\in\Cf'$, then $z_L\in K$. Either way, $K$ contains at
+least one copy of each $z\in Z_{\mathrm{cov}}$. So
+\[
+ \abs{\Rf\setminus\Rf'}+\abs{\Cf\setminus\Cf'}=\abs{K\cap(\Rf\sqcup\Cf)}
+ \le\abs K-\abs{Z_{\mathrm{cov}}}\le\abs H+\abs Z-\abs{Z_{\mathrm{cov}}},
+\]
+and $\abs Z-\abs{Z_{\mathrm{cov}}}$ is the last term of~\eqref{eq:pruning-bound}.
+\end{proof}
+
+\begin{claim}[K\H{o}nig]\label{cl:konig}
+Every bipartite graph has a vertex cover $K$ with $\abs K=\nu$ that contains
+no vertex left unmatched by some fixed maximum matching. In particular $K$
+contains no isolated vertex.
+\end{claim}
+
+\begin{proof}
+This is K\H{o}nig's theorem~\cite{konig1931}. We recall the construction to
+check the extra property. Fix a maximum matching $\Mm$. Starting from all
+unmatched left vertices, explore \emph{alternating paths}: go from left to
+right along non-matching edges and from right to left along matching
+edges. Let $W_L,W_R$ be the reached vertices, and put
+$K=(\Lp\setminus W_L)\cup W_R$.
+No unmatched right vertex is reached, since otherwise we would have an
+augmenting path. A matched right vertex that is reached leads to its mate.
+A matched left vertex can only be reached through its mate. So the two
+ends of a matching edge are both reached or both unreached, and $K$ contains
+exactly one end of each matching edge. Hence $\abs K=\abs\Mm$. Unmatched left
+vertices are reached and so are not in $K$, and unmatched right vertices are
+not reached. Finally, $K$ is a cover. An edge from a reached left vertex to
+an unreached right vertex cannot be a non-matching edge (it would have been
+followed) or a matching edge (whose ends have the same status).
+\end{proof}
+
+By \cref{cl:cover-to-pruning,cl:konig}, the pruning lemma follows from:
+
+\begin{proposition}[Matching bound]\label{prop:matching-bound}
+$\nu(\Gamma)\le\abs Z+\abs H$.
+\end{proposition}
+
+The rest of this section proves \cref{prop:matching-bound}. If there are no
+conflicts, $\Gamma$ has no edges and there is nothing to prove, so we
+assume there is at least one conflict.
+
+\subsection{Strategy: three kinds of matching edges}\label{sec:strategy}
+
+Let $\Gamma_L$ be the subgraph of E2 edges (between $\Rf$ and $Z_R$) and
+$\Gamma_N$ the subgraph of E3 edges (between $Z_L$ and $\Cf$). Fix a maximum
+matching $\Mm$ of $\Gamma$ that has, among all maximum matchings, the fewest
+conflict edges. Split it as
+\[
+ \Mm=\underbrace{\Mm_1}_{k\text{ conflict edges}}\ \sqcup\ \underbrace{\alpha}_{\ell\text{ edges of }\Gamma_L}\ \sqcup\ \underbrace{\beta}_{t\text{ edges of }\Gamma_N},
+ \qquad \nu(\Gamma)=k+\ell+t,
+\]
+and let $R_\alpha\subseteq\Rf$, $C_\beta\subseteq\Cf$ be the original members matched
+by $\alpha$, respectively $\beta$ (\cref{fig:decomposition}). Let $R_1\subseteq\Rf$ and $C_1\subseteq\Cf$ be
+the left and right ends of the conflict edges in $\Mm_1$. Then
+$\abs{R_1}=\abs{C_1}=k$, and $R_1\cap R_\alpha=\varnothing$, $C_1\cap C_\beta=\varnothing$,
+since a vertex is matched only once.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[font=\small]
+ \draw[rounded corners,fill=famL!12] (0,0) rectangle (2.2,3.2); \node at (1.1,3.5) {$\Rf$};
+ \draw[rounded corners,fill=zcol!12] (0,-3.2) rectangle (2.2,-0.4); \node at (1.1,-3.55) {$Z_L$};
+ \draw[rounded corners,fill=famR!12] (6,0) rectangle (8.2,3.2); \node at (7.1,3.5) {$\Cf$};
+ \draw[rounded corners,fill=zcol!12] (6,-3.2) rectangle (8.2,-0.4); \node at (7.1,-3.55) {$Z_R$};
+ \node at (-1.0,1.6) {$\Lp$}; \node at (9.2,1.6) {$\Rp$};
+ % R1 and R_alpha
+ \draw[fill=white] (0.3,2.0) rectangle (1.9,2.9); \node at (1.1,2.45) {$R_1$};
+ \draw[fill=white] (0.3,0.3) rectangle (1.9,1.5); \node at (1.1,0.9) {$R_\alpha$};
+ \draw[fill=white] (6.3,2.0) rectangle (7.9,2.9); \node at (7.1,2.45) {$C_1$};
+ \draw[fill=white] (6.3,0.3) rectangle (7.9,1.5); \node at (7.1,0.9) {$C_\beta$};
+ \draw[line width=2.4pt] (1.9,2.45) -- node[above] {$\Mm_1$: $k$ conflict edges} (6.3,2.45);
+ \draw[line width=2.4pt,famL] (1.9,0.9) -- node[pos=0.28,below left=-1pt,black] {$\alpha$: $\ell$} (6.0,-1.8);
+ \draw[line width=2.4pt,famR] (2.2,-1.8) -- node[pos=0.72,below right=-1pt,black] {$\beta$: $t$} (6.3,0.9);
+\end{tikzpicture}
+\caption{The three kinds of edges in the maximum matching $\Mm$: conflict
+edges (black), edges of $\Gamma_L$ from $\Rf$ to $Z_R$ (blue) and edges of
+$\Gamma_N$ from $Z_L$ to $\Cf$ (orange). The linear algebra handles $\ell$ and $t$
+by the ranks of two matrices $L,N$, and $k$ by a kernel.}
+\label{fig:decomposition}
+\end{figure}
+
+\begin{claim}\label{cl:alpha-max}
+$\alpha$ is a maximum matching of $\Gamma_L$, and $\beta$ is a maximum matching of $\Gamma_N$.
+\end{claim}
+
+\begin{proof}
+If $\alpha$ were not maximum in $\Gamma_L$, there would be an $\alpha$-augmenting
+path $\pi$ in $\Gamma_L$, from an $\alpha$-unmatched $r\in\Rf$ to an $\alpha$-unmatched
+$z_R\in Z_R$. The vertex $z_R$ is unmatched in $\Mm$ too, because all its
+neighbors are in $\Rf$, so any $\Mm$-edge at $z_R$ would belong to $\alpha$.
+The interior vertices of $\pi$ are matched by $\alpha\subseteq\Mm$. If $r$ is
+unmatched in $\Mm$, then $\pi$ is $\Mm$-augmenting, contradicting maximality.
+Otherwise $r$ is matched in $\Mm$ by a conflict edge. Removing that edge and
+augmenting along $\pi$ gives a maximum matching with fewer conflict edges,
+contradicting the choice of $\Mm$. The argument for $\beta$ is symmetric.
+\end{proof}
+
+\paragraph{The plan.}
+We will put real numbers on the arrows of the relation and build four
+matrices $L,N,A,B$ (\cref{sec:matrices}). We will show:
+\begin{itemize}
+\item $\rank L=\ell$ and $\rank N=t$, using Edmonds' principle that a generic
+matrix with prescribed zero pattern has rank equal to the maximum matching
+size (\cref{sec:generic});
+\item $\dim\ker A\ge k$, using the conflict edges of $\Mm_1$ and a kernel
+lemma (\cref{sec:kernel});
+\item these three facts imply $k+\ell+t\le\abs Z+\abs H$ (\cref{sec:rank}).
+\end{itemize}
+
+\subsection{Four matrices and two factorizations}\label{sec:matrices}
+
+For every arrow $x\to y$ of the relation, introduce two variables $a_{xy}$ and
+$b_{xy}$, all distinct. When $x\not\to y$ we set $a_{xy}=b_{xy}=0$. For an
+assignment of real values we define four matrices, with rows and columns
+indexed by the sets shown:
+\[
+\begin{array}{ll}
+ L\in\RR^{Z\times\Rf}, & L_{(i,j),(p,j)}=a_{pi},\\[2pt]
+ N\in\RR^{\Cf\times Z}, & N_{(i,s),(i,j)}=b_{sj},
+\end{array}\qquad
+\begin{array}{ll}
+ B\in\RR^{H\times\Rf}, & B_{(p,s),(p,j)}=b_{sj},\\[2pt]
+ A\in\RR^{\Cf\times H}, & A_{(i,s),(p,s)}=a_{pi},
+\end{array}
+\]
+and all entries not of the indicated form (for example
+$L_{(i,j),(p,j')}$ with $j\ne j'$) are $0$. In words, the $a$-matrices $L$ and
+$A$ move the first coordinate forward along $p\to i$, and the $b$-matrices
+$N$ and $B$ move the second coordinate backward along $s\to j$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+ \begin{scope}
+  \node[Lpt,label={[famL!80!black]above right:$r=(p,j)$}] (r) at (3,0) {};
+  \node[Hpt,label={[hcol!80!black]above left:$h=(p,s)$}] (h) at (0,0) {};
+  \node[Zpt,label={[zcol!70!black]below right:$z=(i,j)$}] (z) at (3,-2.4) {};
+  \node[Rpt,label={[famR!80!black]below left:$c=(i,s)$}] (c) at (0,-2.4) {};
+  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[right] {$L:\ a_{pi}$} (z);
+  \draw[-{Stealth[length=2.4mm]},thick] (z) -- node[below] {$N:\ b_{sj}$} (c);
+  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[above] {$B:\ b_{sj}$} (h);
+  \draw[-{Stealth[length=2.4mm]},thick] (h) -- node[left] {$A:\ a_{pi}$} (c);
+ \end{scope}
+ \begin{scope}[xshift=8.3cm,yshift=-1.2cm]
+  \node (RR) at (0,1.2) {$\RR^{\Rf}$};
+  \node (RZ) at (2.6,1.2) {$\RR^{Z}$};
+  \node (RH) at (0,-1.2) {$\RR^{H}$};
+  \node (RC) at (2.6,-1.2) {$\RR^{\Cf}$};
+  \draw[-{Stealth},thick] (RR) -- node[above] {$L$} (RZ);
+  \draw[-{Stealth},thick] (RZ) -- node[right] {$N$} (RC);
+  \draw[-{Stealth},thick] (RR) -- node[left] {$B$} (RH);
+  \draw[-{Stealth},thick] (RH) -- node[below] {$A$} (RC);
+  \node at (1.3,0) {$NL=AB$};
+ \end{scope}
+\end{tikzpicture}
+\caption{The two routes from a left member $r$ to a right member $c$. Via the
+conflict point $z$ (first change the first coordinate, then the second), or
+via the opposite corner $h$ (the other order). For a conflicting pair both
+routes give the entry $a_{pi}b_{sj}$, and for a non-conflicting pair both
+give $0$. This is the identity $NL=AB$. The corners sit at their true
+grid positions (rows $p,i$; columns $s,j$). Arrows show the direction of the
+linear maps. $L$ and $A$ follow the arc $p\to i$, while $N$ and $B$ run
+\emph{against} the arc $s\to j$, unlike the set operator $\Fs$ in
+\cref{fig:coord}.}
+\label{fig:square}
+\end{figure}
+
+\begin{claim}\label{cl:supports}
+The variable entries of $L$ (those not identically zero) sit exactly on the
+edges of $\Gamma_L$, and those of $N$ exactly on the edges of $\Gamma_N$.
+\end{claim}
+
+\begin{proof}
+$L_{z,r}$ with $z=(i,j)$, $r=(p,j)$ is the variable $a_{pi}$ if $p\to i$, i.e.\
+if $r$ covers $z$, and is $0$ otherwise. Similarly $N_{c,z}$ with $c=(i,s)$,
+$z=(i,j)$ is $b_{sj}$ exactly when $s\to j$, i.e.\ when $c$ covers $z$.
+\end{proof}
+
+\begin{claim}[Two factorizations]\label{cl:commute}
+For every assignment, $NL=AB$. Both products have entry $a_{pi}b_{sj}$ at
+position $(c,r)$ if $r=(p,j)$ and $c=(i,s)$ conflict, and $0$ otherwise.
+\end{claim}
+
+\begin{proof}
+$(NL)_{c,r}=\sum_{z\in Z}N_{c,z}L_{z,r}$. A nonzero term needs $z$ in row $i$
+(for $N$) and in column $j$ (for $L$), so $z=(i,j)$, and then the term is
+$b_{sj}a_{pi}$. If $r,c$ conflict, then $(i,j)\in Z$ and the entry is
+$a_{pi}b_{sj}$. If not, then $p\not\to i$ or $s\not\to j$, and the product is $0$.
+Likewise $(AB)_{c,r}=\sum_{h\in H}A_{c,h}B_{h,r}$ has at most one term,
+$h=(p,s)$, with value $a_{pi}b_{sj}$. If $r,c$ conflict, then $(p,s)\in H$. If
+not, the value is $0$.
+\end{proof}
+
+The matrix $NL=AB$ might be called the \emph{conflict matrix}: it is
+supported on the conflict edges. The first factorization passes through
+$\RR^Z$ and the second through $\RR^H$. The whole proof plays these two
+against each other.
+
+\subsection{The rank inequality}\label{sec:rank}
+
+\begin{claim}\label{cl:rank-inequality}
+Suppose that for some real assignment
+\[
+ \rank L=\ell,\qquad\rank N=t,\qquad\dim\ker A\ge k .
+\]
+Then $k+\ell+t\le\abs Z+\abs H$.
+\end{claim}
+
+\begin{proof}
+By rank--nullity for $A$ (which has $\abs H$ columns), and since a product has
+rank at most that of each factor,
+\[
+ \abs H=\dim\ker A+\rank A\ \ge\ k+\rank(AB)=k+\rank(NL).
+\]
+By Sylvester's rank inequality,
+\[
+ \rank(NL)=\rank L-\dim(\im L\cap\ker N)\ \ge\ \rank L-\dim\ker N=\ell-(\abs Z-t).
+\]
+Combining gives $\abs H\ge k+\ell+t-\abs Z$.
+\end{proof}
+
+\subsection{Choosing the coefficients}\label{sec:generic}
+
+We use three elementary facts about real polynomials in finitely many
+variables. (i)~A product of nonzero polynomials is nonzero. (ii)~A nonzero
+polynomial is nonzero at some real point (induction on the number of
+variables: a nonzero univariate polynomial has finitely many roots).
+(iii)~Let $\Phi$ be a square matrix whose entries are $0$ or variables, with
+\emph{distinct} variables in distinct positions. If the positions of the
+variables contain a perfect matching (a permutation $\sigma$ with all
+$\Phi_{x,\sigma(x)}$ variables), then $\det\Phi\ne0$. Indeed, distinct
+permutations give products of distinct sets of variables, so the monomial of
+$\sigma$ cannot cancel.
+
+\begin{claim}[Generic rank of $L$ and $N$]\label{cl:edmonds}
+\begin{enumerate}[label=(\alph*)]
+\item For every assignment, $\rank L\le\ell$ and $\rank N\le t$.
+\item The square submatrix of $L$ with columns $R_\alpha$ and rows
+$\{z:z_R\text{ is matched by }\alpha\}$ has a determinant that is a nonzero
+polynomial. The same holds for the submatrix of $N$ with rows $C_\beta$ and
+columns $\{z: z_L\text{ is matched by }\beta\}$.
+\end{enumerate}
+\end{claim}
+
+\begin{proof}
+(a) If a square submatrix of $L$ has nonzero determinant, some term of its
+Leibniz expansion is nonzero. That term is a bijection between its rows and
+columns using only nonzero entries, that is, by \cref{cl:supports}, a
+matching in $\Gamma_L$. So $\rank L\le\nu(\Gamma_L)=\ell$ by \cref{cl:alpha-max}.
+Likewise for $N$.
+
+(b) Entries of $L$ vanish unless row and column have the same second
+coordinate $j$. So after grouping rows and columns by $j$, the submatrix is
+block diagonal, and each block is square because $\alpha$ matches $(p,j)$ with
+some $(i,j)$. Within the block of a fixed $j$, the entry in row $(i,j)$ and
+column $(p,j)$ is $a_{pi}$, so distinct positions carry distinct variables
+(the same variable may reappear in \emph{other} blocks, but this is
+harmless). The edges of $\alpha$ give a perfect matching of every block. By
+(iii) every block determinant is a nonzero polynomial, and by (i) so is
+their product. For $N$ group by the first coordinate $i$ instead, where the
+entries $b_{sj}$ in a block are again distinct.
+\end{proof}
+
+We need one more family of rank conditions, which are used in
+\cref{sec:kernel}. For every arrow $p\to i$ let
+\[
+ J_p=\{j:(p,j)\in\Rf\},\qquad S_i=\{s:(i,s)\in\Cf\},\qquad
+ \Phi^{p,i}=\bigl(b_{sj}\bigr)_{s\in S_i,\ j\in J_p},
+\]
+a matrix whose entry is the variable $b_{sj}$ when $s\to j$ and $0$
+otherwise. (In the original preprint this matrix is called $D^{p,i}$.) Its
+variables are distinct. Let $\rho^{p,i}$ be the largest rank it attains over
+all real assignments. At an assignment attaining it, some
+$\rho^{p,i}\times\rho^{p,i}$ minor is nonzero, so that minor is a nonzero
+polynomial (the empty minor, equal to $1$, if $\rho^{p,i}=0$).
+
+\begin{claim}[A simultaneous choice]\label{cl:simultaneous}
+There is a real assignment of all variables at which
+\begin{enumerate}[label=(\alph*)]
+\item the columns of $L$ indexed by $R_\alpha$ form a basis of $\im L$, and $\rank L=\ell$;
+\item the rows of $N$ indexed by $C_\beta$ form a basis of the row space of $N$, and $\rank N=t$;
+\item every $\Phi^{p,i}$ has its maximum possible rank $\rho^{p,i}$.
+\end{enumerate}
+\end{claim}
+
+\begin{proof}
+Multiply the two polynomials of \cref{cl:edmonds}(b) and one maximal nonzero
+minor of each $\Phi^{p,i}$. This is a finite product of nonzero polynomials,
+hence nonzero by (i), and by (ii) it is nonzero at some real point. There, the
+$\ell$ columns $R_\alpha$ of $L$ are linearly independent, and since
+$\rank L\le\ell$ they span $\im L$. Similarly for $N$. Each $\Phi^{p,i}$ has a
+nonzero minor of size $\rho^{p,i}$, so its rank is (at least, hence exactly)
+$\rho^{p,i}$.
+\end{proof}
+
+\emph{From now on we fix such an assignment.} Different conditions share
+variables (for example, $b_{sj}$ appears in $N$, in $B$ and in several
+$\Phi^{p,i}$). The point of multiplying the polynomials is that all
+conditions hold \emph{at the same time}.
+
+\subsection{The kernel lemma and the bound on \texorpdfstring{$\ker A$}{ker A}}\label{sec:kernel}
+
+\begin{lemma}[Kernel lemma]\label{lem:kernel}
+Let $\Phi\in\RR^{S\times J}$ have the maximum rank among all real matrices
+whose nonzero entries lie in a given set $T\subseteq S\times J$, and suppose
+$\Phi$ itself is supported in $T$. If $x\in\ker\Phi$ and $y\in\ker\Phi^\T$, then
+$x_jy_s=0$ for every $(s,j)\in T$.
+\end{lemma}
+
+\begin{proof}
+Suppose $x_jy_s\ne0$ for some $(s,j)\in T$, and let $\Phi'=\Phi+\tau e_se_j^\T$ with
+$\tau\ne0$. It is still supported in $T$. Now $\Phi'x=\tau x_je_s$, so
+$e_s\in\im\Phi'$. Also, for every $w$, $\Phi w=\Phi'w-\tau w_je_s\in\im\Phi'$, so
+$\im\Phi\subseteq\im\Phi'$. But $e_s\notin\im\Phi$, because $y$ is orthogonal to
+$\im\Phi$ and $y_s\ne0$. Hence $\rank\Phi'>\rank\Phi$, a contradiction.
+\end{proof}
+
+\begin{example}
+Let $T=\{(1,1),(2,1)\}$ in a $2\times2$ matrix (column $2$ is forced to be
+zero) and $\Phi=\begin{psmallmatrix}1&0\\1&0\end{psmallmatrix}$, of the maximum rank $1$. Then
+$\ker\Phi=\langle e_2\rangle$ and $\ker\Phi^\T=\langle(1,-1)\rangle$. The pairs
+$(s,j)\in T$ have $j=1$, and $x_1=0$ for all $x\in\ker\Phi$, as the lemma predicts.
+For the non-generic $\Phi=\begin{psmallmatrix}1&1\\1&1\end{psmallmatrix}$ on the full support (maximum
+rank $2$) the conclusion fails: $x=y=(1,-1)$.
+\end{example}
+
+So at a generic point the left and right kernels ``avoid each other'' on
+the support. We apply this to the matrices $\Phi^{p,i}$.
+
+\begin{claim}[Kernels separate conflicts]\label{cl:conflict-kernel}
+For every $u\in\ker B$, every $v\in\ker N^\T$, and every conflicting pair
+$r\in\Rf$, $c\in\Cf$,
+\[
+ u_r\,v_c=0 .
+\]
+\end{claim}
+
+\begin{proof}
+Let $r=(p,j)$ and $c=(i,s)$, so $p\to i$ and $s\to j$. Consider
+$\Phi=\Phi^{p,i}$ and the restrictions
+\[
+ x=(u_{(p,j')})_{j'\in J_p}\in\RR^{J_p},\qquad y=(v_{(i,s')})_{s'\in S_i}\in\RR^{S_i}.
+\]
+\emph{$x\in\ker\Phi$.} Take a row $s'\in S_i$. If no $j'\in J_p$ has $s'\to j'$, the
+row of $\Phi$ is zero. Otherwise, pick such $j'$. Then $(p,j')\in\Rf$ and
+$(i,s')\in\Cf$ conflict, so $(p,s')\in H$, and the $(p,s')$ coordinate of
+$Bu=0$ reads
+\[
+ 0=(Bu)_{(p,s')}=\sum_{j'\in J_p}b_{s'j'}\,u_{(p,j')}=(\Phi x)_{s'}.
+\]
+\emph{$y\in\ker\Phi^\T$.} Take a column $j'\in J_p$. If no $s'\in S_i$ has $s'\to j'$,
+the column is zero. Otherwise such a conflict gives $(i,j')\in Z$, and the
+$(i,j')$ coordinate of $N^\T v=0$ reads
+\[
+ 0=(N^\T v)_{(i,j')}=\sum_{s'\in S_i}b_{s'j'}\,v_{(i,s')}=(\Phi^\T y)_{j'}.
+\]
+By \cref{cl:simultaneous}(c), $\Phi$ has maximum rank on its support, and
+$(s,j)$ is in the support since $s\to j$. By \cref{lem:kernel},
+$x_jy_s=u_rv_c=0$.
+\end{proof}
+
+Note that \cref{lem:kernel} is applied at the fixed assignment. The
+perturbation in its proof is only a thought experiment about $\Phi^{p,i}$
+and does not change any of the other matrices.
+
+\begin{claim}\label{cl:kerA}
+$\dim\ker A\ge k$.
+\end{claim}
+
+\begin{proof}
+Let $(r,c)\in\Mm_1$ be a conflict edge of the matching. Since $r\notin R_\alpha$,
+\cref{cl:simultaneous}(a) lets us write $Le_r$ as a combination of the
+columns $Le_a$, $a\in R_\alpha$. That is, there is a vector
+\[
+ u^r=e_r+\sum_{a\in R_\alpha}\lambda^r_ae_a\in\ker L .
+\]
+Similarly, since $c\notin C_\beta$, \cref{cl:simultaneous}(b) gives
+$v^c=e_c+\sum_{b\in C_\beta}\mu^c_be_b\in\ker N^\T$, with $v^c_c=1$.
+
+\emph{The vectors $Bu^r$ lie in $\ker A$:} $A(Bu^r)=N(Lu^r)=0$ by \cref{cl:commute}.
+
+\emph{They are linearly independent ($r\in R_1$):} suppose
+$\sum_{r\in R_1}\theta_rBu^r=0$. Then $u=\sum_r\theta_ru^r\in\ker B$. For each
+$r\in R_1$, with partner $c$ in $\Mm_1$, \cref{cl:conflict-kernel} applied to $u$
+and $v^c$ gives $u_r=u_rv^c_c=0$. But $u_r=\theta_r$, because $u^{r'}$ is supported
+on $\{r'\}\cup R_\alpha$ and $R_1\cap R_\alpha=\varnothing$. So all $\theta_r=0$.
+\end{proof}
+
+\begin{proof}[Proof of \cref{prop:matching-bound} and of \cref{lem:pruning}]
+At the assignment fixed after \cref{cl:simultaneous} we have
+$\rank L=\ell$, $\rank N=t$, and $\dim\ker A\ge k$ by \cref{cl:kerA}. By \cref{cl:rank-inequality},
+$\nu(\Gamma)=k+\ell+t\le\abs Z+\abs H$. \Cref{cl:konig} gives a vertex cover of
+this size with no isolated vertex, and \cref{cl:cover-to-pruning} turns it into
+the required pruning.
+\end{proof}
+
+\begin{idea}[Summary of the pruning lemma]
+The matching bound is the heart of the matter. A maximum matching of $\Gamma$
+consists of $\ell$ edges counted by $\rank L$, $t$ edges counted by $\rank N$,
+and $k$ conflict edges. Each conflict edge contributes a kernel vector of $L$
+that $B$ maps into $\ker A$. The two factorizations of the conflict matrix,
+$NL=AB$, make this possible, and the kernel lemma keeps these vectors
+independent. Counting dimensions in $\RR^H$ then gives
+$k+\ell+t\le\abs Z+\abs H$.
+\end{idea}

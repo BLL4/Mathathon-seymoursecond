@@ -1,0 +1,82 @@
+\section{Dictionary and remarks on the original preprint}\label{app:dictionary}
+
+\paragraph{Correspondence of results.}
+\begin{center}\small
+\begin{tabular}{@{}ll@{}}
+\toprule
+This document & Original preprint\\
+\midrule
+\cref{thm:main} & Theorem 1.1\\
+\cref{lem:strong,lem:subset-deficit} & Lemma 2.2\\
+\cref{lem:internal,lem:blowup} & Lemma 2.3\\
+\cref{prop:reduction} & Proposition 2.1\\
+\cref{lem:pruning} & Lemma 3.1\\
+\cref{lem:kernel} & Lemma 3.2\\
+\cref{prop:matching-bound} & the matching bound inside the proof of Lemma 3.1\\
+\cref{prop:no-concave} & Proposition 4.1\\
+\cref{cor:weighted,cor:triangles} & Corollaries 5.1 and 6.1\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Changes of notation.}
+To avoid clashes we write $\mu=\abs P+\abs Q$ (the original uses $M$, which
+we reserve for matchings $\Mm$ and the matrix of \cref{cor:weighted});
+$\unc(P,Q)$ for the number $d$ of uncovered points; $\Phi^{p,i}$ for the
+matrix $D^{p,i}$ (since $D$ denotes a graph); $\overline N(v)$ for the
+non-neighbors $Z(v)$ (since $Z$ denotes conflict points); and
+$\mathrm{Arc}(D)$ for the arc set $A(D)$ (since $A$ is a matrix). We added the
+names $\val$, ``admissible'', $\Gamma_L$, $\Gamma_N$, $R_1$, $\kappa$.
+Otherwise the notation is that of the original.
+
+\paragraph{Remarks.}
+We checked every step of the original and found \textbf{no mathematical
+error}. The following points are only implicit there, and we have made them
+explicit.
+\begin{enumerate}[leftmargin=*]
+\item Lemma~2.2 in the original states strong connectivity together with
+the subset deficit. Strong connectivity is exactly what is needed for
+$E=F(S)\setminus S\ne\varnothing$, and it is the reason why the number of
+vertices is minimized before the number of arcs (\cref{lem:strong}).
+\item The proof of the blow-up lemma uses only the integrality of the
+subset deficit and the inequality~\eqref{eq:blowup-master}. The latter holds
+in \emph{every} blow-up of every oriented graph. We isolated it, together
+with its unblown-up version~\eqref{eq:error-term}, to explain why the
+blow-up is used (\cref{rem:error-term}).
+\item In the pruning lemma, the bound~\eqref{eq:pruning-bound} is not a
+bound on the minimum number of deletions (\cref{ex:K22}). This is easy to
+misread, so we added an explicit example.
+\item In the matching bound, the step $\rank(NL)\ge\ell+t-\abs Z$ is Sylvester's
+rank inequality, and the choice of a maximum matching with the fewest
+conflict edges is used only to make $\alpha,\beta$ maximum in their
+subgraphs (\cref{cl:alpha-max}).
+\item Seacrest's equivalences~\cite{Seacrest2015} are needed only for the
+arc-weighted form. The vertex-weighted forms follow from \cref{thm:main}
+by the short argument in \cref{sec:weighted}.
+\item The bibliographic and historical statements in the introduction are
+taken from the original preprint and were not independently verified.
+\end{enumerate}
+
+\section{Computer checks and formalization}\label{app:checks}
+
+\sloppy
+\paragraph{Randomized tests.}
+The folder \texttt{checks/} contains three dependency-free Python scripts.
+\texttt{check\_pruning.py} builds, for thousands of random relations on
+$2$--$5$ points and random families $\Rf,\Cf$, the graph $\Gamma$. It verifies
+$\nu(\Gamma)\le\abs Z+\abs H$ (\cref{prop:matching-bound}), checks that the
+K\H{o}nig cover produces a pruning with \ref{P1}--\ref{P3}, and confirms by
+exhaustive search that a valid pruning exists. The bound is attained in
+roughly a quarter of the instances with conflicts, so it is sharp.
+\texttt{check\_reduction.py} verifies the unconditional
+inequality~\eqref{eq:blowup-master} for random blow-ups, the increment
+identity~\eqref{eq:g-increment}, and \cref{cl:diag-free,cl:H-uncovered} for
+random admissible pairs (these do not need concavity).
+\texttt{check\_small\_graphs.py} runs through \emph{all} labelled oriented
+graphs on at most $6$ vertices ($14{,}348{,}907$ on six vertices; about two
+minutes). It confirms \cref{thm:main} for each of them and confirms
+\cref{prop:no-concave} directly: none of the $5{,}545{,}708$ graphs on six
+vertices with positive indegrees is strictly concave. All tests pass. They are sanity checks, not proofs.
+
+\paragraph{Lean formalization.}
+\input{lean-status}

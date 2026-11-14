@@ -1,0 +1,170 @@
+\section{Consequences}\label{sec:consequences}
+
+\subsection{Weighted forms}\label{sec:weighted}
+
+For a weighting $\eta:V(D)\to[0,\infty)$ write $\eta(S)=\sum_{x\in S}\eta(x)$.
+
+\begin{corollary}[Weighted second-neighborhood forms]\label{cor:weighted}
+Let $D$ be a nonempty oriented graph.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item For every $\eta:V(D)\to[0,\infty)$ there is a vertex $v$ with
+$\eta(\Nout(v))\le\eta(\Ntwo(v))$.
+\item There is $\eta:V(D)\to[0,\infty)$ with $\sum_x\eta(x)=1$ such that
+$\eta(\Nout(v))\le\eta(\Ntwo(v))$ for \emph{every} vertex $v$.
+\item \textup{(Arc-weighted form~\cite{Seacrest2015}.)} For every
+$w:\mathrm{Arc}(D)\to[0,\infty)$, extended by $w(xy)=0$ for non-arcs, put
+\[
+ \beta^w_v(s)=\max\Bigl(\{0\}\cup\{w(us)-w(vs):\ v\to u\to s\}\Bigr).
+\]
+Then some vertex $v$ satisfies
+$\sum_{s\in V(D)}\beta^w_v(s)\ge\sum_{u\in\Nout(v)}w(vu)$.
+\end{enumerate}
+\end{corollary}
+
+Note the different quantifier orders in (i) and (ii): in (i) the vertex
+depends on the weighting, while in (ii) a single weighting works for all
+vertices simultaneously. Seacrest~\cite{Seacrest2015} showed that all three
+statements are equivalent to \cref{thm:main}. For (i) and (ii) we give
+short self-contained proofs.
+
+\begin{proof}[Proof of \textup{(i)}]
+\emph{Positive rational weights.} Suppose $\eta(x)=k_x/K$ with positive
+integers $k_x$ and $K$. Replace every vertex $x$ by an independent set
+$B_x$ of $k_x$ copies, and join a copy of $x$ to a copy of $y$ exactly when
+$x\to y$ (\cref{fig:weights}). The result $D'$ is an oriented graph. For a
+copy $v'$ of $v$, the vertices reachable in one step form
+$\bigcup_{u\in\Nout(v)}B_u$, and those reachable in two steps form
+$\bigcup_{w\in F^2\{v\}}B_w$. Since $v\notin F^2\{v\}$ (orientation), no copy of
+$v$ is reachable in two steps, and therefore
+\[
+ \Ntwo(v')=\bigcup_{w\in\Ntwo(v)}B_w,\qquad
+ \abs{\Nout(v')}=K\eta(\Nout(v)),\quad \abs{\Ntwo(v')}=K\eta(\Ntwo(v)).
+\]
+\Cref{thm:main} for $D'$ gives a Seymour vertex $v'$, and its original $v$ satisfies (i).
+
+\emph{General weights.} Choose positive rational weightings $\eta_n\to\eta$
+pointwise. For each $n$ pick $v_n$ as above. Some vertex $v$ equals $v_n$ for
+infinitely many $n$. Letting $n\to\infty$ along those $n$ in
+$\eta_n(\Nout(v))\le\eta_n(\Ntwo(v))$ gives (i) for $v$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+ \begin{scope}
+  \node[vtx,label={[font=\footnotesize]above:$\eta=2$}] (x) at (0,0) {$x$};
+  \node[vtx,label={[font=\footnotesize]above:$\eta=1$}] (y) at (2,0) {$y$};
+  \node[vtx,label={[font=\footnotesize]below:$\eta=3$}] (z) at (1,-1.4) {$z$};
+  \draw[arc] (x)--(y); \draw[arc] (y)--(z); \draw[arc] (z)--(x);
+ \end{scope}
+ \node at (3.6,-0.6) {$\Longrightarrow$};
+ \begin{scope}[xshift=6cm]
+  \node[dot] (x1) at (-0.3,0.3) {}; \node[dot] (x2) at (-0.3,-0.3) {};
+  \node[dot] (y1) at (2.4,0) {};
+  \node[dot] (z1) at (0.5,-1.7) {}; \node[dot] (z2) at (1.05,-1.7) {}; \node[dot] (z3) at (1.6,-1.7) {};
+  \node[draw,rounded corners,fit=(x1)(x2),inner sep=4pt,label={[font=\footnotesize]left:$B_x$}] (Bx) {};
+  \node[draw,rounded corners,fit=(y1),inner sep=4pt,label={[font=\footnotesize]right:$B_y$}] (By) {};
+  \node[draw,rounded corners,fit=(z1)(z3),inner sep=4pt,label={[font=\footnotesize]below:$B_z$}] (Bz) {};
+  \draw[-{Stealth[length=3mm]},line width=1.8pt,black!40] (Bx)--(By);
+  \draw[-{Stealth[length=3mm]},line width=1.8pt,black!40] (By)--(Bz);
+  \draw[-{Stealth[length=3mm]},line width=1.8pt,black!40] (Bz)--(Bx);
+ \end{scope}
+\end{tikzpicture}
+\caption{Reducing integer weights to \cref{thm:main}: vertex $x$ of weight
+$k_x$ becomes an independent set $B_x$ of size $k_x$, and each arc becomes
+a complete bipartite set of arcs. Out-neighborhoods at distance one and
+two are blown up by exactly the weights.}
+\label{fig:weights}
+\end{figure}
+
+\begin{proof}[Proof of \textup{(ii)}]
+Let $M$ be the $V\times V$ matrix with $M_{v,s}=1$ if $s\in\Ntwo(v)$, $M_{v,s}=-1$ if
+$s\in\Nout(v)$, and $0$ otherwise. So $(M\eta)_v=\eta(\Ntwo(v))-\eta(\Nout(v))$. We use
+the following form of Farkas' lemma (Ville's theorem): either there is
+$\eta\ge0$, $\eta\ne0$, with $M\eta\ge0$, or there is $\xi\ge0$ with $M^\T\xi<0$ in every
+coordinate.
+
+\emph{Derivation from Farkas' lemma.} The system $\xi\ge0$, $M^\T\xi\le-\mathbf 1$ is
+infeasible exactly when there is $\eta\ge0$ with $M\eta\ge0$ and
+$\eta^\T(-\mathbf 1)<0$, i.e.\ $\eta\ne0$. Rescaling shows that $M^\T\xi<0$ is
+solvable if and only if $M^\T\xi\le-\mathbf1$ is.
+
+Now let $\overleftarrow D$ be $D$ with all arcs reversed. Then
+$s\in N^+_{k,\overleftarrow D}(v)$ if and only if $v\in N^+_{k,D}(s)$ for
+$k=1,2$, so the matrix of $\overleftarrow D$ is $M^\T$. The second alternative
+would say $\xi(\Ntwo(v))<\xi(\Nout(v))$ for every vertex $v$ of $\overleftarrow D$,
+contradicting (i) for $\overleftarrow D$ with weighting $\xi$. So the first
+alternative holds, and normalizing $\eta$ gives (ii).
+\end{proof}
+
+\begin{proof}[Proof of \textup{(iii)}]
+Seacrest~\cite[Proposition~2]{Seacrest2015} proved that the arc-weighted
+statement for all oriented graphs is equivalent to \cref{thm:main}.
+\end{proof}
+
+Setting $w(us)=\eta(s)$ for every arc $us$ turns (iii) into (i): if $s\in\Nout(v)$,
+all differences $w(us)-w(vs)$ vanish, and if $s\in\Ntwo(v)$, then $w(vs)=0$ and
+$\beta^w_v(s)=\eta(s)$. So (iii) is the most general of the three forms.
+
+\subsection{Directed triangles}\label{sec:triangles}
+
+In an oriented graph without directed triangles, the second
+out-neighborhood of $v$ avoids both the in- and out-neighbors of $v$. So
+\cref{thm:main} produces a vertex with many non-neighbors.
+
+\begin{corollary}[Non-neighbors and directed triangles]\label{cor:triangles}
+Let $D$ be a nonempty oriented graph on $n$ vertices. Write
+$N^-_1(v)=\{u:u\to v\}$, $d^\pm(v)=\abs{N^\pm_1(v)}$, $\delta^\pm(D)=\min_xd^\pm(x)$, and let
+\[
+ \overline N(v)=V(D)\setminus\bigl(\{v\}\cup N^+_1(v)\cup N^-_1(v)\bigr)
+\]
+be the set of non-neighbors of $v$.
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item If $D$ has no directed triangle, then some vertex $v$ satisfies
+$d^+(v)\le\abs{\overline N(v)}$, and hence $n-1\ge2d^+(v)+d^-(v)$.
+\item If $\delta^+(D)\ge n/3$ and $\delta^-(D)\ge n/3$, then $D$ contains a directed triangle.
+\item If $D$ is $r$-regular ($d^+=d^-=r\ge1$ everywhere) and its shortest
+directed cycle has length exactly $4$, then $n\ge3r+1$.
+\end{enumerate}
+\end{corollary}
+
+Statement (i) is the oriented case of a non-neighbor conjecture of
+Thomass\'e recorded in~\cite[Conjecture~6.12]{Sullivan2006}. Statement
+(iii) is the girth-four case of the Behzad--Chartrand--Wall
+conjecture~\cite{BehzadChartrandWall1970}, see~\cite[Section~4]{Sullivan2006}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+ \node[vtx,fill=black!10] (v) at (0,0) {$v$};
+ \node[vtx] (o1) at (2,0.7) {}; \node[vtx] (o2) at (2,-0.7) {};
+ \node[vtx] (i1) at (-2,0.7) {}; \node[vtx] (i2) at (-2,-0.7) {};
+ \node[vtx] (w1) at (4.2,0.7) {}; \node[vtx] (w2) at (4.2,-0.7) {};
+ \draw[arc] (v)--(o1); \draw[arc] (v)--(o2);
+ \draw[arc] (i1)--(v); \draw[arc] (i2)--(v);
+ \draw[arc] (o1)--(w1); \draw[arc] (o2)--(w2);
+ \draw[arc,red!70!black,dashed] (w2) to[out=-140,in=-60] node[below,font=\footnotesize] {would close a directed triangle} (v);
+ \begin{scope}[on background layer]
+  \node[draw=famL,fill=famL!10,rounded corners,fit=(o1)(o2),inner sep=4pt,label={[font=\small]above:$N^+_1(v)$}] {};
+  \node[draw=black!40,fill=black!5,rounded corners,fit=(i1)(i2),inner sep=4pt,label={[font=\small]above:$N^-_1(v)$}] {};
+  \node[draw=famR,fill=famR!10,rounded corners,fit=(w1)(w2),inner sep=4pt,label={[font=\small,align=center]above:$\Ntwo(v)\subseteq\overline N(v)$}] {};
+ \end{scope}
+\end{tikzpicture}
+\caption{Without directed triangles, a vertex at distance two from $v$ cannot be
+an in-neighbor of $v$. So $\Ntwo(v)$ consists of non-neighbors.}
+\label{fig:triangles}
+\end{figure}
+
+\begin{proof}
+(i) Let $w\in\Ntwo(v)$ via $v\to u\to w$. By definition $w\ne v$ and $w\notin\Nout(v)$. If
+$w\in N^-_1(v)$, then $v\to u\to w\to v$ would be a directed triangle. So
+$\Ntwo(v)\subseteq\overline N(v)$, and a Seymour vertex $v$ (\cref{thm:main}) has
+$d^+(v)\le\abs{\Ntwo(v)}\le\abs{\overline N(v)}$. As $D$ is oriented, $N^+_1(v)$ and $N^-_1(v)$
+are disjoint, so $n-1=d^+(v)+d^-(v)+\abs{\overline N(v)}\ge2d^+(v)+d^-(v)$.
+
+(ii) Without a directed triangle, (i) gives $n-1\ge2\delta^+(D)+\delta^-(D)\ge n$, which is
+impossible. (Since degrees are integers, the hypothesis means
+$\delta^\pm\ge\lceil n/3\rceil$, which includes the case $3\mid n$.)
+
+(iii) Girth four excludes directed triangles, and (i) gives $n-1\ge3r$.
+\end{proof}

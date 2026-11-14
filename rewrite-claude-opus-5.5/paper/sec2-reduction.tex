@@ -1,0 +1,404 @@
+\section{From a counterexample to strict concavity}\label{sec:reduction}
+
+\begin{idea}[What this section does]
+We assume \cref{thm:main} fails and produce an oriented graph $G$ with
+positive indegrees in which every nonempty proper vertex set $U$ satisfies
+$\abs U+\abs{F^2U}<2\abs{FU}$ (\cref{prop:reduction}). This takes two steps.
+First, a minimal counterexample satisfies a ``subset'' version of the
+conjecture's failure (\cref{lem:subset-deficit}). Second, a blow-up turns
+that subset version into the clean concavity inequality
+(\cref{lem:blowup}). Only elementary counting is used.
+\end{idea}
+
+Throughout this section $F=F_D$ is the forward image in a fixed digraph $D$
+(defined in \cref{sec:glance}); it is \emph{not} required that $F(S)$ be
+disjoint from $S$.
+
+\subsection{Minimal counterexamples}
+
+Call an oriented graph $D$ a \emph{counterexample} if it is nonempty and
+$\abs{\Nout(v)}>\abs{\Ntwo(v)}$ for every vertex $v$. A counterexample is
+\emph{minimal} if it has the minimum number of vertices among all
+counterexamples and, subject to this, the minimum number of arcs.
+
+\begin{lemma}\label{lem:strong}
+A minimal counterexample $D$ is strongly connected, has at least two
+vertices, and every vertex has an in-neighbor.
+\end{lemma}
+
+\begin{proof}
+A sink $v$ would satisfy $\abs{\Nout(v)}=0\le\abs{\Ntwo(v)}$, so $D$ has no
+sink; in particular $D$ has at least two vertices. Suppose $D$ is not
+strongly connected. Then some strongly connected component $K$ has no arc
+leaving it (a ``sink component'' of the condensation), and $K\ne V(D)$.
+For $v\in K$, all vertices reachable from $v$ lie in $K$, so $\Nout(v)$ and
+$\Ntwo(v)$ are the same in $D$ and in the induced subgraph $D[K]$. Hence $D[K]$
+is a counterexample with fewer vertices, which is impossible. So $D$ is
+strongly connected. Since $D$ has at least two vertices, every vertex then
+has an in-neighbor.
+\end{proof}
+
+\subsection{The subset deficit}\label{sec:subset-deficit}
+
+The defining property of a counterexample concerns single vertices. The
+next lemma upgrades it to all nonempty proper sets, at the price of
+replacing $\Nout$ and $\Ntwo$ by the set analogues $F(S)\setminus S$ and
+$F^2(S)\setminus F(S)$. For $S=\{v\}$ these are exactly $\Nout(v)$ and
+$\Ntwo(v)$, so the lemma generalizes the counterexample property.
+
+\begin{lemma}[Subset deficit]\label{lem:subset-deficit}
+Let $D$ be a minimal counterexample. Then
+\begin{equation}\label{eq:subset-deficit}
+ \abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}
+ \qquad\text{for every }\varnothing\ne S\subsetneq V(D).
+\end{equation}
+\end{lemma}
+
+The argument adapts the proof of~\cite[Lemma~4]{Seacrest2019}, where the
+right-hand side is $\abs{F(S)}$. Here we need the stronger right-hand side
+$\abs{F(S)\setminus S}$, and this is why we minimize the number of vertices
+before the number of arcs (to get strong connectivity).
+
+\paragraph{Intuition.}
+Fix $S$. Split $F(S)$ into the part $I=F(S)\cap S$ inside $S$ and the part
+$E=F(S)\setminus S$ outside. Since $F(I)\subseteq F(S)$, everything in
+$F^2(S)\setminus F(S)$ is reached from $E$. We ``switch on'' the vertices
+of $E$ in batches. Each time a batch $Q$ is switched on, the set of vertices
+reached from the switched-on part grows, and we show that it grows by
+fewer than $\abs Q$ vertices. The batch $Q$ comes from a Seymour vertex
+$v\in S$ of a graph with fewer arcs, and the growth is bounded by comparing
+what $v$ has in $D$ with what it has in the smaller graph.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.95]
+ % S
+ \draw[thick,fill=famL!8] (0,0) ellipse (1.6 and 2.3);
+ \node[famL!80!black] at (-1.1,2.25) {$S$};
+ \draw[fill=famL!22,draw=famL] (0,1.05) ellipse (1.05 and 0.75);
+ \node at (0,1.05) {$I$};
+ \node[vtx,fill=black!10] (v) at (0,-1.2) {$v$};
+ % E
+ \draw[thick,rounded corners,fill=zcol!7] (3.3,-2.3) rectangle (5.7,2.3);
+ \node[zcol!70!black] at (4.5,2.65) {$E=F(S)\setminus S$};
+ \draw[rounded corners,fill=zcol!20] (3.5,0.85) rectangle (5.5,2.1);
+ \node at (4.5,1.47) {$T$};
+ \draw[rounded corners,fill=famR!25,draw=famR] (3.5,-0.6) rectangle (5.5,0.6);
+ \node at (4.5,0) {$Q$};
+ \node[font=\small,align=center,text=black!60] at (4.5,-1.45) {rest of\\ $E\setminus T$};
+ % C
+ \draw[rounded corners,fill=hcol!12,draw=hcol] (7.6,-1.2) rectangle (9.4,1.2);
+ \node[align=center] at (8.5,0) {$C$};
+ % arcs
+ \draw[arc,red!70!black,densely dashed] (v) to[out=30,in=200] (3.55,-0.2);
+ \draw[arc,red!70!black,densely dashed] (v) to[out=-5,in=190] (3.55,-1.5);
+ \draw[arc] (v) to[out=60,in=230] (3.55,1.2);
+ \draw[arc] (v) to[out=100,in=-90] (-0.2,0.35);
+ \draw[arc] (5.5,0.1) -- (7.6,0.1);
+ \draw[arc] (5.5,1.6) to[out=0,in=150] (7.0,2.0) node[right,font=\small] {$F(T)$};
+ \node[font=\footnotesize,red!70!black,align=center] at (1.0,-2.95) {deleted in $D_T$: all arcs $S\to E\setminus T$};
+\end{tikzpicture}
+\caption{One step in the proof of \cref{lem:subset-deficit}, with
+$I=F(S)\cap S$. All arcs from
+$S$ to $E\setminus T$ are deleted (dashed). The minimal choice of $D$ gives a
+Seymour vertex $v$ of the smaller graph $D_T$. It must lie in $S$ and lose
+its out-neighbors $Q\subseteq E\setminus T$. The set $C$ consists of vertices
+that $v$ reached in two steps only through $Q$. Since $v$ is not a Seymour
+vertex of $D$, $\abs C-\abs{Q\cap F(T)}<\abs Q$.}
+\label{fig:deletion}
+\end{figure}
+
+\begin{proof}[Proof of \cref{lem:subset-deficit}]
+Fix $\varnothing\ne S\subsetneq V(D)$ and set
+\[
+ I=F(S)\cap S,\qquad E=F(S)\setminus S,\qquad
+ g(T)=\abs{F(T)\setminus(I\cup T)}\quad\text{for }T\subseteq E.
+\]
+Since $D$ is strongly connected (\cref{lem:strong}) and $S$ is a nonempty
+proper subset, some arc leaves $S$; hence $E\ne\varnothing$. Also
+$g(\varnothing)=0$.
+
+\emph{Step 1: the target is $g(E)$.} Since $F(S)=I\cup E$ and
+$F(I)\subseteq F(S)$ (because $I\subseteq S$),
+\[
+ F^2(S)\setminus F(S)=\bigl(F(I)\cup F(E)\bigr)\setminus(I\cup E)
+ =F(E)\setminus(I\cup E),
+\]
+so $\abs{F^2(S)\setminus F(S)}=g(E)$, and we must show $g(E)<\abs E$.
+
+\emph{Step 2: one batch.} We claim that for every $T\subsetneq E$ there is a
+nonempty $Q\subseteq E\setminus T$ with
+\begin{equation}\label{eq:increment}
+ g(T\cup Q)-g(T)<\abs Q.
+\end{equation}
+Let $D_T$ be obtained from $D$ by deleting all arcs from $S$ to $E\setminus T$
+(\cref{fig:deletion}). Every vertex of $E\setminus T\neq\varnothing$ has an
+in-neighbor in $S$, so at least one arc is deleted. $D_T$ has the same
+vertices and fewer arcs than $D$, so by minimality it is not a
+counterexample: some vertex $v$ satisfies
+$\abs{N^+_{1,D_T}(v)}\le\abs{N^+_{2,D_T}(v)}$.
+
+\begin{itemize}[leftmargin=*]
+\item \emph{$v$ lost an out-neighbor.} Otherwise $N^+_{1,D_T}(v)=\Nout(v)$, and
+since deleting arcs can only shrink $F^2(\{v\})$, also
+$N^+_{2,D_T}(v)\subseteq\Ntwo(v)$. Then $v$ would be a Seymour vertex of $D$.
+Hence $v\in S$ and
+\[
+ Q:=\Nout(v)\cap(E\setminus T)\ne\varnothing
+\]
+is exactly the set of out-neighbors that $v$ lost. As
+$\Nout(v)\subseteq F(S)=I\cup E$, we get $\Nout(v)\subseteq I\cup T\cup Q$
+and $N^+_{1,D_T}(v)=\Nout(v)\setminus Q\subseteq I\cup T$.
+
+\item \emph{Where $v$ can go in two steps in $D_T$.} A path $v\to u\to w$ in
+$D_T$ has $u\in I\cup T$. If $u\in I\subseteq S$, then $w\in F(S)$ but $w\notin
+E\setminus T$ (those arcs were deleted), so $w\in I\cup T$. If $u\in T$,
+then $w\in F(T)$. Thus
+\begin{equation}\label{eq:DT-reach}
+ F^2_{D_T}(\{v\})\subseteq I\cup T\cup F(T).
+\end{equation}
+
+\item \emph{Gains.} A vertex $w\in N^+_{2,D_T}(v)\setminus\Ntwo(v)$ is reached
+in two steps in $D_T$, hence in $D$, and $w\ne v$; so the only way it was
+not in $\Ntwo(v)$ is that $w\in\Nout(v)$. As $w\notin N^+_{1,D_T}(v)$, we get
+$w\in Q$, and by~\eqref{eq:DT-reach} and $Q\cap(I\cup T)=\varnothing$,
+$w\in Q\cap F(T)$. So at most $\abs{Q\cap F(T)}$ vertices are gained.
+
+\item \emph{Losses.} Put $C=F(Q)\setminus(I\cup T\cup Q\cup F(T))$. Every
+$c\in C$ is reached from $v$ via some $q\in Q$. It is not an out-neighbor of
+$v$, because $\Nout(v)\subseteq I\cup T\cup Q$. And $c\ne v$, since an arc
+$q\to v$ would be opposite to $v\to q$ (\emph{here orientation is used}).
+So $C\subseteq\Ntwo(v)$. By~\eqref{eq:DT-reach}, no vertex of $C$ is in
+$F^2_{D_T}(\{v\})$. So all of $C$ is lost.
+\end{itemize}
+Writing $d_1=\abs{\Nout(v)}$ and $d_2=\abs{\Ntwo(v)}$, the Seymour property of
+$v$ in $D_T$ and the gains/losses give
+\[
+ d_1-\abs Q=\abs{N^+_{1,D_T}(v)}\le\abs{N^+_{2,D_T}(v)}\le d_2-\abs C+\abs{Q\cap F(T)}.
+\]
+On the other hand, the increment of $g$ is exactly
+\begin{equation}\label{eq:g-increment}
+ g(T\cup Q)-g(T)=\abs C-\abs{Q\cap F(T)}.
+\end{equation}
+Indeed $F(T\cup Q)\setminus(I\cup T\cup Q)$ is the disjoint union of
+$F(T)\setminus(I\cup T\cup Q)$ and $C$, and the first set is
+$F(T)\setminus(I\cup T)$ with the points of $Q\cap F(T)$ removed (recall
+$Q\cap(I\cup T)=\varnothing$). Combining, and using $d_2<d_1$ because $D$ is a
+counterexample,
+\[
+ g(T\cup Q)-g(T)=\abs C-\abs{Q\cap F(T)}\le\abs Q+d_2-d_1<\abs Q,
+\]
+which is~\eqref{eq:increment}.
+
+\emph{Step 3: summing.} Start from $T_0=\varnothing$ and, as long as
+$T_k\ne E$, apply Step~2 (always to the \emph{original} $D$) to get
+$Q_k$ and set $T_{k+1}=T_k\cup Q_k$. The sets $Q_k$ are nonempty and
+disjoint, so the process ends with $T_K=E$ after $K\ge1$ steps (as
+$E\neq\varnothing$). Summing~\eqref{eq:increment},
+\[
+ g(E)=g(\varnothing)+\sum_{k<K}\bigl(g(T_{k+1})-g(T_k)\bigr)<\sum_{k<K}\abs{Q_k}=\abs E.
+\]
+By Step~1 this is~\eqref{eq:subset-deficit}.
+\end{proof}
+
+\subsection{Why the deficit is not yet enough}
+
+The subset deficit has a nice form, but we will need to \emph{add} the
+inequality over many sets, and for that the following cleaner quantity is
+better suited:
+\[
+ \kappa(S)=\abs S-2\abs{F(S)}+\abs{F^2(S)}
+ =\bigl(\abs{F^2S}-\abs{FS}\bigr)-\bigl(\abs{FS}-\abs S\bigr),
+\]
+the ``second difference'' of the sequence $\abs S,\abs{FS},\abs{F^2S}$. It is
+a plain combination of cardinalities with no set differences, so it adds
+up well (we will use this in \cref{eq:fiber-sum}).
+
+\begin{remark}[The error term]\label{rem:error-term}
+For every digraph and every set $S$,
+\begin{equation}\label{eq:error-term}
+ \kappa(S)\le\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)+\abs{S\setminus FS}.
+\end{equation}
+Indeed, $\abs{F^2S}-\abs{FS}\le\abs{F^2S\setminus FS}$ and
+$\abs{FS}-\abs S=\abs{FS\setminus S}-\abs{S\setminus FS}$. So the subset deficit
+gives $\kappa(S)\le -1+\abs{S\setminus F(S)}$, which is useless when many
+vertices of $S$ receive no arc from $S$. The blow-up below multiplies the
+bracket in~\eqref{eq:error-term} by a large factor $m$ while increasing the
+error term by at most one per vertex of $D$.
+\end{remark}
+
+\subsection{Blowing up by transitive tournaments}\label{sec:blowup}
+
+Let $T_m$ be the \emph{transitive tournament} on $\{1,\dots,m\}$, with
+$a\to b$ if and only if $a<b$. We write $f$ for its forward image.
+
+\begin{lemma}[Internal estimate]\label{lem:internal}
+For every nonempty $T\subseteq\{1,\dots,m\}$,
+\[
+ \abs T-2\abs{f(T)}+\abs{f^2(T)}\le 1 .
+\]
+\end{lemma}
+
+\begin{proof}
+Let $a=\min T$. Then $f(T)=\{a+1,\dots,m\}$ and $f^2(T)=\{a+2,\dots,m\}$,
+while $\abs T\le m-a+1$. If $a<m$ the left side is at most
+$(m-a+1)-2(m-a)+(m-a-1)=0$. If $a=m$ then $T=\{m\}$ and the left side is
+$1-0+0=1$.
+\end{proof}
+
+For example, in $T_5$ the set $T=\{2,4\}$ has $f(T)=\{3,4,5\}$ and
+$f^2(T)=\{4,5\}$, giving $2-6+2=-2\le1$. The point of the transitive
+tournament is that a nonempty set loses at most one element under $f$
+($\abs{f(T)}\ge\abs T-1$). If we blew up by independent sets instead, a block
+would have empty image and the error would be as large as $m$.
+
+\begin{definition}[Blow-up]
+Let $D$ be an oriented graph and $m\ge1$. The \emph{blow-up} $G=D[T_m]$ has
+vertex set $V(D)\times\{1,\dots,m\}$. Its arcs are
+\[
+ (v,a)\to(w,b)\iff v\to w\text{ in }D,\ \text{or}\ v=w\text{ and }a<b.
+\]
+The set $\{v\}\times\{1,\dots,m\}$ is the \emph{block} of $v$. Arcs inside a
+block are \emph{internal} and arcs between blocks are \emph{external}.
+\end{definition}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.95]
+ \begin{scope}
+  \node[vtx] (a) at (90:1.2) {$x$};
+  \node[vtx] (b) at (210:1.2) {$y$};
+  \node[vtx] (c) at (330:1.2) {$z$};
+  \draw[arc] (a)--(c); \draw[arc] (c)--(b); \draw[arc] (b)--(a);
+  \node at (0,-2.0) {$D$};
+ \end{scope}
+ \begin{scope}[xshift=6.0cm]
+  \foreach \nm/\ang in {x/90,y/210,z/330}{
+   \begin{scope}[shift={(\ang:2.0)}]
+    \draw[rounded corners,fill=black!4] (-0.45,-1.0) rectangle (0.45,1.0);
+    \node[dot] (\nm1) at (0,0.65) {}; \node[dot] (\nm2) at (0,0) {}; \node[dot] (\nm3) at (0,-0.65) {};
+    \draw[-{Stealth[length=1.5mm]}] (\nm1)--(\nm2);
+    \draw[-{Stealth[length=1.5mm]}] (\nm2)--(\nm3);
+    \draw[-{Stealth[length=1.5mm]}] (\nm1) to[bend right=55] (\nm3);
+    \node[font=\small] at (0,1.25) {$\nm$};
+   \end{scope}}
+  \draw[-{Stealth[length=3mm]},line width=2.2pt,black!35] (90:2.0)++(0.55,-0.4) -- ($(330:2.0)+(-0.25,0.95)$);
+  \draw[-{Stealth[length=3mm]},line width=2.2pt,black!35] ($(330:2.0)+(-0.55,-0.6)$) -- ($(210:2.0)+(0.55,-0.6)$);
+  \draw[-{Stealth[length=3mm]},line width=2.2pt,black!35] ($(210:2.0)+(0.25,0.95)$) -- ($(90:2.0)+(-0.55,-0.4)$);
+  \node at (0,-2.75) {$G=D[T_3]$};
+ \end{scope}
+ \begin{scope}[xshift=11.3cm,yshift=1.2cm]
+  \foreach \k in {1,...,5} \node[vtx,minimum size=5mm,font=\footnotesize] (t\k) at (0,-0.75*\k+0.75) {\k};
+  \foreach \k in {2,4} \node[vtx,minimum size=5mm,font=\footnotesize,fill=famL!35] at (t\k) {\k};
+  \node[font=\small,align=left,anchor=west] at (0.5,-0.4) {$T=\{2,4\}$};
+  \node[font=\small,align=left,anchor=west] at (0.5,-1.2) {$f(T)=\{3,4,5\}$};
+  \node[font=\small,align=left,anchor=west] at (0.5,-2.0) {$f^2(T)=\{4,5\}$};
+  \node at (0,-3.95) {in $T_5$};
+ \end{scope}
+\end{tikzpicture}
+\caption{Left: a base graph $D$ (a directed triangle). Middle: its blow-up
+$D[T_3]$. Each vertex becomes a transitive tournament, and each arc becomes
+all $9$ arcs between the corresponding blocks (thick grey arrows). Right:
+images inside a transitive tournament (vertices ordered top to bottom; every
+arc points downwards).}
+\label{fig:blowup}
+\end{figure}
+
+\begin{lemma}[Blow-up]\label{lem:blowup}
+Let $D$ be an oriented graph on $n\ge1$ vertices in which every vertex has
+an in-neighbor and which satisfies~\eqref{eq:subset-deficit}. Let $m>n$ and
+$G=D[T_m]$. Then $G$ is an oriented graph, every vertex of $G$ has an
+in-neighbor, and
+\begin{equation}\label{eq:strict-concavity}
+ \abs U+\abs{F_G^2(U)}<2\abs{F_G(U)}\qquad\text{for every }\varnothing\ne U\subsetneq V(G).
+\end{equation}
+\end{lemma}
+
+The same blow-up appears in~\cite[Theorem~4.3]{BrantnerBrockmanKaySnively2009},
+where it is applied to single vertices. Here we need the estimate for all
+sets.
+
+\begin{proof}
+$G$ is oriented: internal arcs go from smaller to larger labels, and two
+opposite external arcs would come from opposite arcs of $D$. Each $(w,b)$
+receives an arc from the block of an in-neighbor of $w$ in $D$.
+
+Fix $\varnothing\ne U\subsetneq V(G)$. For $v\in V(D)$ let
+$T_v=\{a:(v,a)\in U\}$ and let $S=\{v:T_v\ne\varnothing\}$ be the
+\emph{support} of $U$. We compute block by block.
+
+\emph{First image (exact).} An external arc into the block of $w$ starting
+in $U$ exists only if $w\in F(S)$, and then it reaches \emph{every} vertex of
+the block. Internal arcs from $U$ into the block of $w$ reach exactly
+$\{w\}\times f(T_w)$. Hence the block of $w$ meets $F_G(U)$ in the whole block
+if $w\in F(S)$, in $\{w\}\times f(T_w)$ if $w\in S\setminus F(S)$, and not at all
+otherwise:
+\begin{equation}\label{eq:first-image}
+ \abs{F_G(U)}=m\abs{F(S)}+\sum_{w\in S\setminus F(S)}\abs{f(T_w)}.
+\end{equation}
+
+\emph{Second image (upper bound).} Consider a path of length two starting in
+$U$. If both arcs are external, it ends in a block of $F^2(S)$. If exactly
+one is external, it ends in a block of $F(S)$. If the internal step comes
+first, the path stays in a block of $S$ and then moves to a block of $F(S)$.
+If the external step comes first, it moves to a block of $F(S)$ and the
+internal step stays in that block. If
+both arcs are internal, it stays in the block of some $v\in S$ and ends in
+$\{v\}\times f^2(T_v)$. Writing $H_0=F(S)\cup F^2(S)$, and counting the blocks
+of $H_0$ in full, we get
+\begin{equation}\label{eq:second-image}
+ \abs{F_G^2(U)}\le m\abs{H_0}+\sum_{v\in S\setminus H_0}\abs{f^2(T_v)}
+ \le m\abs{H_0}+\sum_{v\in S\setminus F(S)}\abs{f^2(T_v)},
+\end{equation}
+where the last step only adds nonnegative terms (as $F(S)\subseteq H_0$).
+
+\emph{Combining.} Split $\abs U=\sum_{v\in S\cap F(S)}\abs{T_v}+\sum_{v\in S\setminus F(S)}\abs{T_v}$.
+From~\eqref{eq:first-image} and~\eqref{eq:second-image},
+\[
+ \abs U-2\abs{F_GU}+\abs{F_G^2U}
+ \le m\abs{H_0}-2m\abs{F(S)}+\sum_{v\in S\cap F(S)}\abs{T_v}
+ +\sum_{v\in S\setminus F(S)}\Bigl(\abs{T_v}-2\abs{f(T_v)}+\abs{f^2(T_v)}\Bigr).
+\]
+Use $\abs{T_v}\le m$ in the first sum and \cref{lem:internal} in the second:
+\[
+ \abs U-2\abs{F_GU}+\abs{F_G^2U}\le m\bigl(\abs{H_0}-2\abs{F(S)}+\abs{S\cap F(S)}\bigr)+\abs{S\setminus F(S)}.
+\]
+Since $\abs{H_0}=\abs{F(S)}+\abs{F^2(S)\setminus F(S)}$ and
+$\abs{F(S)}-\abs{S\cap F(S)}=\abs{F(S)\setminus S}$, the bracket equals
+$\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}$. We have shown, for every
+$U$,
+\begin{equation}\label{eq:blowup-master}
+ \abs U-2\abs{F_GU}+\abs{F_G^2U}\le m\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)+\abs{S\setminus FS},
+\end{equation}
+which is the scaled version of~\eqref{eq:error-term} announced in
+\cref{rem:error-term}.
+
+\emph{Case $S\ne V(D)$.} By~\eqref{eq:subset-deficit} the bracket is an integer
+$\le-1$, and $\abs{S\setminus F(S)}\le n$, so the right side is at most
+$-m+n<0$.
+
+\emph{Case $S=V(D)$.} Every vertex of $D$ has an in-neighbor, so
+$F(S)=V(D)$ and every block is filled: $F_G(U)=V(G)$. Since every vertex of
+$G$ has an in-neighbor, $F_G^2(U)=F_G(V(G))=V(G)$ too. Thus the left side
+equals $\abs U-\abs{V(G)}<0$, as $U$ is proper.
+\end{proof}
+
+\begin{proposition}[Counterexample reduction]\label{prop:reduction}
+If \cref{thm:main} fails, there is a nonempty oriented graph $G$ in which
+every vertex has an in-neighbor and~\eqref{eq:strict-concavity} holds for
+every nonempty proper vertex set $U$.
+\end{proposition}
+
+\begin{proof}
+Take a minimal counterexample $D$. By \cref{lem:strong,lem:subset-deficit}
+it has positive indegrees and satisfies~\eqref{eq:subset-deficit}. Apply
+\cref{lem:blowup} with any $m>\abs{V(D)}$.
+\end{proof}
+
+\begin{idea}[What we have achieved, and what is used later]
+From now on we only use the graph $G$ and two of its properties:
+\textbf{(G1)} $G$ is a nonempty oriented graph in which every vertex has an
+in-neighbor; \textbf{(G2)} every nonempty proper $U\subseteq V(G)$ is
+strictly concave, $\abs U+\abs{F^2U}<2\abs{FU}$. The remaining sections show
+that (G1) and (G2) are incompatible.
+\end{idea}
