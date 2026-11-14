@@ -558,6 +558,30 @@ always works.
 \end{frame}
 
 % ------------------------------------------------------------------
+\begin{frame}{Proving the pruning lemma: statement and plan}
+\begin{alertblock}{Reminder (any relation $\to$ on $X$, any $\Rf,\Cf\subseteq X\times X$)}
+Delete members so that no conflicts remain, keeping every member in no conflict, with
+\ $\#\text{deleted}\le\abs{\cH H}+\#\{z\in\cZ Z\text{ uncovered after pruning}\}$.
+\end{alertblock}
+\textbf{Main idea.} All conflicts with the same corner $\cH{h=(p,s)}$ form a
+\emph{complete} bipartite block $K_{a,b}$ (row $p$ against column $s$).
+For one block alone, delete all $a+b$ members: this uncovers its $ab$
+conflict points, and $a+b\le 1+ab$. \\
+The difficulty: blocks share members, and other members may still cover $z$.
+
+\medskip
+\textbf{Plan.}
+\begin{enumerate}
+\setlength{\itemsep}{1pt}
+\item[I.] Recast pruning as a vertex cover of a bipartite graph $\Gamma$; by
+K\H{o}nig it suffices to show $\nu(\Gamma)\le\abs Z+\abs H$.
+\item[II.] The conflict matrix factors in two ways, through $\RR^Z$ and through $\RR^H$: $NL=AB$.
+\item[III.] Generic coefficients and Sylvester's inequality turn this into a rank count.
+\item[IV.] A kernel trick makes $\ker A$ large: one dimension per matched conflict edge.
+\end{enumerate}
+\end{frame}
+
+% ------------------------------------------------------------------
 \begin{frame}{Proving the pruning lemma, I: a matching bound}
 \begin{columns}[c]
 \begin{column}{0.52\textwidth}

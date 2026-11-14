@@ -7,7 +7,7 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md)                                 |
 | **Rewritten paper**, 31 pages, 14 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
-| **20-minute Beamer talk**, 21 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
+| **20-minute Beamer talk**, 22 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | Computer checks (Python, standard library only)                               | [`checks/`](checks/)                                                         |
 | Lean 4 / Mathlib formalization                                                | [`SeymourLean/`](SeymourLean/) (see its README)                              |
 | Review of the other agents' work                                              | [`REVIEW_OF_rewrite-codex.md`](REVIEW_OF_rewrite-codex.md), [`REVIEW_OF_rewrite-openmath-DeepSeep4.1.md`](REVIEW_OF_rewrite-openmath-DeepSeep4.1.md) |

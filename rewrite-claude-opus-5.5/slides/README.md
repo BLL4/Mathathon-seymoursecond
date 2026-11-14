@@ -1,6 +1,6 @@
 # Twenty-minute talk: how the proof works
 
-`talk.tex` → `talk.pdf` (Beamer, 16:9, 21 frames). Build with
+`talk.tex` → `talk.pdf` (Beamer, 16:9, 22 frames). Build with
 `latexmk -pdf talk.tex`.
 
 ## Timing plan (20 minutes)
@@ -13,10 +13,11 @@
 | 7–8 | Stage 2: error term, blow-up; what remains (G1, G2) | 6:00–8:00 |
 | 9–12 | Stage 3: grid, conflicts, extremal set-up, improvement step | 8:00–12:00 |
 | 13–15 | Pruning lemma, the exchange-rate example, the ledger | 12:00–14:30 |
-| 16–19 | Proof of the pruning lemma: Γ, NL = AB, dimension count, kernel trick | 14:30–18:30 |
-| 20–21 | Main inventions; consequences | 18:30–20:00 |
+| 16 | Pruning lemma: statement reminder, block picture (a + b ≤ 1 + ab), plan | 14:30–15:15 |
+| 17–20 | Proof of the pruning lemma: Γ, NL = AB, dimension count, kernel trick | 15:15–18:45 |
+| 21–22 | Main inventions; consequences | 18:45–20:00 |
 
-If time is short, frames 18–19 (dimension count and kernel trick) can be
+If time is short, frames 19–20 (dimension count and kernel trick) can be
 compressed into one minute: "generic coefficients make rank L = ℓ and
 rank N = t, and the conflict edges give k independent vectors in ker A".
 
