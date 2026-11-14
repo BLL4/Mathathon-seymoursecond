@@ -1,0 +1,19 @@
+{
+  "source": "rewrite-claude-opus-5.5/SeymourLean/SeymourLean",
+  "author": "Claude Opus 5.5",
+  "snapshot_utc": "2026-11-14T12:20:19.097125+00:00",
+  "files": {
+    "BlowUp.lean": "3b13742253f0d9713b086cfac8d80f8b821405beb5385eb3d59a5b333c98585c",
+    "Contradiction.lean": "9d8c5120221b9db02b062260d6506e1f7e7bb9fd4f84922d181b5c24c9f7ac77",
+    "Defs.lean": "414cf057a22103cb0db0fb882845feb2d6c3123b236f39e369d5fafa5d76f724",
+    "Final.lean": "bd95f4a2e13b844b7319625f6f877ebd268c13f5f839cb2d83f819ad770d8b1f",
+    "Gamma.lean": "aa55a64e3e468f2e05f2b4a99f581ab5283d946a50bef799a496ad125ad428a3",
+    "Generic.lean": "bc359a35634b36c6fa3f7d0e8c3ac52c303229e655516cbdadc5c07c21c5286b",
+    "Konig.lean": "4967449fff97d7e3c6699f680031a960d6bad45a5970132a8d93af7b203609ff",
+    "LinAlg.lean": "971c8eb184e08c4950349b9f376f8ed099b4c4ebfd33b941790508c9bbbcef68",
+    "Main.lean": "13ddb4080dc55c96aed3051c61b82198a8671091bb2309a8992d85f44fb59ca1",
+    "MatchingBound.lean": "62377d66dd09e8512e346dbc475e50967ced889383745f0398a3014dd68d7387",
+    "MatchingCore.lean": "a067d3729562124b5603301a9bea0abf0aae547735d0d7a6ced0ab8921a0e673",
+    "Reduction.lean": "68e47ca7abd296210678ef25e2baa826d42bc33369deb91a572c854faa6f38cf"
+  }
+}

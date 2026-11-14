@@ -1,0 +1,7 @@
+SecondNeighborhood: checked
+RankChecks: checked
+KernelRestrictions: checked
+CoverageLifts: checked
+PruningAlgebra: checked
+GenericAssignment: checked
+MatchingMinor: checked

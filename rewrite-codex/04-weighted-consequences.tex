@@ -6,7 +6,7 @@ finite oriented graphs~\cite{Seacrest2015}.  The equivalences themselves are
 not new here.
 
 \begin{corollary}[Weighted second-neighborhood forms]\label{cor:weighted-forms}
-Let \(D\) be a nonempty finite oriented graph, and write \(A(D)\) for its
+Let \(D\) be a nonempty finite oriented graph, and write \(\operatorname{Arc}(D)\) for its
 arc set.  For a vertex weighting \(\eta:V(D)\to[0,\infty)\), write
 \(\eta(S)=\sum_{x\in S}\eta(x)\).  Then the following hold.
 \begin{enumerate}[label=\textup{(\roman*)}]
@@ -23,8 +23,8 @@ vertex \(v\in V(D)\) such that
 \]
 The entries of this weighting need not all be positive.
 
-\item For every arc weighting \(w:A(D)\to[0,\infty)\), extend the notation
-by setting \(w(vs)=0\) when \(vs\notin A(D)\).  For \(v,s\in V(D)\), put
+\item For every arc weighting \(w:\operatorname{Arc}(D)\to[0,\infty)\), extend the notation
+by setting \(w(vs)=0\) when \(vs\notin \operatorname{Arc}(D)\).  For \(v,s\in V(D)\), put
 \[
  \beta_v^w(s)=\max\Bigl(\{0\}\cup
  \{w(us)-w(vs):u\in V(D),\ v\to u\to s\}\Bigr).

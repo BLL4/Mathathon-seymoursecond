@@ -272,25 +272,26 @@ exlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{/usr/local/texlive/2026/te
 xmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}{/usr/local/texlive/2026/texmf-dist/f
 onts/enc/dvips/lm/lm-mathit.enc}] [3] [4] (./figures/deletion.tex) [5]
 (./figures/blowup.tex) [6{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm
-/lm-mathex.enc}] (./figures/conflict-square.tex) [7] (./figures/pruning.tex)
-[8] [9] (./figures/kernel.tex) [10] [11] [12] [13] (./figures/objective.tex)
-[14] [15] ) )</usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmex10.p
-fb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi10.pfb></usr/l
-ocal/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi7.pfb></usr/local/texliv
-e/2026/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></usr/local/texlive/2026/texm
-f-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/texlive/2026/texmf-dist/font
-s/type1/public/lm/lmss10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/pu
-blic/lm/lmss12.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lm
-ss8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmss9.pfb></u
-sr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsso10.pfb></usr/local/
-texlive/2026/texmf-dist/fonts/type1/public/lm/lmsso12.pfb></usr/local/texlive/2
-026/texmf-dist/fonts/type1/public/lm/lmsso8.pfb></usr/local/texlive/2026/texmf-
-dist/fonts/type1/public/lm/lmsso9.pfb></usr/local/texlive/2026/texmf-dist/fonts
-/type1/public/lm/lmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/pub
-lic/lm/lmsy7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy
-8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></usr
-/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
-Output written on talk-notes.pdf (15 pages, 244799 bytes).
+/lm-mathex.enc}] (./figures/grid.tex) [7] [8] (./figures/conflict-square.tex)
+[9] (./figures/pruning.tex) [10] [11] (./figures/kernel.tex) [12] [13] [14]
+(./figures/objective.tex) [15] [16] ) )</usr/local/texlive/2026/texmf-dist/font
+s/type1/public/lm/lmex10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/pu
+blic/lm/lmmi10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lm
+mi7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi8.pfb></u
+sr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmmi9.pfb></usr/local/te
+xlive/2026/texmf-dist/fonts/type1/public/lm/lmss10.pfb></usr/local/texlive/2026
+/texmf-dist/fonts/type1/public/lm/lmss12.pfb></usr/local/texlive/2026/texmf-dis
+t/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2026/texmf-dist/fonts/typ
+e1/public/lm/lmss9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/l
+m/lmsso10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsso12
+.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsso8.pfb></usr
+/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsso9.pfb></usr/local/tex
+live/2026/texmf-dist/fonts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2026/
+texmf-dist/fonts/type1/public/lm/lmsy7.pfb></usr/local/texlive/2026/texmf-dist/
+fonts/type1/public/lm/lmsy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1
+/public/lm/lmsy9.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/ams
+fonts/symbols/msbm10.pfb>
+Output written on talk-notes.pdf (16 pages, 248915 bytes).
 Transcript written on talk-notes.log.
 Latexmk: Getting log file 'talk-notes.log'
 Latexmk: Examining 'talk-notes.fls'

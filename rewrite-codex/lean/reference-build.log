@@ -1,0 +1,6 @@
+'SecondNeighborhoodReferenceBridge.second_neighborhood_agrees' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodReferenceBridge.second_neighborhood_theorem' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

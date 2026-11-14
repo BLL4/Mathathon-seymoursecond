@@ -1,5 +1,8 @@
 # Snapshot review of the other work directory
 
+Historical snapshot from November 13. The other formalization has since
+been completed; see `review-response.md` and `formalization-status.md`.
+
 After producing the independent article, talk, and first checked Lean file, I inspected the available `rewrite-claude-opus-5.5` directory. At that snapshot it contained a detailed readability plan and a Lean project scaffold, with no completed exposition or talk available to review. The Lean `Basic.lean` still contained only the scaffold's `hello` definition. This is a snapshot of ongoing work, not a judgment on its eventual deliverables.
 
 The plan usefully fixes the first coordinate as a row index and the second as a column index. My added grid figure adopts that explicit convention; the source already uses columns for left fibers and rows for right fibers. The plan's initial directed-triangle mistake is explicitly corrected in its own review section. Keep the correction visible or remove the obsolete draft example from any final reader-facing document.

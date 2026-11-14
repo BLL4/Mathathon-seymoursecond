@@ -1,0 +1,1 @@
+'Seymour.seymour_second_neighbourhood' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -1,10 +1,13 @@
 \begin{tikzpicture}[>=Stealth, every node/.style={font=\small}, v/.style={draw,rounded corners,minimum width=24mm,minimum height=9mm}]
-\node[v] (r) at (0,0) {$r=(p,j)$};
-\node[v] (z) at (6,0) {$z=(i,j)\in Z$};
-\node[v] (h) at (0,-2) {$h=(p,s)\in H$};
-\node[v] (c) at (6,-2) {$c=(i,s)$};
-\draw[->] (r)--node[above] {$L$: $p\to i$} (z);
-\draw[->] (r)--node[left] {$B$: $s\to j$} (h);
-\draw[->] (z)--node[right] {$N$: $s\to j$} (c);
-\draw[->] (h)--node[below] {$A$: $p\to i$} (c);
+\node at (0,.9) {column $s$};\node at (6,.9) {column $j$};
+\node[anchor=east] at (-1.5,0) {row $p$};
+\node[anchor=east] at (-1.5,-2) {row $i$};
+\node[v] (h) at (0,0) {$h=(p,s)\in H$};
+\node[v] (r) at (6,0) {$r=(p,j)$};
+\node[v] (c) at (0,-2) {$c=(i,s)$};
+\node[v] (z) at (6,-2) {$z=(i,j)\in Z$};
+\draw[->] (r)--node[above] {$B$: against $s\to j$} (h);
+\draw[->] (r)--node[right] {$L$: $p\to i$} (z);
+\draw[->] (h)--node[right] {$A$: $p\to i$} (c);
+\draw[->] (z)--node[below] {$N$: against $s\to j$} (c);
 \end{tikzpicture}

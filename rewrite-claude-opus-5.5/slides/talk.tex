@@ -159,6 +159,9 @@ $F^2S=F(F(S))$ (exactly two steps), \quad so\quad $\Ntwo(v)=F^2\{v\}\setminus F\
 In a counterexample with fewest vertices, then fewest arcs,
 \[\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}\qquad\text{for all }\varnothing\ne S\subsetneq V.\]
 \end{block}
+\begin{columns}[T]
+\begin{column}{0.56\textwidth}
+\small
 For $S=\{v\}$ this is just ``$v$ is not a Seymour vertex''.
 
 \medskip
@@ -168,6 +171,28 @@ connected (a sink component would be a smaller one), so $F(S)\setminus S\ne\varn
 \medskip
 \textbf{Why fewest arcs?} Deleting arcs gives a graph that \emph{has} a
 Seymour vertex, and we can analyze what that vertex lost.
+\end{column}
+\begin{column}{0.42\textwidth}
+\centering
+\begin{tikzpicture}[scale=0.85,a/.style={-{Stealth[length=1.6mm]}}]
+ \draw[famL,thick,fill=famL!10] (0.05,0) ellipse (0.78 and 1.15);
+ \draw[zcol,thick,dashed,rounded corners] (1.35,-0.95) rectangle (2.25,0.95);
+ \draw[famR,thick,densely dotted] (3.25,0) ellipse (0.42 and 0.55);
+ \node[dot] (a) at (0,0.65) {};
+ \node[dot,fill=zcol] (b) at (0,0) {};
+ \node[dot] (c) at (0,-0.65) {};
+ \node[dot] (e1) at (1.8,0.5) {}; \node[dot] (e2) at (1.8,-0.5) {};
+ \node[dot] (f) at (3.25,0) {};
+ \draw[a] (a)--(b); \draw[a] (a)--(e1); \draw[a] (c)--(e2);
+ \draw[a] (e1)--(f); \draw[a] (e2)--(f);
+ \node[font=\footnotesize,famL!80!black] at (-0.55,1.3) {$S$};
+ \node[font=\footnotesize,zcol!70!black] at (1.8,1.25) {$FS\setminus S$};
+ \node[font=\footnotesize,famR!80!black] at (3.4,0.85) {$F^2S\setminus FS$};
+ \node[font=\scriptsize,zcol!70!black,anchor=west] at (0.15,-0.05) {$\in FS$};
+ \node[font=\footnotesize,align=center] at (1.6,-1.65) {$\abs{F^2S\setminus FS}=1\;<\;2=\abs{FS\setminus S}$};
+\end{tikzpicture}
+\end{column}
+\end{columns}
 \end{frame}
 
 % ------------------------------------------------------------------

@@ -19,13 +19,32 @@ compatible, and positive indegrees to ensure its fibers are proper.
 \end{enumerate}
 The ledger accompanying this document records checks of these interfaces.
 Finite experiments are regression checks for definitions and charging;
-they do not establish the theorem for arbitrary order. The Lean development proves selected set-image identities, the matrix maximum-support-rank kernel lemma via a rank-one
-perturbation, independence of the lifted images under explicit
-coordinate hypotheses, the commuting-square rank bound, and the numerical
-contradiction. It does not yet formalize the construction of the matching
-lifts, the simultaneous generic coefficient assignment, or the
-minimal-counterexample reductions. It therefore is not a formal proof of
-the whole theorem.
+they do not establish the theorem for arbitrary order. The Codex component development proves selected set-image identities,
+the exact maximum-support-rank kernel lemma, and the restriction of corner
+equations to auxiliary matrices. It constructs normalized lifts from
+spanning columns and combines them into a conditional kernel-dimension
+bound. It also checks simultaneous nonvanishing of polynomial minors and
+a matching certificate for a sparse minor. These independent component
+checks are not by themselves a complete graph proof.
+
+\paragraph{A complete, attributed reference proof.}
+A later source snapshot from Claude Opus 5.5's formalization in the other
+work directory is included unchanged under \texttt{lean/reference/}.
+All twelve reference modules were compiled anew here; no compiled objects
+were copied from that project. The resulting full theorem was then
+translated to this exposition's image convention by
+\texttt{ReferenceBridge.lean}. Both the reference theorem and the bridge
+print only Lean's standard axioms: propositional extensionality, classical
+choice, and quotient soundness. No pruning or graph-reduction statement is
+an unproved hypothesis of this final theorem.
+
+This is a reused and independently rebuilt reference contribution, not an
+independently authored Codex formalization. The reference uses generic
+coefficients in the rational function field $\mathbb Q(x)$, rather than
+choosing a simultaneous real point. The graph conclusion and neighborhood
+conventions agree with the supplied preprint. The source manifest records
+hashes and attribution; the accompanying status document records the
+remaining frontier of the separate Codex development.
 
 \paragraph{A useful consequence to keep separate from the core.}
 The directed-cycle corollaries use only the proved second-neighborhood

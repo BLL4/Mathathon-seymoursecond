@@ -1,0 +1,12 @@
+'SecondNeighborhoodGenericAssignment.exists_nonzero_evaluation' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodGenericAssignment.simultaneous_nonvanishing' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodGenericAssignment.simultaneous_nonsingular_minors' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'SecondNeighborhoodGenericAssignment.simultaneous_full_rank_minors' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

@@ -2,12 +2,16 @@
 
 This folder contains a modified, illustrated exposition of the supplied OpenAI preprint of September 23, 2026. Original source files were not changed. The original work is licensed under Apache 2.0; see [the repository license](../LICENSE).
 
-- [Illustrated article](main.pdf), with [LaTeX entry point](main.tex). It retains the complete proof text, adds a reading guide, ten figures, proof explanations, a worked pruning example, and a direct explanation of the vertex-weighted consequence.
-- [Twenty-minute Beamer presentation](talk.pdf), with [source and timed speaker notes](talk.tex): fifteen frames, with a separate [speaker-notes PDF](talk-notes.pdf). Notes allocate 0:00–20:00; this is a planned duration, not a measured rehearsal.
+- [Illustrated article](main.pdf), with [LaTeX entry point](main.tex). It retains the complete argument, reorganizes the pruning proof into seven claims, and adds a reading guide, ten figures, proof explanations, a worked pruning example, and a direct explanation of the vertex-weighted consequence.
+- [Twenty-minute Beamer presentation](talk.pdf), with [source and timed speaker notes](talk.tex): sixteen frames, with a separate [speaker-notes PDF](talk-notes.pdf). Notes allocate 0:00–20:00; this is a planned duration, not a measured rehearsal.
 - [Readability plan](readability-plan.md): initial draft, self-review, and revised specification, written before the mathematical rewrite.
 - [Correctness ledger](correctness-ledger.md): mathematical dependencies, finite checks, presentation revisions, and limitations.
 - [Lean structural checks](lean/SecondNeighborhood.lean): arbitrary-relation image identities, compatibility, proper fibers, diagonal membership and isolation, the uncovered-corner containment, neighborhood conventions, and integer accounting. This file uses only Lean's standard library.
 - [Lean rank checks](lean/RankChecks.lean): the exact maximum-support-rank kernel lemma and its rank-one perturbation mechanism, independence and kernel dimension from the lifts under explicit coordinate hypotheses, and the rank bound for the commuting square, using mathlib v4.35.0. See the build logs for validation status.
+- [Kernel restrictions](lean/KernelRestrictions.lean), [coverage lifts](lean/CoverageLifts.lean), and [connected pruning algebra](lean/PruningAlgebra.lean) close the restriction and normalized-lift steps, conditional on explicit spanning, support-rank, and square-commutation hypotheses.
+- [Full reference proof and provenance](lean/reference/README.md), authored by Claude Opus 5.5 and rebuilt here from an attributed source snapshot. [ReferenceBridge.lean](lean/ReferenceBridge.lean) proves its conclusion in the image convention of this exposition.
+- [Formalization status](formalization-status.md) separates the full reference proof from the independent component checks.
+- [Response to the review](review-response.md) records the second revision.
 - [Snapshot review of the other work directory](other-work-review.md).
 - [Finite-check program](check_finite.py) and [recorded results](finite-results.json).
 
@@ -27,30 +31,34 @@ The LaTeX documents use pdfLaTeX, TikZ, Beamer, and standard TeX packages. `late
 
 `lean/build.log` records the standard-library Lean check. Its theorems contain no `sorry` and introduce no new axioms. The `#print axioms` output distinguishes elementary logical proofs from arithmetic proofs using Lean's standard logical axioms.
 
-For the mathlib rank file, use a Lean/mathlib v4.35.0 project with its normal compiled dependencies. For example, from that project's directory:
+For the complete Lean development, use an existing compiled Lean/mathlib v4.35.0 installation. The build script compiles all seven component files in dependency order and records the logs in this folder:
 
 ```sh
-lake env lean /absolute/path/to/rewrite-codex/lean/RankChecks.lean
+python3 lean/check.py --mathlib-root ../rewrite-claude-opus-5.5/SeymourLean/.lake/packages/mathlib
 ```
 
-The check in this workspace used the existing v4.35.0 mathlib installation as a read-only dependency, via:
+The path above is the read-only dependency used in this workspace. Any compatible compiled mathlib checkout can be supplied instead. `mathlib-env.py` sets the library search paths without writing to that installation. The build script writes the `.olean` outputs here, including those needed to resolve imports among our files; these outputs are ignored by Git.
 
-```sh
-python3 lean/mathlib-env.py --mathlib-root ../rewrite-claude-opus-5.5/SeymourLean/.lake/packages/mathlib lean +leanprover/lean4:v4.35.0 lean/RankChecks.lean
-```
-
-`lean/rank-build.log` records the check. Both Lean files compile successfully with no warnings, unfinished proofs, or custom axioms; together they contain 26 checked theorem declarations. The mathematical Lean file is independent of that particular installation path. Copying selected cache files into a separate directory did not preserve the dependency installation's interpreter initialization, so that experimental cache is not the supported build route.
+The seven component files compile without warnings, unfinished proofs, or custom axioms and contain 39 component theorem declarations. The logs are `lean/build.log`, `lean/rank-build.log`, `lean/restrictions-build.log`, `lean/lifts-build.log`, `lean/algebra-build.log`, `lean/generic-build.log`, and `lean/minor-build.log`. The final algebra theorem derives the kernel-dimension bound from the corner equations and spanning conditions, rather than accepting arbitrary lifts or coordinate vanishing as inputs.
 
 ## What was checked
 
-The finite experiments cover every labeled oriented graph through five vertices (59,809 graphs total), all 4,096 two-point relation/family triples for pruning, 1,000 deterministic larger samples, and 10,000 potential-increment identities. All passed. The article, slides, and speaker-notes PDFs were compiled, all ten figures were rendered and inspected, and all fifteen slides were visually checked. The ledger records mathematical checks at the proof's interfaces.
+The finite experiments cover every labeled oriented graph through five vertices (59,809 graphs total), all 4,096 two-point relation/family triples for pruning, 1,000 deterministic larger samples, and 10,000 potential-increment identities. All passed. The article, slides, and speaker-notes PDFs were compiled, all ten figures were rendered and inspected, and all sixteen slides were visually checked. The ledger records mathematical checks at the proof's interfaces.
 
-This is not a complete Lean formalization of the theorem. The minimal-counterexample argument, the whole blowup construction, generic simultaneous minors, matching/lift constructions, and the full finite extremal optimization remain outside the formal development. In particular, the rank bound takes the kernel-dimension bound as an explicit hypothesis; the generic lift-independence argument is checked, but its actual matching lifts and coordinate-vanishing hypotheses still have to be constructed. No result here claims those assumptions were discharged in Lean.
+A **complete attributed reference formalization** is now included under `lean/reference/`. It is an unchanged source snapshot of Claude Opus 5.5's formalization from the other work directory, rebuilt here without copying its compiled objects. The build checks the snapshot hashes, compiles the graph reductions, blowup, pruning, and extremal contradiction, and checks our definition bridge:
+
+```sh
+python3 lean/check-reference.py --mathlib-root ../rewrite-claude-opus-5.5/SeymourLean/.lake/packages/mathlib
+```
+
+`reference-checks.txt`, `lean/reference/Final-build.log`, and `lean/reference-build.log` record the full rebuild and final trusted axioms: `propext`, `Classical.choice`, and `Quot.sound`. The reference snapshot has nonfatal deprecation and unused-parameter warnings, retained to preserve its exact source; the seven Codex component files compile without warnings. This full proof is a credited contribution by Claude Opus 5.5, not an independently authored Codex proof.
+
+The separate Codex algebra development remains conditional at its frontier: `kernel_dimension_from_pruning_data` assumes the square identity, maximum auxiliary support ranks, and coverage-spanning conditions, then constructs the normalized lifts and derives the kernel-dimension bound. Further files now check simultaneous nonvanishing of selected polynomial minors and a matching certificate for a sparse minor. They have not yet been assembled into a separate Codex proof of the full graph theorem. The reference proof uses a rational function field for generic coefficients; the exposition's real-assignment route is supported by our additional polynomial checks.
 
 The historical survey and externally cited equivalences are retained from the supplied source; this project did not independently verify the current literature or those external papers.
 
 ## Maintenance
 
-`prepare_rewrite.py`, `enrich.py`, and `revise.py` record one-time construction steps. They are not build scripts; rerunning them can overwrite subsequent edits. Build from the final `.tex` sources using the commands above.
+`prepare_rewrite.py`, `enrich.py`, `revise.py`, and `refine-*.py` record one-time construction steps. They are not build scripts; rerunning them can overwrite subsequent edits. Build from the final `.tex` sources using the commands above.
 
 Rendered review images are in `previews/` and are ignored by Git. The sources and PDFs are the intended deliverables.

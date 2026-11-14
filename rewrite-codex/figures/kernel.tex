@@ -1,8 +1,8 @@
 \begin{tikzpicture}[>=Stealth,every node/.style={font=\small}]
 \fill[blue!8] (0,0) rectangle (6,.9);
 \draw (0,0) rectangle (6,.9);
-\node at (3,.45) {old image $\operatorname{im}D\subseteq\ker(y^{\mathsf T})$};
+\node at (3,.45) {old image $\operatorname{im}\Phi\subseteq\ker(y^{\mathsf T})$};
 \node[draw,circle,inner sep=3pt] (e) at (3,2.3) {$e_s$};
 \draw[->,thick] (3,.95)--node[right] {one new direction if $y_s\ne0$} (e);
-\node[align=center] at (3,-.85) {$D_\tau x=\tau x_j e_s$ puts $e_s$ in the new image\\and $Dw=D_\tau w-\tau w_j e_s$ keeps the old image};
+\node[align=center] at (3,-.85) {$\Phi_\tau x=\tau x_j e_s$ puts $e_s$ in the new image\\and $\Phi w=\Phi_\tau w-\tau w_j e_s$ keeps the old image};
 \end{tikzpicture}

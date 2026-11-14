@@ -1,0 +1,4 @@
+'SecondNeighborhoodRestrictions.restrict_left_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodRestrictions.restrict_right_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodRestrictions.conflict_kernel_product' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodRestrictions.matched_left_coordinate_zero' depends on axioms: [propext, Classical.choice, Quot.sound]

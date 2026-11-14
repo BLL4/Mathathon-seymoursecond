@@ -13,6 +13,14 @@ square. Compatibility makes those images disjoint. Taking complements of
 second images then produces a gain of more than $2d$. Pruning can cost
 $d+d'$, so adding $d'$ to the new objective exactly pays for its output cost.
 This explains the choice $|P|+|Q|+d$ before any algebra is performed.
+\paragraph{Why the coefficient of uncovered points is one.}
+Suppose instead that the objective were $M+\lambda d$. The same gain and
+pruning estimates would only give a new objective strictly greater than
+$M+d+(\lambda-1)d'$. Relative to the old $M+\lambda d$, its guaranteed
+improvement would be strictly greater than $(\lambda-1)(d'-d)$. We have no
+comparison between $d$ and $d'$. Choosing $\lambda=1$ removes both unknown
+terms and makes the strict improvement automatic.
+
 \begin{figure}[ht]\centering\input{figures/objective}
 \caption{The accounting of the contradiction. The second uncovered count $d'$ belongs to the retained families, so it must occur in both the deletion bound and the new objective.}
 \end{figure}

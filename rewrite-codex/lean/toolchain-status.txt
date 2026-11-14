@@ -1,0 +1,9 @@
+Lean: 4.35.0
+Lean commit: eb6cafb7290e8bd5f2937522d8d804f58f02bafc
+Lean platform: arm64-apple-darwin24.6.0
+Mathlib tag: v4.35.0
+Mathlib commit: 56a005855ea17e0b0958f73ec801ae140b0a1679
+Mathlib tracked or untracked source changes: none
+
+The compiled mathlib checkout is used read-only. All component and
+reference-proof compilation outputs are written into rewrite-codex.

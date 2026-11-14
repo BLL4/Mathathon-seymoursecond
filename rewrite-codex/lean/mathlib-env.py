@@ -4,7 +4,7 @@ from pathlib import Path
 if len(sys.argv)<4 or sys.argv[1]!='--mathlib-root':
     raise SystemExit('Usage: mathlib-env.py --mathlib-root /path/to/mathlib command [args...]')
 base=Path(sys.argv[2]).resolve()
-paths=[base/'.lake/build/lib/lean']
+paths=[Path(__file__).resolve().parent,Path(__file__).resolve().parent/'reference',base/'.lake/build/lib/lean']
 paths+=sorted((base/'.lake/packages').glob('*/.lake/build/lib/lean'))
 paths+=sorted(base.parent.glob('*/.lake/build/lib/lean'))
 env=dict(os.environ)

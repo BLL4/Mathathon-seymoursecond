@@ -1,0 +1,18 @@
+lean/reference/SeymourLean/Defs.lean:41:8: warning: automatically included section variable(s) unused in theorem `Seymour.mem_N1`:
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+lean/reference/SeymourLean/Defs.lean:46:8: warning: automatically included section variable(s) unused in theorem `Seymour.mem_img`:
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+lean/reference/SeymourLean/Defs.lean:49:8: warning: automatically included section variable(s) unused in theorem `Seymour.mem_arcs`:
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [DecidableEq V] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`

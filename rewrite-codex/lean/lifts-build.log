@@ -1,0 +1,5 @@
+'SecondNeighborhoodCoverageLifts.exists_kernel_lift' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodCoverageLifts.exists_normalized_lifts' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodCoverageLifts.kernel_dimension_from_coverage_span' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

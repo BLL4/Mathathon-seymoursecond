@@ -4,9 +4,9 @@ Latexmk: This is Latexmk, John Collins, 9 March 2026. Version 4.88.
 Latexmk: applying rule 'pdflatex'...
 Rule 'pdflatex':  Reasons for rerun
 Changed files or newly in use/created:
-  verification-scope.tex
+  02-pruning.tex
 Category 'changed_user':
-  verification-scope.tex
+  02-pruning.tex
 
 ------------
 Run number 1 of rule 'pdflatex'
@@ -218,12 +218,13 @@ live/2026/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}]) (./00-introduction.tex
 ) [6{/usr/local/texlive/2026/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
 [7]) (./02-pruning.tex [8] (./figures/pruning-example.tex)
 (./figures/kernel.tex
-(/usr/local/texlive/2026/texmf-dist/tex/latex/lm/ot1lmss.fd)) [9]
-(./figures/pruning.tex) [10] [11] (./figures/conflict-square.tex) [12] [13])
-(./03-incompatibility.tex (./figures/objective.tex) [14] (./figures/grid.tex)
-[15] [16]) (./04-weighted-consequences.tex [17])
-(./05-directed-cycle-consequences.tex [18]) (./verification-scope.tex [19])
-(./historical-context.tex) (./main.bbl [20] [21]) [22] (./main.aux) )</usr/loca
+(/usr/local/texlive/2026/texmf-dist/tex/latex/lm/ot1lmss.fd)) [9] [10]
+(./figures/pruning.tex) [11] (./figures/conflict-square.tex) [12] [13] [14])
+(./03-incompatibility.tex (./figures/objective.tex) (./figures/grid.tex)
+[15] [16] [17]) (./04-weighted-consequences.tex [18])
+(./05-directed-cycle-consequences.tex [19]) (./verification-scope.tex
+(/usr/local/texlive/2026/texmf-dist/tex/latex/lm/t1lmtt.fd) [20])
+(./historical-context.tex) (./main.bbl [21] [22]) [23] (./main.aux) )</usr/loca
 l/texlive/2026/texmf-dist/fonts/type1/public/lm/lmbx10.pfb></usr/local/texlive/
 2026/texmf-dist/fonts/type1/public/lm/lmbx12.pfb></usr/local/texlive/2026/texmf
 -dist/fonts/type1/public/lm/lmex10.pfb></usr/local/texlive/2026/texmf-dist/font
@@ -242,9 +243,9 @@ xmf-dist/fonts/type1/public/lm/lmss8.pfb></usr/local/texlive/2026/texmf-dist/fo
 nts/type1/public/lm/lmsy10.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/
 public/lm/lmsy7.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/l
 msy8.pfb></usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmsy9.pfb></
-usr/local/texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pf
-b>
-Output written on main.pdf (22 pages, 446442 bytes).
+usr/local/texlive/2026/texmf-dist/fonts/type1/public/lm/lmtt10.pfb></usr/local/
+texlive/2026/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb>
+Output written on main.pdf (23 pages, 473990 bytes).
 Transcript written on main.log.
 Latexmk: Getting log file 'main.log'
 Latexmk: Examining 'main.fls'

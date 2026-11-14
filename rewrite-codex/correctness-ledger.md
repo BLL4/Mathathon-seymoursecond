@@ -1,5 +1,8 @@
 # Mathematical and artifact review
 
+The initial review below describes the November 13 checkpoint. The dated
+update at the end and `formalization-status.md` give the current status.
+
 This is a review of the supplied proof, not a claim that the complete theorem has been formally certified. The original files were read without modification. The exposition retains the full main proof and its cited consequences. No gap was found in the main proof during this review; that statement describes the review's outcome, not an independent published verification.
 
 ## Reduction
@@ -68,3 +71,47 @@ The standard-library development compiles with Lean 4.35.0. Its finite star chec
 The additional mathlib development checks `kernel_perturbation`, `maximum_support_kernel`, `lifts_give_kernel_dimension`, and `matching_bound`. The maximum-support theorem is the exact matrix statement from the source, proved over any field by adding one allowed matrix unit; the abstract perturbation theorem supplies its image-space argument. In the lift theorem, a coordinate map distinguishes the chosen lifts and vanishes on ker B; the proof formally derives independence of their B-images and membership in ker A. Constructing this coordinate-vanishing property from the conflict kernels and constructing the lifts from the chosen matching remain separate obligations. The matching-bound theorem assumes the resulting kernel dimension bound and proves the rank-nullity accounting. The printed trusted axioms are Lean's standard `propext`, `Classical.choice`, and `Quot.sound`; completed checks contain no `sorryAx`.
 
 The separate speaker-notes PDF was compiled as well as the slides. Rendering the notes exposed two plain-text subscript/superscript expressions that were hidden in slide-only mode; these were corrected and the notes rebuilt. Notes for the rank and lift slides were visually inspected.
+
+## November 14 revision and complete reference rebuild
+
+The first checkpoint was committed and pushed as `16f8281`. Work then
+resumed with the review from Claude Opus 5.5. The pruning proof now has seven
+numbered claims and an explicit independence roadmap. Matrices are Phi,
+arc sets use Arc(D), and non-neighbors use an overlined N. The conflict
+rectangle agrees with the coordinate grid. The potential discussion now
+computes the leftover term for M+lambda d and explains why lambda=1 cancels
+it. The talk puts the extremal setup before pruning, adds a coordinate-grid
+frame, and has sixteen frames with contiguous notes covering exactly
+0:00--20:00.
+
+The new Codex component checks prove the actual auxiliary-kernel
+restrictions, the conflict product and coordinate vanishing, normalized
+lifts from coverage spans, and their connected kernel-dimension bound.
+Additional polynomial checks prove simultaneous nonvanishing with shared
+variables, preservation of nonsingular minors under evaluation, and a
+matching specialization of a sparse determinant to the identity. Seven
+component files now contain 39 theorem declarations. All compile without
+warnings or unfinished proofs and print only standard Lean axioms.
+
+After these independent checks, I inspected the other rewrite's completed
+formalization, audited its exact-neighborhood and orientation definitions,
+and copied an attributed source snapshot. The twelve reference files are
+unchanged and hash-recorded; none of their compiled artifacts was copied.
+Every reference module was rebuilt here, including reductions, blowup,
+pruning, extremal optimization, and the full theorem. Our additional
+`ReferenceBridge.lean` proves equality with the image convention in this
+exposition and derives the complete unweighted conclusion without any
+unproved pruning or reduction hypothesis. Both final theorems print only
+`propext`, `Classical.choice`, and `Quot.sound`.
+
+The full reference proof is by Claude Opus 5.5; it is not a second claim of
+independent Codex authorship. Its generic coefficients lie in a rational
+function field, while the exposition presents the real-assignment route.
+Nonfatal deprecation and unused-parameter warnings are preserved with its
+unchanged source. See `formalization-status.md` for the independent Codex
+frontier and `lean/reference/source-manifest.json` for provenance.
+
+All three revised PDFs compile with no layout or reference warnings. The
+changed figures, grid frames, final slide, and formalization appendix were
+rendered and visually inspected. The notes PDF was rebuilt with the
+reordered frames and new timing plan.

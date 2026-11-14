@@ -86,34 +86,40 @@ create a new image direction while keeping the entire old image.
 
 \begin{lemma}[Kernels at maximum support rank]\label{lem:kernel-support}
 Let $T\subseteq I\times J$, where $I$ and $J$ are finite.  Suppose that
-$D:\R^J\to\R^I$ has maximum rank among all real matrices supported on $T$.
-Then, for every $x\in\ker D$, every $y\in\ker D^{\mathsf T}$, and every
+$\Phi:\R^J\to\R^I$ has maximum rank among all real matrices supported on $T$.
+Then, for every $x\in\ker \Phi$, every $y\in\ker \Phi^{\mathsf T}$, and every
 $(s,j)\in T$, one has $x_jy_s=0$.
 \end{lemma}
 
 \begin{proof}
 Suppose instead that $x_jy_s\ne0$.  For a nonzero real $\tau$, the matrix
-$D_\tau=D+\tau e_s e_j^{\mathsf T}$ is still supported on $T$, and
+$\Phi_\tau=\Phi+\tau e_s e_j^{\mathsf T}$ is still supported on $T$, and
 \[
- D_\tau x=\tau x_j e_s.
+ \Phi_\tau x=\tau x_j e_s.
 \]
-Thus $e_s\in\im D_\tau$.  Moreover, for every $w\in\R^J$,
+Thus $e_s\in\im \Phi_\tau$.  Moreover, for every $w\in\R^J$,
 \[
- Dw=D_\tau w-\tau w_j e_s\in\im D_\tau,
+ \Phi w=\Phi_\tau w-\tau w_j e_s\in\im \Phi_\tau,
 \]
-so the entire old image $\im D$ is contained in $\im D_\tau$.
-On the other hand, $y$ annihilates $\im D$ and $y_s\ne0$, so
-$e_s\notin\im D$.  Therefore $\rank D_\tau>\rank D$, a contradiction.
+so the entire old image $\im \Phi$ is contained in $\im \Phi_\tau$.
+On the other hand, $y$ annihilates $\im \Phi$ and $y_s\ne0$, so
+$e_s\notin\im \Phi$.  Therefore $\rank \Phi_\tau>\rank \Phi$, a contradiction.
 \end{proof}
 
 
 \paragraph{Proof itinerary.}
-There are five checkpoints: augment the conflict graph; choose a maximum
-matching with as few original--original edges as possible; encode the two
-coverage matchings by ranks; place independent vectors in a kernel using
-a commuting square; turn the matching into a cover. The rank calculation
-proves a bound for the whole augmented graph. Only the final cover step
-turns that bound into a statement about deletions.
+The proof has seven explicit goals, in the order used below:
+\begin{enumerate}[label=\arabic*.]
+\item A small cover of an augmented graph gives the required pruning.
+\item A normalized maximum matching splits into $k+\ell+t$ edges, with both coverage parts maximum.
+\item Four linear maps satisfy $NL=AB$.
+\item Three rank conditions imply $k+\ell+t\le |Z|+|H|$.
+\item One coefficient assignment supplies all the needed ranks and coverage bases.
+\item Kernel restrictions and normalized lifts supply $k$ independent vectors in $\ker A$.
+\item Alternating paths turn the matching bound into the cover from Goal~1.
+\end{enumerate}
+Goals 4--6 are the algebraic heart. Goal~1 explains the budget we need,
+and Goal~7 converts the algebra back into a deletion rule.
 
 \begin{proof}[Proof of Lemma~\ref{lem:pruning}]
 If there are no conflicts, retain every member; then $Z=H=\varnothing$
@@ -121,8 +127,7 @@ and the assertion is immediate.  In what follows, all vector spaces have
 their usual coordinate bases.  Empty minors have determinant $1$, so the
 rank arguments also apply when a matching or an index set is empty.
 
-\medskip\noindent
-\emph{The augmented graph and the required matching bound.}
+\paragraph{Claim 1: a cover of size $|Z|+|H|$ suffices.}
 Form a bipartite graph $\Gamma$ with parts
 \[
  \mathcal V_L=\mathcal R\sqcup Z_L,
@@ -166,6 +171,7 @@ must lie in $K$.  Distinct points require distinct new vertices, whence
 Thus the cover gives exactly~\eqref{eq:pruning-bound} and retains every
 initially conflict-free member.
 
+\paragraph{Claim 2: the coverage matchings can both be made maximum.}
 We will obtain this cover by proving that a maximum matching in $\Gamma$
 has size at most $\abs Z+\abs H$ and then giving the usual alternating-path
 construction of the cover.  Choose a maximum matching $\mathcal M$ with
@@ -193,8 +199,7 @@ exchanged.  Denote by $R_\alpha\subseteq\mathcal R$ and
 $C_\beta\subseteq\mathcal C$ the original vertices matched by these
 two matchings.
 
-\medskip\noindent
-\emph{Four maps and a simultaneous choice of coefficients.}
+\paragraph{Claim 3: the four maps commute, $NL=AB$.}
 To bound $k+\ell+t$, we encode the two maximum matchings by matrix ranks.
 For each arrow $x\to y$, introduce independent variables $a_{xy}$ and
 $b_{xy}$, with the two arrays independent of one another.  Set both
@@ -202,9 +207,9 @@ entries to zero when $x\not\to y$.  We shall choose real values for all
 the variables shortly.  For any real assignment, define four maps by
 \[
  \begin{array}{ccc}
- \R^{\mathcal R}&\xrightarrow{\ L\ }&\R^Z\\[3pt]
- {\scriptstyle B}\big\downarrow&&\big\downarrow{\scriptstyle N}\\[3pt]
- \R^H&\xrightarrow{\ A\ }&\R^{\mathcal C}
+ \R^H&\xleftarrow{\ B\ }&\R^{\mathcal R}\\[3pt]
+ {\scriptstyle A}\big\downarrow&&\big\downarrow{\scriptstyle L}\\[3pt]
+ \R^{\mathcal C}&\xleftarrow{\ N\ }&\R^Z
  \end{array}
 \]
 with entries
@@ -234,9 +239,10 @@ at least one factor is zero in both products.  Hence
 
 
 \begin{figure}[ht]\centering\input{figures/conflict-square}
-\caption{One conflict and its two intermediate corners. The vertical maps traverse the relation backward in the second coordinate; the horizontal maps traverse it forward in the first. The two products have the same coefficient $a_{pi}b_{sj}$, yielding $NL=AB$. This layout shows composition of linear maps, not positions in the coordinate grid. The operators $F_1,F_2$ instead act on sets.}
+\caption{One conflict and its two intermediate corners. The rows are $p,i$ and the columns are $s,j$, as in the coordinate grid. The vertical maps follow $p\to i$; the horizontal maps run backward along $s\to j$. The two products have the same coefficient $a_{pi}b_{sj}$, yielding $NL=AB$. The two paths from $r$ to $c$ are the two factorizations. In contrast, the set operator $F_2$ follows the second-coordinate relation forward.}
 \end{figure}
 
+\paragraph{Claim 4: three rank conditions imply the matching bound.}
 We seek an assignment for which
 \[
  \rank L=\ell,\qquad \rank N=t,\qquad \dim\ker A\geq k.
@@ -251,7 +257,7 @@ rank--nullity and $NL=AB$ would give
  &\geq k+\ell+t-\abs Z.
  \label{eq:pruning-rank-bound}
 \end{align}
-The last inequality follows by restricting $N$ to $\im L$:
+The last step is Sylvester's rank inequality. Here is its short proof, obtained by restricting $N$ to $\im L$:
 \[
  \rank(NL)
  =\dim\im L-\dim(\im L\cap\ker N)
@@ -262,6 +268,7 @@ For the third, we will lift the $k$ original left endpoints to vectors
 $u^r\in\ker L$ and show that their images $Bu^r$ are independent.
 The identity $AB=NL$ places these images in $\ker A$.
 
+\paragraph{Claim 5: one assignment supplies all ranks and coverage bases.}
 Our choice of coefficients uses the correspondence between generic matrix
 rank and maximum matching size~\cite[Section~5, Theorem~1]{Edmonds1967}.
 We apply the determinant argument within coordinate blocks and verify that
@@ -290,16 +297,16 @@ For every arrow $p\to i$, define
 \[
  J_p=\{j:(p,j)\in\mathcal R\},\qquad
  S_i=\{s:(i,s)\in\mathcal C\},\qquad
- D^{p,i}=(b_{sj})_{s\in S_i,\ j\in J_p}.
+ \Phi^{p,i}=(b_{sj})_{s\in S_i,\ j\in J_p}.
 \]
-We require $D^{p,i}$ to have maximum rank among all matrices supported
+We require $\Phi^{p,i}$ to have maximum rank among all matrices supported
 on
 \[
  T^{p,i}=\{(s,j)\in S_i\times J_p:s\to j\}.
 \]
 These matrices will let Lemma~\ref{lem:kernel-support} compare restrictions
 of vectors in $\ker B$ and $\ker N^{\mathsf T}$.
-The allowed entries of each individual $D^{p,i}$ are independent
+The allowed entries of each individual $\Phi^{p,i}$ are independent
 variables.  A minor attaining its maximum possible rank at some
 assignment is therefore a nonzero polynomial in the $b$ variables.
 Choose one such minor for each arrow, taking the empty minor when the
@@ -321,6 +328,7 @@ All the chosen conditions then hold at that one assignment. Later,
 perturbing a single auxiliary matrix is only a contradiction argument for
 its maximum rank; it does not change the fixed assignment of the square.
 
+\paragraph{Claim 6: normalized lifts give $\dim\ker A\ge k$.}
 For every edge $(r,c)$ of $\mathcal M$ between original members, the
 basis properties now give vectors
 \begin{equation}\label{eq:pruning-lifts}
@@ -335,10 +343,15 @@ The original--original endpoints are disjoint from $R_\alpha$ and
 $C_\beta$, respectively.  In particular, the $u^r$ restrict to distinct
 unit vectors on the $k$ original left endpoints, and $v^c_c=1$.
 
-\medskip\noindent
-\emph{The kernel restriction and the matching bound.}
-It remains to show that the $k$ lifts just constructed give independent
-vectors $Bu^r$. The key assertion, at our fixed coefficient assignment, is
+\paragraph{6a: restrict the full equations to the auxiliary matrices.}
+We need one independent vector in $\ker A$ for each of the $k$ remaining
+matched edges. The left lifts already give candidates: $u^r\in\ker L$
+implies $ABu^r=NLu^r=0$. Only independence of the $Bu^r$ is missing.
+It will follow if every vector in $\ker B$ vanishes at the distinguished
+left endpoints. The right lifts will act as probes: $v^c_c=1$ turns a
+zero product $u_rv^c_c=0$ into $u_r=0$.
+First we prove the product statement for arbitrary kernel vectors at the
+fixed coefficient assignment:
 \begin{equation}\label{eq:conflict-kernel}
  u_{pj}v_{is}=0
  \quad\text{for every conflict }((p,j),(i,s)),
@@ -347,7 +360,7 @@ vectors $Bu^r$. The key assertion, at our fixed coefficient assignment, is
 Here the assertion quantifies over \emph{all} vectors in the two kernels.
 
 To prove it, fix an arrow $p\to i$.  For $u\in\ker B$, consider the
-vector $(u_{pj})_{j\in J_p}$.  If a row $s\in S_i$ of $D^{p,i}$ has
+vector $(u_{pj})_{j\in J_p}$.  If a row $s\in S_i$ of $\Phi^{p,i}$ has
 an allowed entry, choose $j\in J_p$ with $s\to j$.  Then
 $(p,j)$ and $(i,s)$ conflict, so $(p,s)\in H$.  The complete equation
 of $Bu=0$ at this coordinate is
@@ -357,24 +370,25 @@ of $Bu=0$ at this coordinate is
 If the row has no allowed entry, this equation holds because all its
 coefficients are zero.  Thus it holds for every $s\in S_i$, including
 rows for which $(p,s)$ is absent from $H$.  Consequently
-$(u_{pj})_{j\in J_p}\in\ker D^{p,i}$.
+$(u_{pj})_{j\in J_p}\in\ker \Phi^{p,i}$.
 
 Similarly, let $v\in\ker N^{\mathsf T}$.  If a column $j\in J_p$
-of $D^{p,i}$ has an allowed entry, choose $s\in S_i$ with $s\to j$.
+of $\Phi^{p,i}$ has an allowed entry, choose $s\in S_i$ with $s\to j$.
 The resulting conflict implies $(i,j)\in Z$, and the complete equation
 of $N^{\mathsf T}v=0$ at this coordinate is
 \begin{equation}\label{eq:pruning-column-equation}
  \sum_{s\in S_i}b_{sj}v_{is}=0.
 \end{equation}
 Columns with no allowed entries satisfy the same equation
-automatically.  Hence $(v_{is})_{s\in S_i}\in\ker(D^{p,i})^{\mathsf T}$.
-Since $D^{p,i}$ has maximum rank on its allowed support,
+automatically.  Hence $(v_{is})_{s\in S_i}\in\ker(\Phi^{p,i})^{\mathsf T}$.
+Since $\Phi^{p,i}$ has maximum rank on its allowed support,
 Lemma~\ref{lem:kernel-support} gives $u_{pj}v_{is}=0$ whenever
 $s\to j$, proving~\eqref{eq:conflict-kernel}.
 The hypothetical single-entry perturbation in that lemma concerns only
-$D^{p,i}$; it need not preserve any other rank condition.  The conclusion
+$\Phi^{p,i}$; it need not preserve any other rank condition.  The conclusion
 holds for every pair of kernel vectors at the fixed, original assignment.
 
+\paragraph{6b: use the right lifts to distinguish the left images.}
 For each original--original matched edge $(r,c)$, substitute $v=v^c$
 in~\eqref{eq:conflict-kernel}.  Since $v^c_c=1$, every vector in
 $\ker B$ vanishes at $r$.  It follows that the vectors $Bu^r$, as $r$
@@ -394,8 +408,7 @@ by~\eqref{eq:pruning-commute}. Thus $\dim\ker A\geq k$, establishing
 the third rank condition. Equation~\eqref{eq:pruning-rank-bound} now gives
 $\abs{\mathcal M}=k+\ell+t\leq\abs Z+\abs H$, as required.
 
-\medskip\noindent
-\emph{From the matching bound to a pruning.}
+\paragraph{Claim 7: the matching bound gives the cover.}
 For completeness, we give the matching-to-cover argument in
 K\H{o}nig's theorem~\cite{konig1931}.  Starting at all unmatched vertices
 of $\mathcal V_L$, follow edges outside $\mathcal M$ from left to

@@ -1,0 +1,3 @@
+'SecondNeighborhoodPruningAlgebra.kernel_dimension_from_pruning_data' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]

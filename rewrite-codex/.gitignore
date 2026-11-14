@@ -19,3 +19,12 @@ __pycache__/
 
 !lean/build.log
 !lean/rank-build.log
+!lean/restrictions-build.log
+!lean/lifts-build.log
+!lean/algebra-build.log
+!lean/generic-build.log
+!lean/minor-build.log
+!lean/reference-build.log
+!lean/reference/*-build.log
+*.olean.*
+*.ilean.*
