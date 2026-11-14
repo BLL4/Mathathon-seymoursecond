@@ -448,6 +448,10 @@ that was in no conflict, with
 \end{alertblock}
 \begin{itemize}
 \item $\cZ Z$ = conflict points, $\cH H$ = opposite corners of conflicts.
+\item After pruning to $\Rf'\subseteq\Rf$, $\Cf'\subseteq\Cf$, a point is \textbf{uncovered} if no
+kept member reaches it: it is not in $F_1\Rf'\cup F_2\Cf'$. Only points of $\cZ Z$ are
+counted. Before pruning each $z\in\cZ Z$ is covered (by both members of its
+conflict), so these are exactly the conflict points that pruning uncovered.
 \item The cost depends on the \textbf{outcome} of the pruning, not only on the input.
 \item No orientation is used: this is a statement about arbitrary relations.
 \end{itemize}
