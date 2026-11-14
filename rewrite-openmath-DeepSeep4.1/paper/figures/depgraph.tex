@@ -1,0 +1,30 @@
+\begin{tikzpicture}[
+  st/.style={draw=black!55,rounded corners=2pt,align=center,font=\scriptsize,inner sep=3pt,
+             text width=2.9cm,fill=white},
+  thm/.style={st,draw=black!80,fill=black!8,font=\small,text width=4.4cm},
+  dep/.style={-{Stealth[length=2mm]},draw=black!70},
+  ddep/.style={-{Stealth[length=2mm]},draw=black!45,dashed},
+  cons/.style={st,draw=black!35,dashed,text width=9.4cm},
+  lab/.style={font=\scriptsize,text=black!60}
+]
+\node[thm] (T) at (0,0) {\cref{thm:main}};
+\node[st] (P2) at (-2.7,-1.8) {\cref{prop:reduction}};
+\node[st] (P4) at (2.7,-1.8) {\cref{prop:no-concavity}};
+\node[st] (L22) at (-4.5,-3.5) {\cref{lem:deficit}};
+\node[st] (L23) at (-1.4,-3.5) {\cref{lem:blowup}};
+\node[st] (L31) at (2.7,-3.5) {\cref{lem:pruning}};
+\node[st] (L32) at (2.7,-5.2) {\cref{lem:kernel}};
+\node[st] (KON) at (5.6,-5.2) {K\H{o}nig's theorem};
+\node[cons] (C) at (0,-7.2)
+  {\cref{cor:weighted} (weighted forms)\qquad \cref{cor:cycles} (directed cycles)\\[1pt]
+   consequences of \cref{thm:main}, not used in its proof};
+\draw[dep] (L22.north) -- (P2.south west);
+\draw[dep] (L23.north) -- (P2.south east);
+\draw[dep] (L31.north) -- (P4.south);
+\draw[dep] (L32.north) -- (L31.south);
+\draw[dep] (KON.north west) -- (L31.south east);
+\draw[dep] (P2.north) -- (T.south west);
+\draw[dep] (P4.north) -- (T.south east);
+\draw[ddep] (T.south) -- (C.north);
+\node[lab,anchor=west] at (0.15,-5.6) {not used above};
+\end{tikzpicture}

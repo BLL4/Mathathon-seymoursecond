@@ -1,0 +1,21 @@
+\begin{tikzpicture}[
+  lv/.style={circle,draw=blue!55!black,fill=blue!15,minimum size=7mm,inner sep=0pt,font=\small},
+  rv/.style={circle,draw=green!40!black,fill=green!15,minimum size=7mm,inner sep=0pt,font=\small},
+  zv/.style={rectangle,draw=orange!65!black,fill=orange!20,minimum width=8mm,minimum height=7mm,inner sep=1pt,font=\small},
+  conf/.style={draw=red!65!black,thick,line width=1pt},
+  cov/.style={draw=black!55,dashed,thick},
+  lab/.style={font=\small,text=black!75},
+  grp/.style={font=\small\bfseries,text=black!60}
+]
+\node[lv] (r) at (0,2.6) {$r$};
+\node[zv] (zl) at (0,0.2) {$z_L$};
+\node[rv] (c) at (5.6,2.6) {$c$};
+\node[zv] (zr) at (5.6,0.2) {$z_R$};
+\node[grp,anchor=east] at (-0.7,2.6) {$\mathcal L$};
+\node[grp,anchor=east] at (-0.7,0.2) {$Z_L$};
+\node[grp,anchor=west] at (6.3,2.6) {$\mathcal R$};
+\node[grp,anchor=west] at (6.3,0.2) {$Z_R$};
+\draw[conf] (r) -- node[above=1pt,lab,text=red!60!black] {conflict} (c);
+\draw[cov] (c) -- node[above=1pt,lab,sloped,near start] {covers} (zl);
+\draw[cov] (r) -- node[above=1pt,lab,sloped,near end] {covers} (zr);
+\end{tikzpicture}

@@ -1,0 +1,24 @@
+\begin{tikzpicture}[
+  cell/.style={draw=black!55,minimum width=2.3cm,minimum height=1.45cm,align=center,
+               font=\scriptsize,inner sep=2pt},
+  hcell/.style={cell,fill=purple!12},
+  lcell/.style={cell,fill=blue!12},
+  rcell/.style={cell,fill=green!12},
+  zcell/.style={cell,fill=orange!22},
+  trav/.style={-{Stealth[length=1.8mm]},draw=black!70,thick},
+  lab/.style={font=\scriptsize,text=black!70}
+]
+% the four cells: row p (top), row i (bottom); column s (left), column j (right)
+\node[hcell] (ps) at (-1.2,0.75) {$(p,s)\in H$};
+\node[lcell] (pj) at (1.2,0.75) {$(p,j)\in\mathcal L$};
+\node[rcell] (is) at (-1.2,-0.75) {$(i,s)\in\mathcal R$};
+\node[zcell] (ij) at (1.2,-0.75) {$(i,j)\in Z$};
+% the conflicting pair: thick red border
+\draw[red!65!black,thick] (pj.north west) rectangle (pj.south east);
+\draw[red!65!black,thick] (is.north west) rectangle (is.south east);
+% the square of traversals, outside the block
+\draw[trav] (-2.95,1.45) -- (-2.95,-1.45) node[midway,left=1pt,lab,rotate=90] {$p\to i$};
+\draw[trav] (-2.95,1.95) -- (2.95,1.95) node[midway,above=1pt,lab] {$s\to j$};
+\draw[trav] (2.95,1.45) -- (2.95,-1.45) node[midway,right=1pt,lab,rotate=-90] {$p\to i$};
+\draw[trav] (-2.95,-1.95) -- (2.95,-1.95) node[midway,below=1pt,lab] {$s\to j$};
+\end{tikzpicture}

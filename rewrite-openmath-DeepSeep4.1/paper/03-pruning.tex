@@ -1,0 +1,488 @@
+\section{Pruning two families of pairs}\label{sec:pruning}
+
+\begin{contract}
+\textbf{Assumes:} a finite set $X$ with a binary relation $\to$, and two families
+$\mathcal L,\mathcal R\subseteq X\times X$ of ordered pairs, each regarded as a separate copy.
+\quad
+\textbf{Produces:} subfamilies $\mathcal L'\subseteq\mathcal L$ and $\mathcal R'\subseteq\mathcal R$
+that do not conflict, retain every member that did not conflict to begin with, and lose at most
+\[
+ \abs H+\abs{\{z\in Z:\ z\text{ is covered by no member of }\mathcal L'\cup\mathcal R'\}}
+\]
+members, where $Z$ is the set of conflict points and $H$ the set of collisions.
+\textbf{Why:} \cref{sec:incompatibility} produces two families that are almost compatible and worth
+more than a target value; this lemma makes them compatible at a price that the points left
+uncovered pay for. Nothing here uses that $\to$ comes from an oriented graph.
+\end{contract}
+
+\subsection{What the lemma says}\label{sec:pruning-statement}
+
+The objects are \emph{families of ordered pairs}. A family $\mathcal L\subseteq X\times X$ should be
+pictured as a set of cells of the grid $X\times X$; a member $(p,j)$ sits in column $j$ and row $p$.
+The one operation we need is \emph{advancing a coordinate along the relation}:
+\begin{equation}\label{eq:Phi}
+ \Phi_1 S=\{(i,j):(p,j)\in S,\ p\to i\},\qquad
+ \Phi_2 S=\{(i,j):(i,s)\in S,\ s\to j\}.
+\end{equation}
+So $\Phi_1$ replaces the first coordinate by an out-neighbor, $\Phi_2$ the second.
+\Cref{fig:conflict} shows the single most important configuration.
+
+\begin{figure}[t]
+\centering
+\input{figures/conflict.tex}
+\caption{A conflict, drawn as a rectangle of the grid $X\times X$. \emph{Look at} the two routes from
+ the top-left cell to the bottom-right cell: one goes down then right, the other right then down.
+ \emph{Why it matters:} the two middle cells are exactly a pair of conflicting members,
+ $(p,j)\in\mathcal L$ and $(i,s)\in\mathcal R$; the top-left cell $(p,s)$ is a \emph{collision}
+ (an element of $H$) and the bottom-right cell $(i,j)$ is a \emph{conflict point} (an element of
+ $Z$). A conflict is the same thing as the existence of this rectangle, which is why $H$ and $Z$
+ are the right quantities to count: each conflict is witnessed once by a cell of $H$ and once by a
+ cell of $Z$, and the two coordinate orders (down-then-right, right-then-down) are the two ways of
+ composing the coordinate maps.}
+\label{fig:conflict}
+\end{figure}
+
+\begin{definition}[Conflict, conflict point, collision, covering]\label{def:conflict}
+Let $\mathcal L,\mathcal R\subseteq X\times X$, regarded as \emph{separate} copies of $X\times X$:
+an element may belong to both, and when it does it counts twice.
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=1pt]
+\item $(p,j)\in\mathcal L$ and $(i,s)\in\mathcal R$ \emph{conflict} if $p\to i$ and $s\to j$.
+\item $Z=\{(i,j):$ some $(p,j)\in\mathcal L$ conflicts with some $(i,s)\in\mathcal R\}$ is the set of
+  \emph{conflict points}.
+\item $H=\{(p,s):$ some $(p,j)\in\mathcal L$ conflicts with some $(i,s)\in\mathcal R\}$ is the set of
+  \emph{collisions}.
+\item A point $(i,j)\in X\times X$ is \emph{covered by} a member $(p,j)\in\mathcal L$ when $p\to i$,
+  and \emph{covered by} a member $(i,s)\in\mathcal R$ when $s\to j$. These are the only ways in which
+  a member covers a point: a member covers only points with which it shares a coordinate, and the
+  other coordinate is advanced along the relation.
+\end{itemize}
+Two families are \emph{compatible} if no member of one conflicts with a member of the other.
+\end{definition}
+
+\begin{remark}[Compatibility is disjointness of the images]\label{rem:compat}
+With $\Phi_1,\Phi_2$ as in \eqref{eq:Phi}, $\mathcal L$ and $\mathcal R$ are compatible exactly when
+$\Phi_1\mathcal L\cap\Phi_2\mathcal R=\varnothing$. Indeed $(i,j)$ lies in both images exactly when
+there are $(p,j)\in\mathcal L$ and $(i,s)\in\mathcal R$ with $p\to i$ and $s\to j$, which is a
+conflict. Also $Z=\Phi_1\mathcal L\cap\Phi_2\mathcal R$: the set of covered points is exactly the union
+of the two images, and the points of $Z$ are the ones covered from both sides.
+\end{remark}
+
+\begin{lemma}[Pruning]\label{lem:pruning}
+Let $X$ be a finite set with a binary relation $\to$, and let
+$\mathcal L,\mathcal R\subseteq X\times X$ be two families as in \cref{def:conflict}. Then there are
+subfamilies $\mathcal L'\subseteq\mathcal L$ and $\mathcal R'\subseteq\mathcal R$ with no conflicts
+between them, containing every member that is initially conflict-free, and such that
+\begin{equation}\label{eq:pruning-bound}
+ \abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}
+ \le\abs H+\abs{\{z\in Z:\ z\text{ is covered by no member of }\mathcal L'\cup\mathcal R'\}} .
+\end{equation}
+\end{lemma}
+
+\inwords{Two families that are almost compatible can be made compatible by deleting a few members,
+and the number deleted is at most the number of collisions plus the number of conflict points that
+remain uncovered afterwards.}
+
+\usedin{Applied once, in \cref{sec:incompatibility}, to the complement families
+$\mathcal L=(X\times X)\setminus\Phi_2^2Q$ and $\mathcal R=(X\times X)\setminus\Phi_1^2P$. There
+$H$ lies in the uncovered set of the extremal pair and the last term is at most $u'$, so the total
+cost is at most $u+u'$}
+
+\begin{ideabox}[title={Why this is the right statement}]
+Three features of \eqref{eq:pruning-bound} are deliberate.
+\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
+\item \textbf{Only conflicts are repaired.} Members that never conflicted are kept, even if they
+  cover conflict points. This is what allows the diagonal to survive in
+  \cref{sec:incompatibility}: the diagonal members are conflict-free there.
+\item \textbf{The cost is charged twice.} Each conflict contributes a collision (a point of $H$),
+  so conflicts are counted by $H$; but different conflicts may share a collision, and a cover does
+  not need to pay per conflict, only per collision. This is the first, fixed part of the cost.
+\item \textbf{The remainder is charged to the survivors.} If a conflict point $z\in Z$ is still
+  covered after the pruning, then some surviving member covers it, and that member occupies a vertex
+  of the cover. So the number of conflict points that must be paid for individually is
+  $\abs Z-q$, where $q$ is the number left uncovered. The bound is thus
+  $\abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}\le\abs H+q$, which is
+  \eqref{eq:pruning-bound} rearranged. Charging part of the cost to the points still uncovered is
+  exactly what the extremal argument of \cref{sec:incompatibility} needs: it can refund that part.
+\end{enumerate}
+\end{ideabox}
+
+\subsection{The rank lemma}\label{sec:kernel}
+
+The proof of \cref{lem:pruning} bounds a matching by matrix ranks. The only linear algebra it needs
+is the following observation: at a matrix of maximum rank on a given support, a kernel vector of the
+matrix and a kernel vector of its transpose cannot both be nonzero at the two ends of an allowed
+entry.
+
+\begin{lemma}[Kernels at maximum support rank]\label{lem:kernel}
+Let $T\subseteq I\times J$ with $I,J$ finite, and let $D\colon\R^J\to\R^I$ be a real matrix of
+\emph{maximum rank among all matrices supported on $T$}, i.e.\ whose entries outside $T$ vanish.
+Then for every $x\in\ker D$, every $y\in\ker D^{\mathsf T}$ and every $(s,j)\in T$,
+\[
+ x_j\,y_s=0 .
+\]
+\end{lemma}
+
+\inwords{At a maximum-rank matrix, a vector killed by the matrix and a vector killed by its transpose
+cannot both be nonzero at the two ends of an allowed entry.}
+
+\begin{proof}
+Suppose $x_jy_s\ne0$ with $(s,j)\in T$. Let $D_\tau=D+\tau e_se_j^{\mathsf T}$ for a real $\tau$;
+since $(s,j)\in T$, the matrix $D_\tau$ is still supported on $T$. Because $x\in\ker D$,
+\[
+ D_\tau x=\tau x_j e_s ,
+\]
+so $e_s\in\im D_\tau$ (as $x_j\ne0$). For every $w\in\R^J$,
+\[
+ Dw=D_\tau w-\tau w_j e_s\in\im D_\tau ,
+\]
+so $\im D\subseteq\im D_\tau$. On the other hand $y$ annihilates $\im D$ (that is what
+$y\in\ker D^{\mathsf T}$ means) and $y_s\ne0$, so $e_s\notin\im D$. Hence
+$\im D\subsetneq\im D_\tau$ and $\rank D_\tau>\rank D$, contradicting maximality.
+\end{proof}
+
+\begin{remark}[What the lemma is for]\label{rem:kernel-use}
+The lemma is applied to the auxiliary matrices $D^{p,i}$ of Step~6 below, whose rows are indexed by
+the right members above $i$ and whose columns by the left members above $j$. The hypothesis that the
+rank is \emph{maximum on the support} is essential and is the reason for the extra family of rank
+conditions in Step~5: at a rank below the maximum, two kernel vectors could both be nonzero at an
+allowed entry.
+\end{remark}
+
+\subsection{Proof of the pruning lemma}\label{sec:pruning-proof}
+
+\begin{planbox}
+\begin{enumerate}[leftmargin=1.3em,itemsep=1pt,topsep=1pt]
+\item \textbf{Reduce to a cover} (Step~1): build a bipartite graph $\Gamma$ whose edges are the
+  conflicts and the covering relations. A vertex cover $K$ of $\Gamma$ of size at most
+  $\abs Z+\abs H$ that omits isolated vertices, with the original members in $K$ deleted, gives
+  \eqref{eq:pruning-bound} by counting: the $\abs Z-q$ covered conflict points must each be paid for
+  by a distinct vertex of $K$.
+\item \textbf{Bound the matching} (Steps 2--7): show that a maximum matching $\mathcal M$ of $\Gamma$
+  has at most $\abs Z+\abs H$ edges. Split it into the $k$ original--original edges, the $\ell$ edges
+  $\alpha$ between $\mathcal L$ and $Z_R$, and the $t$ edges $\beta$ between $Z_L$ and $\mathcal R$.
+\item \textbf{Encode by ranks} (Steps 3--5): build four matrices $L,N,A,B$ forming a commutative
+  square $NL=AB$, and choose the coefficients so that $\rank L=\ell$, $\rank N^{\mathsf T}=t$ and
+  some auxiliary matrices have maximum rank on their supports. Rank--nullity plus the square then
+  gives $\abs H\ge k+\ell+t-\abs Z$.
+\item \textbf{Feed the kernel} (Steps 6--7): lift the $k$ original left endpoints to vectors
+  $\lambda^r\in\ker L$ and show that their images $B\lambda^r$ are independent (they lie in
+  $\ker A$), using the rank lemma at the conflicting pairs. Hence $\dim\ker A\ge k$, which is what
+  the rank bookkeeping needs.
+\item \textbf{Matching to cover} (Step~8): the alternating-path construction produces the cover.
+\end{enumerate}
+\end{planbox}
+
+\begin{proof}[Proof of \cref{lem:pruning}]
+\steplabel{Step 1: the augmented graph, and why a cover suffices.}
+If there is no conflict at all, keep every member; then $Z=H=\varnothing$ and
+\eqref{eq:pruning-bound} is trivial. Assume therefore that conflicts exist. Form the bipartite graph
+$\Gamma$ with parts
+\begin{equation}\label{eq:Gamma}
+ \mathcal V_L=\mathcal L\sqcup Z_L,\qquad \mathcal V_R=\mathcal R\sqcup Z_R,
+\end{equation}
+where $Z_L$ and $Z_R$ are two disjoint copies of $Z$, also disjoint from $\mathcal L$ and
+$\mathcal R$. Join two original members when they conflict; join an original member to the opposite
+copy of every point of $Z$ that it covers; put no edge between $Z_L$ and $Z_R$. \Cref{fig:pruning-graph}
+shows one conflict's forced path and a second conflict sharing a member.
+
+\begin{figure}[t]
+\centering
+\input{figures/pruning-graph.tex}
+\caption{The augmented bipartite graph $\Gamma$. \emph{Look at} the path
+ $z_L-c-r-z_R$ forced by the conflict between $r=(p,j)\in\mathcal L$ and $c=(i,s)\in\mathcal R$,
+ where $z=(i,j)$: the two dashed edges are the covering relations $s\to j$ and $p\to i$, the solid
+ edges are conflicts. \emph{Why it matters:} conflicts and covering relations are turned into edges
+ of one bipartite graph, so that a single vertex cover can pay for both: the solid edge forces
+ ``delete $r$ or delete $c$'', while a dashed edge forces ``delete the member or spend the copy
+ of $z$''. The second conflict drawn shares $r$, showing that the graph is not a disjoint union of
+ such paths --- which is why a matching bound, not a path count, is needed.}
+\label{fig:pruning-graph}
+\end{figure}
+
+\emph{An initially conflict-free member is isolated in $\Gamma$.} Let $(p,j)\in\mathcal L$ be
+conflict-free and suppose it covers $(i,j)\in Z$. By definition of $Z$ there is a conflict between
+some $(\tilde p,j)\in\mathcal L$ and some $(i,s)\in\mathcal R$; in particular $s\to j$. Then $(p,j)$
+and $(i,s)$ satisfy $p\to i$ (it covers $(i,j)$) and $s\to j$, so they conflict, contrary to the
+assumption. The same argument with the sides exchanged applies to $\mathcal R$. So conflict-free
+members have no edges at all.
+
+\emph{A cover gives the bound.} Let $K$ be a vertex cover of $\Gamma$ of size at most $\abs Z+\abs H$
+that contains no isolated vertex --- read Step~8 for the construction --- and delete exactly the
+original members lying in $K$. Since $K$ covers every edge, no conflict survives, and since $K$
+contains no isolated vertex, no initially conflict-free member is deleted. Let $q$ be the number of
+points of $Z$ covered by no surviving member. Each of the other $\abs Z-q$ points $z\in Z$ is covered
+by some surviving member; that member is adjacent to one of the two copies of $z$, so that copy lies
+in $K$, since the edge between them is not covered by the surviving member. Distinct points have
+distinct copies, so
+\begin{equation}\label{eq:cover-charge}
+ \abs{K\cap(\mathcal L\sqcup\mathcal R)}
+ \le\abs K-(\abs Z-q)\le\abs H+q ,
+\end{equation}
+which is \eqref{eq:pruning-bound}. \Cref{fig:cover} records the counting.
+
+\begin{figure}[t]
+\centering
+\input{figures/cover.tex}
+\caption{The counting behind \eqref{eq:cover-charge}. \emph{Look at} the row of copies of the points
+ of $Z$: the $q$ points left uncovered cost nothing, and each of the remaining $\abs Z-q$ must have a
+ copy in $K$ because the edge from it to its surviving member is not covered from the other side.
+ \emph{Why it matters:} this is the only place where the ``uncovered'' term of the pruning bound comes
+ from, and it is why the bound degrades gracefully: the more the survivors leave uncovered, the less
+ the cover has to pay for the points of $Z$.}
+\label{fig:cover}
+\end{figure}
+
+It remains to produce such a cover. We prove that a maximum matching of $\Gamma$ has at most
+$\abs Z+\abs H$ edges (Steps 2--7) and then convert it into a cover (Step~8).
+
+\steplabel{Step 2: a maximum matching, split in three.}
+Choose a maximum matching $\mathcal M$ of $\Gamma$ with as few edges as possible between two original
+members. Write $k$ for the number of those edges, and let
+\begin{equation}\label{eq:alpha-beta}
+ \alpha=\mathcal M\cap(\mathcal L\times Z_R),\qquad
+ \beta=\mathcal M\cap(Z_L\times\mathcal R),\qquad
+ \ell=\abs\alpha,\qquad t=\abs\beta,
+\end{equation}
+so that $\abs{\mathcal M}=k+\ell+t$: these are the only kinds of edges of $\Gamma$.
+
+\emph{$\alpha$ is a maximum matching between $\mathcal L$ and $Z_R$.} Suppose that subgraph had a
+larger matching. Its symmetric difference with $\alpha$ contains an $\alpha$-augmenting path $P$
+from an $\alpha$-unmatched member $r\in\mathcal L$ to an $\alpha$-unmatched vertex $z\in Z_R$. Every
+internal vertex of $P$ is matched by $\alpha$, and $z$ is unmatched in $\mathcal M$ altogether
+(because $z\in Z_R$ has neighbors only in $\mathcal L$, where $\mathcal M$ acts through $\alpha$).
+If $r$ is unmatched in $\mathcal M$, augmenting along $P$ enlarges $\mathcal M$, which is impossible.
+If $r$ is matched in $\mathcal M$, it is matched by an original--original edge (it is unmatched by
+$\alpha$), and removing that edge and augmenting along $P$ keeps the size of $\mathcal M$ and lowers
+$k$, contradicting the choice of $\mathcal M$. So no larger matching exists. The same argument with
+the sides exchanged shows that $\beta$ is a maximum matching between $Z_L$ and $\mathcal R$. Write
+$R_\alpha\subseteq\mathcal L$ and $C_\beta\subseteq\mathcal R$ for the original vertices matched by
+$\alpha$ and by $\beta$.
+
+\steplabel{Step 3: four matrices and the commutative square.}
+For every arrow $x\to y$ of the relation introduce two \emph{independent} real variables
+$a_{xy}$ and $b_{xy}$, and set an entry to $0$ whenever the corresponding arrow is absent. For any
+assignment of the variables define four matrices
+\begin{equation}\label{eq:fourmaps}
+ \begin{array}{ccc}
+ \R^{\mathcal L}&\xrightarrow{\ L\ }&\R^{Z}\\[2pt]
+ {\scriptstyle B}\big\downarrow&&\big\downarrow{\scriptstyle N}\\[2pt]
+ \R^{H}&\xrightarrow{\ A\ }&\R^{\mathcal R}
+ \end{array}
+ \qquad
+ \begin{aligned}
+  L_{(i,j),(p,j)}&=a_{pi},&\quad N_{(i,s),(i,j)}&=b_{sj},\\
+  B_{(p,s),(p,j)}&=b_{sj},&\quad A_{(i,s),(p,s)}&=a_{pi},
+ \end{aligned}
+\end{equation}
+all other entries being zero; the indices range over the indicated coordinate sets, so for instance
+$L_{(i,j),(p,j)}$ is defined only for $(i,j)\in Z$ and $(p,j)\in\mathcal L$. The maps $L$ and $A$
+advance the \emph{first} coordinate along an arrow $p\to i$; the maps $N$ and $B$ advance the
+\emph{second} coordinate along an arrow $s\to j$. Two steps can be composed in two orders, and
+\Cref{fig:fourmaps} shows that the two orders give the same result:
+\begin{equation}\label{eq:commute}
+ NL=AB .
+\end{equation}
+Indeed, the entry of $NL$ at $((i,s),(p,j))$ is $a_{pi}b_{sj}$ if $(i,j)\in Z$ and $0$ otherwise,
+while the entry of $AB$ at the same place is $a_{pi}b_{sj}$ if $(p,s)\in H$ and $0$ otherwise. For
+$(p,j)\in\mathcal L$ and $(i,s)\in\mathcal R$ the two conditions are equivalent: either both hold,
+when the two members conflict, or neither does, and then $a_{pi}b_{sj}=0$ because at least one of
+the two arrows is missing.
+
+\begin{figure}[t]
+\centering
+\input{figures/fourmaps.tex}
+\caption{The commutative square \eqref{eq:commute}. \emph{Look at} the two routes from
+ $\R^{\mathcal L}$ to $\R^{\mathcal R}$: one goes through $\R^{Z}$, the other through $\R^{H}$, and
+ the two composites agree. \emph{Why it matters:} this is the same square as the grid picture of
+ \cref{fig:conflict} --- advancing the first coordinate and then the second, or the other way round,
+ both take a left member to a right member, with intermediate cells $(i,j)\in Z$ and
+ $(p,s)\in H$ --- and \eqref{eq:commute} is the only link between the matching $\mathcal M$ (whose
+ pieces are counted by $Z$ and $H$) and the kernel of $A$ (which is where the $k$
+ original--original edges are hidden).}
+\label{fig:fourmaps}
+\end{figure}
+
+\steplabel{Step 4: rank bookkeeping.}
+Suppose the coefficients are chosen so that
+\begin{equation}\label{eq:rank-conditions}
+ \rank L=\ell,\qquad \rank N^{\mathsf T}=t,\qquad \dim\ker A\ge k .
+\end{equation}
+Then, writing $\dim\ker A=\abs H-\rank A$ by rank--nullity,
+\begin{align}
+ \abs H&=\dim\ker A+\rank A\ge k+\rank A\ge k+\rank(NL)\notag\\
+ &\ge k+\bigl(\ell-(\abs Z-t)\bigr)=k+\ell+t-\abs Z ,
+ \label{eq:rank-bound}
+\end{align}
+where the second inequality uses $\im(NL)\subseteq\im A$ (from $NL=AB$) and the third restricts $N$
+to $\im L$:
+\begin{equation}\label{eq:rank-restrict}
+ \rank(NL)=\dim\im L-\dim(\im L\cap\ker N)\ge\ell-(\abs Z-t),
+\end{equation}
+since $\dim\im L=\rank L=\ell$ and $\im L\cap\ker N\subseteq\ker N$ with
+$\dim\ker N=\abs Z-\rank N=\abs Z-t$. Hence $\abs{\mathcal M}=k+\ell+t\le\abs Z+\abs H$, which is
+the matching bound we need.
+
+The first two conditions of \eqref{eq:rank-conditions} will come from $\alpha$ and $\beta$. The third
+is the subtle one: it will be produced from the $k$ original--original edges, by finding $k$
+independent vectors in $\ker A$.
+
+\steplabel{Step 5: choosing the coefficients.}
+We must justify that \eqref{eq:rank-conditions} can hold, together with one further family of rank
+conditions, all at the same assignment. The tool is the classical correspondence between the rank of
+a generic matrix and the size of a maximum matching in its support~\cite[Section~5, Theorem~1]{Edmonds1967}:
+for every support, the maximum rank over all matrices supported on it equals the maximum size of a
+matching in the support. We only need the easy half, and we need the maximizing assignment to be
+explicit enough to combine several conditions.
+
+\emph{(5a) $\rank L=\ell$ with the columns $R_\alpha$ a basis of $\im L$.} For any assignment, a
+nonzero $r\times r$ minor of $L$ needs $r$ entries no two in the same row or column and all nonzero,
+i.e.\ a matching of size $r$ between $\mathcal L$ and $Z_R$; since $\alpha$ is maximum, $r\le\ell$ and
+therefore $\rank L\le\ell$ always. For the reverse inequality consider the square minor with rows the
+$Z$-endpoints of $\alpha$ and columns $R_\alpha$. Its entries $L_{(i,j),(p,j)}=a_{pi}$ vanish unless
+the two second coordinates agree, so the minor is block diagonal with one block for each value of $j$.
+Inside a block the only nonzero entries are the variables $a_{pi}$ of the matched pairs, one per row
+and column, so the determinant is, up to sign, the product of those variables. Different permutations
+of a block use different sets of variables, so no cancellation occurs: the determinant is a nonzero
+polynomial in the $a$-variables. The determinant of the whole minor is the product of the block
+determinants, up to sign (variables may occur in more than one block, but a product of nonzero
+polynomials is nonzero). Hence at any assignment where this one polynomial does not vanish,
+$\rank L=\ell$ and the columns $R_\alpha$ are independent, hence a basis of $\im L$.
+
+\emph{(5b) $\rank N^{\mathsf T}=t$ with the columns $C_\beta$ a basis of $\im N^{\mathsf T}$.} The same
+argument, with the roles of the two coordinates exchanged: the minor with rows the $Z$-endpoints of
+$\beta$ and columns $C_\beta$ is block diagonal with one block per value of the \emph{first}
+coordinate, each block determinant a product of distinct $b$-variables.
+
+\emph{(5c) The auxiliary matrices.} For every arrow $p\to i$ of the relation put
+\begin{equation}\label{eq:Dpi}
+ J_p=\{j:(p,j)\in\mathcal L\},\qquad S_i=\{s:(i,s)\in\mathcal R\},\qquad
+ D^{p,i}=(b_{sj})_{s\in S_i,\ j\in J_p},
+\end{equation}
+a matrix with rows indexed by $S_i$ and columns by $J_p$, supported on
+\begin{equation}\label{eq:Tpi}
+ T^{p,i}=\{(s,j)\in S_i\times J_p:\ s\to j\}.
+\end{equation}
+For each arrow $p\to i$, choose a minor of $D^{p,i}$ that attains the maximum rank among matrices
+supported on $T^{p,i}$; the entries of the minor are $b$-variables, so its determinant is a nonzero
+polynomial in the $b$-variables, or the empty minor $1$ if that maximum rank is $0$.
+
+\emph{(5d) One assignment for everything.} Multiply the finitely many nonzero polynomials obtained in
+(5a)--(5c). The product is a nonzero polynomial in the finitely many variables $a_{xy},b_{xy}$, since
+the polynomial ring is an integral domain. A nonzero real polynomial in finitely many variables is
+nonzero at some real point: induct on the number of variables, writing the polynomial as a polynomial
+in the last variable whose coefficients are polynomials in the others. Fix once and for all a real
+assignment at which the product does not vanish. At that assignment all the required minors are
+nonzero simultaneously: $\rank L=\ell$ with $R_\alpha$ a basis of $\im L$, $\rank N^{\mathsf T}=t$
+with $C_\beta$ a basis of $\im N^{\mathsf T}$, and every $D^{p,i}$ has maximum rank on $T^{p,i}$.
+
+\steplabel{Step 6: lifting the original--original edges.}
+For each original--original edge $(r,c)\in\mathcal M$, say $r=(p,j)\in\mathcal L$ and
+$c=(i,s)\in\mathcal R$, the basis property of $R_\alpha$ provides coefficients $\xi^r_a$ with
+\begin{equation}\label{eq:lifts}
+ \lambda^r=e_r+\sum_{a\in R_\alpha}\xi^r_a\,e_a\in\ker L,
+ \qquad
+ \kappa^c=e_c+\sum_{b\in C_\beta}\eta^c_b\,e_b\in\ker N^{\mathsf T}.
+\end{equation}
+Such vectors exist because the column $Le_r$ of $L$ lies in $\im L=\Span\{Le_a:a\in R_\alpha\}$, so a
+suitable linear combination of the $e_a$ cancels it. The endpoints $r$ and $c$ of an
+original--original edge are matched by $\mathcal M$, hence not matched by $\alpha$ or $\beta$, so
+$r\notin R_\alpha$ and $c\notin C_\beta$; consequently
+\[
+ \lambda^r_r=1,\qquad \lambda^r_{r'}=0\ \text{for every other original left endpoint }r',
+ \qquad \kappa^c_c=1 .
+\]
+
+\steplabel{Step 7: the key vanishing, and $\dim\ker A\ge k$.}
+The assertion to prove is
+\begin{equation}\label{eq:key}
+ u_{pj}\,v_{is}=0
+ \qquad\text{for every conflict }\bigl((p,j),(i,s)\bigr),\quad
+ u\in\ker B,\quad v\in\ker N^{\mathsf T}.
+\end{equation}
+Here $u\in\ker B\subseteq\R^{\mathcal L}$ and $v\in\ker N^{\mathsf T}\subseteq\R^{\mathcal R}$, so
+the two factors are coordinates of the two vectors at the two conflicting members.
+
+Fix an arrow $p\to i$ and $u\in\ker B$. The coordinate of $Bu=0$ at $(p,s)\in H$ reads
+\begin{equation}\label{eq:row-eq}
+ \sum_{j\in J_p}b_{sj}u_{pj}=0 .
+\end{equation}
+If a row $s\in S_i$ of $D^{p,i}$ has an allowed entry, choose $j\in J_p$ with $s\to j$; then $(p,j)$
+and $(i,s)$ conflict (as $p\to i$), so $(p,s)\in H$ and \eqref{eq:row-eq} is exactly the statement
+that the row $s$ of $D^{p,i}$ annihilates the vector $(u_{pj})_{j\in J_p}$. If the row has no allowed
+entry, all its entries are $0$ and the same equation holds trivially. So
+$(u_{pj})_{j\in J_p}\in\ker D^{p,i}$.
+
+Similarly, for $v\in\ker N^{\mathsf T}$, the coordinate of $N^{\mathsf T}v=0$ at $(i,j)$ reads
+\begin{equation}\label{eq:col-eq}
+ \sum_{s\in S_i}b_{sj}v_{is}=0 ,
+\end{equation}
+which is the statement that $(v_{is})_{s\in S_i}$ is annihilated by the columns of $D^{p,i}$; the
+coordinate $(i,j)$ is available in $Z$ whenever some $s\in S_i$ has $s\to j$, and the equation holds
+trivially otherwise. So $(v_{is})_{s\in S_i}\in\ker(D^{p,i})^{\mathsf T}$.
+
+Since $D^{p,i}$ has maximum rank on its support $T^{p,i}$, \cref{lem:kernel} applies to the two kernel
+vectors and gives $u_{pj}v_{is}=0$ for every $(s,j)\in T^{p,i}$, i.e.\ whenever $s\to j$, which is
+exactly \eqref{eq:key}. Note that the single-entry perturbation inside \cref{lem:kernel} is applied to
+$D^{p,i}$ alone and need not preserve any other rank condition; the conclusion holds for the fixed
+assignment of Step~5.
+
+Now substitute $v=\kappa^c$ in \eqref{eq:key} for an original--original edge $(r,c)$ with $r=(p,j)$ and
+$c=(i,s)$. Since $\kappa^c_c=1$, \eqref{eq:key} says $u_{pj}=0$ for every $u\in\ker B$: every vector of
+$\ker B$ vanishes at $r$. Therefore the vectors $B\lambda^r$, for $r$ ranging over the $k$ original
+left endpoints, are linearly independent. Indeed a relation $\sum_r\theta_rB\lambda^r=0$ puts
+$u=\sum_r\theta_r\lambda^r$ in $\ker B$, and the coordinate of $u$ at each $r$ is $u_r=\theta_r$ by
+\eqref{eq:lifts}; all these coordinates vanish, so all $\theta_r$ vanish. Moreover
+\[
+ A(B\lambda^r)=NL\lambda^r=0
+\]
+by \eqref{eq:commute}, because $\lambda^r\in\ker L$. So the $B\lambda^r$ are $k$ independent vectors
+of $\ker A$, i.e.\ $\dim\ker A\ge k$. This is the third condition of \eqref{eq:rank-conditions}, and
+Step~4 now gives $\abs{\mathcal M}\le\abs Z+\abs H$.
+
+\steplabel{Step 8: from the matching to the cover.}
+For completeness, here is the alternating-path construction of a cover of size $\abs{\mathcal M}$ that
+omits isolated vertices (K\H{o}nig's theorem~\cite{konig1931}). Starting from all unmatched vertices
+of $\mathcal V_L$, follow edges outside $\mathcal M$ from left to right and edges of $\mathcal M$ from
+right to left; let $W_L,W_R$ be the sets of vertices of the two sides reached. No unmatched vertex of
+$\mathcal V_R$ is reached, since an alternating path to one would augment the maximum matching. The
+two endpoints of a matched edge are either both reached or both unreached: a reached right endpoint
+leads to its mate, and a matched left endpoint can only have been reached through its mate. Hence
+\begin{equation}\label{eq:cover}
+ K=(\mathcal V_L\setminus W_L)\cup W_R
+\end{equation}
+covers every edge: an edge from a reached left vertex to an unreached right vertex would be neither
+outside $\mathcal M$ (which would make the right endpoint reached) nor in $\mathcal M$ (whose
+endpoints share their reachability). The cover contains exactly one endpoint of each matched edge and
+no unmatched vertex, so $\abs K=\abs{\mathcal M}\le\abs Z+\abs H$ and $K$ omits every isolated vertex.
+Applying \eqref{eq:cover-charge} to this $K$ proves \eqref{eq:pruning-bound}.
+\end{proof}
+
+\begin{checkpoint}
+The lemma is proved. Three sentences to keep: \emph{conflicts and covering relations become edges of a
+bipartite graph}; \emph{a vertex cover of size $\abs Z+\abs H$ gives the bound}; \emph{a maximum
+matching has size at most $\abs Z+\abs H$, because the two maximum matchings $\alpha,\beta$ and the
+$k$ original--original edges are three quantities that ranks can count, and the commuting square
+$NL=AB$ forces the $k$ lifts into the kernel of $A$}. The next section applies the lemma to the
+families produced by the subset inequalities of \cref{sec:reduction}.
+\end{checkpoint}
+
+\begin{remark}[What the rank argument is really doing]\label{rem:rank-philosophy}
+It is worth separating the three roles of linear algebra in Steps 3--7, because the proof is easy to
+read as a sequence of tricks.
+\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
+\item \textbf{Rank as a matching counter.} The maximum rank of a matrix supported on a set $T$ equals
+  the maximum size of a matching in $T$ (Edmonds). Here this is used in the easy direction: a nonzero
+  minor exhibits a matching, so $\rank\le$ matching size; and the explicit minors of (5a), (5b) are
+  chosen to \emph{achieve} the matching bound. Thus $\rank L=\ell$ is a certificate that
+  $\alpha$ is maximum, and $\rank N^{\mathsf T}=t$ that $\beta$ is.
+\item \textbf{Rank--nullity as a trade-off.} If a matrix from a space of dimension $\abs H$ has rank
+  $r$, its kernel has dimension $\abs H-r$. So a lower bound on the kernel is an upper bound on the
+  rank, hence on a matching. This is the chain \eqref{eq:rank-bound}: $\dim\ker A\ge k$ and
+  $\rank A\ge\rank(NL)$ together give $\abs H\ge k+\ell+t-\abs Z$.
+\item \textbf{The commuting square as incompatibility.} The identity $NL=AB$ says that a conflict can
+  be traversed in two ways. If both a left kernel vector and a right kernel vector were nonzero at the
+  two ends of a conflict, the two routes would force a contradiction, and the rank lemma turns that
+  into the vanishing \eqref{eq:key}. That vanishing is what makes $k$ vectors out of nothing: the
+  right kernel vector $\kappa^c$ kills the coordinate of every left kernel vector at $r$.
+\end{enumerate}
+\end{remark}

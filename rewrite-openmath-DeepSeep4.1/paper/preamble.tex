@@ -1,0 +1,131 @@
+% ------------------------------------------------------------------ packages
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{array,booktabs,tabularx}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric,patterns,decorations.pathreplacing}
+\usepackage[most]{tcolorbox}
+\usepackage[font=small,labelfont=bf,skip=4pt]{caption}
+\usepackage[colorlinks=true,linkcolor=blue!50!black,citecolor=teal!55!black,
+            urlcolor=violet!65!black,bookmarksnumbered=true]{hyperref}
+\usepackage{cleveref}
+
+% ------------------------------------------------------------------ colours
+\definecolor{ideacol}{RGB}{255,247,224}
+\definecolor{ideaframe}{RGB}{214,178,80}
+\definecolor{warncol}{RGB}{253,235,235}
+\definecolor{warnframe}{RGB}{200,90,90}
+\definecolor{checkcol}{RGB}{235,243,252}
+\definecolor{checkframe}{RGB}{90,130,190}
+\definecolor{plancol}{RGB}{240,247,240}
+\definecolor{planframe}{RGB}{90,150,100}
+\definecolor{contractcol}{RGB}{246,242,250}
+\definecolor{contractframe}{RGB}{130,100,170}
+\definecolor{graytext}{RGB}{90,90,90}
+
+% ------------------------------------------------------------------ theorems
+% thmtools is used so that cleveref prints the right environment name even
+% though all statement types share one counter (and therefore one numbering).
+\usepackage{thmtools}
+\declaretheorem[name=Theorem,numberwithin=section,style=definition,
+  refname={Theorem,Theorems},Refname={Theorem,Theorems}]{theorem}
+\declaretheorem[name=Proposition,numberlike=theorem,style=definition,
+  refname={Proposition,Propositions},Refname={Proposition,Propositions}]{proposition}
+\declaretheorem[name=Lemma,numberlike=theorem,style=definition,
+  refname={Lemma,Lemmas},Refname={Lemma,Lemmas}]{lemma}
+\declaretheorem[name=Corollary,numberlike=theorem,style=definition,
+  refname={Corollary,Corollaries},Refname={Corollary,Corollaries}]{corollary}
+\declaretheorem[name=Definition,numberlike=theorem,style=definition,
+  refname={Definition,Definitions},Refname={Definition,Definitions}]{definition}
+\declaretheorem[name=Example,numberlike=theorem,style=definition,
+  refname={Example,Examples},Refname={Example,Examples}]{example}
+\declaretheorem[name=Construction,numberlike=theorem,style=definition,
+  refname={Construction,Constructions},Refname={Construction,Constructions}]{construction}
+\declaretheorem[name=Remark,numberlike=theorem,style=remark,
+  refname={Remark,Remarks},Refname={Remark,Remarks}]{remark}
+
+\crefname{figure}{Figure}{Figures}
+\crefname{table}{Table}{Tables}
+\crefname{section}{Section}{Sections}
+\crefname{appendix}{Appendix}{Appendices}
+
+\numberwithin{equation}{section}
+
+% ------------------------------------------------------------------ boxes
+% "In words" gloss, attached above a formal statement
+\newtcolorbox{words}{
+  enhanced, breakable=false, colback=black!4, colframe=black!4, boxrule=0pt,
+  leftrule=2.4pt, arc=0pt, outer arc=0pt, left=7pt, right=7pt, top=3pt, bottom=3pt,
+  fontupper=\small\itshape}
+
+% section contract
+\newtcolorbox{contract}[1][]{
+  enhanced, breakable=true, colback=contractcol, colframe=contractframe,
+  boxrule=0.6pt, arc=2pt, left=7pt, right=7pt, top=13pt, bottom=5pt,
+  fonttitle=\small\bfseries\sffamily, title={What this section does},
+  attach boxed title to top left={xshift=8pt, yshift=-8pt},
+  boxed title style={colback=contractframe, colframe=contractframe, arc=1pt},
+  #1}
+
+% proof plan
+\newtcolorbox{planbox}[1][Proof plan]{
+  enhanced, breakable=true, colback=plancol, colframe=planframe,
+  boxrule=0.5pt, arc=2pt, left=7pt, right=7pt, top=12pt, bottom=4pt,
+  fonttitle=\small\bfseries, title={#1},
+  attach boxed title to top left={xshift=6pt, yshift=-7pt},
+  boxed title style={colback=planframe, colframe=planframe, arc=1pt, left=3pt,right=3pt,top=1pt,bottom=1pt}}
+
+% idea / warning / checkpoint
+\newtcolorbox{ideabox}[1][]{
+  enhanced, breakable=true, colback=ideacol, colframe=ideaframe, boxrule=0.6pt,
+  arc=2pt, left=7pt, right=7pt, top=12pt, bottom=4pt,
+  fonttitle=\small\bfseries, title={Idea},
+  attach boxed title to top left={xshift=6pt, yshift=-7pt},
+  boxed title style={colback=ideaframe, colframe=ideaframe, arc=1pt, left=3pt,right=3pt,top=1pt,bottom=1pt},
+  #1}
+\newtcolorbox{warnbox}[1][]{
+  enhanced, breakable=true, colback=warncol, colframe=warnframe, boxrule=0.6pt,
+  arc=2pt, left=7pt, right=7pt, top=12pt, bottom=4pt,
+  fonttitle=\small\bfseries, title={Watch out},
+  attach boxed title to top left={xshift=6pt, yshift=-7pt},
+  boxed title style={colback=warnframe, colframe=warnframe, arc=1pt, left=3pt,right=3pt,top=1pt,bottom=1pt},
+  #1}
+\newtcolorbox{checkpoint}[1][]{
+  enhanced, breakable=true, colback=checkcol, colframe=checkframe, boxrule=0.6pt,
+  arc=2pt, left=7pt, right=7pt, top=12pt, bottom=4pt,
+  fonttitle=\small\bfseries, title={Where we are},
+  attach boxed title to top left={xshift=6pt, yshift=-7pt},
+  boxed title style={colback=checkframe, colframe=checkframe, arc=1pt, left=3pt,right=3pt,top=1pt,bottom=1pt},
+  #1}
+
+% "used in" line
+\newcommand{\usedin}[1]{\par\smallskip\noindent{\small\color{graytext}\textbf{Used in:} #1.}}
+
+% ------------------------------------------------------------------ macros
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\card}[1]{\lvert #1\rvert}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Span}{span}
+\newcommand{\R}{\mathbb R}
+\newcommand{\from}{\leftarrow}
+\newcommand{\disjoint}{\sqcup}
+\newcommand{\Ne}{N_1^+}
+\newcommand{\Nee}{N_2^+}
+\newcommand{\Nminus}{N_1^-}
+\newcommand{\restr}{\upharpoonright}
+\DeclareMathOperator{\dom}{dom}
+\DeclareMathOperator{\coker}{coker}
+\newcommand{\Emph}[1]{\emph{#1}}
+\newcommand{\code}[1]{\texttt{#1}}
+
+% theorem-attached "In words" convenience
+\newcommand{\inwords}[1]{\begin{words}#1\end{words}}
+
+% step heading inside proofs
+\newcommand{\steplabel}[1]{\par\smallskip\noindent\textbf{#1}\quad}

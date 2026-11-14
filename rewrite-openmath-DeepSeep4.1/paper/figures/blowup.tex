@@ -1,0 +1,38 @@
+\begin{tikzpicture}[
+  base/.style={circle,draw=black!70,fill=black!8,inner sep=0pt,minimum size=5.2mm,font=\scriptsize},
+  labd/.style={circle,draw=black!55,fill=black!6,inner sep=0pt,minimum size=3mm},
+  arc/.style={-{Stealth[length=1.4mm]},draw=black!70},
+  thin/.style={draw=black!30,line width=0.25pt},
+  lab/.style={font=\scriptsize,text=black!75},
+  pan/.style={font=\scriptsize\bfseries,text=black!55}
+]
+% ---------------- panel 1: the base graph
+\node[base] (u) at (0.7,2.05) {$u$};
+\node[base] (v) at (0.7,1.25) {$v$};
+\node[base] (w) at (1.75,1.25) {$w$};
+\draw[arc] (u) -- (v);
+\draw[arc] (v) -- (w);
+\node[lab,anchor=north] at (1.05,0.35) {base graph $D$};
+% ---------------- panel 2: the blowup of one arc
+\draw[rounded corners=3pt,draw=black!35] (3.35,0.55) rectangle (4.25,2.35);
+\draw[rounded corners=3pt,draw=black!35] (5.55,0.55) rectangle (6.45,2.35);
+\foreach \i in {0,1,2,3}{
+  \node[labd] (a\i) at (3.8,0.85+\i*0.42) {};
+  \node[labd] (b\i) at (6.0,0.85+\i*0.42) {};
+}
+\draw[arc] (a0) -- (a3); \draw[arc] (a1) -- (a2);
+\draw[arc] (b0) -- (b3); \draw[arc] (b1) -- (b2);
+\foreach \i in {0,1,2,3}{ \foreach \j in {0,1,2,3}{ \draw[thin] (a\i) -- (b\j); }}
+\node[lab,anchor=north] at (3.8,0.45) {block $v$};
+\node[lab,anchor=north] at (6.0,0.45) {block $w$};
+\node[lab,anchor=south] at (4.9,2.45) {all arcs $v\to w$};
+% ---------------- panel 3: the three kinds of blocks
+\draw[fill=black!55,draw=black!55] (7.75,0.55) rectangle (8.35,2.35);
+\draw[fill=black!28,draw=black!28] (9.25,0.55) rectangle (9.85,2.35);
+\draw[fill=black!8,draw=black!45] (10.75,0.55) rectangle (11.35,2.35);
+\node[lab,anchor=north] at (8.05,0.45) {$F(S)$};
+\node[lab,anchor=north] at (9.55,0.45) {$F^2(S)\setminus F(S)$};
+\node[lab,anchor=north] at (11.05,0.45) {else};
+\node[lab,anchor=south] at (9.55,2.45) {the three kinds of blocks};
+
+\end{tikzpicture}

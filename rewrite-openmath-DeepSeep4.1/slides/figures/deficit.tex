@@ -1,0 +1,40 @@
+\begin{tikzpicture}[
+  svert/.style={circle,draw=blue!50!black,fill=blue!10,inner sep=0pt,minimum size=5mm,font=\scriptsize},
+  ivert/.style={circle,draw=blue!50!black,fill=blue!30,inner sep=0pt,minimum size=5mm,font=\scriptsize},
+  evert/.style={circle,draw=orange!60!black,fill=orange!28,inner sep=0pt,minimum size=5mm,font=\scriptsize},
+  gvert/.style={circle,draw=green!40!black,fill=green!25,inner sep=0pt,minimum size=5mm,font=\scriptsize},
+  arc/.style={-{Stealth[length=1.5mm]},draw=black!70},
+  lab/.style={font=\scriptsize,text=black!75}
+]
+% ambient box
+\draw[draw=black!45,rounded corners=6pt,fill=black!2] (0,0) rectangle (12.6,5.7);
+\node[lab,anchor=north west] at (0.18,5.62) {$V(D)$};
+% S
+\draw[blue!45!black,fill=blue!7,thick] (3.6,3.0) ellipse (2.9 and 2.25);
+\node[lab,text=blue!45!black,anchor=west] at (0.12,3.0) {$S$};
+% vertices
+\node[svert] (s1) at (1.4,4.1) {};
+\node[svert] (s2) at (1.9,1.6) {};
+\node[svert] (s3) at (2.6,2.35) {};
+\node[ivert] (i1) at (4.9,4.1) {};
+\node[ivert] (i2) at (5.35,2.75) {};
+\node[evert] (e1) at (7.5,4.6) {};
+\node[evert] (e2) at (7.9,1.6) {};
+\node[gvert] (g1) at (10.0,4.6) {};
+\node[gvert] (g2) at (10.3,1.6) {};
+% arcs
+\draw[arc] (s1) -- (i1);
+\draw[arc] (s3) -- (i2);
+\draw[arc] (i2) -- (e1);
+\draw[arc] (i1) -- (e1);
+\draw[arc] (e1) -- (g1);
+\draw[arc] (s2) -- (e2);
+\draw[arc] (e2) -- (g2);
+% region labels, all clear of nodes and arcs
+\node[lab,text=blue!45!black,anchor=south] at (3.1,4.25) {$I=F(S)\cap S$};
+\node[lab,text=orange!55!black,anchor=south] at (7.7,4.95) {$E=F(S)\setminus S$};
+\node[lab,text=green!35!black,anchor=south] at (10.15,4.95) {$F^2(S)\setminus F(S)$};
+% the inequality, on a plate below the ellipse
+\node[draw=black!25,fill=white,rounded corners=2pt,inner sep=4pt,font=\scriptsize]
+  at (9.1,0.42) {$\abs{F^2(S)\setminus F(S)} \;<\; \abs{F(S)\setminus S}=\abs E$};
+\end{tikzpicture}

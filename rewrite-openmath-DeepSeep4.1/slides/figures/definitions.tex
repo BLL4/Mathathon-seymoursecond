@@ -1,0 +1,39 @@
+\begin{tikzpicture}[
+  vertex/.style={circle,draw=black!70,fill=black!6,inner sep=0pt,minimum size=5.6mm,
+                 font=\footnotesize},
+  first/.style={circle,draw=blue!55!black,fill=blue!12,inner sep=0pt,minimum size=5.6mm,
+                font=\footnotesize},
+  second/.style={circle,draw=green!45!black,fill=green!14,inner sep=0pt,minimum size=5.6mm,
+                 font=\footnotesize},
+  far/.style={circle,draw=black!35,fill=white,inner sep=0pt,minimum size=5.6mm,
+              font=\footnotesize,text=black!55},
+  arc/.style={-{Stealth[length=1.6mm]},draw=black!75},
+  lab/.style={font=\scriptsize\itshape,text=black!70}
+]
+% vertices
+\node[vertex] (v) at (0,0) {$v$};
+\node[first]  (a) at (1.75,1.55) {$a$};
+\node[first]  (b) at (2.05,0)    {$b$};
+\node[first]  (c) at (1.75,-1.55){$c$};
+\node[second] (p) at (4.05,2.55) {$p$};
+\node[second] (q) at (4.35,1.35) {$q$};
+\node[second] (r) at (4.45,-0.25){$r$};
+\node[second] (s) at (4.15,-1.85){$s$};
+\node[far]    (z) at (6.05,2.05) {$z$};
+% arcs
+\draw[arc] (v) -- (a);
+\draw[arc] (v) -- (b);
+\draw[arc] (v) -- (c);
+\draw[arc] (a) -- (p);
+\draw[arc] (a) -- (q);
+\draw[arc] (b) -- (r);
+\draw[arc] (c) -- (s);
+\draw[arc] (c) to[bend left=18] (b);
+\draw[arc] (p) -- (z);
+% region labels (placed clear of every node and arc)
+\node[lab,anchor=west] at (1.35,2.35) {$N_1^+(v)$};
+\node[lab,anchor=west] at (4.55,3.15) {$N_2^+(v)$};
+\node[lab,anchor=west,text=black!55] at (6.25,1.55) {distance $3$};
+\node[lab,anchor=north] at (2.85,-2.55) {$b$ is reachable in one \emph{and} in two steps,
+                                        so $b\notin N_2^+(v)$};
+\end{tikzpicture}

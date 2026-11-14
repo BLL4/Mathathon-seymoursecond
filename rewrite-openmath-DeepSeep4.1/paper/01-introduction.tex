@@ -1,0 +1,194 @@
+\section{Introduction}\label{sec:intro}
+
+\begin{contract}
+\textbf{Assumes:} nothing. \quad
+\textbf{Produces:} the statement of the conjecture and of the main theorem
+(\cref{thm:main}), the two elementary observations that fix the meaning of the definitions, and a
+map of the proof (\cref{fig:roadmap}) naming its three engines.\\[2pt]
+\textbf{Why:} the proof is an interplay of three ingredients that are individually simple and
+collectively confusing. Knowing which is which before starting is most of the battle.
+\end{contract}
+
+\subsection{The conjecture}
+
+An \emph{oriented graph} is a finite directed graph with no loops, no two arcs with the same tail
+and head, and no pair of opposite arcs: if $x\to y$ then not $y\to x$. Its underlying undirected
+graph need not be complete and need not be connected.
+
+For a vertex $v$,
+\begin{equation}\label{eq:N1N2}
+ N_1^+(v)=\{u:\ v\to u\},\qquad
+ N_2^+(v)=\bigl\{w\notin\{v\}\cup N_1^+(v):\ \text{there is }u\text{ with }v\to u\to w\bigr\}.
+\end{equation}
+So $N_1^+(v)$ is the set of out-neighbors and $N_2^+(v)$ is the set of vertices at directed
+distance \emph{exactly} two. Each vertex is counted once, however many two-step paths reach it.
+
+\begin{figure}[t]
+\centering
+\input{figures/definitions.tex}
+\caption{The two neighborhoods of \eqref{eq:N1N2}, and the two things that can go wrong if one is
+ careless. \emph{Look at} the vertex $b$: it lies in $N_1^+(v)$ and is also reachable in two steps
+ ($v\to c\to b$), but it is \emph{not} in $N_2^+(v)$, because distance two must be exact. Look
+ also at $z$, reachable only in three steps. \emph{Why it matters:} the subtraction of $N_1^+(v)$
+ in \eqref{eq:N1N2} is what makes the conjecture a comparison of two disjoint sets, and the first
+ place where a proof can fail by forgetting a case.}
+\label{fig:definitions}
+\end{figure}
+
+\begin{quote}\itshape
+Seymour's second-neighborhood conjecture. Every nonempty finite oriented graph has a vertex $v$
+with $\abs{N_1^+(v)}\le\abs{N_2^+(v)}$.
+\end{quote}
+
+\begin{theorem}[Main theorem]\label{thm:main}
+Every nonempty finite oriented graph has a vertex $v$ such that
+$\abs{N_1^+(v)}\le\abs{N_2^+(v)}$.
+\end{theorem}
+
+\inwords{In every finite oriented graph, some vertex has at least as many vertices at distance
+exactly two as at distance exactly one.}
+
+\begin{proof}[Proof]
+Combine \cref{prop:reduction} with \cref{prop:no-concavity}: the first turns a counterexample into
+a graph of a certain kind, the second shows that no graph of that kind exists. The two propositions
+are proved in \cref{sec:reduction} and \cref{sec:incompatibility}; \cref{fig:roadmap} shows the
+dependencies.
+\end{proof}
+
+\Cref{thm:main} is unconditional: no connectivity, no minimum degree, no regularity. This is not a
+defect of the statement --- a sink (a vertex with no out-neighbor) satisfies the conclusion
+trivially, with $0\le 0$ --- but it does mean that the interesting case, and the whole difficulty,
+is a graph in which every vertex has both in- and out-neighbors.
+
+\begin{warnbox}
+Two natural weakenings are \emph{not} what is proved here, and the reader should not substitute
+them. First, replacing $N_2^+$ by $F^2(\{v\})$ without subtracting $N_1^+(v)$ would make the
+statement false in general digraphs and trivial in tournaments. Second, the theorem is a
+\emph{maximum over vertices} of the ratio $\abs{N_2^+}/\abs{N_1^+}$, not an average: the average can
+be smaller than $1$ (take a long directed path).
+\end{warnbox}
+
+\subsection{The shape of the proof: three inventions}
+
+The proof is a single argument, but three of its steps are genuinely new and everything else is
+either a reduction to them or a consequence of them. They are worth naming at the start, because
+each is a different kind of idea.
+
+\begin{ideabox}[title={The three engines}]
+\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
+\item \textbf{A subset inequality with the right right-hand side}
+  (\cref{lem:deficit}). In a minimal counterexample, deleting a well-chosen set of arcs and using
+  minimality shows
+  \[
+    \abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}
+    \qquad\text{for every nonempty proper }S .
+  \]
+  The point is the right-hand side: $\abs{F(S)\setminus S}$, the part of the first image
+  \emph{outside} $S$, rather than the whole first image. A transitive-tournament blowup
+  (\cref{lem:blowup}) then turns this strict deficit into
+  $\abs{U}+\abs{F^2(U)}<2\abs{F(U)}$.
+
+\item \textbf{Pruning at a cost charged to what stays uncovered} (\cref{lem:pruning}). Two families
+  of ordered pairs that are \emph{almost} compatible can be made compatible by deleting a few
+  members; the number deleted is bounded by the number of collisions plus the number of points of
+  a certain set $Z$ that remain uncovered \emph{after} the pruning. Charging the cost to the
+  survivors is what makes the last step work.
+
+\item \textbf{An extremal objective that refunds the cost} (\cref{sec:incompatibility}). Maximise
+  $\abs{P}+\abs{Q}$ plus the number $u$ of uncovered points over all compatible pairs of families
+  containing the diagonal. The subset inequality gives a pair worth more than $M+2u$; pruning it
+  costs at most $u+u'$ and leaves $u'$ uncovered, so the net value exceeds $M+u$ --- a
+  contradiction.
+\end{enumerate}
+\end{ideabox}
+
+\begin{figure}[t]
+\centering
+\input{figures/roadmap.tex}
+\caption{The architecture of the proof, read from the bottom up. The main theorem rests on two
+ propositions: one converts a counterexample into a graph satisfying a strict subset inequality,
+ the other forbids such a graph. Each proposition in turn rests on one substantial lemma.
+ \emph{Look at} the two lower boxes: the extremal choice sits between the pruning lemma and the
+ contradiction, and is where the two halves of the argument meet. \emph{Why it matters:} \cref{sec:weighted,sec:cycles} are not in this diagram: they consume the
+ theorem and produce nothing that is used earlier, so they can be skipped entirely on a first
+ reading.}
+\label{fig:roadmap}
+\end{figure}
+
+\paragraph{How the reduction goes, in words.}
+Suppose the theorem fails and take a counterexample $D$ of minimum order, and among those of
+minimum number of arcs. Deleting a cleverly chosen family of arcs produces a smaller graph, which
+by minimality is \emph{not} a counterexample: some vertex $v$ of it satisfies the desired
+inequality. Comparing the neighborhoods of $v$ before and after the deletion shows that the
+deleted arcs ``bought'' more second out-neighbors for $v$ than first out-neighbors. Counting this
+gain and loss over a chain of deletions, for an arbitrary subset $S$ of vertices, gives the subset
+deficit of \cref{lem:deficit}. The blowup then amplifies an integer deficit (at least $1$) into a
+margin large enough to survive the final rounding.
+
+\paragraph{How the contradiction goes, in words.}
+Represent a \emph{family of ordered pairs} $P\subseteq X\times X$ as a relation: it has a
+\emph{column} $P_j=\{p:(p,j)\in P\}$ for each second coordinate and a \emph{row} for each first
+coordinate. Advancing the first coordinate along an arc maps $P$ to $\Phi_1P$; advancing the second
+coordinate maps a second family $Q$ to $\Phi_2Q$. The families are \emph{compatible} when these two
+images are disjoint. Summing the subset inequality over the columns of $P$ and the rows of $Q$ turns
+compatibility into a strict inequality between $\abs{P}+\abs{\Phi_1^2P}$ and $2\abs{\Phi_1P}$; taking
+complements of the \emph{second} images then produces two families that are worth more than
+$M+2u$ but may conflict. The pruning lemma repairs the conflicts at a cost that the uncovered
+points pay for. The maximality of $(P,Q)$ is contradicted.
+
+\begin{checkpoint}
+After this section you should be able to say, without symbols: \emph{a minimal counterexample
+satisfies a strict subset inequality; two families of pairs get pruned to compatibility at a
+refundable cost; an extremal pair cannot survive being improved.} Everything that follows is the
+proof of one of those three sentences.
+\end{checkpoint}
+
+\subsection{History and context}\label{sec:history}
+
+The conjecture was recorded by Dean and Latka~\cite{DeanLatka1995}. The case of
+\emph{tournaments} --- oriented graphs with an arc between every two distinct vertices, the case
+also known as Dean's conjecture --- was proved by Fisher~\cite{Fisher1996}, using a probability
+distribution obtained from Farkas' lemma. Havet and Thomass\'e gave a combinatorial proof using
+local median orders~\cite{HavetThomasse2000}. Fidler and Yuster~\cite{FidlerYuster2007} extended
+the tournament theorem to tournaments missing a matching, a star, or a clique; Ghazal corrected the
+star case and treated generalized stars~\cite{Ghazal2012}. Later extensions cover a matching
+together with a star~\cite{DaraFrancisJacobNarayanan2022} and two
+stars~\cite{DaamouchAlMninyGhazal2025}.
+
+A second line imposes degree conditions or weakens the ratio. Kaneko and Locke settled the case of
+minimum out-degree at most six~\cite{KanekoLocke2001}, and a recent computer-assisted preprint
+treats minimum out-degree seven~\cite{SadhukhanSandeepSen2026}. Chen, Shen and
+Yuster~\cite{ChenShenYuster2003} proved a universal ratio second-to-first of about $0.657298$;
+Huang and Peng~\cite{HuangPeng2024} raise this to about $0.715538$ and report a computational bound
+of $0.74530$. Botler, Moura and Naia~\cite{BotlerMouraNaia2023}, followed by Espuny D\'iaz,
+Gir\~ao, Granet and Kronenberg~\cite{EspunyDiazEtAl2025}, treated every orientation of a binomial
+random graph; the latter covers every fixed edge probability below $1/2$ with probability tending
+to one. Brukhman's recent dense-case preprint~\cite{Brukhman2026} concerns order $n\le 2\delta+2$,
+where $\delta$ is the minimum out-degree.
+
+The present proof builds on the minimal-counterexample and graph-product methods of Brantner,
+Brockman, Kay and Snively~\cite{BrantnerBrockmanKaySnively2009} and on Seacrest's subset
+perspective~\cite{Seacrest2019}. It adapts the edge-deletion idea in the proof of Seacrest's
+Lemma~4 --- specializing his parameter to $1$ --- to obtain the stronger subset inequality needed
+here, and gives that argument in full. The main additional ingredient is the pruning bound for
+arbitrary finite binary relations (\cref{lem:pruning}), whose deletion cost depends on the points
+left uncovered after pruning.
+
+\subsection{Organization of the paper}\label{sec:organisation}
+
+\begin{description}[leftmargin=1.4em,itemsep=2pt]
+\item[\Cref{sec:reduction}] From a counterexample to a strict subset inequality
+  (\cref{prop:reduction}), via the subset deficit (\cref{lem:deficit}) and the blowup
+  (\cref{lem:blowup}). This is the \emph{first engine} and the easiest of the three to read.
+\item[\Cref{sec:pruning}] The pruning lemma (\cref{lem:pruning}) for arbitrary finite binary
+  relations, and the rank lemma (\cref{lem:kernel}) that makes it work. This is the \emph{second
+  engine}; it is independent of graph theory and can be read on its own.
+\item[\Cref{sec:incompatibility}] The extremal contradiction (\cref{prop:no-concavity}). This is
+  the \emph{third engine} and the place where the first two meet.
+\item[\Cref{sec:weighted,sec:cycles}] Consequences: the vertex- and arc-weighted forms via
+  Seacrest's equivalences, and consequences for directed triangles, minimum degree and girth.
+  Neither is used in the proof of \cref{thm:main}.
+\item[\Cref{app:depgraph,app:dictionary,app:checks}] A dependency graph of the numbered statements,
+  a dictionary of notation against the original preprint, and a record of how each step was
+  checked (re-derivation, exhaustive computation on small cases, and a Lean formalisation).
+\end{description}

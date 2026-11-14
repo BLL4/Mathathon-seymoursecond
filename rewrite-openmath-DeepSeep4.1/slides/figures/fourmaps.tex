@@ -1,0 +1,22 @@
+\begin{tikzpicture}[
+  sp/.style={font=\small},
+  ar/.style={-{Stealth[length=2mm]},draw=black!70,thick},
+  lab/.style={font=\scriptsize,text=black!75},
+  note/.style={font=\scriptsize,text=black!60,align=center}
+]
+\node[sp] (L) at (0,2.4) {$\R^{\mathcal L}$};
+\node[sp] (Z) at (6.0,2.4) {$\R^{Z}$};
+\node[sp] (H) at (0,0) {$\R^{H}$};
+\node[sp] (R) at (6.0,0) {$\R^{\mathcal R}$};
+\draw[ar] (L) -- node[above=1pt,lab] {$L$} (Z);
+\draw[ar] (L) -- node[left=1pt,lab] {$B$} (H);
+\draw[ar] (H) -- node[below=1pt,lab] {$A$} (R);
+\draw[ar] (Z) -- node[right=1pt,lab] {$N$} (R);
+\node[lab,text=black!80,font=\normalsize] at (3.0,1.2) {$NL=AB$};
+\node[note,anchor=east] at (-0.3,2.4) {left\\ members};
+\node[note,anchor=west] at (6.3,2.4) {conflict\\ points};
+\node[note,anchor=east] at (-0.3,0) {collisions};
+\node[note,anchor=west] at (6.3,0) {right\\ members};
+\node[note,anchor=south] at (3.0,3.15) {$L$ and $A$ advance the first coordinate ($p\to i$)};
+\node[note,anchor=north] at (3.0,-0.75) {$B$ and $N$ advance the second coordinate ($s\to j$)};
+\end{tikzpicture}

@@ -1,0 +1,463 @@
+\documentclass[aspectratio=169,11pt]{beamer}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc,fit,backgrounds,shapes.geometric,decorations.pathreplacing}
+\usepackage{booktabs}
+\usepackage{xcolor}
+
+\definecolor{mainblue}{RGB}{26,64,133}
+\definecolor{accent}{RGB}{176,86,20}
+\definecolor{softblue}{RGB}{232,239,250}
+\definecolor{softgrey}{RGB}{243,243,243}
+
+\usetheme{Boadilla}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{structure}{fg=mainblue}
+\setbeamercolor{frametitle}{bg=mainblue!10,fg=mainblue}
+\setbeamercolor{title}{fg=mainblue}
+\setbeamercolor{author}{fg=black!70}
+\setbeamertemplate{itemize items}[circle]
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamerfont{frametitle}{size=\large,series=\bfseries}
+
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\newcommand{\R}{\mathbb R}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+
+% takeaway strip at the bottom of a frame
+\newcommand{\takeaway}[1]{%
+  \vfill
+  \begin{beamercolorbox}[wd=\dimexpr\textwidth-9pt\relax,sep=4pt,rounded=true]{block body}
+    \footnotesize\color{mainblue}\textbf{Takeaway.} \color{black}#1
+  \end{beamercolorbox}}
+
+\title[Seymour's second-neighborhood conjecture]{A proof of Seymour's second-neighborhood conjecture}
+\subtitle{after OpenAI's preprint; a guided tour of the proof}
+\author{}
+\date{}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+  \begin{center}\footnotesize\color{black!60}
+    one conjecture, three engines, one contradiction
+  \end{center}
+\end{frame}
+
+\begin{frame}{The conjecture}
+  \begin{columns}[T]
+  \begin{column}{0.50\textwidth}
+    \small
+    An \emph{oriented graph}: no loops, no two arcs the same way, never both $x\to y$ and $y\to x$.
+    \medskip
+
+    For a vertex $v$:
+    \[
+      N_1^+(v)=\{u:\ v\to u\},
+    \]
+    \[
+      N_2^+(v)=\bigl\{w\notin\{v\}\cup N_1^+(v): \exists u,\ v\to u\to w\bigr\}.
+    \]
+    \medskip
+    \textbf{Conjecture (Seymour; Dean--Latka).} Some $v$ has
+    $\abs{N_1^+(v)}\le\abs{N_2^+(v)}$.
+  \end{column}
+  \begin{column}{0.48\textwidth}
+    \centering
+    \scalebox{0.78}{\input{figures/definitions.tex}}
+  \end{column}
+  \end{columns}
+  \takeaway{The two neighborhoods are disjoint, and ``distance two'' is \emph{exact}:
+  the vertex $b$ of the picture is in $N_1^+$ and reachable in two steps, so it is not in $N_2^+$.}
+\end{frame}
+
+\begin{frame}{Why this is not obvious}
+  \small
+  \begin{itemize}
+    \item A \emph{tournament} (an arc between every two vertices): Dean's conjecture, proved by
+      Fisher 1996, again by Havet--Thomass\'e 2000.
+    \item General oriented graphs: known only with degree hypotheses, or up to a ratio
+      $\abs{N_2}/\abs{N_1}\approx0.7155$ (Huang--Peng 2024).
+    \item Every vertex can have more out-neighbors than second out-neighbors? Then no
+      minimality, no greedy choice, and no local move is available: deleting a vertex changes
+      everybody's neighborhoods.
+    \item A sink satisfies the conclusion trivially ($0\le0$), so the whole difficulty is in
+      graphs where every vertex has an in-neighbor.
+  \end{itemize}
+  \takeaway{We must prove something about \emph{all} vertices at once, so the proof is a global
+  argument, not a search for a good vertex.}
+\end{frame}
+
+\begin{frame}{Main theorem}
+  \begin{block}{Theorem}
+    Every nonempty finite oriented graph has a vertex $v$ with
+    $\abs{N_1^+(v)}\le\abs{N_2^+(v)}$.
+  \end{block}
+  \medskip
+  \small
+  Two consequences follow (and are not used in the proof):
+  \begin{itemize}
+    \item the vertex- and arc-weighted forms, via Seacrest's equivalences;
+    \item minimum in- and out-degree $\ge n/3$ forces a directed triangle; a regular oriented
+      graph of directed girth $4$ has $n\ge 3r+1$.
+  \end{itemize}
+  \takeaway{The statement needs no hypothesis at all; the proof nevertheless forces
+  ``positive indegree'' on the object it studies.}
+\end{frame}
+
+\begin{frame}{The shape of the proof}
+  \centering
+  \scalebox{0.76}{\input{figures/roadmap.tex}}
+  \takeaway{Two propositions, each resting on one substantial lemma: a \emph{reduction} and an
+  \emph{impossibility}. The rest is bookkeeping.}
+\end{frame}
+
+\begin{frame}{Engine 1: a minimal counterexample}
+  \small
+  Suppose the theorem fails. Choose a counterexample $D$ with
+  \begin{center}
+    \emph{minimum order, and subject to that minimum number of arcs.}
+  \end{center}
+  \medskip
+  Consequences, in one line each:
+  \begin{itemize}
+    \item no sink, and more than one vertex;
+    \item strongly connected: a sink component of the condensation would be a smaller
+      counterexample;
+    \item hence \emph{every vertex has an in-neighbor}.
+  \end{itemize}
+  \medskip
+  \begin{block}{The idea for what comes next}
+    Delete arcs. The graph gets smaller, so by minimality it is \emph{not} a counterexample: some
+    vertex now satisfies the inequality. Compare its neighborhoods before and after.
+  \end{block}
+  \takeaway{Minimality converts ``no counterexample is smaller'' into a quantitative statement
+  about every subset.}
+\end{frame}
+
+\begin{frame}{The subset deficit}
+  \small
+  \begin{columns}[T]
+  \begin{column}{0.50\textwidth}
+    For $S\subseteq V$: $F(S)=\{y:\exists x\in S,\ x\to y\}$, and $F(S)$ does \emph{not} subtract
+    $S$. Split the first image:
+    \[ I=F(S)\cap S,\qquad E=F(S)\setminus S . \]
+    \begin{block}{Lemma (subset deficit)}
+      In a minimal counterexample, for every nonempty proper $S$,
+      \[ \abs{F^2(S)\setminus F(S)}\;<\;\abs{F(S)\setminus S}=\abs E . \]
+    \end{block}
+  \end{column}
+  \begin{column}{0.52\textwidth}
+    \centering
+    \scalebox{0.56}{\input{figures/deficit.tex}}
+  \end{column}
+  \end{columns}
+  \takeaway{The right-hand side is the \emph{external} part of the first image only; that
+  refinement is what the last step of the proof needs.}
+\end{frame}
+
+\begin{frame}{How the deficit is proved}
+  \small
+  Fix $S$. For $Y\subsetneq E$, delete \emph{all} arcs from $S$ to $E\setminus Y$:
+  \begin{itemize}
+    \item the graph $D_Y$ has fewer arcs, so minimality gives a vertex $v$ with
+      $\abs{N_{1,D_Y}^+(v)}\le\abs{N_{2,D_Y}^+(v)}$;
+    \item $v$ must have lost an out-neighbor, so $v\in S$; let
+      $Q_v=F(\{v\})\cap(E\setminus Y)$ be the lost out-neighbors.
+  \end{itemize}
+  \medskip
+  \centering
+  \scalebox{0.60}{\input{figures/deletion.tex}}
+  \takeaway{The second out-neighborhood loses $\Lambda$ and gains only points of $Q_v\cap F(Y)$,
+  which are \emph{first} out-neighbors: the gain is paid for out of the loss.}
+\end{frame}
+
+\begin{frame}{The ledger, and why the gain is strict}
+  \small
+  At the chosen vertex $v$, with $d_1=\abs{N_1^+(v)}$, $d_2=\abs{N_2^+(v)}$ in $D$:
+  \begin{center}
+  \renewcommand{\arraystretch}{1.25}
+  \begin{tabular}{@{}llll@{}}
+  \toprule
+  quantity & in $D$ & in $D_Y$ & why \\
+  \midrule
+  $\abs{N_1^+(v)}$ & $d_1$ & $d_1-\abs{Q_v}$ & exactly $Q_v$ is lost \\
+  $\abs{N_2^+(v)}$ & $d_2$ & $\le d_2-\abs\Lambda+\abs{Q_v\cap F(Y)}$ & $\Lambda$ destroyed, new points only here \\
+  $g(Y)=\abs{F(Y)\setminus(I\cup Y)}$ & $g(Y)$ & $g(Y)+\abs\Lambda-\abs{Q_v\cap F(Y)}$ & exact \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  \medskip
+  The inequality at $v$ in $D_Y$ gives
+  \[
+    \abs\Lambda-\abs{Q_v\cap F(Y)}=g(Y\cup Q_v)-g(Y)\le\abs{Q_v}+d_2-d_1<\abs{Q_v},
+  \]
+  the last step because $D$ is a counterexample. Summing from $Y=\varnothing$ to $Y=E$:
+  $g(E)<\abs E$, which is the lemma.
+  \takeaway{Strictness comes from $d_2<d_1$; the deletion only has to \emph{pay} for what it
+  gains.}
+\end{frame}
+
+\begin{frame}{Engine 1b: the blowup}
+  \small
+  The deficit is an integer, so it is at least $1$. Amplify it: replace every vertex by a
+  transitive tournament on $m$ labels $1<\dots<m$, and put all arcs from block $v$ to block $w$
+  when $v\to w$.
+  \medskip
+  \centering
+  \scalebox{0.62}{\input{figures/blowup.tex}}
+  \medskip
+
+  For $U$ meeting the blocks in $S$: blocks of $F(S)$ are \emph{full} in $F_G(U)$, blocks of
+  $F^2(S)$ are full in $F_G^2(U)$, and the rest contribute at most $n$ labels in total. Hence
+  \[
+    \abs U-2\abs{F_G(U)}+\abs{F_G^2(U)}
+    \le m\underbrace{\bigl(\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}\bigr)}_{\le-1}+\;n<0
+    \qquad\text{when }m>n .
+  \]
+  \takeaway{A margin of one becomes a margin of $m$, which beats the rounding error $n$.}
+\end{frame}
+
+\begin{frame}{The object we now have to destroy}
+  \begin{block}{Proposition 4.1 (to be contradicted)}
+    There is \textbf{no} nonempty finite oriented graph $G$ with all indegrees positive and
+    \[
+      \abs U+\abs{F^2(U)}<2\abs{F(U)}\qquad\text{for every nonempty proper }U .
+    \]
+  \end{block}
+  \medskip
+  \small
+  So from now on $G$ is such a graph, $X=V(G)$, and the only input is the display above.
+  \medskip
+
+  \begin{itemize}
+    \item The hypothesis is about \emph{sets of vertices}.
+    \item Families of ordered pairs have columns and rows that \emph{are} sets of vertices.
+    \item So: apply the hypothesis to columns and rows, and sum.
+  \end{itemize}
+  \takeaway{The passage from vertices to \emph{pairs of vertices} is what makes the inequality
+  usable: a family of pairs has many columns and rows at once.}
+\end{frame}
+
+\begin{frame}{Engine 2: two families of pairs}
+  \small
+  For $P,Q\subseteq X\times X$:
+  \[
+    \Phi_1P=\{(i,j):(p,j)\in P,\ p\to i\},\qquad
+    \Phi_2Q=\{(i,j):(i,s)\in Q,\ s\to j\}.
+  \]
+  $P,Q$ are \emph{compatible} if $\Phi_1P\cap\Phi_2Q=\varnothing$. A conflicting pair produces a
+  rectangle:
+  \medskip
+  \centering
+  \scalebox{0.66}{\input{figures/conflict.tex}}
+  \takeaway{Columns of $P$ and rows of $Q$ are vertex sets, so the hypothesis applies to them; and
+  compatibility is exactly what makes the uncovered points countable.}
+\end{frame}
+
+\begin{frame}{The extremal objective}
+  \small
+  \begin{block}{Choose $(P,Q)$}
+    compatible, containing the diagonal $\Delta=\{(v,v)\}$, maximising
+    \[
+      M+u,\qquad M=\abs P+\abs Q,\qquad
+      u=\abs{X^2}-\abs{\Phi_1P}-\abs{\Phi_2Q}\ \text{(uncovered points)}.
+    \]
+  \end{block}
+  \medskip
+  Why $+u$ and not just $M$?
+  \begin{itemize}
+    \item Summing the hypothesis over the columns of $P$ and the rows of $Q$ gives
+      $\abs P+\abs{\Phi_1^2P}<2\abs{\Phi_1P}$ and the same for $Q$;
+    \item taking complements $\mathcal L=X^2\setminus\Phi_2^2Q$,
+      $\mathcal R=X^2\setminus\Phi_1^2P$ then gives
+      \[
+        \abs{\mathcal L}+\abs{\mathcal R}>M+2u :
+      \]
+      \textbf{two copies of the uncovered count}, one from each inequality.
+    \item The pruning will cost at most $u+u'$ and refund $u'$; so the objective $M+u$ is exactly
+      what survives.
+  \end{itemize}
+  \takeaway{The factor $2$ in the gain is why the objective carries $u$: one copy pays the
+  collisions, one copy is refunded.}
+\end{frame}
+
+\begin{frame}{The diagonal survives}
+  \small
+  $\mathcal L,\mathcal R$ may conflict, but the diagonal does not:
+  \medskip
+  \centering
+  \scalebox{0.8}{\input{figures/diagonal.tex}}
+  \medskip
+
+  If $(v,v)\in\Phi_2^2Q$, then $(v,s)\in\Phi_2Q$ for some $s\to v$; but $(s,s)\in P$ and $s\to v$
+  give $(v,s)\in\Phi_1P$, contradicting compatibility. Symmetrically for $\Phi_1^2P$.
+  \takeaway{The diagonal is admissible, survives the complement, and is conflict-free: it is the
+  seed that makes the pruned pair a legitimate competitor.}
+\end{frame}
+
+\begin{frame}{Engine 3: pruning}
+  \begin{block}{Lemma (pruning; any finite binary relation)}
+    For families $\mathcal L,\mathcal R\subseteq X\times X$ there are
+    $\mathcal L'\subseteq\mathcal L$, $\mathcal R'\subseteq\mathcal R$ with no conflicts, keeping
+    every initially conflict-free member, and
+    \[
+      \abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}
+      \le\abs H+\#\{z\in Z:\ z\text{ uncovered by }\mathcal L'\cup\mathcal R'\},
+    \]
+    where $Z$ = conflict points, $H$ = collisions.
+  \end{block}
+  \small
+  \medskip
+  \begin{columns}
+  \begin{column}{0.5\textwidth}
+    \centering
+    \scalebox{0.72}{\input{figures/pruning-graph.tex}}
+  \end{column}
+  \begin{column}{0.50\textwidth}
+    \footnotesize
+    Conflicts and covering relations become edges of one bipartite graph $\Gamma$.
+    A vertex cover of size $\abs Z+\abs H$ gives the bound:
+    each of the $\abs Z-q$ covered conflict points needs its own copy in the cover.
+  \end{column}
+  \end{columns}
+  \takeaway{Two families that are almost compatible are made compatible, at a cost charged to the
+  collisions and to the points left uncovered.}
+\end{frame}
+
+\begin{frame}{How the pruning is proved}
+  \small
+  It suffices to bound a maximum matching $\mathcal M$ of $\Gamma$ by $\abs Z+\abs H$. Split it:
+  \[
+    \abs{\mathcal M}=k+\ell+t,
+  \]
+  $k$ edges between original members, $\ell$ between $\mathcal L$ and $Z_R$ (a maximum matching
+  $\alpha$), $t$ between $Z_L$ and $\mathcal R$ (a maximum matching $\beta$).
+  \medskip
+  \begin{columns}
+  \begin{column}{0.50\textwidth}
+    \centering
+    \scalebox{0.78}{\input{figures/fourmaps.tex}}
+  \end{column}
+  \begin{column}{0.42\textwidth}
+    \footnotesize
+    Two independent arrays $a_{xy}$, $b_{xy}$ of variables. Four matrices $L,N,A,B$; changing the
+    two coordinates in opposite orders gives the same entry:
+    \[ NL=AB. \]
+    Choose the coefficients so that $\rank L=\ell$, $\rank N^{\mathsf T}=t$, and so that some
+    auxiliary matrices achieve maximum rank.
+  \end{column}
+  \end{columns}
+  \takeaway{Three parts, each counted by a rank; the commuting square forces the $k$
+  original--original edges into $\ker A$.}
+\end{frame}
+
+\begin{frame}{The rank bookkeeping, in one line}
+  \small
+  From $NL=AB$ we get $\im(NL)\subseteq\im A$; by rank--nullity
+  $\dim\ker A=\abs H-\rank A$. Hence
+  \[
+    \abs H=\dim\ker A+\rank A
+    \;\ge\; k+\rank(NL)
+    \;\ge\; k+\ell-(\abs Z-t)
+    \;=\;k+\ell+t-\abs Z .
+  \]
+  So it remains to show $\dim\ker A\ge k$.
+  \medskip
+
+  \begin{block}{The lift}
+    For each original--original edge $r=(p,j)$ find $\lambda^r\in\ker L$ with $\lambda^r_r=1$ and
+    $\lambda^r_{r'}=0$ for the other original left endpoints. Then $B\lambda^r\in\ker A$, and
+    \[
+      \sum_r\theta_r B\lambda^r=0\ \Longrightarrow\ u=\sum_r\theta_r\lambda^r\in\ker B,\quad
+      u_r=\theta_r=0 .
+    \]
+  \end{block}
+  \takeaway{The key vanishing $u_{pj}v_{is}=0$ at conflicts (proved by the maximum-rank lemma)
+  makes the right kernel vector kill each coordinate, so the $k$ lifts survive.}
+\end{frame}
+
+\begin{frame}{The contradiction}
+  \small
+  \begin{columns}[T]
+  \begin{column}{0.52\textwidth}
+    Apply pruning to $\mathcal L,\mathcal R$, keeping $\Delta$:
+    \begin{itemize}
+      \item at most $\abs H+q\le u+u'$ members are deleted;
+      \item the survivors are compatible, contain $\Delta$, and are worth
+        \[
+          \abs{\mathcal L'}+\abs{\mathcal R'}+u'
+          \ge\abs{\mathcal L}+\abs{\mathcal R}-u>M+u ;
+        \]
+      \item but $(P,Q)$ maximised $M+u$ among admissible pairs. Contradiction.
+    \end{itemize}
+    \medskip
+    So no graph with all indegrees positive satisfies the strict inequality, and
+    Proposition 2.1 produced one. The theorem follows.
+  \end{column}
+  \begin{column}{0.50\textwidth}
+    \centering
+    \scalebox{0.85}{\input{figures/extremal.tex}}
+  \end{column}
+  \end{columns}
+  \takeaway{$\abs{\mathcal L}+\abs{\mathcal R}>M+2u$ minus the cost $u+u'$ plus the refund $u'$
+  beats $M+u$: there is no such graph.}
+\end{frame}
+
+\begin{frame}{Consequences}
+  \small
+  \begin{itemize}
+    \item \textbf{Weighted forms} (Seacrest): for every vertex weighting there is a good vertex;
+      there is a weighting of total mass $1$ for which every vertex is good; and the arc-weighted
+      form with $\beta_v^w(s)=\max(0,\max_u(w(us)-w(vs)))$.
+    \item \textbf{Directed cycles}: without a directed triangle, $N_2^+(v)\subseteq\overline N(v)$
+      (the non-neighbors), so some $v$ has
+      \[ d^+(v)\le\abs{\overline N(v)},\qquad n-1\ge 2d^+(v)+d^-(v). \]
+    \item Hence $\delta^+\ge n/3$ and $\delta^-\ge n/3$ force a directed triangle, and a regular
+      oriented graph of directed girth four has $n\ge3r+1$.
+  \end{itemize}
+  \takeaway{These are corollaries, not inputs: the main theorem is proved before they appear.}
+\end{frame}
+
+\begin{frame}{The three inventions}
+  \begin{enumerate}
+    \item \textbf{A subset inequality with the right right-hand side.}
+      $\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$: the external part of the first image,
+      obtained by deleting arcs and buying second out-neighbors out of first ones.
+    \item \textbf{Pruning at a cost charged to the survivors.}
+      Two almost-compatible families become compatible; the price is the collisions plus the
+      conflict points left uncovered.
+    \item \textbf{An extremal objective that refunds the cost.}
+      Maximise $M+u$; the subset inequality gives $M+2u$, pruning costs $u+u'$ and refunds $u'$.
+  \end{enumerate}
+  \medskip
+  \begin{block}{The single idea behind all three}
+    Never compare a set with itself: compare it with what it \emph{produces} and what it
+    \emph{costs}, and let the two cancelling terms be the same quantity counted twice.
+  \end{block}
+  \takeaway{Everything else in the paper is a definition, a standard consequence, or bookkeeping.}
+\end{frame}
+
+\begin{frame}{Summary}
+  \small
+  \begin{itemize}
+    \item Seymour's second-neighborhood conjecture is true for all oriented graphs.
+    \item The proof is a reduction to an extremal statement about two families of ordered pairs,
+      plus a linear-algebraic pruning lemma for arbitrary finite relations.
+    \item The three engines are independent: the reduction uses minimality and a blowup; the
+      pruning lemma uses matrix ranks and K\H{o}nig's theorem; the extremal argument uses an
+      objective designed so that the pruning cost cancels.
+    \item The weighted and directed-cycle consequences follow from Seacrest's equivalences and from
+      one observation about triangles.
+  \end{itemize}
+  \vfill
+  \begin{center}\small\color{mainblue}
+    thank you --- questions?
+  \end{center}
+\end{frame}
+
+\end{document}

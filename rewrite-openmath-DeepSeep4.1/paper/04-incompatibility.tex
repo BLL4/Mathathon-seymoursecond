@@ -1,0 +1,260 @@
+\section{The extremal contradiction}\label{sec:incompatibility}
+
+\begin{contract}
+\textbf{Assumes:} \cref{prop:reduction}, i.e.\ a graph $G$ with positive indegrees satisfying
+$\abs U+\abs{F^2(U)}<2\abs{F(U)}$ for every nonempty proper $U$. \quad
+\textbf{Produces:} a contradiction (\cref{prop:no-concavity}), hence \cref{thm:main}.
+\textbf{Why:} this is where the subset inequality and the pruning lemma meet. The subset inequality
+applied to the rows and columns of two families of pairs yields two \emph{better} families that may
+conflict; the pruning lemma repairs the conflicts without losing the improvement.
+\end{contract}
+
+\subsection{The setting}\label{sec:setting}
+
+For the rest of the section fix an oriented graph $G$ with vertex set $X$, all indegrees positive,
+and
+\begin{equation}\label{eq:hypothesis}
+ \abs U+\abs{F^2(U)}<2\abs{F(U)}
+ \qquad\text{for every }\varnothing\ne U\subsetneq X .
+\end{equation}
+The object we extremise over is a \emph{pair of families of ordered pairs}, exactly as in
+\cref{sec:pruning}. The two coordinate maps of \eqref{eq:Phi} act on them:
+\begin{equation}\label{eq:Phi-again}
+ \Phi_1 P=\{(i,j):(p,j)\in P,\ p\to i\},\qquad
+ \Phi_2 Q=\{(i,j):(i,s)\in Q,\ s\to j\},
+\end{equation}
+and we abbreviate $\Phi_1^2P=\Phi_1(\Phi_1P)$ and $\Phi_2^2Q=\Phi_2(\Phi_2Q)$. Two families are
+\emph{compatible} if $\Phi_1P\cap\Phi_2Q=\varnothing$ (\cref{rem:compat}). \Cref{fig:grid} fixes the
+picture, and $\Delta=\{(v,v):v\in X\}$ is the diagonal.
+
+\begin{figure}[t]
+\centering
+\input{figures/grid.tex}
+\caption{Families of pairs as cells of the grid $X\times X$. \emph{(a)} A family $P$; its
+ \emph{columns} are the sets $P_j=\{p:(p,j)\in P\}$, one for each second coordinate (and its rows are
+ defined the same way). \emph{(b)} The map $\Phi_1$ replaces the first coordinate $p$ by an
+ out-neighbor $i$: it moves a cell within its column. \emph{(c)} The map $\Phi_2$ replaces the second
+ coordinate $s$ by an out-neighbor $j$: it moves a cell within its row. \emph{Why it matters:} the
+ hypothesis \eqref{eq:hypothesis} is a statement about \emph{sets of vertices}, so it can only be
+ applied to the columns of $P$ and the rows of $Q$; summing it over those sets is what produces
+ \eqref{eq:fiber-sums}.}
+\label{fig:grid}
+\end{figure}
+
+\begin{proposition}\label{prop:no-concavity}
+There is no nonempty finite oriented graph $G$ in which every vertex has an in-neighbor and whose
+one-step image operator $F(U)=\{y: x\to y\text{ for some }x\in U\}$ satisfies
+\begin{equation}\label{eq:impossible}
+ \abs U+\abs{F^2(U)}<2\abs{F(U)}
+ \qquad\text{for every }\varnothing\ne U\subsetneq V(G).
+\end{equation}
+\end{proposition}
+
+\inwords{No graph satisfies the strict subset inequality at every proper nonempty set once every
+vertex has an in-neighbor.}
+
+\begin{ideabox}[title={The design of the extremal objective}]
+We look for a compatible pair $(P,Q)$ that is as large as possible, and we pay for the size not only
+with members but also with the points that the pair leaves uncovered. The objective is
+\[
+ M+u,\qquad M=\abs P+\abs Q,\qquad u=\abs X^2-\abs{\Phi_1P}-\abs{\Phi_2Q},
+\]
+where $u$ counts the points covered by neither family. Three considerations fix this choice.
+\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
+\item Only compatible pairs are admissible, because only then is $u$ the size of the complement of a
+  disjoint union, and only then does the pruning lemma apply to the four sets we are about to build.
+\item The subset inequality, summed over columns and rows, will produce families
+  $\mathcal L=(X\times X)\setminus\Phi_2^2Q$ and $\mathcal R=(X\times X)\setminus\Phi_1^2P$ with
+  $\abs{\mathcal L}+\abs{\mathcal R}>M+2u$: the gain is twice the uncovered count. The factor $2$ is
+  what makes the objective $M+u$ rather than $M$: we must be able to pay for the pruning out of the
+  gain and still be strictly ahead.
+\item The pruning lemma deletes at most $\abs H+q\le u+q$ members, where $q$ is the number of points
+  of $Z$ left uncovered after pruning, and the survivors leave $u'$ points uncovered in total. The
+  new value is at least
+  \[
+   (\abs{\mathcal L}+\abs{\mathcal R})-(u+u')+u'=\abs{\mathcal L}+\abs{\mathcal R}-u>M+u,
+  \]
+  so the objective $M+u$ is exactly the quantity that the pruning cost cannot destroy. Including $u$
+  in the objective is what lets the cost term $u'$ cancel against the refunded $u'$.
+\end{enumerate}
+\end{ideabox}
+
+\begin{proof}[Proof of \cref{prop:no-concavity}]
+Suppose that such a $G$ exists and put $X=V(G)$.
+
+\steplabel{Step 1: the diagonal is compatible with itself.}
+If $(i,j)\in\Phi_1\Delta\cap\Phi_2\Delta$, then $(p,j)\in\Delta$ with $p\to i$ forces $p=j$ and
+$j\to i$, while $(i,s)\in\Delta$ with $s\to j$ forces $s=i$ and $i\to j$. Both $i\to j$ and $j\to i$
+cannot hold in an oriented graph. So $\Phi_1\Delta\cap\Phi_2\Delta=\varnothing$, and the pair
+$P=Q=\Delta$ is compatible. Among all compatible pairs with $\Delta\subseteq P\cap Q$ choose one
+maximising
+\begin{equation}\label{eq:objective}
+ M+u,\qquad M=\abs P+\abs Q,\qquad u=\abs X^2-\abs{\Phi_1P}-\abs{\Phi_2Q};
+\end{equation}
+such a pair exists because $X$ is finite. Since the pair is compatible, $u$ is the number of points
+lying in neither image.
+
+\steplabel{Step 2: the columns and rows are nonempty and proper.}
+For $j\in X$ let $P_j=\{p:(p,j)\in P\}$. It is nonempty, because $(j,j)\in\Delta\subseteq P$ gives
+$j\in P_j$. It is also proper: if $P_j=X$, then $X\times\{j\}\subseteq\Phi_1P$, and choosing an
+in-neighbor $w$ of $j$ (available by hypothesis) gives $(w,j)\in\Phi_2\Delta\subseteq\Phi_2Q$, which
+contradicts compatibility. The same argument applies to the rows $Q_i=\{s:(i,s)\in Q\}$: $Q_i$ is
+nonempty because $(i,i)\in Q$, and if $Q_i=X$ then $\{i\}\times X\subseteq\Phi_2Q$, while choosing
+$w\to i$ gives $(i,w)\in\Phi_1\Delta\subseteq\Phi_1P$, again a contradiction.
+
+\steplabel{Step 3: sum the subset inequality over the columns and rows.}
+For each $j\in X$ the set $P_j$ is nonempty and proper, so \eqref{eq:hypothesis} gives
+$\abs{P_j}+\abs{F^2(P_j)}<2\abs{F(P_j)}$. Summing over $j$ and using the fibrewise descriptions
+\begin{equation}\label{eq:fibers}
+ \abs P=\sum_{j}\abs{P_j},\qquad
+ \Phi_1P\cap(X\times\{j\})=F(P_j)\times\{j\},\qquad
+ \Phi_1^2P\cap(X\times\{j\})=F^2(P_j)\times\{j\},
+\end{equation}
+which hold because $\Phi_1$ acts inside each column, we obtain
+\begin{equation}\label{eq:fiber-sums}
+ \abs P+\abs{\Phi_1^2P}<2\abs{\Phi_1P}.
+\end{equation}
+The same argument with rows in place of columns gives
+\begin{equation}\label{eq:fiber-sums-Q}
+ \abs Q+\abs{\Phi_2^2Q}<2\abs{\Phi_2Q}.
+\end{equation}
+
+\steplabel{Step 4: take complements and gain $2u$.}
+Define
+\begin{equation}\label{eq:L-R}
+ \mathcal L=(X\times X)\setminus\Phi_2^2Q,\qquad
+ \mathcal R=(X\times X)\setminus\Phi_1^2P .
+\end{equation}
+Then, by \eqref{eq:fiber-sums} and \eqref{eq:fiber-sums-Q},
+\begin{align}
+ \abs{\mathcal L}+\abs{\mathcal R}
+ &=2\abs X^2-\abs{\Phi_2^2Q}-\abs{\Phi_1^2P}\notag\\
+ &>2\abs X^2+\bigl(\abs P+\abs Q\bigr)-2\bigl(\abs{\Phi_1P}+\abs{\Phi_2Q}\bigr)
+ =M+2u ,
+ \label{eq:gain}
+\end{align}
+where the last equality is \eqref{eq:objective}. So the two new families together have strictly more
+than $M+2u$ members. \emph{The gain is twice the number of uncovered points}: the two strict
+inequalities each contribute one copy of $u$, because each of them says that a first image is
+strictly larger than the average of its family and its second image.
+
+\steplabel{Step 5: the diagonal survives, and diagonals never conflict.}
+\emph{$\Delta\subseteq\mathcal L\cap\mathcal R$.} Suppose $(v,v)\in\Phi_2^2Q$. Then there is $s$ with
+$(v,s)\in\Phi_2Q$ and $s\to v$. But $(s,s)\in P$ and $s\to v$ give $(v,s)\in\Phi_1P$, so $(v,s)$
+lies in both images, contradicting compatibility. Hence $(v,v)\notin\Phi_2^2Q$, i.e.\
+$(v,v)\in\mathcal L$. Symmetrically, if $(v,v)\in\Phi_1^2P$ there is $p\to v$ with
+$(p,v)\in\Phi_1P$; then $(p,p)\in Q$ and $p\to v$ give $(p,v)\in\Phi_2Q$, again a contradiction, so
+$(v,v)\in\mathcal R$. \Cref{fig:diagonal} draws both arguments.
+
+\begin{figure}[t]
+\centering
+\input{figures/diagonal.tex}
+\caption{Why the diagonal survives (Step~5 of that proof) and why diagonals never conflict. \emph{Look
+ at} the two halves: if a diagonal cell were in $\Phi_2^2Q$ (left) or in $\Phi_1^2P$ (right), the
+ cell marked $\times$ would lie in both images at once. \emph{Why it matters:} the pair
+ $(\mathcal L,\mathcal R)$ may conflict, but the diagonal members are conflict-free, so the pruning
+ lemma is allowed to keep them --- and the diagonal is what makes the pruned pair admissible, i.e.\
+ a competitor to $(P,Q)$.}
+\label{fig:diagonal}
+\end{figure}
+
+\emph{No diagonal member conflicts.} Let $(v,v)\in\Delta$ and $(i,s)\in\mathcal R$ conflict, i.e.\
+$v\to i$ and $s\to v$. Then $(s,s)\in P$, and advancing its first coordinate twice along
+$s\to v\to i$ puts $(i,s)$ in $\Phi_1^2P$, contradicting $(i,s)\in\mathcal R$. Symmetrically, if
+$(p,j)\in\mathcal L$ conflicts with the diagonal member $(v,v)$, then $p\to v$ and $v\to j$, and
+advancing the second coordinate of $(p,p)\in Q$ twice along $v\to j$ puts $(p,j)$ in $\Phi_2^2Q$,
+contradicting $(p,j)\in\mathcal L$. So every diagonal member is conflict-free, and the preservation
+clause of \cref{lem:pruning} applies to all of them.
+
+\steplabel{Step 6: the collisions are uncovered.}
+Let $Z,H$ be the sets attached to $\mathcal L,\mathcal R$ by \cref{def:conflict}: a conflict
+\[
+ (p,j)\in\mathcal L,\qquad (i,s)\in\mathcal R,\qquad p\to i,\qquad s\to j
+\]
+contributes $(p,s)$ to $H$ and $(i,j)$ to $Z$. We claim
+\begin{equation}\label{eq:H-uncovered}
+ H\subseteq X^2\setminus\bigl(\Phi_1P\cup\Phi_2Q\bigr),
+ \qquad\text{hence}\qquad \abs H\le u .
+\end{equation}
+Fix such a conflict. If $(p,s)\in\Phi_1P$, then $(u,s)\in P$ for some $u\to p$, and the path
+$u\to p\to i$ puts $(i,s)$ in $\Phi_1^2P$, contradicting $(i,s)\in\mathcal R$. If
+$(p,s)\in\Phi_2Q$, then $(p,t)\in Q$ for some $t\to s$, and the path $t\to s\to j$ puts $(p,j)$ in
+$\Phi_2^2Q$, contradicting $(p,j)\in\mathcal L$. So $(p,s)$ is in neither image, which is
+\eqref{eq:H-uncovered}.
+
+\steplabel{Step 7: prune, and contradict maximality.}
+Apply \cref{lem:pruning} to $\mathcal L$ and $\mathcal R$. This gives conflict-free
+$\mathcal L'\subseteq\mathcal L$ and $\mathcal R'\subseteq\mathcal R$ containing every initially
+conflict-free member, so $\Delta\subseteq\mathcal L'\cap\mathcal R'$ by Step~5, and
+\begin{equation}\label{eq:prune-cost}
+ \abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}\le\abs H+q
+ \qquad\text{with}\qquad
+ q=\abs{\{z\in Z:\ z\text{ covered by no member of }\mathcal L'\cup\mathcal R'\}} .
+\end{equation}
+Put
+\begin{equation}\label{eq:u-prime}
+ u'=\abs X^2-\abs{\Phi_1\mathcal L'}-\abs{\Phi_2\mathcal R'} .
+\end{equation}
+Since $\mathcal L'$ and $\mathcal R'$ have no conflicts, $\Phi_1\mathcal L'\cap\Phi_2\mathcal R'=\varnothing$
+(\cref{rem:compat}), so $u'$ is the number of points covered by neither of them. A point is covered
+by a kept left member exactly when it lies in $\Phi_1\mathcal L'$, and by a kept right member exactly
+when it lies in $\Phi_2\mathcal R'$. Hence the points of $Z$ that are covered by no member of
+$\mathcal L'\cup\mathcal R'$ are exactly the points of $Z$ outside $\Phi_1\mathcal L'\cup\Phi_2\mathcal R'$,
+of which there are at most $u'$; so $q\le u'$. By \eqref{eq:prune-cost} and \eqref{eq:H-uncovered},
+at most $\abs H+q\le u+u'$ members were deleted. Using \eqref{eq:gain},
+\begin{align}
+ \abs{\mathcal L'}+\abs{\mathcal R'}+u'
+ &\ge\abs{\mathcal L}+\abs{\mathcal R}-(u+u')+u'\notag\\
+ &=\abs{\mathcal L}+\abs{\mathcal R}-u>M+2u-u=M+u .
+ \label{eq:contradiction}
+\end{align}
+But $(\mathcal L',\mathcal R')$ is an admissible pair: it is compatible and contains the diagonal. So
+\eqref{eq:contradiction} contradicts the maximality of $(P,Q)$ in \eqref{eq:objective}. This proves
+\cref{prop:no-concavity}.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\input{figures/extremal.tex}
+\caption{The four moves of \cref{sec:incompatibility}, with the numbers attached. \emph{Read from
+ left to right:} the extremal compatible pair $(P,Q)$ has value $M+u$; the subset inequalities,
+ summed over columns and rows, produce the complements with value greater than $M+2u$; the pruning
+ lemma deletes at most $u+u'$ members and leaves $u'$ points uncovered; the survivors are compatible,
+ contain the diagonal, and have value greater than $M+u$ --- which is impossible. \emph{Why it
+ matters:} the figure shows where each of the two copies of $u$ in the gain is spent: one pays for
+ the collisions $H$, the other survives as the refunded $u'$.}
+\label{fig:extremal}
+\end{figure}
+
+\begin{proof}[Proof of \cref{thm:main}]
+If \cref{thm:main} were false, \cref{prop:reduction} would produce a nonempty finite oriented graph
+with positive indegrees satisfying \eqref{eq:impossible} for every nonempty proper vertex set, and
+\cref{prop:no-concavity} says that no such graph exists.
+\end{proof}
+
+\begin{checkpoint}
+The proof of the main theorem is complete, and it used exactly two ingredients beyond the definitions:
+the subset inequality (\cref{lem:deficit,lem:blowup}, giving \cref{prop:reduction}) and the pruning
+lemma (\cref{lem:pruning}). Everything in the remaining two sections is a consequence.
+\end{checkpoint}
+
+\begin{remark}[Why the argument cannot be short-circuited]\label{rem:why-hard}
+It is instructive to see which step fails if one tries to simplify the argument.
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=1pt]
+\item \emph{Why not just take $P=Q=\Delta$ and stop?} The diagonal is admissible --- that is Step~1
+  --- but its value is $2\abs X+\abs X^2-2\abs A$ (because $\Phi_1\Delta=\{(i,j):j\to i\}$ and
+  $\Phi_2\Delta=\{(i,j):i\to j\}$ are both copies of the arc set $A$), and what is needed is a pair
+  that beats \emph{every} admissible pair. The diagonal's role is to make the maximum exist and to
+  survive the pruning; the size has to come from the extremal choice.
+\item \emph{Why not take larger $P,Q$ greedily?} Compatibility is a global condition: a single added
+  member can cover an entire line of cells and destroy compatibility with the other family. The
+  extremal choice is what handles this; there is no local augmentation argument.
+\item \emph{Why is the pruning step not circular?} The pruning lemma is a statement about arbitrary
+  relations; it does not know that $\mathcal L,\mathcal R$ come from an extremal pair. It is applied
+  once, and the only thing it needs is that the diagonal members are conflict-free, which is Step~5.
+\item \emph{Where does the strictness come from?} From \eqref{eq:hypothesis}, which is strict; the
+  gain \eqref{eq:gain} is therefore strict, and the deletion bound is not strict, so the inequality
+  survives. If \eqref{eq:hypothesis} were weak, the proof would only give $M+2u\ge\ldots$ and no
+  contradiction.
+\end{itemize}
+\end{remark}

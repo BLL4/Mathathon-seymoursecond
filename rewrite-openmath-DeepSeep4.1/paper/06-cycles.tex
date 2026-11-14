@@ -1,0 +1,96 @@
+\section{Directed-cycle consequences}\label{sec:cycles}
+
+\begin{contract}
+\textbf{Assumes:} \cref{thm:main}. \quad
+\textbf{Produces:} degree and order bounds for oriented graphs without a directed triangle, including
+a minimum-degree threshold of $n/3$ for the existence of a directed triangle
+(\cref{cor:cycles}). \textbf{Why:} these are the standard corollaries; they show what the theorem buys
+and they are the reason the conjecture is studied alongside the Caccetta--H\"aggkvist problem.
+Nothing here is used earlier.
+\end{contract}
+
+The mechanism is one observation: in an oriented graph without a directed triangle, no second
+out-neighbor can be an in-neighbor, because a path $v\to u\to w$ together with the arc $w\to v$ would
+be a directed triangle. So the second out-neighborhood sits inside the set of \emph{non-neighbors},
+and \cref{thm:main} becomes a counting statement about three disjoint classes of vertices.
+
+\begin{corollary}[Non-neighbors and directed cycles]\label{cor:cycles}
+Let $D$ be a nonempty finite oriented graph of order $n$. For $v\in V(D)$ put
+\[
+ N_1^-(v)=\{u:u\to v\},\qquad d^\pm(v)=\abs{N_1^\pm(v)},\qquad
+ \delta^\pm(D)=\min_{x\in V(D)}d^\pm(x),
+\]
+and let
+\[
+ \overline N(v)=V(D)\setminus\bigl(\{v\}\cup N_1^+(v)\cup N_1^-(v)\bigr)
+\]
+be the set of \emph{non-neighbors} of $v$ (vertices adjacent to $v$ in neither direction). Then:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=1.6em,itemsep=3pt]
+\item if $D$ has no directed $3$-cycle, then some vertex $v$ satisfies
+  \[
+   d^+(v)\le\abs{\overline N(v)},\qquad n-1\ge2d^+(v)+d^-(v);
+  \]
+\item if $\delta^+(D)\ge n/3$ and $\delta^-(D)\ge n/3$, then $D$ contains a directed $3$-cycle;
+\item if $r\ge1$ is an integer, $d^+(v)=d^-(v)=r$ for every vertex, and $D$ has directed girth
+  exactly four, then $n\ge3r+1$.
+\end{enumerate}
+Here the directed girth is the length of a shortest directed cycle.
+\end{corollary}
+
+\inwords{Without a directed triangle, some vertex has at most as many out-neighbors as non-neighbors,
+which forces $n-1\ge2d^++d^-$; hence minimum in- and out-degree at least $n/3$ forces a directed
+triangle, and a regular oriented graph of girth four satisfies $n\ge3r+1$.}
+
+\usedin{Not used in the proof of \cref{thm:main}; these are consequences, and \cref{sec:history}
+records where they appear in the literature.}
+
+\begin{proof}
+Assume that $D$ has no directed $3$-cycle, and let $w\in N_2^+(v)$; choose a path $v\to u\to w$. By
+the definition of exact distance, $w\ne v$ and $w\notin N_1^+(v)$. If also $w\in N_1^-(v)$, then
+$w\to v$, and $v\to u\to w\to v$ is a directed $3$-cycle --- impossible. Hence
+\begin{equation}\label{eq:N2-in-Z}
+ N_2^+(v)\subseteq\overline N(v)\qquad\text{for every }v .
+\end{equation}
+By \cref{thm:main} there is a vertex $v$ with
+\[
+ d^+(v)=\abs{N_1^+(v)}\le\abs{N_2^+(v)}\overset{\eqref{eq:N2-in-Z}}{\le}\abs{\overline N(v)} .
+\]
+Since $D$ is oriented, $N_1^+(v)$ and $N_1^-(v)$ are disjoint and both avoid $v$, so the three sets in
+the definition of $\overline N(v)$ partition $V(D)\setminus\{v\}$:
+\begin{equation}\label{eq:partition}
+ n-1=d^+(v)+d^-(v)+\abs{\overline N(v)}\ge 2d^+(v)+d^-(v),
+\end{equation}
+which is (i); \cref{fig:cycles} draws the partition.
+
+For (ii), if $D$ had no directed $3$-cycle then (i) would give
+\[
+ n-1\ge2\delta^+(D)+\delta^-(D)\ge2\cdot\frac n3+\frac n3=n,
+\]
+a contradiction. (The degrees are integers, so $\delta^\pm(D)\ge n/3$ means
+$\delta^\pm(D)\ge\lceil n/3\rceil$; the argument covers the endpoint when $3$ divides $n$.)
+
+For (iii), directed girth four excludes directed triangles, and $d^+=d^-=r$ turns
+\eqref{eq:partition} into $n-1\ge3r$.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\input{figures/cycles.tex}
+\caption{The partition behind \eqref{eq:partition}, in an oriented graph without a directed triangle.
+\emph{Look at} the three classes around $v$: out-neighbors, in-neighbors and non-neighbors. The
+label inside the third class records \eqref{eq:N2-in-Z}, that the second out-neighborhood
+sits inside it: a second out-neighbor that was also an in-neighbor would close a directed
+triangle. \emph{Why it matters:} \cref{thm:main} bounds the first class by the second
+out-neighborhood, hence by the third class, and the three classes partition $V\setminus\{v\}$; this
+gives $n-1\ge2d^++d^-$ with no further input.}
+\label{fig:cycles}
+\end{figure}
+
+\begin{remark}[Where these statements come from]\label{rem:cycles-history}
+Part (i) is the oriented-graph form of Thomass\'e's non-neighbor statement, recorded as
+Conjecture~6.12 in Sullivan's survey~\cite{Sullivan2006}; the consequence for minimum in- and
+out-degree is noted in Section~3 of the same survey, and the regular girth-four bound in Section~4,
+where it is attributed to the Behzad--Chartrand--Wall minimum-order
+conjecture~\cite{BehzadChartrandWall1970}. The point of recording them here is that they follow from
+\cref{thm:main} alone, with no additional hypothesis on $D$.
+\end{remark}

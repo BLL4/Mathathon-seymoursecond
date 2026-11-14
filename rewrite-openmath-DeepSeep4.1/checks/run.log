@@ -1,0 +1,20 @@
+==============================================================================
+computational checks
+==============================================================================
+[1] main theorem: every nonempty oriented graph has v with |N1(v)| <= |N2(v)|
+  ok    exhaustive n<=4  (760 graphs)
+  ok    20000 random graphs with 5<=n<=9
+[2] Lemma 2.2 (subset deficit): the gain/loss ledger
+  ok    ledger over 2336 random (D,S,Y) configurations; strict-increment step exercised 738 times
+[3] Lemma 2.3 (transitive-tournament blowup): the algebraic bound
+  ok    blowup algebra over 24942 (D,m,U) instances
+[4] Section 4: pair families, coordinate images, compatibility, complements
+  ok    section-4 identities over 250 compatible pairs
+[5] Lemma 3.1 (pruning): statement, brute force on tiny instances
+  ok    pruning statement over 1200 random instances
+[6] Corollary 6.1: no directed 3-cycle, minimum degree, girth
+  ok    3-cycle-free checks over 34114 graphs
+  ok    6.1(ii) contrapositive, random
+  ok    6.1(iii) on 37 regular girth-4 examples [(4, 1)]
+==============================================================================
+all checks passed

@@ -1,0 +1,54 @@
+\begin{tikzpicture}[
+  cell/.style={draw=black!35,minimum width=1.0cm,minimum height=0.82cm,inner sep=0pt},
+  widecell/.style={draw=black!45,minimum width=1.5cm,minimum height=0.7cm,align=center,
+                   font=\scriptsize,inner sep=1pt},
+  filled/.style={cell,fill=blue!22,draw=blue!45!black},
+  wfilled/.style={widecell,fill=blue!22,draw=blue!45!black},
+  wghost/.style={widecell,fill=blue!7,draw=blue!35,dashed},
+  rfilled/.style={widecell,fill=green!22,draw=green!40!black},
+  rghost/.style={widecell,fill=green!7,draw=green!35,dashed},
+  ar/.style={-{Stealth[length=1.6mm]},draw=black!75},
+  lab/.style={font=\scriptsize,text=black!75},
+  pan/.style={font=\scriptsize\bfseries,text=black!55}
+]
+% ---------------- (a) a family and one of its columns
+\begin{scope}
+\foreach \i in {0,1,2}{\foreach \j in {0,1,2}{
+  \node[cell] at (\j*1.0+0.5, \i*0.82+0.41) {};}}
+\node[filled] at (0.5,2.05) {};
+\node[filled] at (1.5,2.05) {};
+\node[filled] at (1.5,0.41) {};
+\node[filled] at (2.5,1.23) {};
+\draw[blue!55!black,dashed,thick] (1.02,0.0) rectangle (1.98,2.46);
+\node[lab,anchor=north,text=blue!45!black] at (1.5,-0.06) {$P_j$};
+\node[lab,anchor=north,align=center] at (1.5,-0.65) {a column};
+\node[lab,anchor=north] at (1.5,-2.15) {(a) a family $P$};
+\node[lab,anchor=east,rotate=90] at (-0.08,1.23) {rows $p$};
+\node[lab,anchor=west] at (3.08,0.41) {$j$};
+
+\end{scope}
+% ---------------- (b) Phi_1 inside a column
+\begin{scope}[shift={(4.7,0)}]
+\node[wghost] (u) at (0,2.32) {$(i,j)$};
+\node[wfilled] (c) at (0,1.23) {$(p,j)$};
+\node[wghost] (d) at (0,0.14) {$(i',j)$};
+\draw[ar] (c.north) -- (u.south);
+\draw[ar] (c.south) -- (d.north);
+\node[lab,anchor=west] at (0.9,1.78) {$p\to i$};
+\node[lab,anchor=west] at (0.9,0.69) {$p\to i'$};
+\node[lab,anchor=north,align=center] at (0,-0.65) {$\Phi_1P$: the\\ same column};
+\node[lab,anchor=north] at (0,-2.15) {(b) $\Phi_1$};
+\end{scope}
+% ---------------- (c) Phi_2 inside a row
+\begin{scope}[shift={(9.4,0)}]
+\node[rghost] (l) at (-2.3,1.23) {$(i,j)$};
+\node[rfilled] (c2) at (0,1.23) {$(i,s)$};
+\node[rghost] (r2) at (2.3,1.23) {$(i,j')$};
+\draw[ar] (c2.west) -- (l.east);
+\draw[ar] (c2.east) -- (r2.west);
+\node[lab,anchor=south] at (-1.15,1.62) {$s\to j$};
+\node[lab,anchor=south] at (1.15,1.62) {$s\to j'$};
+\node[lab,anchor=north,align=center] at (0,-0.65) {$\Phi_2Q$: the\\ same row};
+\node[lab,anchor=north] at (0,-2.15) {(c) $\Phi_2$};
+\end{scope}
+\end{tikzpicture}

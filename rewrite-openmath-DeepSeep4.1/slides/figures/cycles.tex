@@ -1,0 +1,32 @@
+\begin{tikzpicture}[
+  v/.style={circle,draw=black!70,fill=black!8,inner sep=0pt,minimum size=6mm,font=\scriptsize},
+  o/.style={circle,draw=blue!55!black,fill=blue!18,inner sep=0pt,minimum size=5.5mm,font=\scriptsize},
+  i/.style={circle,draw=orange!60!black,fill=orange!20,inner sep=0pt,minimum size=5.5mm,font=\scriptsize},
+  nn/.style={circle,draw=green!40!black,fill=green!10,inner sep=0pt,minimum size=5.5mm,font=\scriptsize},
+  ar/.style={-{Stealth[length=1.5mm]},draw=black!70},
+  lab/.style={font=\scriptsize,text=black!75},
+  region/.style={draw=#1,dashed,rounded corners=8pt}
+]
+\node[v] (v) at (0,0) {$v$};
+\node[o] (a) at (2.0,1.2) {};
+\node[o] (b) at (2.1,-0.6) {};
+\node[i] (c) at (-2.0,1.1) {};
+\node[i] (d) at (-1.9,-0.7) {};
+\node[nn] (e) at (2.2,3.0) {};
+\node[nn] (f) at (4.2,2.2) {};
+\node[nn] (g) at (-2.1,2.9) {};
+\node[nn] (h) at (0.4,3.3) {};
+\draw[ar] (v) -- (a); \draw[ar] (v) -- (b);
+\draw[ar] (c) -- (v); \draw[ar] (d) -- (v);
+\draw[ar] (a) to[bend left=12] (e);
+\draw[ar] (b) to[bend left=10] (f);
+% regions
+\node[region=blue!45] [fit=(a)(b),inner sep=6pt] {};
+\node[region=orange!55] [fit=(c)(d),inner sep=6pt] {};
+\node[region=green!40] [fit=(e)(f)(g)(h),inner sep=7pt] {};
+\node[lab,anchor=west,text=blue!45!black] at (2.9,0.3) {$N_1^+(v)$};
+\node[lab,anchor=east,text=orange!55!black] at (-2.9,0.2) {$N_1^-(v)$};
+\node[lab,anchor=south,text=green!35!black] at (0.5,3.7) {$\overline N(v)$: non-neighbors};
+\node[lab,anchor=north,text=green!35!black,align=center] at (2.2,2.6) {$N_2^+(v)\subseteq\overline N(v)$};
+
+\end{tikzpicture}

@@ -1,0 +1,28 @@
+\begin{tikzpicture}[
+  stage/.style={draw=black!55,rounded corners=3pt,align=left,font=\scriptsize,
+                inner sep=4pt,text width=10.4cm,fill=#1},
+  stage/.default=white,
+  val/.style={font=\scriptsize\bfseries,text=black!65,anchor=west},
+  ar/.style={-{Stealth[length=2.2mm]},draw=black!70,thick},
+  lab/.style={font=\scriptsize,text=black!70,align=left}
+]
+\node[stage=black!4] (s1) at (0,0)
+ {\textbf{1. Extremal pair.} A compatible pair $(P,Q)$ with $\Delta\subseteq P\cap Q$ maximising
+  $M+u$, where $M=\abs P+\abs Q$ and $u$ counts the points covered by neither family.};
+\node[val] at (s1.east) {$M+u$};
+\node[stage=blue!4,below=15mm of s1] (s2)
+ {\textbf{2. Subset inequality.} Summed over the columns of $P$ and the rows of $Q$: for
+  $\mathcal L=X^2\setminus\Phi_2^2Q$ and $\mathcal R=X^2\setminus\Phi_1^2P$,};
+\node[val] at (s2.east) {$>M+2u$};
+\node[stage=orange!5,below=15mm of s2] (s3)
+ {\textbf{3. Pruning.} $\mathcal L,\mathcal R$ may conflict, but the diagonal members do not. Delete
+  at most $\abs H+q\le u+u'$ members; the survivors leave $u'$ uncovered.};
+\node[val] at (s3.east) {cost $\le u+u'$};
+\node[stage=green!5,below=15mm of s3] (s4)
+ {\textbf{4. Contradiction.} The survivors are compatible, contain $\Delta$, and are worth
+  $>M+2u-u=M+u$.};
+\node[val] at (s4.east) {impossible};
+\draw[ar] (s1.south) -- node[left=3pt,lab] {$\Phi_1,\Phi_2$} (s2.north);
+\draw[ar] (s2.south) -- node[left=3pt,lab] {prune (\cref{lem:pruning})} (s3.north);
+\draw[ar] (s3.south) -- node[left=3pt,lab] {refund $u'$} (s4.north);
+\end{tikzpicture}

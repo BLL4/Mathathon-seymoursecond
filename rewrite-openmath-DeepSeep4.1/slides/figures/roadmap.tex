@@ -1,0 +1,34 @@
+\begin{tikzpicture}[
+  box/.style={draw=black!55,fill=white,rounded corners=2pt,align=center,
+              font=\scriptsize,inner sep=3pt,text width=#1},
+  box/.default=5.2cm,
+  thm/.style={box=8.2cm,draw=black!75,fill=black!6,font=\small},
+  ar/.style={-{Stealth[length=1.8mm]},draw=black!70,thick}
+]
+\node[thm] (T) at (0,0) {Main Theorem: some $v$ has $\abs{N_1^+(v)}\le\abs{N_2^+(v)}$};
+\node[box,draw=blue!45!black,fill=blue!6] (P2) at (-4.3,-2.1)
+  {\textbf{Proposition 2.1}\\[1pt] a counterexample yields $G$ with
+   $\abs{U}+\abs{F^2(U)}<2\abs{F(U)}$ for all $\varnothing\ne U\subsetneq V(G)$,
+   every indegree positive};
+\node[box,draw=blue!45!black,fill=blue!6] (P4) at (4.3,-1.75)
+  {\textbf{Proposition 4.1}\\[1pt] no such $G$ exists};
+\node[box] (L22) at (-4.3,-4.15)
+  {\textbf{Lemma 2.2} (subset deficit)\\[1pt]
+   $\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$ in a minimal counterexample};
+\node[box] (L23) at (-4.3,-5.9)
+  {\textbf{Lemma 2.4} (blowup)\\[1pt] turns the deficit into the strict inequality};
+\node[box] (L31) at (4.3,-3.5)
+  {\textbf{Lemma 3.3} (pruning)\\[1pt] two almost compatible families become compatible};
+\node[box] (EX) at (4.3,-5.25)
+  {\textbf{extremal choice} (Section 4)\\[1pt] maximise $\abs P+\abs Q+u$ over compatible
+   pairs containing the diagonal};
+\node[box] (L32) at (4.3,-7.1)
+  {\textbf{Lemma 3.4} + K\"onig\\[1pt] ranks bound a matching, a matching bounds a cover};
+\draw[ar] (P2.north) -- (T.south -| P2.north);
+\draw[ar] (P4.north) -- (T.south -| P4.north);
+\draw[ar] (L22.north) -- (P2.south);
+\draw[ar] (L23.north) -- (L22.south);
+\draw[ar] (L31.north) -- (P4.south);
+\draw[ar] (EX.north) -- (L31.south);
+\draw[ar] (L32.north) -- (EX.south);
+\end{tikzpicture}

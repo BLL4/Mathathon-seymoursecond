@@ -1,0 +1,89 @@
+\section*{How to read this paper}
+\addcontentsline{toc}{section}{How to read this paper}
+\markboth{How to read this paper}{How to read this paper}
+
+The proof is short in outline and long in detail, and the details are of three very different
+kinds: bookkeeping about subsets, a linear-algebra argument about matchings, and an extremal
+choice. They are much easier to absorb one at a time. So:
+
+\begin{description}[leftmargin=1.2em,itemsep=2pt]
+\item[Level 1 --- five minutes.] Read \cref{sec:intro}, look at \cref{fig:roadmap}, and read the
+  boxed \emph{Idea} passages. You will know what is proved and what the three engines are.
+\item[Level 2 --- an hour.] Read \cref{sec:reduction,sec:incompatibility} (which use each other)
+  and skip \cref{sec:pruning} on a first pass, taking \cref{lem:pruning} as a black box. Then read
+  \cref{sec:pruning} only for the statement and the shape of the argument. \Cref{sec:weighted,sec:cycles}
+  are consequences and are not needed for the main theorem.
+\item[Level 3 --- a day.] Everything, in order, including the verification appendix
+  (\cref{app:checks}), which records how each step was checked.
+\end{description}
+
+\paragraph{Conventions.}
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item All graphs are finite, and \emph{oriented} means: no loops, no two arcs between the same
+  pair of vertices in the same direction, and never both $x\to y$ and $y\to x$.
+\item $F(S)$ is the union of the out-neighborhoods of the vertices of $S$; it \emph{never}
+  subtracts $S$. This convention is used constantly and is stated again where it matters.
+\item $|S|$ is the cardinality of a finite set, $\setminus$ is set difference, and $\sqcup$ is a
+  disjoint union (used when the two parts are known to be disjoint).
+\item The word \emph{proper} means $\neq$ the whole vertex set; \emph{nonempty proper} subsets are
+  the only subsets that ever appear in the subset inequalities.
+\end{itemize}
+
+\paragraph{The four kinds of box.} Each has a fixed job, so you can decide at a glance whether to
+read it.
+\begin{itemize}[leftmargin=1.2em,itemsep=1pt]
+\item A \emph{What this section does} box opens every section: assumptions in, result out, and why
+  the section exists.
+\item An \emph{Idea} box says why a definition or a strategy is the right one. It is motivation,
+  not part of any proof.
+\item A \emph{Watch out} box flags a trap: a hypothesis that is silently used, or a plausible
+  statement that is false.
+\item A \emph{Where we are} box appears at the junctions of the long argument and says what has
+  been established so far.
+\end{itemize}
+Formal statements are preceded by a grey \emph{In words} line: one sentence without symbols
+saying what the statement asserts, so that you can read the statement without parsing it. Long
+proofs are preceded by a green \emph{Proof plan} and split into labeled steps.
+
+\paragraph{Notation at a glance.} Every symbol used in the paper appears here, once, with the
+place where it is introduced. The dictionary in \cref{app:dictionary} translates back to the
+notation of the original preprint.
+
+{\small
+\renewcommand{\arraystretch}{1.16}
+\noindent\begin{tabularx}{\textwidth}{@{}lX@{}}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$G$, $D$, $V(G)$, $A(G)$ & an oriented graph, its vertex set, its arc set; $x\to y$ means $(x,y)\in A(G)$ \\
+$n$ & the number of vertices (\emph{order}) of the graph under discussion \\
+$F(S)$ & $\{y:\ \exists x\in S,\ x\to y\}$; the union of out-neighborhoods, never subtracting $S$ (\cref{sec:intro}) \\
+$F^0(S),F^2(S),F^k(S)$ & $F^0(S)=S$, $F^{k+1}(S)=F(F^k(S))$; $F^2=F\circ F$ \\
+$N_1^+(v)$, $N_2^+(v)$ & first and \emph{exact} second out-neighborhood: $F(\{v\})$ and $F^2(\{v\})\setminus F(\{v\})$ \\
+$d^+(v)$, $d^-(v)$, $\delta^\pm(D)$ & out-degree, in-degree, and their minima over $V(D)$; $d^\pm$ only in \cref{sec:cycles} \\
+$S$, $I$, $E$ & a vertex set, and its split $I=F(S)\cap S$, $E=F(S)\setminus S$ (\cref{sec:reduction}) \\
+$g(Y)$ & $\abs{F(Y)\setminus(I\cup Y)}$, the counted quantity in \cref{lem:deficit} \\
+$Y$, $D_Y$ & a subset of $E$, and $D$ with all arcs $S\to E\setminus Y$ deleted \\
+$Q_v$ & $F(\{v\})\cap(E\setminus Y)$: the out-neighbors of $v$ that the deletion above removes \\
+$\Lambda$ & $F(Q_v)\setminus(I\cup Y\cup Q_v\cup F(Y))$: second out-neighbors lost by the deletion \\
+$m$, $T_m$, $\tau$, $U$ & block size, transitive tournament on $m$ vertices, its internal image operator, and a vertex set of the blowup (\cref{sec:reduction}) \\
+$W$ & $F(S)\cup F^2(S)$: the set of blocks that are completely filled (\cref{lem:blowup}) \\
+$X$, $X\times X$ & the vertex set of the graph $G$ of \cref{sec:incompatibility}, and the set of ordered pairs \\
+$\Phi_1 P$, $\Phi_2 Q$ & coordinate images of a family of pairs: advance the first, resp.\ second, coordinate along an arc \\
+$\Delta$ & $\{(v,v):v\in X\}$, the diagonal \\
+$P$, $Q$, $M$ & the extremal left and right families and $M=|P|+|Q|$ \\
+$P_j$, $Q_i$ & the column $\{p:(p,j)\in P\}$ and the row $\{s:(i,s)\in Q\}$ \\
+$u$, $u'$ & the number of uncovered points, before and after pruning \\
+$\mathcal L$, $\mathcal R$ & the left and right family of pairs of \cref{lem:pruning}; in \cref{sec:incompatibility} they are the complements of $\Phi_2^2Q$, $\Phi_1^2P$ \\
+$\mathcal L'$, $\mathcal R'$ & the subfamilies retained by the pruning lemma \\
+$Z$, $H$ & the conflict points $(i,j)$ and the collision pairs $(p,s)$ of \cref{lem:pruning} \\
+$q$ & the number of points of $Z$ left uncovered by $\mathcal L'\cup\mathcal R'$ \\
+$\Gamma$, $K$, $\mathcal M$ & the augmented bipartite graph, a vertex cover of it, a maximum matching \\
+$k$, $\ell$, $t$ & the numbers of original--original, left--$Z$, and $Z$--right edges of $\mathcal M$ \\
+$L$, $N$, $A$, $B$ & the four linear maps of the commuting square \eqref{eq:commute} \\
+$D^{p,i}$, $T^{p,i}$ & auxiliary matrix for the pair of indices $p\to i$, and its allowed support \\
+$J_p$, $S_i$ & $\{j:(p,j)\in\mathcal L\}$ and $\{s:(i,s)\in\mathcal R\}$ \\
+$a_{xy}$, $b_{xy}$ & two independent arrays of variables, one per arc $x\to y$ \\
+$\overline N(v)$ & the non-neighbors of $v$: $V\setminus(\{v\}\cup N_1^+(v)\cup N_1^-(v))$ (\cref{sec:cycles}) \\
+\bottomrule
+\end{tabularx}}

@@ -1,0 +1,482 @@
+\section{From a counterexample to a strict subset inequality}\label{sec:reduction}
+
+\begin{contract}
+\textbf{Assumes:} that \cref{thm:main} has a counterexample. \quad
+\textbf{Produces:} an oriented graph $G$, all of whose indegrees are positive, satisfying the
+strict inequality
+\[
+ \abs{U}+\abs{F_G^2(U)}<2\abs{F_G(U)}
+ \qquad\text{for every nonempty proper }U\subseteq V(G).
+\]
+\textbf{Why:} this is the graph that \cref{sec:incompatibility} destroys. The section is the
+\emph{first engine}: a minimal counterexample is forced to satisfy a strictly stronger, purely
+set-theoretic inequality, and a blowup amplifies the integer margin so that later rounding cannot
+lose it.
+\end{contract}
+
+Throughout, $F=F_D$ is the \emph{union of out-neighborhoods} in a graph $D$:
+\begin{equation}\label{eq:Fdef}
+ F(S)=\{y\in V(D):\ \text{there is }x\in S\text{ with }x\to y\},
+ \qquad F^k(S)=\underbrace{F(F(\cdots F}_{k}(S)\cdots)).
+\end{equation}
+Two warnings about \eqref{eq:Fdef}, both used constantly. First, $F(S)$ does \emph{not} subtract
+$S$: an arc inside $S$ keeps its head in $F(S)$. Second, $F^2(\{v\})$ does \emph{not} exclude $v$;
+what excludes $v$ is the orientation. In an oriented graph there is no two-step walk from $v$ back
+to $v$ (that would need $v\to u\to v$, two opposite arcs), so
+\begin{equation}\label{eq:N2equals}
+ N_2^+(v)=F^2(\{v\})\setminus F(\{v\}),
+\end{equation}
+with no need to remove $v$ separately. The two operators $F$ and $N_2^+$ are the same object seen
+from two angles: $F$ acts on sets of vertices, $N_2^+$ is the special case of a single vertex, with
+the first neighborhood subtracted.
+
+The goal of the section is the following.
+
+\begin{proposition}[Counterexample reduction]\label{prop:reduction}
+If \cref{thm:main} has a counterexample, then there is a finite nonempty oriented graph $G$ in which
+every vertex has positive indegree and
+\begin{equation}\label{eq:strict-growth}
+ \abs{U}+\abs{F_G^2(U)}<2\abs{F_G(U)}
+ \qquad\text{for every }\varnothing\ne U\subsetneq V(G).
+\end{equation}
+\end{proposition}
+
+\inwords{If the conjecture fails somewhere, then somewhere else there is a graph in which every
+nonempty proper set of vertices has its second image strictly smaller than the average of the set
+and its first image.}
+
+\begin{planbox}
+\begin{enumerate}[leftmargin=1.3em,itemsep=1pt,topsep=1pt]
+\item \textbf{Subset deficit} (\cref{lem:deficit}): in a counterexample chosen minimal first by
+  order and then by number of arcs, every nonempty proper $S$ satisfies the \emph{strict} deficit
+  $\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$. The right-hand side is the part of the first
+  image that lies outside $S$; that refinement is what makes the rest work.
+\item \textbf{Blowup} (\cref{lem:blowup}): replacing every vertex by a transitive tournament on
+  $m>\abs{V(D)}$ vertices multiplies the deficit by $m$ and costs at most $n$ in rounding, turning
+  an integer deficit (at least $1$) into \eqref{eq:strict-growth}.
+\end{enumerate}
+\end{planbox}
+
+\begin{proof}[Proof of \cref{prop:reduction}, assuming \cref{lem:deficit} and \cref{lem:blowup}]
+Choose a counterexample $D$ of minimum order, and among those of minimum number of arcs.
+\Cref{lem:deficit} supplies positive indegrees for $D$ and the deficit
+$\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$ for every nonempty proper $S$. Apply
+\cref{lem:blowup} with any integer $m>\abs{V(D)}$; the resulting $G$ is as required.
+\end{proof}
+
+\subsection{The subset deficit}\label{sec:deficit}
+
+\begin{ideabox}
+The conjecture says $\abs{N_2^+(v)}<\abs{N_1^+(v)}$ at every vertex of a counterexample. We want a
+statement about \emph{sets} of vertices rather than single vertices, and we want it to be strict
+with a robust right-hand side. The device that produces it is: delete the arcs from $S$ to a
+carefully chosen part of $E=F(S)\setminus S$, and see what minimality says about the vertex that
+must now satisfy the inequality. Deleting arcs can only shrink first neighborhoods and can only
+shrink second neighborhoods; so the vertex that gains from the deletion must have \emph{lost} some
+out-neighbors, and the bookkeeping of that trade is the content of the lemma.
+\end{ideabox}
+
+\begin{lemma}[Subset deficit]\label{lem:deficit}
+Let $D$ be a finite nonempty oriented graph with $\abs{N_1^+(v)}>\abs{N_2^+(v)}$ for every
+$v\in V(D)$, chosen with minimum order and, subject to that, with minimum number of arcs. Then $D$
+is strongly connected, every vertex has positive indegree, and
+\begin{equation}\label{eq:deficit}
+ \abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}
+ \qquad\text{for every }\varnothing\ne S\subsetneq V(D).
+\end{equation}
+\end{lemma}
+
+\inwords{In a smallest counterexample, every proper nonempty set $S$ loses, at its second image,
+strictly less than the size of the part of its first image that lies outside $S$.}
+
+\usedin{This is the only place where minimality of the counterexample is used; it feeds
+\cref{lem:blowup} and hence \cref{prop:reduction}}
+
+\begin{planbox}
+\begin{enumerate}[leftmargin=1.3em,itemsep=1pt,topsep=1pt]
+\item \textbf{Clean up the graph} (Step~1): no sink, at least two vertices, strongly
+  connected, all indegrees positive.
+\item \textbf{Fix $S$ and split the first image} (Step~2): $I=F(S)\cap S$ is the
+  \emph{internal} part, $E=F(S)\setminus S$ the \emph{external} part; $E\ne\varnothing$. Define
+  $g(Y)=\abs{F(Y)\setminus(I\cup Y)}$ for $Y\subseteq E$, so that the target inequality reads
+  $g(E)<\abs E$.
+\item \textbf{Build a deletion machine} (Step~3): for $Y\subsetneq E$, delete all arcs
+  from $S$ to $E\setminus Y$. Minimality of the arc count gives a vertex $v$ satisfying the
+  inequality in the smaller graph; show $v\in S$, and let $Q_v$ be the out-neighbors it loses.
+\item \textbf{Do the bookkeeping} (Step~4): the second out-neighborhood of $v$ loses
+  exactly a set $\Lambda$ and gains only points of $Q_v\cap F(Y)$; hence the increase of $g$ is
+  less than $\abs{Q_v}$.
+\item \textbf{Iterate} (Step~5) from $Y=\varnothing$ to $Y=E$, and sum.
+\end{enumerate}
+\end{planbox}
+
+\begin{proof}
+\steplabel{Step 1: the graph is strongly connected.}
+A sink satisfies $\abs{N_1^+(v)}=0\le\abs{N_2^+(v)}$, so $D$ has no sink; in particular $D$ is not
+a single vertex, since a single vertex is a sink. If $D$ were not strongly connected, its
+condensation would have a sink component $C$: a strongly connected component with no arc to
+another component. Every out-neighbor, and therefore every two-step out-neighbor, of a vertex of
+$C$ lies in $C$. Hence $D[C]$ would be a counterexample of smaller order, contradicting minimality.
+So $D$ is strongly connected, and since it has more than one vertex, every vertex has an
+in-neighbor.
+
+\steplabel{Step 2: fix a subset and split its first image.}
+Let $\varnothing\ne S\subsetneq V(D)$ and put
+\begin{equation}\label{eq:IE}
+ I=F(S)\cap S,\qquad E=F(S)\setminus S,\qquad F(S)=I\sqcup E,
+\end{equation}
+and, for $Y\subseteq E$,
+\begin{equation}\label{eq:gdef}
+ g(Y)=\abs{F(Y)\setminus(I\cup Y)} .
+\end{equation}
+We have $E\ne\varnothing$: otherwise $S$ would have no arc to $V(D)\setminus S$, contradicting
+strong connectivity as $S$ is nonempty and proper. The reader should keep \cref{fig:deficit} in
+mind: $I$ is the part of the first image that falls back inside $S$, $E$ the part that falls
+outside.
+
+\begin{figure}[t]
+\centering
+\input{figures/deficit.tex}
+\caption{The split \eqref{eq:IE} of the first image of $S$. \emph{Look at} the three regions: $I$
+ (the first image that stays inside $S$), $E$ (the first image outside $S$), and the region
+ $F^2(S)\setminus F(S)$ (second image not already seen in one step). \emph{Why it matters:}
+ \cref{lem:deficit} compares the size of the third region with the size of $E$, not with the size
+ of $F(S)=I\sqcup E$. The part $I$ is free: it is already ``paid for'' by $S$.}
+\label{fig:deficit}
+\end{figure}
+
+Note the two extremes: $g(\varnothing)=0$, and $g(E)=\abs{F(E)\setminus(I\cup E)}$. Since
+$F(S)=I\sqcup E$ and $F(I)\subseteq F(S)=I\sqcup E$, we shall be able to identify the target
+quantity at the end:
+\begin{equation}\label{eq:deficit-via-g}
+ F^2(S)\setminus F(S)
+ =\bigl(F(I)\cup F(E)\bigr)\setminus(I\cup E)
+ =F(E)\setminus(I\cup E),
+\end{equation}
+so that $\abs{F^2(S)\setminus F(S)}=g(E)$.
+
+\steplabel{Step 3: the deletion machine.}
+Fix $Y\subsetneq E$. Let $D_Y$ be the graph obtained from $D$ by deleting \emph{all} arcs from $S$
+to $E\setminus Y$; all other arcs are kept. Every vertex of $E\setminus Y$ has an in-neighbor in
+$S$, because $E\setminus Y\subseteq E=F(S)\setminus S$; so at least one arc is deleted and $D_Y$
+has strictly fewer arcs than $D$.
+
+Minimality of the number of arcs (the order is unchanged) says that $D_Y$ is \emph{not} a
+counterexample. So there is a vertex $v$ with
+\begin{equation}\label{eq:DY-inequality}
+ \abs{N_{1,D_Y}^+(v)}\le\abs{N_{2,D_Y}^+(v)}.
+\end{equation}
+If $v$ had lost no out-neighbor, then $N_{1,D_Y}^+(v)=N_1^+(v)$ while $N_{2,D_Y}^+(v)\subseteq
+N_2^+(v)$ (deleting arcs creates no paths), so
+$\abs{N_{2,D_Y}^+(v)}\le\abs{N_2^+(v)}<\abs{N_1^+(v)}=\abs{N_{1,D_Y}^+(v)}$, contradicting
+\eqref{eq:DY-inequality}. Hence $v$ lost an out-neighbor, which means $v\in S$: only arcs with tail
+in $S$ were deleted. Put
+\begin{equation}\label{eq:Qv}
+ Q_v=F(\{v\})\cap(E\setminus Y)=\{\text{out-neighbors of }v\text{ that }D_Y\text{ does not have}\}.
+\end{equation}
+Then $Q_v\ne\varnothing$, and $Q_v$ is disjoint from $I\cup Y$ because $Q_v\subseteq E\setminus Y$
+and $Y\subseteq E$ is disjoint from $S\supseteq I$. Also $F(\{v\})\subseteq I\cup Y\cup Q_v$,
+since $F(\{v\})\subseteq F(S)=I\sqcup E$.
+
+\steplabel{Step 4: what $v$ loses and what it gains.}
+\Cref{fig:deletion} shows the four sets involved. We record four facts.
+
+\emph{(4a) The second image after deletion is confined.} Since $v\in S$, its out-neighbors in
+$D_Y$ lie in $I\cup Y$; and for such an out-neighbor $x$,
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=1pt]
+\item if $x\in I\subseteq S$, then all arcs out of $x$ into $E\setminus Y$ were deleted, so
+  $F_{D_Y}(x)\subseteq F(x)\setminus(E\setminus Y)\subseteq (I\sqcup E)\setminus(E\setminus
+  Y)=I\cup Y$;
+\item if $x\in Y$, then $F_{D_Y}(x)\subseteq F(x)\subseteq F(Y)$.
+\end{itemize}
+Hence
+\begin{equation}\label{eq:confined}
+ F_{D_Y}^2(\{v\})\subseteq I\cup Y\cup F(Y).
+\end{equation}
+
+\emph{(4b) New second out-neighbors are first out-neighbors.} A vertex counted in
+$N_{2,D_Y}^+(v)$ but not in $N_2^+(v)$ is the end of a two-step path of $D_Y$, hence of $D$; it is
+not a first out-neighbor in $D_Y$. So it was a first out-neighbor in $D$, i.e.\ it lies in $Q_v$;
+and by \eqref{eq:confined} it lies in $I\cup Y\cup F(Y)$. As $Q_v$ misses $I\cup Y$,
+\begin{equation}\label{eq:new}
+ N_{2,D_Y}^+(v)\setminus N_2^+(v)\subseteq Q_v\cap F(Y).
+\end{equation}
+
+\emph{(4c) The set $\Lambda$ is lost.} Define
+\begin{equation}\label{eq:Lambda}
+ \Lambda=F(Q_v)\setminus\bigl(I\cup Y\cup Q_v\cup F(Y)\bigr).
+\end{equation}
+Each $y\in\Lambda$ has $v\to q\to y$ with $q\in Q_v\subseteq F(\{v\})$, so $y\in F^2(\{v\})$. Also
+$y\notin F(\{v\})$, because $F(\{v\})\subseteq I\cup Y\cup Q_v$; and $y\ne v$, because $y\in F(Q_v)$
+and an arc $q\to v$ would be opposite to the arc $v\to q$. Hence
+\begin{equation}\label{eq:Lambda-sub}
+ \Lambda\subseteq N_2^+(v).
+\end{equation}
+On the other hand $\Lambda\cap(I\cup Y\cup F(Y))=\varnothing$ by definition, so \eqref{eq:confined}
+gives $\Lambda\cap N_{2,D_Y}^+(v)=\varnothing$: every point of $\Lambda$ was counted before the
+deletion and is not counted after it.
+
+\emph{(4d) The change of $g$ is exact.} Since $F(Y\cup Q_v)=F(Y)\cup F(Q_v)$,
+\begin{align}
+ F(Y\cup Q_v)\setminus(I\cup Y\cup Q_v)
+ &=\bigl(F(Y)\setminus(I\cup Y\cup Q_v)\bigr)
+   \;\sqcup\;\bigl(F(Q_v)\setminus(I\cup Y\cup Q_v\cup F(Y))\bigr)\notag\\
+ &=\bigl(F(Y)\setminus(I\cup Y)\bigr)\setminus Q_v\;\;\sqcup\;\;\Lambda,
+ \label{eq:g-change}
+\end{align}
+using $Q_v\cap(I\cup Y)=\varnothing$ in the second line. Therefore
+\begin{equation}\label{eq:g-diff}
+ g(Y\cup Q_v)-g(Y)=\abs\Lambda-\abs{Q_v\cap F(Y)}.
+\end{equation}
+
+Now put $d_1=\abs{N_1^+(v)}$ and $d_2=\abs{N_2^+(v)}$, the degrees \emph{in $D$}. By definition of
+$Q_v$ the first out-neighborhood loses exactly $Q_v$:
+\begin{equation}\label{eq:first-loss}
+ \abs{N_{1,D_Y}^+(v)}=d_1-\abs{Q_v}.
+\end{equation}
+By \eqref{eq:Lambda-sub} and \eqref{eq:confined}, the second out-neighborhood can only lose points
+of $\Lambda$ and can only gain points of $Q_v\cap F(Y)$:
+\begin{equation}\label{eq:second-change}
+ \abs{N_{2,D_Y}^+(v)}\le d_2-\abs\Lambda+\abs{Q_v\cap F(Y)}.
+\end{equation}
+Substituting \eqref{eq:first-loss} and \eqref{eq:second-change} into \eqref{eq:DY-inequality},
+\begin{equation}\label{eq:increment-bound}
+ \abs\Lambda-\abs{Q_v\cap F(Y)}
+ \overset{\eqref{eq:g-diff}}{=}g(Y\cup Q_v)-g(Y)
+ \le \abs{Q_v}+d_2-d_1<\abs{Q_v},
+\end{equation}
+where the last inequality is the counterexample hypothesis $d_2<d_1$.
+
+\steplabel{Step 5: iterate and sum.}
+Start with $Y_0=\varnothing$ and, as long as $Y_i\ne E$, apply Step 3--4 to $Y_i$ to obtain
+$Q_{v_i}\ne\varnothing$ with $Q_{v_i}\subseteq E\setminus Y_i$, and set $Y_{i+1}=Y_i\cup Q_{v_i}$.
+The sets $Y_i$ strictly increase inside the finite set $E$, so the process stops, and it can only
+stop at $Y_r=E$. Each step is performed afresh on the \emph{original} $D$, so minimality applies at
+every step. Summing \eqref{eq:increment-bound} over the steps and telescoping,
+\[
+ g(E)-g(\varnothing)=\sum_{i=0}^{r-1}\bigl(g(Y_{i+1})-g(Y_i)\bigr)<\sum_{i=0}^{r-1}\abs{Q_{v_i}}
+ =\abs{E},
+\]
+because the $Q_{v_i}$ partition $E$. As $g(\varnothing)=0$ and, by \eqref{eq:deficit-via-g},
+$g(E)=\abs{F^2(S)\setminus F(S)}$ while $\abs E=\abs{F(S)\setminus S}$, this is
+\eqref{eq:deficit}. As $S$ was arbitrary, the lemma is proved.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\input{figures/deletion.tex}
+\caption{The deletion step of \cref{lem:deficit}. \emph{Look at} the crossed-out arcs on the left:
+ all arcs from $S$ to $E\setminus Y$ are deleted, so the out-neighbors of $v$ that lie in $Q_v$
+ disappear, and with them every two-step path that used one of them. \emph{Why it matters:} the
+ second out-neighborhood is confined to $I\cup Y\cup F(Y)$ after the deletion
+ \eqref{eq:confined}; the points of $\Lambda$ (bottom right) were counted before and are not
+ counted after, while the only points that can be gained are the points of $Q_v\cap F(Y)$ ---
+ which are also first out-neighbors of $v$, hence are paid for by the first loss.}
+\label{fig:deletion}
+\end{figure}
+
+\begin{remark}[The ledger, and why the right-hand side is $\abs{F(S)\setminus S}$]\label{rem:ledger}
+The four facts of Step 4 are best remembered as a table of what happens to the two neighborhoods of
+$v$ when the arcs from $S$ to $E\setminus Y$ are deleted.
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}llll@{}}
+\toprule
+quantity & in $D$ & in $D_Y$ & reason \\
+\midrule
+$\abs{N_1^+(v)}$ & $d_1$ & $d_1-\abs{Q_v}$ & loses exactly $Q_v$, \eqref{eq:first-loss}\\
+$\abs{N_2^+(v)}$ & $d_2$ & $\le d_2-\abs\Lambda+\abs{Q_v\cap F(Y)}$ & \eqref{eq:Lambda-sub}, \eqref{eq:confined}, \eqref{eq:new}\\
+$g(Y)$ & $g(Y)$ & $g(Y)+\abs\Lambda-\abs{Q_v\cap F(Y)}$ & exact, \eqref{eq:g-diff}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two remarks explain the shape of the lemma.
+
+\emph{(i) The gain is charged to the first out-neighbors.} The new second out-neighbors lie in
+$Q_v\cap F(Y)\subseteq Q_v$, and $Q_v$ is precisely the set of first out-neighbors that the
+deletion removed. This is why the increment is bounded by $\abs{Q_v}$ and not by $\abs{N_1^+(v)}$:
+the deletion pays for the gain out of the first neighborhood, and the deficit $d_2<d_1$ supplies the
+strictness.
+
+\emph{(ii) Why $I$ does not appear on the right-hand side.} If the right-hand side of
+\eqref{eq:deficit} were $\abs{F(S)}$, the display \eqref{eq:g-diff} would have to account for
+$I$ as well, and $I$ is not controlled by the deletion at all. Working with
+$F(S)\setminus S=E$ means that the internal part of the image is simply not part of the ledger.
+\end{remark}
+
+\subsection{The blowup}\label{sec:blowup}
+
+\begin{ideabox}
+\Cref{eq:deficit} has an integer left-hand side and an integer right-hand side, so it gives a
+margin of at least $1$. The final argument, however, needs the inequality $\abs{U}+\abs{F^2(U)}<
+2\abs{F(U)}$ to survive a comparison in which a term of size at most $n$ (the number of base
+vertices) competes with the margin. Replacing every vertex by many twins multiplies the margin by
+the block size $m$ while the rounding error stays at $n$: choose $m>n$ and the margin wins.
+\end{ideabox}
+
+\begin{lemma}[Transitive-tournament blowup]\label{lem:blowup}
+Let $D$ be an oriented graph on $n\ge1$ vertices, all of positive indegree, satisfying
+\eqref{eq:deficit} for every nonempty proper subset of $V(D)$. Let $m>n$ be an integer. Replace
+every vertex of $D$ by a transitive tournament on $m$ vertices; for every arc $v\to w$ of $D$ put
+\emph{all} arcs from the block of $v$ to the block of $w$, and put no other arcs between distinct
+blocks. Then the resulting graph $G$ is oriented, all its indegrees are positive, and
+\[
+ \abs{U}+\abs{F_G^2(U)}<2\abs{F_G(U)}
+ \qquad\text{for every }\varnothing\ne U\subsetneq V(G).
+\]
+\end{lemma}
+
+\inwords{Putting a large transitive tournament in place of each vertex multiplies the subset deficit
+by the block size, which beats the rounding error.}
+
+\usedin{Combined with \cref{lem:deficit} it gives \cref{prop:reduction}, hence the hypothesis of
+\cref{prop:no-concavity}}
+
+\begin{planbox}
+\begin{enumerate}[leftmargin=1.3em,itemsep=1pt,topsep=1pt]
+\item \textbf{Internal accounting} (Step~1): inside one block, a nonempty set $T$ of
+  labels has image $\tau(T)=\{a+1,\dots,m\}$ where $a=\min T$; hence $\abs T-\abs{\tau(T)}\le1$,
+  $\tau^2(T)\subseteq\tau(T)$ and $\abs T-2\abs{\tau(T)}+\abs{\tau^2(T)}\le1$.
+\item \textbf{External accounting} (Step~3): if $U$ meets exactly the blocks in $S$, then
+  every block indexed by $F(S)$ is \emph{completely} contained in $F_G(U)$, and every block
+  indexed by $F^2(S)$ is completely contained in $F_G^2(U)$.
+\item \textbf{The ledger} (Step~4): combine the two accounts; the coefficient of $m$ is
+  exactly $\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}\le-1$, and everything else is at most
+  $n$.
+\item \textbf{The case $S=V(D)$} (Step~5), where the hypothesis \eqref{eq:deficit} is not
+  available and a separate argument is needed.
+\end{enumerate}
+\end{planbox}
+
+\begin{proof}
+\steplabel{Step 1: inside a block.}
+Write $V(G)=V(D)\times\{1,\dots,m\}$, with the block of $v$ being $\{v\}\times\{1,\dots,m\}$, and
+put an arc from $(v,a)$ to $(v,b)$ exactly when $a<b$. Let $\tau$ be the image operator of this
+transitive tournament: for $T\subseteq\{1,\dots,m\}$,
+\begin{equation}\label{eq:tau}
+ \tau(T)=\{b:\ \exists a\in T,\ a<b\}
+ =\begin{cases}\{a+1,\dots,m\},&a=\min T,\ T\ne\varnothing,\\ \varnothing,&T=\varnothing.\end{cases}
+\end{equation}
+For nonempty $T$ with $a=\min T$ we have $T\subseteq\{a,\dots,m\}$ and $\tau(T)=\{a+1,\dots,m\}$,
+so
+\begin{equation}\label{eq:tau-bounds}
+ \abs T-\abs{\tau(T)}\le1,\qquad
+ \tau^2(T)\subseteq\tau(T),\qquad
+ \abs T-2\abs{\tau(T)}+\abs{\tau^2(T)}\le1 .
+\end{equation}
+(The inclusion is immediate from \eqref{eq:tau}. The first inequality says that $T$ contains at
+most one label below $\tau(T)$; the second that $\tau(T)$ is an interval ending at $m$, so its own
+image is smaller still.)
+
+\steplabel{Step 2: the construction is oriented with positive indegrees.}
+Inside a block the arcs are transitive, so no loops and no opposite pairs; between two blocks the
+arcs all point one way, determined by the arc of $D$; and there is no arc between non-adjacent
+blocks. So $G$ is oriented. A vertex $(v,a)$ receives arcs from every block $\{u\}\times\{1,\dots,m\}$
+with $u\to v$ in $D$, and every vertex of $D$ has an in-neighbor by hypothesis; so every indegree in
+$G$ is positive.
+
+\steplabel{Step 3: which blocks are completely covered.}
+Fix a nonempty proper $U\subseteq V(G)$ and let
+\begin{equation}\label{eq:support}
+ \begin{gathered}
+  T_v=\{a:(v,a)\in U\}\subseteq\{1,\dots,m\},\qquad
+  S=\{v\in V(D):T_v\ne\varnothing\},\\
+  W=F(S)\cup F^2(S).
+ \end{gathered}
+\end{equation}
+\Cref{fig:blowup} shows the three kinds of blocks. First, \emph{every block indexed by $F(S)$ is
+completely contained in $F_G(U)$}: if $w\in F(S)$ there is $v\in S$ with $v\to w$, and then
+$(v,a)\to(w,b)$ for \emph{all} $a,b$, so the whole block of $w$ is reached. In a block $w\notin
+F(S)$ there are no arcs from $U$ into it, so its contribution to $F_G(U)$ is exactly the internal
+image $\tau(T_w)$. Therefore
+\begin{equation}\label{eq:FG}
+ \abs{F_G(U)}=m\,\abs{F(S)}+\sum_{v\in S\setminus F(S)}\abs{\tau(T_v)} .
+\end{equation}
+Second, \emph{every block indexed by $F^2(S)$ is completely contained in $F_G^2(U)$}: a two-step
+path from $U$ whose two steps are external ends anywhere in a block of $F(F(S))=F^2(S)$. A
+two-step path with exactly one external step lands in a block of $F(S)$ (if the external step is
+the second) or stays inside a block of $F(S)$ (if it is the first, and the block is already full).
+A two-step path with no external step contributes $\tau^2(T_v)$ inside the block of $v$. Since
+blocks indexed by $F(S)\subseteq W$ are already fully counted,
+\begin{equation}\label{eq:FG2}
+ \abs{F_G^2(U)}\le m\,\abs W+\sum_{v\in S\setminus W}\abs{\tau^2(T_v)} .
+\end{equation}
+
+\steplabel{Step 4: the ledger.}
+Subtracting twice \eqref{eq:FG} from \eqref{eq:FG2} and adding $\abs U=\sum_{v\in S}\abs{T_v}$,
+\begin{align}
+ \abs U-2\abs{F_G(U)}+\abs{F_G^2(U)}
+ &\le m\bigl(\abs W-2\abs{F(S)}\bigr)+\sum_{v\in S}\abs{T_v}\notag\\
+ &\qquad{}-2\!\!\sum_{v\in S\setminus F(S)}\!\!\abs{\tau(T_v)}
+       +\sum_{v\in S\setminus W}\abs{\tau^2(T_v)} .\label{eq:blowup-sharp}
+\end{align}
+Since $F(S)\subseteq W$, extending the last sum from $S\setminus W$ to $S\setminus F(S)$ only adds
+nonnegative terms; this may count an internal second image twice, which is why the display is an
+inequality. Now use $\abs{T_v}\le m$ for $v\in S\cap F(S)$ and \eqref{eq:tau-bounds} for
+$v\in S\setminus F(S)$:
+\begin{align}
+ \abs U-2\abs{F_G(U)}+\abs{F_G^2(U)}
+ &\le m\bigl(\abs W-2\abs{F(S)}+\abs{S\cap F(S)}\bigr)+\abs{S\setminus F(S)}\notag\\
+ &=m\bigl(\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}\bigr)+\abs{S\setminus F(S)}
+ \label{eq:blowup-main}
+\end{align}
+because $W=F(S)\cup F^2(S)$ gives $\abs W=\abs{F(S)}+\abs{F^2(S)\setminus F(S)}$, and
+$\abs{F(S)}-\abs{S\cap F(S)}=\abs{F(S)\setminus S}$.
+
+If $S\ne V(D)$ then $S$ is a nonempty proper subset of $V(D)$, so by hypothesis the parenthesis in
+\eqref{eq:blowup-main} is an integer $\le-1$. As $\abs{S\setminus F(S)}\le\abs S\le n<m$,
+\[
+ \abs U-2\abs{F_G(U)}+\abs{F_G^2(U)}\le -m+\abs{S\setminus F(S)}\le-m+n<0,
+\]
+which is \eqref{eq:strict-growth} for this $U$.
+
+\steplabel{Step 5: the case $S=V(D)$.}
+Here \eqref{eq:deficit} is not available, since $S$ is not proper. But $F(S)=V(D)$: every vertex of
+$D$ has an in-neighbor, so every vertex of $D$ is in $F(V(D))$. Hence $F_G(U)=V(G)$, every block
+being full. And then $F_G^2(U)=V(G)$ too, because every vertex of $G$ has positive indegree (Step
+2). Therefore
+\[
+ \abs U-2\abs{F_G(U)}+\abs{F_G^2(U)}=\abs U-2\abs{V(G)}+\abs{V(G)}=\abs U-\abs{V(G)}<0,
+\]
+as $U$ is proper. This is again \eqref{eq:strict-growth}, and the lemma is proved.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\input{figures/blowup.tex}
+\caption{The blowup $G=D[T_m]$. \emph{Left:} the base graph $D$; a vertex $v$ and an arc $v\to w$.
+ \emph{Middle:} each vertex is replaced by a transitive tournament on $m$ labels $1<\dots<m$; the arc
+ $v\to w$ becomes a complete set of arcs from block $v$ to block $w$. \emph{Right:} for a set $U$
+ meeting the blocks in $S$, the blocks of $F(S)$ are \emph{full} in $F_G(U)$ (dark) and the blocks of
+ $F^2(S)\setminus F(S)$ are full in $F_G^2(U)$ (medium); in the remaining blocks only the internal
+ image $\tau(T_v)$ is seen. \emph{Why it matters:} the full blocks contribute a multiple of $m$,
+ which is where the amplification comes from; the partial blocks contribute at most $n$, which is
+ the rounding error.}
+\label{fig:blowup}
+\end{figure}
+
+\begin{remark}[Reading \eqref{eq:blowup-main}]\label{rem:blowup-read}
+The single line \eqref{eq:blowup-main} is the whole point of the blowup, and it is worth seeing why
+it is exactly what \cref{eq:deficit} says. The parenthesis
+$\abs W-2\abs{F(S)}+\abs{S\cap F(S)}$ counts the blocks as follows: each block of
+$F^2(S)\setminus F(S)$ contributes $+1$ (it is full in the second image but not in the first), each
+block of $F(S)\setminus S$ contributes $-1$ (it is full in the first image and not in $S$), blocks
+of $S\cap F(S)$ contribute $0$ (full in the first image and already in $U$), and all other blocks
+contribute $0$ (they are in neither full set). So the parenthesis is precisely
+$\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}$: the deficit of \cref{lem:deficit}, block by
+block. The factor $m$ is the number of vertices in a full block, and $\abs{S\setminus F(S)}\le n$
+is the price of the blocks that are only partly seen.
+\end{remark}
+
+\begin{checkpoint}
+Two sentences summarise the section. \emph{Minimality plus arc deletion} produces, for every proper
+nonempty $S$, a strict deficit $\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$
+(\cref{lem:deficit}); the deletion pays for the second-image gain out of the first-image loss, which
+is why the deficit is strict. \emph{Blowing up} multiplies that deficit by the block size $m$ and
+adds an error of at most $n$, so $m>n$ makes the sum strictly negative
+(\cref{lem:blowup}). The next section builds the tool that will convert such inequalities into a
+contradiction.
+\end{checkpoint}

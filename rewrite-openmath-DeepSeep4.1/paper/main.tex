@@ -1,0 +1,55 @@
+\documentclass[11pt,a4paper]{article}
+\input{preamble}
+\hypersetup{pdftitle={A proof of Seymour's second-neighborhood conjecture --- a guided rewrite},
+            pdfauthor={after OpenAI}, pdfsubject={Oriented graphs, second neighborhoods}}
+
+\title{\bfseries A proof of Seymour's second-neighborhood conjecture\\[2pt]
+\large A guided, figure-rich rewrite}
+\author{after the preprint of OpenAI, September 23, 2026\\[2pt]
+\small rewritten for readability; the mathematics is unchanged}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\noindent
+Every nonempty finite \emph{oriented} graph has a vertex with at least as many vertices at
+directed distance exactly two as at directed distance one. This settles Seymour's
+second-neighborhood conjecture in full generality.
+
+\smallskip
+\noindent
+The proof has three moving parts, and this document is organised around them.
+\emph{(i) Reduction.} A minimal counterexample yields, for every nonempty proper vertex set
+$S$, a strict inequality $\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$ between a second
+image and a first image; a transitive-tournament blowup converts it into
+$\abs{U}+\abs{F^2(U)}<2\abs{F(U)}$ for every nonempty proper $U$.
+\emph{(ii) Pruning.} Two families of ordered pairs that are almost compatible can be made
+compatible by deleting few members, at a cost charged partly to the points left uncovered.
+\emph{(iii) Extremal contradiction.} Maximising $\abs{P}+\abs{Q}$ plus the number of uncovered
+points produces, through \emph{(i)} and \emph{(ii)}, a strictly better pair.
+
+\smallskip
+\noindent
+This is a rewritten presentation of the preprint of OpenAI (23 September 2026). No statement
+has been weakened, no case removed, and no proof step dropped; what is added is structure,
+pictures, motivation, and an explicit record of how each step was checked. A dictionary in
+\cref{app:dictionary} translates the notation back to the original.
+\end{abstract}
+
+\tableofcontents
+\bigskip
+
+\input{00-howtoread}
+\input{01-introduction}
+\input{02-reduction}
+\input{03-pruning}
+\input{04-incompatibility}
+\input{05-weighted}
+\input{06-cycles}
+\input{07-appendix}
+
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

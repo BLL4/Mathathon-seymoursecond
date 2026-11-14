@@ -1,0 +1,29 @@
+\begin{tikzpicture}[
+  cell/.style={draw=black!45,minimum width=1.6cm,minimum height=0.7cm,align=center,
+               font=\scriptsize,inner sep=1pt},
+  pc/.style={cell,fill=blue!14},
+  qc/.style={cell,fill=green!14},
+  bad/.style={cell,fill=red!20,draw=red!55!black},
+  neut/.style={cell,fill=black!4},
+  ar/.style={-{Stealth[length=1.6mm]},draw=black!70},
+  lab/.style={font=\scriptsize,text=black!75}
+]
+% ---- case 1: (v,v) not in Phi_2^2 Q
+\node[pc]   (ss) at (0,1.75) {$(s,s)\in P$};
+\node[bad]  (vs) at (0,0)    {$(v,s)$};
+\node[neut] (vv) at (2.6,0)  {$(v,v)$};
+\draw[ar] (ss) -- node[right=2pt,lab] {$s\to v$} (vs);
+\draw[ar] (vs) -- node[below=1pt,lab] {$s\to v$} (vv);
+\node[font=\large,text=red!60!black,anchor=east] at (-1.0,0) {$\times$};
+\node[lab,anchor=north,align=center] at (1.1,-0.6) {$(v,s)$ lies in $\Phi_1P$ and in $\Phi_2Q$};
+\node[lab,anchor=south,align=center,text=black!55] at (2.6,1.75) {would be in $\Phi_2^2Q$};
+% ---- case 2: (v,v) not in Phi_1^2 P
+\node[qc]   (pp) at (6.4,0)     {$(p,p)\in Q$};
+\node[bad]  (pv) at (9.0,0)     {$(p,v)$};
+\node[neut] (vv2) at (9.0,-1.9) {$(v,v)$};
+\draw[ar] (pp) -- node[above=1pt,lab] {$p\to v$} (pv);
+\draw[ar] (pv) -- node[right=2pt,lab] {$p\to v$} (vv2);
+\node[font=\large,text=red!60!black,anchor=south] at (9.0,0.55) {$\times$};
+\node[lab,anchor=north,align=center] at (7.4,-2.7) {$(p,v)$ lies in $\Phi_1P$ and in $\Phi_2Q$};
+\node[lab,anchor=west,align=left,text=black!55] at (10.0,-1.9) {would be in\\ $\Phi_1^2P$};
+\end{tikzpicture}

@@ -1,0 +1,91 @@
+\section{Weighted consequences}\label{sec:weighted}
+
+\begin{contract}
+\textbf{Assumes:} \cref{thm:main}. \quad
+\textbf{Produces:} the vertex- and arc-weighted forms of the conjecture
+(\cref{cor:weighted}). \textbf{Why:} these are the forms in which the conjecture is usually applied;
+the passage from the unweighted statement to them is Seacrest's, and is quoted rather than reproved.
+Nothing in this section is used in the proof of \cref{thm:main}.
+\end{contract}
+
+The weighted forms come in two quantifier orders, and the difference matters. One can ask that
+\emph{for every} weighting there be a vertex that does well (a max-min statement), or that there be
+\emph{one} weighting for which every vertex does well (a min-max statement). Both hold, and both
+follow from \cref{thm:main} through the equivalence proved by Seacrest~\cite{Seacrest2015}.
+
+\begin{corollary}[Weighted second-neighborhood forms]\label{cor:weighted}
+Let $D$ be a nonempty finite oriented graph and $A(D)$ its arc set. For a vertex weighting
+$\eta:V(D)\to[0,\infty)$ write $\eta(S)=\sum_{x\in S}\eta(x)$. Then:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=1.6em,itemsep=3pt]
+\item for every vertex weighting $\eta:V(D)\to[0,\infty)$ there is a vertex $v$ with
+  \[
+   \eta(N_1^+(v))\le\eta(N_2^+(v));
+  \]
+\item there is a vertex weighting $\eta:V(D)\to[0,\infty)$ with $\sum_{x\in V(D)}\eta(x)=1$ such that
+  \[
+   \eta(N_1^+(v))\le\eta(N_2^+(v))\qquad\text{for every }v\in V(D),
+  \]
+  whose entries need not all be positive;
+\item for every arc weighting $w:A(D)\to[0,\infty)$, extended by $w(vs)=0$ when $vs\notin A(D)$, and
+  with
+  \[
+   \beta_v^w(s)=\max\Bigl(\{0\}\cup\{w(us)-w(vs):\ u\in V(D),\ v\to u\to s\}\Bigr),
+  \]
+  there is a vertex $v$ with
+  \[
+   \sum_{s\in V(D)}\beta_v^w(s)\ \ge\ \sum_{u\in N_1^+(v)}w(vu).
+  \]
+\end{enumerate}
+\end{corollary}
+
+\inwords{Weighted by nonnegative numbers, either every weighting admits a good vertex, or one
+weighting makes every vertex good; and the same holds for weights on arcs, with a two-step maximum
+in place of the second neighborhood.}
+
+\begin{proof}
+\emph{(iii)} is Seacrest's arc-weighted conjecture, which his Proposition~2 shows to be equivalent to
+the unweighted conjecture~\cite{Seacrest2015}; \cref{thm:main} is the unweighted conjecture, so (iii)
+holds.
+
+\emph{(i) follows from (iii).} Given $\eta$, set $w(us)=\eta(s)$ for every arc $us$. Then for
+$v,s\in V(D)$,
+\[
+ \beta_v^w(s)=\begin{cases}\eta(s),&s\in N_2^+(v),\\ 0,&s\notin N_2^+(v),\end{cases}
+\]
+as \cref{fig:beta} illustrates: if $v\to s$ then every eligible difference
+$w(us)-w(vs)=\eta(s)-\eta(s)$ is $0$, and if $s$ is at exact distance two from $v$ then $w(vs)=0$ and
+the maximum is $\eta(s)$. So the two sides of (iii) become $\eta(N_2^+(v))$ and $\eta(N_1^+(v))$,
+which is (i).
+
+\emph{(ii) follows from (i) by duality.} Let $M_D$ be the matrix with rows and columns indexed by
+$V(D)$, with entry $1$ at $(v,s)$ when $s\in N_2^+(v)$, entry $-1$ when $s\in N_1^+(v)$, and entry
+$0$ otherwise. Reversing all arcs transposes this matrix, $M_{\overleftarrow D}=M_D^{\mathsf T}$,
+because reversing swaps the roles of first and second out-neighborhoods. By Farkas' lemma in the form
+used by Seacrest~\cite[Theorem~1]{Seacrest2015}, exactly one of the following holds: there is a
+nonzero $\eta\ge0$ with $M_D\eta\ge0$, or there is $\xi\ge0$ with $M_D^{\mathsf T}\xi<0$ entrywise.
+The second alternative is impossible: it would say that in the reversed graph $\overleftarrow D$ every
+vertex $v$ has $\xi(N_1^+(v))>\xi(N_2^+(v))$, contradicting (i) applied to $\overleftarrow D$ with the
+weighting $\xi$. So the first alternative holds; normalizing $\eta$ to total weight $1$ gives (ii).
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\input{figures/beta.tex}
+\caption{The arc weighting $\beta_v^w$ of \cref{cor:weighted}(iii), and the substitution of (i).
+\emph{Left:} for each two-step path $v\to u\to s$ one compares the last arc weight $w(us)$ with the
+first arc weight $w(vs)$; $\beta_v^w(s)$ is the largest excess over all intermediate vertices $u$,
+and $0$ if there is none. \emph{Right:} with the constant weighting $w(us)=\eta(s)$ the excess is
+$\eta(s)$ at an exact second out-neighbor and $0$ everywhere else, so the inequality of (iii) becomes
+$\eta(N_2^+(v))\ge\eta(N_1^+(v))$. \emph{Why it matters:} the figure shows why the arc-weighted form
+is the right common generalization: its two sides are a sum over out-arcs and a sum over two-step
+excesses, and the vertex-weighted statements are the two specializations.}
+\label{fig:beta}
+\end{figure}
+
+\begin{remark}[What is new here and what is quoted]\label{rem:quoted}
+Only \cref{thm:main} is new. The passage from it to \cref{cor:weighted} is Seacrest's: (iii)
+$\Leftrightarrow$ unweighted is his Proposition~2, and the Farkas duality between (i) and (ii) is his
+Theorem~1. We quote these rather than reprove them, and we have verified that the statements quoted
+are the ones used: in particular, (iii) is the form with a \emph{maximum over intermediate vertices},
+not a sum over paths, and the arc weights are allowed to vanish.
+\end{remark}

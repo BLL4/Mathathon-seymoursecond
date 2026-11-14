@@ -1,0 +1,176 @@
+\appendix
+\section{Proof dependency graph}\label{app:depgraph}
+
+\begin{figure}[h]
+\centering
+\input{figures/depgraph.tex}
+\caption{Which numbered statement uses which. Read upwards: an arrow from $A$ to $B$ means that the
+ proof of $B$ uses $A$. \emph{Look at} the two chains: the theorem uses exactly two propositions, and
+ each proposition uses one substantial lemma. \emph{Why it matters:} the dashed box at the bottom shows
+ that \cref{cor:weighted,cor:cycles} consume the theorem and feed nothing, so they can be skipped; and
+ the two columns are independent of each other, so the reduction and the pruning can be read in
+ either order.}
+\label{fig:depgraph}
+\end{figure}
+
+\begin{table}[h]
+\centering
+\small
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{@{}llp{6.6cm}@{}}
+\toprule
+statement & depends on & role \\
+\midrule
+\cref{thm:main} & \cref{prop:reduction,prop:no-concavity} & main result \\
+\cref{prop:reduction} & \cref{lem:deficit,lem:blowup} & counterexample $\Rightarrow$ strict subset inequality \\
+\cref{lem:deficit} & minimality of the counterexample & subset deficit in a minimal counterexample \\
+\cref{lem:blowup} & \cref{lem:deficit} & amplifies the deficit by the block size \\
+\cref{prop:no-concavity} & \cref{lem:pruning} & extremal argument, disjoint from \cref{prop:reduction} \\
+\cref{lem:pruning} & \cref{lem:kernel}, K\H{o}nig's theorem & pruning of two families of pairs \\
+\cref{lem:kernel} & --- & linear algebra of maximum-rank matrices \\
+\cref{cor:weighted} & \cref{thm:main}, \cite{Seacrest2015} & weighted forms (quoted equivalence) \\
+\cref{cor:cycles} & \cref{thm:main} & directed-cycle and degree consequences \\
+\bottomrule
+\end{tabular}
+\caption{The same information as \cref{fig:depgraph}, in words.}
+\label{tab:dep}
+\end{table}
+
+\section{Dictionary: notation and numbering against the original}\label{app:dictionary}
+
+This document follows the original preprint statement by statement, but some symbols were renamed so
+that no symbol carries two meanings. The table translates. The numbering of the propositions,
+theorems and corollaries agrees with the original; inside the sections it does not, because remarks
+are numbered in the same sequence here. The differences are: the original's Lemma~2.3 (blowup) is
+this document's Lemma~\ref{lem:blowup}, the original's Lemma~3.1 (pruning) is
+Lemma~\ref{lem:pruning}, and the original's Lemma~3.2 (kernels) is Lemma~\ref{lem:kernel}.
+
+{\small
+\renewcommand{\arraystretch}{1.15}
+\begin{center}
+\begin{tabular}{@{}llp{6.2cm}@{}}
+\toprule
+original & here & why the change \\
+\midrule
+$F,\ F_D$, $F^2$ & $F$, $F^2$ & unchanged: the vertex-set image operator \\
+$F_1,\ F_2$ & $\Phi_1,\ \Phi_2$ & distinct glyphs; $F$ now has one meaning \\
+$f$ (inside a block) & $\tau$ & avoids the $F/f$ collision \\
+$T\subseteq E$ & $Y\subseteq E$ & $T$ is reserved for the tournament $T_m$ \\
+$D_T$ & $D_Y$ & same reason \\
+$Q=F(\{v\})\cap(E\setminus T)$ & $Q_v$ & subscripted: $Q$ alone is a family of pairs in \cref{sec:incompatibility} \\
+$C=F(Q)\setminus(I\cup T\cup Q\cup F(T))$ & $\Lambda$ & $C$ alone is the right family in \cref{lem:pruning} \\
+$d_1,\ d_2$ & $d_1,\ d_2$ & unchanged (degrees at a vertex) \\
+$d$ (uncovered), $d'$ & $u$, $u'$ & $d$ is now only a degree \\
+$g(T)$ & $g(Y)$ & notation only \\
+$H_0=F(S)\cup F^2(S)$ & $W$ & $H$ is the collision set in \cref{lem:pruning} \\
+$R,\ C$ (families) & $\mathcal L,\ \mathcal R$ & ``left'' and ``right'' is what they are \\
+$R,\ C$ (complements in \S4) & $\mathcal L,\ \mathcal R$ & the same role after pruning \\
+$P',\ Q'$ & $\mathcal L',\ \mathcal R'$ & primes never attach to the extremal pair \\
+$Z,\ H$ & $Z,\ H$ & unchanged: conflict points, collisions \\
+$Z(v)$ (non-neighbors, \S6) & $\overline N(v)$ & $Z$ is taken by the conflict points \\
+$u^r,\ v^c$ (lifts) & $\lambda^r,\ \kappa^c$ & $u$ is the uncovered count in \S4 \\
+$\lambda^r_a,\ \mu^c_b$ (coefficients) & $\xi^r_a,\ \eta^c_b$ & frees $\lambda$ for the lift vector \\
+$k,\ \ell,\ t$ & $k,\ \ell,\ t$ & unchanged \\
+$M$ (maximum matching) & $\mathcal M$ & $M=\abs P+\abs Q$ in \S4 \\
+\bottomrule
+\end{tabular}
+\end{center}}
+
+\section{Verification notes}\label{app:checks}
+
+This section records what was checked and how, so that a reader can decide what to trust and what to
+re-check. Three kinds of check were used.
+
+\paragraph{(V1) Re-derivation.} Every display of the original was re-derived from the definitions
+during the rewrite, and every inequality direction was checked at the point of use. Three places
+deserve a note because they are easy to misread.
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=2pt]
+\item In the ledger step of \cref{lem:deficit} the second out-neighborhood of $v$ is confined to $I\cup Y\cup F(Y)$
+ \emph{after} the deletion, and this uses $v\in S$ (which comes from the choice of $v$, not from the
+ definition of $Q_v$). Without $v\in S$ the inclusion fails.
+\item In the block accounting in \cref{lem:blowup} the sum over $S\setminus W$ is extended to $S\setminus F(S)$; this is an
+ inequality, not an identity, because a block in $F(S)$ is already fully counted. Treating it as an
+ identity would be a mistake.
+\item In the kernel step of \cref{lem:pruning} the auxiliary matrix $D^{p,i}$ has maximum rank on $T^{p,i}$, and the
+ hypothesis $(s,j)\in T^{p,i}$ is exactly $s\to j$; the vanishing is asserted only for such pairs.
+ For $(s,j)\notin T^{p,i}$ the entry $b_{sj}$ is zero and there is nothing to prove.
+\end{itemize}
+
+\paragraph{(V2) Exhaustive and random computation.} The combinatorial statements of the paper were
+checked on small instances by the scripts in \code{checks/verify.py} of the repository. All checks
+pass. The checks are implications and identities rather than the statements themselves, since the
+hypotheses of \cref{lem:deficit,lem:blowup,prop:no-concavity} are (conjecturally) unsatisfiable ---
+that is the theorem.
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{@{}p{8.5cm}p{5.6cm}@{}}
+\toprule
+what & result \\
+\midrule
+\cref{thm:main} on all oriented graphs with $n\le4$ (760 graphs) and $20000$ random graphs with $5\le n\le9$
+ & holds in every case \\
+the ledger of the ledger step of \cref{lem:deficit}: the four inclusions, \eqref{eq:g-diff}, the sandwich, and the strict increment
+ & $2336$ random $(D,S,Y)$ configurations, no failure \\
+the algebra of \cref{lem:blowup}: \eqref{eq:FG}, \eqref{eq:FG2}, \eqref{eq:blowup-main}
+ & $24942$ random $(D,m,U)$ instances, no failure \\
+the identities of \cref{prop:no-concavity}: fibrewise images, complement gain, diagonal survival, $H$ uncovered
+ & $250$ random compatible pairs, no failure \\
+the statement of \cref{lem:pruning}, by brute force over all subfamilies
+ & $1200$ random instances with $\abs X\le4$, no counterexample \\
+\cref{cor:cycles}(i) and the partition \eqref{eq:partition} on $3$-cycle-free graphs; (ii) on random graphs; (iii) on regular girth-$4$ graphs
+ & $34114$ graphs, no failure \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{(V3) Formalisation.} A Lean~4 development accompanies this document (\code{lean/} in the
+repository). It contains the definitions of oriented graph, first and second out-neighborhood, the
+statements of \cref{thm:main,prop:reduction,prop:no-concavity,lem:pruning}, a fully checked proof of
+the final assembly of \cref{thm:main} from the two propositions, and a fully checked proof of
+\cref{cor:cycles} from \cref{thm:main}. The deep lemmas (\cref{lem:deficit,lem:blowup,lem:pruning})
+are stated in Lean but their proofs are not formalised; they are recorded as explicit hypotheses so
+that the reader can see exactly which part of the argument is machine-checked and which is not. The
+formalisation therefore checks the \emph{statements} and the \emph{logical architecture}, not the
+three engines.
+
+\paragraph{What this does not establish.} A pleasant presentation and a passing test suite do not
+prove a theorem. The only complete proof in this document is the mathematical text itself; the
+computations of (V2) test small cases, and the formalisation of (V3) checks the statements and the
+architecture. Neither substitutes for reading the proofs of \cref{lem:deficit,lem:blowup,lem:pruning}.
+
+\section{Index of statements and figures}\label{app:index}
+
+{\small
+\renewcommand{\arraystretch}{1.12}
+\begin{center}
+\begin{tabular}{@{}llp{7.6cm}@{}}
+\toprule
+\cref{thm:main} & main theorem & every nonempty finite oriented graph has $v$ with $\abs{N_1^+(v)}\le\abs{N_2^+(v)}$ \\
+\cref{prop:reduction} & reduction & a counterexample yields \eqref{eq:strict-growth} with positive indegrees \\
+\cref{lem:deficit} & subset deficit & $\abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}$ in a minimal counterexample \\
+\cref{lem:blowup} & blowup & transitive-tournament blowup gives \eqref{eq:strict-growth} \\
+\cref{def:conflict} & conflicts & conflict, conflict point, collision, covering, compatible \\
+\cref{lem:pruning} & pruning & compatible subfamilies losing at most $\abs H+q$ members \\
+\cref{lem:kernel} & rank lemma & kernels at maximum support rank have disjoint supports \\
+\cref{prop:no-concavity} & no graph & \eqref{eq:impossible} is impossible \\
+\cref{cor:weighted} & weighted forms & vertex- and arc-weighted statements \\
+\cref{cor:cycles} & directed cycles & degree and order bounds without directed triangles \\
+\bottomrule
+\end{tabular}
+\end{center}}
+
+\begin{center}
+\small
+\renewcommand{\arraystretch}{1.1}
+\begin{tabular}{@{}ll@{}}
+\cref{fig:definitions}: the two neighborhoods & \cref{fig:roadmap}: architecture of the proof \\
+\cref{fig:deficit}: the split of $F(S)$ & \cref{fig:deletion}: the deletion step \\
+\cref{fig:blowup}: the blowup & \cref{fig:conflict}: a conflict as a rectangle \\
+\cref{fig:pruning-graph}: the augmented graph & \cref{fig:cover}: the charge to the cover \\
+\cref{fig:fourmaps}: the commutative square & \cref{fig:grid}: families in the grid \\
+\cref{fig:diagonal}: the diagonal survives & \cref{fig:extremal}: the four moves of \cref{sec:incompatibility} \\
+\cref{fig:beta}: the arc weighting & \cref{fig:cycles}: non-neighbors and the partition \\
+\cref{fig:depgraph}: dependencies & \\
+\end{tabular}
+\end{center}
