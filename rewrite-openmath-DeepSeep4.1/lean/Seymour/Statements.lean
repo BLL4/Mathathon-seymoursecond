@@ -26,10 +26,16 @@ def arcs : Finset (V × V) := Finset.univ.filter (fun p => G.Arc p.1 p.2)
 /-- The number of arcs. -/
 def arcCount : ℕ := G.arcs.card
 
-/-- A counterexample of minimum order and, subject to that, of minimum arc count. -/
+/-- A counterexample of minimum order and, subject to that, of minimum arc count.
+
+Both the graph and its competitors are required to be nonempty.  Without that
+requirement the pointwise property `IsCounterexample` holds vacuously on the empty
+graph, so the empty graph would be a competitor of smaller order and *no* graph would
+be minimal; the definition would then be false, and everything stated about it vacuous.
+(Found by a review; see the erratum in `lean/README.md`.) -/
 def IsMinimalCounterexample : Prop :=
-  G.IsCounterexample ∧
-  ∀ (W : Type) [Fintype W] [DecidableEq W] (E : OGraph W) [DecidableRel E.Arc],
+  Nonempty V ∧ G.IsCounterexample ∧
+  ∀ (W : Type) [Fintype W] [DecidableEq W] [Nonempty W] (E : OGraph W) [DecidableRel E.Arc],
     E.IsCounterexample →
       Fintype.card V < Fintype.card W ∨
         (Fintype.card V = Fintype.card W ∧ G.arcCount ≤ E.arcCount)
@@ -58,19 +64,28 @@ noncomputable instance blowupDecidable (G : OGraph V) [DecidableRel G.Arc] (m : 
     DecidableRel (blowup G m).Arc :=
   Classical.decRel _
 
-/-- **Proposition 2.1** (counterexample reduction), as a proposition. -/
+/-- **Proposition 2.1** (counterexample reduction), as a proposition.
+
+Both the input graph and the output graph are required to be nonempty: on the empty
+graph `IsCounterexample` is vacuous, and an empty output would satisfy the conclusion
+for trivial reasons. -/
 def ReductionStatement : Prop :=
   ∀ (V : Type) [Fintype V] [DecidableEq V] (G : OGraph V) [DecidableRel G.Arc],
-    G.IsCounterexample →
-      ∃ (W : Type) (_ : Fintype W) (_ : DecidableEq W) (H : OGraph W) (_ : DecidableRel H.Arc),
+    Nonempty V → G.IsCounterexample →
+      ∃ (W : Type) (_ : Fintype W) (_ : DecidableEq W) (_ : Nonempty W)
+        (H : OGraph W) (_ : DecidableRel H.Arc),
         (∀ v : W, ∃ u : W, H.Arc u v) ∧
           ∀ U : Finset W, U.Nonempty → U ≠ Finset.univ →
             U.card + (H.F (H.F U)).card < 2 * (H.F U).card
 
-/-- **Proposition 4.1** (no graph satisfies the strict subset inequality). -/
+/-- **Proposition 4.1** (no graph satisfies the strict subset inequality).
+
+The graph is required to be nonempty: on the empty type both the positive-indegree
+hypothesis and the strict inequality are vacuous, so without this the statement would
+assert a false proposition. -/
 def NoConcavityStatement : Prop :=
   ∀ (W : Type) [Fintype W] [DecidableEq W] (H : OGraph W) [DecidableRel H.Arc],
-    (∀ v : W, ∃ u : W, H.Arc u v) →
+    Nonempty W → (∀ v : W, ∃ u : W, H.Arc u v) →
       ¬ (∀ U : Finset W, U.Nonempty → U ≠ Finset.univ →
             U.card + (H.F (H.F U)).card < 2 * (H.F U).card)
 
@@ -86,7 +101,7 @@ def SubsetDeficitStatement : Prop :=
 explicit blowup `blowup D m` rather than about an unspecified graph. -/
 def BlowupStatement : Prop :=
   ∀ (V : Type) [Fintype V] [DecidableEq V] (D : OGraph V) [DecidableRel D.Arc] (m : ℕ),
-    Fintype.card V < m →
+    Nonempty V → Fintype.card V < m →
       (∀ v : V, ∃ u : V, D.Arc u v) →
       (∀ S : Finset V, S.Nonempty → S ≠ Finset.univ →
           ((D.F (D.F S)) \ (D.F S)).card < ((D.F S) \ S).card) →
@@ -124,28 +139,29 @@ def PruningStatement : Prop :=
 proof; the two hypotheses are exactly Propositions 2.1 and 4.1 of the paper. -/
 theorem main_of_reduction_and_noConcavity
     (hred : ReductionStatement) (hnc : NoConcavityStatement)
-    (V : Type) [Fintype V] [DecidableEq V] (G : OGraph V) [DecidableRel G.Arc] :
+    (V : Type) [Fintype V] [DecidableEq V] [Nonempty V] (G : OGraph V) [DecidableRel G.Arc] :
     ∃ v, G.Good v := by
   by_contra h
   have hce : G.IsCounterexample := by
     intro v
     have hv : ¬ G.Good v := fun hg => h ⟨v, hg⟩
     simpa [OGraph.Good, not_le] using hv
-  obtain ⟨W, hWf, hWdec, H, hHdec, hpos, hineq⟩ := hred V G hce
+  obtain ⟨W, hWf, hWdec, hWne, H, hHdec, hpos, hineq⟩ := hred V G inferInstance hce
   letI := hWf
   letI := hWdec
+  letI := hWne
   letI := hHdec
-  exact hnc W H hpos hineq
+  exact hnc W H inferInstance hpos hineq
 
 /-- Contrapositive form: if every graph has a good vertex then no minimal counterexample
 exists.  Recorded because it is the form in which the paper uses minimality. -/
 theorem no_minimal_counterexample
     (hred : ReductionStatement) (hnc : NoConcavityStatement)
-    (V : Type) [Fintype V] [DecidableEq V] (G : OGraph V) [DecidableRel G.Arc] :
+    (V : Type) [Fintype V] [DecidableEq V] [Nonempty V] (G : OGraph V) [DecidableRel G.Arc] :
     ¬ G.IsMinimalCounterexample := by
   intro hmin
   obtain ⟨v, hv⟩ := main_of_reduction_and_noConcavity hred hnc V G
-  have := hmin.1 v
+  have := hmin.2.1 v
   simp only [OGraph.Good] at hv
   omega
 

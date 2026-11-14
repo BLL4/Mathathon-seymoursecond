@@ -263,20 +263,32 @@ that the reader can see exactly which part of the argument is machine-checked an
 formalisation therefore checks the \emph{statements} and the \emph{logical architecture}, not the
 three engines.
 
-\paragraph{(V3$'$) Errata found by review, and what they teach.} An independent review of an earlier
-version of the Lean companion found two defects, both in \emph{statements} rather than in the paper's
-mathematics, and both are now fixed. (i) The formal statement of the pruning lemma counted the
-conflict points $Z$ where the collisions $H$ belong; with $Z$ the statement is false, and the
-smallest counterexample is the two-point family of \cref{rem:names}. (ii) The formal statement of the
-blowup lemma was made about an unspecified graph with positive indegrees, which is true only because
-no graph satisfies the subset deficit; it now refers to the explicit blowup on $V\times\{1,\dots,m\}$.
-The lesson is the one \cref{rem:names} records: a formal statement is only as good as the reader's
-agreement about which of two related sets it mentions, and comparing a formal statement with the
-paper line by line is worth doing \emph{even when both are believed correct}. A complete formalization
-of the theorem now exists in a companion folder (\code{rewrite-claude-opus-5.5/SeymourLean},
-\code{seymour\_second\_neighbourhood}, standard axioms only); it was written independently and is the
-reference for machine-checked confidence, while the development in this folder is the reference for
-the statements in this notation.
+\paragraph{(V3$'$) Errata found by two reviews, and what they teach.} Two independent reviews of earlier
+versions of the Lean companion found four defects, all in \emph{specifications} rather than in the
+paper's mathematics, and all now fixed. (i) The formal statement of the pruning lemma counted the
+conflict points $Z$ where the collisions $H$ belong; with $Z$ the statement is false, and the smallest
+counterexample is the two-point family of \cref{rem:names}, where a compatible pruning costs two
+deletions while the $Z$-version allows one. (ii) The formal statement of the blowup lemma was made
+about an unspecified graph with positive indegrees; with the empty graph as the base it is false, and
+in any case true only vacuously, since no graph satisfies the subset deficit. It now refers to the
+explicit blowup on $V\times\{1,\dots,m\}$. (iii) Three formal statements --- the no-concavity
+proposition, the reduction and the minimality of a counterexample --- were satisfied or falsified only
+through the \emph{empty} graph: on the empty vertex set both ``every vertex has an in-neighbor'' and
+``strictly concave'' hold vacuously, so the first was false, the reduction could always output the
+empty graph, and no nonempty graph could be minimal because the empty graph was a competitor. All
+three now require nonemptiness exactly where the paper does.
+
+Two lessons are worth more than the fixes. First, a formal statement is a \emph{specification}: the
+two ways to get one wrong without writing a false theorem about graphs are to name the wrong one of
+two similar sets (\cref{rem:names}) and to forget that the empty object satisfies every pointwise
+hypothesis. Both are cheap to test --- a two-point instance, or a \code{decide} on the empty type ---
+and neither is visible by reading the mathematics. Second, comparing a formal statement with the paper
+line by line is worth doing \emph{even when both are believed correct}: every one of these defects
+would have survived an ordinary correctness check of the paper, because the paper was right.
+A complete formalization of the theorem now exists in a companion folder
+(\code{rewrite-claude-opus-5.5/SeymourLean}, \code{seymour\_second\_neighbourhood}, standard axioms
+only); it was written independently and is the reference for machine-checked confidence, while the
+development in this folder is the reference for the statements in this notation.
 
 \paragraph{What this does not establish.} A pleasant presentation and a passing test suite do not
 prove a theorem. The only complete proof in this document is the mathematical text itself; the

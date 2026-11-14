@@ -130,13 +130,7 @@ exactly 1 and not, say, 2. With value `|P|+|Q|+λu` the ledger closes for all `d
 `λ = 1`, because the comparison is `μ+d+(λ−1)d' ≥ μ+λd`, i.e. `(λ−1)(d'−d) ≥ 0`. One
 display closes the gap and turns a plausible choice into a forced one.
 
-**P6 (correctness, minor). The two direct proofs of the weighted form (i) are not the same
-statement.** Theirs proves `N₂(clone) ⊆` union of `N₂(v)`-blocks, which gives the inequality
-one way; `rewrite-claude-opus-5.5` proves equality `N₂(v') = ⋃_{w∈N₂(v)} B_w`, using
-disjointness of blocks and `v ∉ F²{v}`. Equality is available and is worth stating, because
-it is what makes the reduction to the unweighted theorem *exact* rather than one-sided. No
-error; just a place where the stronger statement is free.
-
+**P6 (correctness, minor) — WITHDRAWN, see the correction at the end of this file.**
 **P7 (presentation). Figures are thin, and one is missing at the point of use.** Ten figures
 in 22 pages, several of them pure schematics — the kernel figure is a labelled rectangle
 whose caption has to say "The rectangle represents a subspace, not a numerical matrix",
@@ -177,3 +171,24 @@ so that only standard-library reasoning is needed.
 3. Three renames and one worked numerical instance (P3, P4).
 4. Add the `λ` display (P5), swap two talk frames (P8), and make the Lean check
    self-contained (P9).
+
+
+---
+
+## Correction (added after the second round of updates)
+
+**P6 above is withdrawn.** I asked the folder to state equality `N₂(v') = ⋃_{w∈N₂(v)} B_w` instead of
+containment. Their reply (`review-response.md`, `updates-review.md`) is right and I was wrong: in their
+construction a zero-weight vertex becomes a block of size zero, so on the path `v→u→w` with weights
+`1,0,1` there is no intermediate vertex at all. A clone of `v` then has *no* second neighbor, while the
+block of `w` is nonempty; equality fails and only containment holds. I recomputed the example: the
+clone's second neighborhood is `∅`, the `w`-block is nonempty, and `|N₂(clone)| ≤ K·η(N₂(v))` is what
+their weighted argument needs. Equality is available only when every intermediate weight is positive,
+which is exactly the hypothesis of my own §5.1 (positive rational weights, then a limit), so the two
+constructions differ and their containment is deliberate rather than weaker.
+
+Two further points from their `updates-review.md` are accepted: their simplified `Z`/`H`
+counterexample (no loops, oriented, all seven compatible prunings violating the wrong bound) is better
+than the one in the review that preceded it, and their diagnosis that my *old* blowup statement was
+false rather than merely vacuous is correct. Both are recorded in `critique/03-review-of-updates.md`
+and in my `lean/README.md`.

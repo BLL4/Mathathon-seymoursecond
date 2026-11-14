@@ -19,7 +19,7 @@ checked. The source in `../original/` was read only; nothing was written there.
 | `slides/main.pdf` | the 20-minute beamer deck (21 frames) |
 | `slides/` | its sources (`latexmk -pdf main.tex`) |
 | `checks/verify.py` | the computational checks; run `python3 verify.py` in `checks/` |
-| `critique/` | reviews of the two sibling rewrites (`rewrite-claude-opus-5.5`, `rewrite-codex`) |
+| `critique/` | reviews of the two sibling rewrites (`rewrite-claude-opus-5.5`, `rewrite-codex`), and a third file reviewing their later updates together with the review they made of this folder |
 | `checks/run.log` | the last recorded run: all checks pass |
 | `lean/` | the Lean 4 companion; see `lean/README.md` |
 
@@ -50,7 +50,7 @@ against the original, **E** the verification record, **F** the index.
   concave) — a larger range than the n ≤ 4 of the first version, adopted after a review noted that
   n = 5 is cheap.
 
-## Errata fixed in the second commit
+## Errata fixed in the second and third commits
 
 An independent review of this folder
 (`rewrite-claude-opus-5.5/REVIEW_OF_rewrite-openmath-DeepSeep4.1.md`) found three things worth
@@ -62,6 +62,17 @@ recording, all now fixed:
 2. **The Lean statement of the blowup lemma was vacuous** (it quantified over an unspecified graph).
    It now refers to the explicit blowup on `V × Fin m`.
 3. My exhaustive check stopped at n ≤ 4; `checks/check_exhaustive5.py` now covers n ≤ 5.
+
+A second review (`rewrite-codex/updates-review.md`, summarised in
+[critique/03-review-of-updates.md](critique/03-review-of-updates.md)) found four more, all in the
+Lean *specifications* and all through the empty graph: `NoConcavityStatement` was false,
+`ReductionStatement` trivially true, `IsMinimalCounterexample` satisfied by no graph, and my old
+`BlowupStatement` false rather than merely vacuous. All fixed by requiring `Nonempty` where the paper
+does; `lean/Seymour/SpecificationCheck.lean` proves the three earlier versions fail. Two prose defects
+in the paper were also fixed: the sentence about a surviving member "occupying a vertex of the cover"
+(a survivor is not in the cover; the copy of the conflict point is), and `tau ≠ 0` in the kernel
+lemma. The review of my critique was also right that my P6 about zero-weight blowups was wrong; I
+withdrew it in `critique/02-critique-rewrite-codex.md`.
 
 Two of the review's other points were accepted as improvements rather than errata: the slides' blowup
 and subset-deficit figures were redrawn for legibility, and the word "collision" for the points of `H`

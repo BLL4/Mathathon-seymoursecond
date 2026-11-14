@@ -119,8 +119,10 @@ Three features of \eqref{eq:pruning-bound} are deliberate.
   so conflicts are counted by $H$; but different conflicts may share a collision, and a cover does
   not need to pay per conflict, only per collision. This is the first, fixed part of the cost.
 \item \textbf{The remainder is charged to the survivors.} If a conflict point $z\in Z$ is still
-  covered after the pruning, then some surviving member covers it, and that member occupies a vertex
-  of the cover. So the number of conflict points that must be paid for individually is
+  covered after the pruning, some surviving member covers it; that member is \emph{not} in the cover
+  (surviving members are precisely the ones not deleted), but the copy of $z$ adjacent to it must be,
+  since the edge between the two is not covered from the member's side. So the number of conflict
+  points that must be paid for individually is
   $\abs Z-q$, where $q$ is the number left uncovered. The bound is thus
   $\abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}\le\abs H+q$, which is
   \eqref{eq:pruning-bound} rearranged. Charging part of the cost to the points still uncovered is
@@ -157,25 +159,6 @@ minimum cover of the conflict graph is not enough, which is exactly why the auxi
 $\Gamma$ of \cref{sec:matching} has two extra copies of every point of $Z$.
 \end{example}
 
-\begin{remark}[Why this is the right statement]\label{rem:why-pruning}
-Three features of \eqref{eq:pruning-bound} are deliberate.
-\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
-\item \textbf{Only conflicts are repaired.} Members that never conflicted are kept, even if they
- cover conflict points. This is what allows the diagonal to survive in
- \cref{sec:incompatibility}: the diagonal members are conflict-free there.
-\item \textbf{The cost is charged twice.} Each conflict contributes a collision, so conflicts are
- counted by $H$; but different conflicts may share a collision (\cref{fig:conflict}), and a cover
- does not need to pay per conflict, only per collision. This is the fixed part of the cost.
-\item \textbf{The remainder is charged to the survivors.} If a conflict point $z\in Z$ is still
- covered after the pruning, some surviving member covers it, and that member occupies a vertex of
- the cover. So the number of conflict points paid for individually is $\abs Z-q$, where $q$ is the
- number left uncovered, and the bound reads
- $\abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}\le\abs H+q$. Charging
- part of the cost to the points still uncovered is exactly what the extremal argument of
- \cref{sec:incompatibility} needs: it can refund that part.
-\end{enumerate}
-\end{remark}
-
 \subsection{The rank lemma}\label{sec:kernel}
 
 The matching bound is proved by linear algebra. The only ingredient it needs is the following
@@ -195,8 +178,9 @@ Then for every $x\in\ker D$, every $y\in\ker D^{\mathsf T}$ and every $(s,j)\in 
 cannot both be nonzero at the two ends of an allowed entry.}
 
 \begin{proof}
-Suppose $x_jy_s\ne0$ with $(s,j)\in T$. Let $D_\tau=D+\tau e_se_j^{\mathsf T}$ for a real $\tau$;
-since $(s,j)\in T$, the matrix $D_\tau$ is still supported on $T$. Because $x\in\ker D$,
+Suppose $x_jy_s\ne0$ with $(s,j)\in T$. Let $D_\tau=D+\tau e_se_j^{\mathsf T}$ with $\tau$ a
+\emph{nonzero} real; since $(s,j)\in T$, the matrix $D_\tau$ is still supported on $T$. Because
+$x\in\ker D$,
 \[
  D_\tau x=\tau x_j e_s ,
 \]
