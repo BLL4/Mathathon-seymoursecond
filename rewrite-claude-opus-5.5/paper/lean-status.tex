@@ -10,8 +10,10 @@ where \texttt{IsOriented} means irreflexive and asymmetric, \texttt{N1 v} is
 the set of out-neighbors, and \texttt{N2 v} is the set of $w\ne v$ with
 $v\not\to w$ and $v\to u\to w$ for some $u$. \texttt{lake build} checks it with
 no \texttt{sorry}, and \texttt{\#print axioms} reports only Lean's standard
-axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}. The
-files follow the paper:
+axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}.
+The file \texttt{SeymourLean/build.log} records a full build together with
+the output of \texttt{lake env lean CheckAxioms.lean}, so this can be checked
+without rebuilding. The files follow the paper:
 \begin{itemize}
 \item \texttt{Reduction.lean}: minimal counterexample, \cref{lem:strong} and
 \cref{lem:subset-deficit};

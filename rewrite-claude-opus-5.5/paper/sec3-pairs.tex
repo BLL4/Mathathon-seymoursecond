@@ -208,34 +208,33 @@ contradicting maximality.
 
 \begin{figure}[ht]
 \centering
-\begin{tikzpicture}[yscale=0.42,xscale=1.0]
- \def\bw{1.1}
+\begin{tikzpicture}[yscale=0.6,xscale=1.0,lab/.style={font=\small,align=center,anchor=north}]
+ \def\bw{1.3}
  % levels: mu=4, d=2, d'=1.5 ; R+C = 8.4
- \draw[black!30] (-0.4,0)--(10.2,0);
- \draw[dashed,thick] (-0.4,6)--(10.5,6) node[right,font=\footnotesize] {$\mu+d$};
+ \draw[black!30] (-0.4,0)--(11.1,0);
+ \draw[dashed,thick] (-0.4,6)--(11.1,6) node[right,font=\small] {$\mu+d$};
  \fill[famL!45] (0,0) rectangle (\bw,4); \fill[black!18] (0,4) rectangle (\bw,6);
- \node[font=\footnotesize] at (0.55,2) {$\mu$}; \node[font=\footnotesize] at (0.55,5) {$d$};
- \node[font=\footnotesize,align=center] at (0.55,-1.6) {old value\\$\val(P,Q)$};
+ \node[font=\small] at (0.65,2) {$\mu$}; \node[font=\small] at (0.65,5) {$d$};
+ \node[lab] at (0.65,-0.2) {1. old value\\$\val(P,Q)$};
  \fill[famR!45] (2.4,0) rectangle (2.4+\bw,8.4);
- \node[font=\footnotesize,align=center] at (2.95,4.2) {$>$\\$\mu{+}2d$};
- \node[font=\footnotesize,align=center] at (2.95,-1.6) {$\abs\Rf+\abs\Cf$};
+ \node[font=\small,align=center] at (3.05,4.2) {$>$\\$\mu{+}2d$};
+ \node[lab] at (3.05,-0.2) {2. complement\\$\abs\Rf+\abs\Cf$};
  \fill[red!35] (4.8,4.9) rectangle (4.8+\bw,8.4);
- \node[font=\footnotesize,align=center] at (5.35,6.65) {$-\abs H$\\$-q$};
- \node[font=\footnotesize,align=center] at (5.35,-1.6) {pruning\\cost};
+ \node[font=\small,align=center] at (5.45,6.65) {$-\abs H$\\$-q$};
+ \node[lab] at (5.45,-0.2) {3. pruning\\cost};
  \fill[zcol!40] (7.2,4.9) rectangle (7.2+\bw,6.4);
- \node[font=\footnotesize] at (7.75,5.65) {$+d'$};
- \node[font=\footnotesize,align=center] at (7.75,-1.6) {new\\uncovered};
- \fill[famL!25] (9.1,0) rectangle (9.1+\bw,6.4);
- \node[font=\footnotesize,align=center] at (9.65,3.2) {new\\value};
- \node[font=\footnotesize,align=center] at (9.65,-1.6) {$\val(P',Q')$};
+ \node[font=\small] at (7.85,5.65) {$+d'$};
+ \node[lab] at (7.85,-0.2) {3'. new\\uncovered};
+ \fill[famL!25] (9.6,0) rectangle (9.6+\bw,6.4);
+ \node[font=\small,align=center] at (10.25,3.2) {new\\value};
+ \node[lab] at (10.25,-0.2) {4. $\val(P',Q')$};
  \draw[black!40] (\bw,6)--(2.4,6); \draw[black!40] (2.4+\bw,8.4)--(4.8,8.4);
- \draw[black!40] (4.8+\bw,4.9)--(7.2,4.9); \draw[black!40] (7.2+\bw,6.4)--(9.1,6.4);
+ \draw[black!40] (4.8+\bw,4.9)--(7.2,4.9); \draw[black!40] (7.2+\bw,6.4)--(9.6,6.4);
 \end{tikzpicture}
-\caption{The ledger of \cref{sec:contradiction}. Complementation gains more
-than $\mu+2d$. Pruning loses at most $\abs H+q\le d+d'$, where $q\le d'$ is the
-number of conflict points left uncovered. Because uncovered points are
-\emph{part of the value}, the new pair gets $d'$ back. The new value
-therefore exceeds the old one.}
+\caption{The ledger: steps 1--4 above as bar heights. Here $q\le d'$ is the
+number of conflict points left uncovered after pruning, so the loss
+$\abs H+q\le d+d'$ is more than paid for by the gain and the returned $d'$.
+The new bar ends above the dashed line.}
 \label{fig:ledger}
 \end{figure}
 
@@ -243,8 +242,11 @@ therefore exceeds the old one.}
 If we maximized only $\abs P+\abs Q$, the ledger would give a new size
 $>\mu+d-d'$, which need not exceed $\mu$. If we used $\abs P+\abs Q+\lambda\,\unc$
 for some $\lambda>0$, the ledger would give $\val_\lambda(P',Q')>\mu+d+(\lambda-1)d'$
-against the old value $\mu+\lambda d$. This closes up for every $d,d'\ge 0$ only
-when $\lambda=1$. So it is essential that the pruning cost is charged partly
+against the old value $\mu+\lambda d$. The new value is at least the old one
+exactly when $\mu+d+(\lambda-1)d'\ge\mu+\lambda d$, that is, when
+$(\lambda-1)(d'-d)\ge0$. Since $d'-d$ can have either sign, this holds for
+every $d,d'\ge0$ only when $\lambda=1$. (The strict increase comes from the
+strict inequality in the ledger, not from the weight.) So it is essential that the pruning cost is charged partly
 to points left uncovered \emph{after} pruning ($d'$), and that this charge
 enters with the same weight as the uncovered points in the value.
 \end{remark}

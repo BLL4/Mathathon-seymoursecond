@@ -25,7 +25,9 @@ we reserve for matchings $\Mm$ and the matrix of \cref{cor:weighted});
 $\unc(P,Q)$ for the number $d$ of uncovered points; $\Phi^{p,i}$ for the
 matrix $D^{p,i}$ (since $D$ denotes a graph); $\overline N(v)$ for the
 non-neighbors $Z(v)$ (since $Z$ denotes conflict points); and
-$\mathrm{Arc}(D)$ for the arc set $A(D)$ (since $A$ is a matrix). We added the
+$\mathrm{Arc}(D)$ for the arc set $A(D)$ (since $A$ is a matrix); and $\tau$
+for the forward image in the transitive tournament $T_m$ (the original's $f$,
+which is too close to $F$). We added the
 names $\val$, ``admissible'', $\Gamma_L$, $\Gamma_N$, $R_1$, $\kappa$.
 Otherwise the notation is that of the original.
 
@@ -47,7 +49,7 @@ blow-up is used (\cref{rem:error-term}).
 bound on the minimum number of deletions (\cref{ex:K22}). This is easy to
 misread, so we added an explicit example.
 \item In the matching bound, the step $\rank(NL)\ge\ell+t-\abs Z$ is Sylvester's
-rank inequality, and the choice of a maximum matching with the fewest
+rank inequality (rank--nullity applied twice), and the choice of a maximum matching with the fewest
 conflict edges is used only to make $\alpha,\beta$ maximum in their
 subgraphs (\cref{cl:alpha-max}).
 \item Seacrest's equivalences~\cite{Seacrest2015} are needed only for the

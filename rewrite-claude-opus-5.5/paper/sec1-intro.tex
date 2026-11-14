@@ -44,7 +44,7 @@ vertex has an out-neighbor.
  \foreach \u in {u1,u2,u3} \draw[arc] (v)--(\u);
  \draw[arc] (u1)--(w1); \draw[arc] (u2)--(w1); \draw[arc] (u3)--(w2);
  \draw[arc,black!45] (u1)--(u2);
- \draw[arc,black!45] (w2) to[out=-110,in=-60,looseness=1.6] (v);
+ \draw[arc,black!45] (w2) .. controls (4.3,-2.5) and (-0.3,-2.5) .. (v);
  \begin{scope}[on background layer]
   \node[draw=famL,fill=famL!10,rounded corners,fit=(u1)(u3),inner sep=4pt,
         label={[famL!80!black,font=\small]above:$\Nout(v)$}] {};
@@ -142,7 +142,11 @@ deficit}
 \[
  \abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}.
 \]
-In words: no set ``grows'' as much in its second step as in its first.
+In words: the second step from $S$ reaches fewer new vertices (outside
+$F(S)$) than the first step reaches outside $S$. It is \emph{not} a comparison
+of $\abs{F^2(S)}$ with $\abs{F(S)}$: the part $S\cap F(S)$ of the first image
+does not count. The gap between the two is the error term
+$\abs{S\setminus F(S)}$ of \cref{rem:error-term}.
 
 \paragraph{Stage 2: a cleaner inequality (\cref{sec:reduction}).}
 The subset deficit is awkward to sum over many sets because of the error

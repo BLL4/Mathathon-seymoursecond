@@ -46,7 +46,7 @@ replacing $\Nout$ and $\Ntwo$ by the set analogues $F(S)\setminus S$ and
 $F^2(S)\setminus F(S)$. For $S=\{v\}$ these are exactly $\Nout(v)$ and
 $\Ntwo(v)$, so the lemma generalizes the counterexample property.
 
-\begin{lemma}[Subset deficit]\label{lem:subset-deficit}
+\begin{lemma}[Subset deficit; part of Lemma~2.2 of the original]\label{lem:subset-deficit}
 Let $D$ be a minimal counterexample. Then
 \begin{equation}\label{eq:subset-deficit}
  \abs{F^2(S)\setminus F(S)}<\abs{F(S)\setminus S}
@@ -219,8 +219,12 @@ For every digraph and every set $S$,
 \begin{equation}\label{eq:error-term}
  \kappa(S)\le\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)+\abs{S\setminus FS}.
 \end{equation}
-Indeed, $\abs{F^2S}-\abs{FS}\le\abs{F^2S\setminus FS}$ and
-$\abs{FS}-\abs S=\abs{FS\setminus S}-\abs{S\setminus FS}$. So the subset deficit
+Indeed, $\abs{F^2S}-\abs{FS}=\abs{F^2S\setminus FS}-\abs{FS\setminus F^2S}$ and
+$\abs{FS}-\abs S=\abs{FS\setminus S}-\abs{S\setminus FS}$, so in fact
+\[
+ \kappa(S)=\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)+\abs{S\setminus FS}-\abs{FS\setminus F^2S}
+\]
+exactly. So the subset deficit
 gives $\kappa(S)\le -1+\abs{S\setminus F(S)}$, which is useless when many
 vertices of $S$ receive no arc from $S$. The blow-up below multiplies the
 bracket in~\eqref{eq:error-term} by a large factor $m$ while increasing the
@@ -230,26 +234,26 @@ error term by at most one per vertex of $D$.
 \subsection{Blowing up by transitive tournaments}\label{sec:blowup}
 
 Let $T_m$ be the \emph{transitive tournament} on $\{1,\dots,m\}$, with
-$a\to b$ if and only if $a<b$. We write $f$ for its forward image.
+$a\to b$ if and only if $a<b$. We write $\tau$ for its forward image.
 
 \begin{lemma}[Internal estimate]\label{lem:internal}
 For every nonempty $T\subseteq\{1,\dots,m\}$,
 \[
- \abs T-2\abs{f(T)}+\abs{f^2(T)}\le 1 .
+ \abs T-2\abs{\tau(T)}+\abs{\tau^2(T)}\le 1 .
 \]
 \end{lemma}
 
 \begin{proof}
-Let $a=\min T$. Then $f(T)=\{a+1,\dots,m\}$ and $f^2(T)=\{a+2,\dots,m\}$,
+Let $a=\min T$. Then $\tau(T)=\{a+1,\dots,m\}$ and $\tau^2(T)=\{a+2,\dots,m\}$,
 while $\abs T\le m-a+1$. If $a<m$ the left side is at most
 $(m-a+1)-2(m-a)+(m-a-1)=0$. If $a=m$ then $T=\{m\}$ and the left side is
 $1-0+0=1$.
 \end{proof}
 
-For example, in $T_5$ the set $T=\{2,4\}$ has $f(T)=\{3,4,5\}$ and
-$f^2(T)=\{4,5\}$, giving $2-6+2=-2\le1$. The point of the transitive
-tournament is that a nonempty set loses at most one element under $f$
-($\abs{f(T)}\ge\abs T-1$). If we blew up by independent sets instead, a block
+For example, in $T_5$ the set $T=\{2,4\}$ has $\tau(T)=\{3,4,5\}$ and
+$\tau^2(T)=\{4,5\}$, giving $2-6+2=-2\le1$. The point of the transitive
+tournament is that a nonempty set loses at most one element under $\tau$
+($\abs{\tau(T)}\ge\abs T-1$). If we blew up by independent sets instead, a block
 would have empty image and the error would be as large as $m$.
 
 \begin{definition}[Blow-up]
@@ -291,8 +295,8 @@ block are \emph{internal} and arcs between blocks are \emph{external}.
   \foreach \k in {1,...,5} \node[vtx,minimum size=5mm,font=\footnotesize] (t\k) at (0,-0.75*\k+0.75) {\k};
   \foreach \k in {2,4} \node[vtx,minimum size=5mm,font=\footnotesize,fill=famL!35] at (t\k) {\k};
   \node[font=\small,align=left,anchor=west] at (0.5,-0.4) {$T=\{2,4\}$};
-  \node[font=\small,align=left,anchor=west] at (0.5,-1.2) {$f(T)=\{3,4,5\}$};
-  \node[font=\small,align=left,anchor=west] at (0.5,-2.0) {$f^2(T)=\{4,5\}$};
+  \node[font=\small,align=left,anchor=west] at (0.5,-1.2) {$\tau(T)=\{3,4,5\}$};
+  \node[font=\small,align=left,anchor=west] at (0.5,-2.0) {$\tau^2(T)=\{4,5\}$};
   \node at (0,-3.95) {in $T_5$};
  \end{scope}
 \end{tikzpicture}
@@ -304,7 +308,7 @@ arc points downwards).}
 \label{fig:blowup}
 \end{figure}
 
-\begin{lemma}[Blow-up]\label{lem:blowup}
+\begin{lemma}[Blow-up; Lemma~2.3 of the original]\label{lem:blowup}
 Let $D$ be an oriented graph on $n\ge1$ vertices in which every vertex has
 an in-neighbor and which satisfies~\eqref{eq:subset-deficit}. Let $m>n$ and
 $G=D[T_m]$. Then $G$ is an oriented graph, every vertex of $G$ has an
@@ -330,11 +334,11 @@ $T_v=\{a:(v,a)\in U\}$ and let $S=\{v:T_v\ne\varnothing\}$ be the
 \emph{First image (exact).} An external arc into the block of $w$ starting
 in $U$ exists only if $w\in F(S)$, and then it reaches \emph{every} vertex of
 the block. Internal arcs from $U$ into the block of $w$ reach exactly
-$\{w\}\times f(T_w)$. Hence the block of $w$ meets $F_G(U)$ in the whole block
-if $w\in F(S)$, in $\{w\}\times f(T_w)$ if $w\in S\setminus F(S)$, and not at all
+$\{w\}\times \tau(T_w)$. Hence the block of $w$ meets $F_G(U)$ in the whole block
+if $w\in F(S)$, in $\{w\}\times \tau(T_w)$ if $w\in S\setminus F(S)$, and not at all
 otherwise:
 \begin{equation}\label{eq:first-image}
- \abs{F_G(U)}=m\abs{F(S)}+\sum_{w\in S\setminus F(S)}\abs{f(T_w)}.
+ \abs{F_G(U)}=m\abs{F(S)}+\sum_{w\in S\setminus F(S)}\abs{\tau(T_w)}.
 \end{equation}
 
 \emph{Second image (upper bound).} Consider a path of length two starting in
@@ -344,11 +348,11 @@ first, the path stays in a block of $S$ and then moves to a block of $F(S)$.
 If the external step comes first, it moves to a block of $F(S)$ and the
 internal step stays in that block. If
 both arcs are internal, it stays in the block of some $v\in S$ and ends in
-$\{v\}\times f^2(T_v)$. Writing $H_0=F(S)\cup F^2(S)$, and counting the blocks
+$\{v\}\times \tau^2(T_v)$. Writing $H_0=F(S)\cup F^2(S)$, and counting the blocks
 of $H_0$ in full, we get
 \begin{equation}\label{eq:second-image}
- \abs{F_G^2(U)}\le m\abs{H_0}+\sum_{v\in S\setminus H_0}\abs{f^2(T_v)}
- \le m\abs{H_0}+\sum_{v\in S\setminus F(S)}\abs{f^2(T_v)},
+ \abs{F_G^2(U)}\le m\abs{H_0}+\sum_{v\in S\setminus H_0}\abs{\tau^2(T_v)}
+ \le m\abs{H_0}+\sum_{v\in S\setminus F(S)}\abs{\tau^2(T_v)},
 \end{equation}
 where the last step only adds nonnegative terms (as $F(S)\subseteq H_0$).
 
@@ -357,7 +361,7 @@ From~\eqref{eq:first-image} and~\eqref{eq:second-image},
 \[
  \abs U-2\abs{F_GU}+\abs{F_G^2U}
  \le m\abs{H_0}-2m\abs{F(S)}+\sum_{v\in S\cap F(S)}\abs{T_v}
- +\sum_{v\in S\setminus F(S)}\Bigl(\abs{T_v}-2\abs{f(T_v)}+\abs{f^2(T_v)}\Bigr).
+ +\sum_{v\in S\setminus F(S)}\Bigl(\abs{T_v}-2\abs{\tau(T_v)}+\abs{\tau^2(T_v)}\Bigr).
 \]
 Use $\abs{T_v}\le m$ in the first sum and \cref{lem:internal} in the second:
 \[
@@ -383,7 +387,7 @@ $G$ has an in-neighbor, $F_G^2(U)=F_G(V(G))=V(G)$ too. Thus the left side
 equals $\abs U-\abs{V(G)}<0$, as $U$ is proper.
 \end{proof}
 
-\begin{proposition}[Counterexample reduction]\label{prop:reduction}
+\begin{proposition}[Counterexample reduction; Proposition~2.1 of the original]\label{prop:reduction}
 If \cref{thm:main} fails, there is a nonempty oriented graph $G$ in which
 every vertex has an in-neighbor and~\eqref{eq:strict-concavity} holds for
 every nonempty proper vertex set $U$.

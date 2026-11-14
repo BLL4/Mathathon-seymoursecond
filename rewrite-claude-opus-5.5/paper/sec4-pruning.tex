@@ -21,7 +21,7 @@ member $c$ covers $\Fs\{c\}$, and $Z$ and $H$ are the conflict points and
 opposite corners of the conflicts between $\Rf$ and $\Cf$
 (\cref{def:ZH}).
 
-\begin{lemma}[Pruning lemma]\label{lem:pruning}
+\begin{lemma}[Pruning lemma; Lemma~3.1 of the original]\label{lem:pruning}
 Let $X$ be a finite set with an arbitrary relation $\to$, and let
 $\Rf,\Cf\subseteq X\times X$. There are $\Rf'\subseteq\Rf$ and $\Cf'\subseteq\Cf$ such that
 \begin{enumerate}[label=\textup{(P\arabic*)}]
@@ -410,10 +410,12 @@ rank at most that of each factor,
 \[
  \abs H=\dim\ker A+\rank A\ \ge\ k+\rank(AB)=k+\rank(NL).
 \]
-By Sylvester's rank inequality,
+Applying rank--nullity to $N$ restricted to $\im L$, and then to $N$ itself
+(which has $\abs Z$ columns),
 \[
  \rank(NL)=\rank L-\dim(\im L\cap\ker N)\ \ge\ \rank L-\dim\ker N=\ell-(\abs Z-t).
 \]
+This is Sylvester's rank inequality $\rank(NL)\ge\rank L+\rank N-\abs Z$.
 Combining gives $\abs H\ge k+\ell+t-\abs Z$.
 \end{proof}
 
@@ -498,7 +500,7 @@ conditions hold \emph{at the same time}.
 
 \subsection{The kernel lemma and the bound on \texorpdfstring{$\ker A$}{ker A}}\label{sec:kernel}
 
-\begin{lemma}[Kernel lemma]\label{lem:kernel}
+\begin{lemma}[Kernel lemma; Lemma~3.2 of the original]\label{lem:kernel}
 Let $\Phi\in\RR^{S\times J}$ have the maximum rank among all real matrices
 whose nonzero entries lie in a given set $T\subseteq S\times J$, and suppose
 $\Phi$ itself is supported in $T$. If $x\in\ker\Phi$ and $y\in\ker\Phi^\T$, then
@@ -506,9 +508,9 @@ $x_jy_s=0$ for every $(s,j)\in T$.
 \end{lemma}
 
 \begin{proof}
-Suppose $x_jy_s\ne0$ for some $(s,j)\in T$, and let $\Phi'=\Phi+\tau e_se_j^\T$ with
-$\tau\ne0$. It is still supported in $T$. Now $\Phi'x=\tau x_je_s$, so
-$e_s\in\im\Phi'$. Also, for every $w$, $\Phi w=\Phi'w-\tau w_je_s\in\im\Phi'$, so
+Suppose $x_jy_s\ne0$ for some $(s,j)\in T$, and let $\Phi'=\Phi+\gamma e_se_j^\T$ with
+$\gamma\ne0$. It is still supported in $T$. Now $\Phi'x=\gamma x_je_s$, so
+$e_s\in\im\Phi'$. Also, for every $w$, $\Phi w=\Phi'w-\gamma w_je_s\in\im\Phi'$, so
 $\im\Phi\subseteq\im\Phi'$. But $e_s\notin\im\Phi$, because $y$ is orthogonal to
 $\im\Phi$ and $y_s\ne0$. Hence $\rank\Phi'>\rank\Phi$, a contradiction.
 \end{proof}

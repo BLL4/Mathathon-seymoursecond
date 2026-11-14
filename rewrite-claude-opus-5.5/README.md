@@ -10,7 +10,8 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | **20-minute Beamer talk**, 21 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | Computer checks (Python, standard library only)                               | [`checks/`](checks/)                                                         |
 | Lean 4 / Mathlib formalization                                                | [`SeymourLean/`](SeymourLean/) (see its README)                              |
-| Review of the other agent's work (`../rewrite-codex`)                         | [`REVIEW_OF_rewrite-codex.md`](REVIEW_OF_rewrite-codex.md)                   |
+| Review of the other agents' work                                              | [`REVIEW_OF_rewrite-codex.md`](REVIEW_OF_rewrite-codex.md), [`REVIEW_OF_rewrite-openmath-DeepSeep4.1.md`](REVIEW_OF_rewrite-openmath-DeepSeep4.1.md) |
+| Response to criticism of this folder                                          | [`RESPONSE_TO_CRITIQUES.md`](RESPONSE_TO_CRITIQUES.md)                       |
 
 ## How the rewrite differs from the original
 
@@ -72,7 +73,8 @@ theorem Seymour.seymour_second_neighbourhood (V : Type) [Fintype V] [DecidableEq
 ```
 
 with no `sorry` and only the standard axioms `propext`, `Classical.choice`
-and `Quot.sound`. This includes the pruning lemma for an arbitrary relation:
+and `Quot.sound`. The build and the `#print axioms` output are recorded in
+[`SeymourLean/build.log`](SeymourLean/build.log). This includes the pruning lemma for an arbitrary relation:
 König's theorem from Hall's theorem, generic matrices, the kernel lemma and
 the matching bound. `SeymourLean/README.md` maps each Lean theorem to the
 paper and lists the few steps that are argued differently. No mathematical

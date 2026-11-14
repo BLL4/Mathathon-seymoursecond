@@ -12,6 +12,16 @@ a new `axiom`.
 -- [propext, Classical.choice, Quot.sound]
 ```
 
+**Evidence without rebuilding.** `build.log` records a full `lake build`, the output of
+`lake env lean CheckAxioms.lean` (the statement and `#print axioms` for the main theorem and
+the pruning lemma) and a `grep` for `sorry`/`admit`/`axiom`. To reproduce:
+
+```sh
+lake exe cache get && lake build && lake env lean CheckAxioms.lean
+```
+
+`lake-manifest.json` pins the Mathlib revision.
+
 ## Main theorem
 
 ```lean
@@ -37,7 +47,7 @@ The definitions are in `SeymourLean/Defs.lean`:
 | `disjoint_of_noConflict` | Contradiction | compatible ⇒ `F₁P ∩ F₂Q = ∅` | sec3 Lemma `lem:conflict-geometry`(b) |
 | `seymour_of_closed` | Reduction | a nonempty proper set with no outgoing arc yields a Seymour vertex via the induced subgraph | sec2 Lemma `lem:strong` |
 | `sum_of_steps`, `subset_deficit` | Reduction | subset deficit `\|F²S∖FS\| < \|FS∖S\|` in a minimal counterexample | sec2 Lemma `lem:subset-deficit` |
-| `internal_estimate` | BlowUp | `\|T\|-2\|f T\|+\|f²T\| ≤ 1` in a transitive tournament | sec2 Lemma `lem:internal` |
+| `internal_estimate` | BlowUp | `\|T\|-2\|f T\|+\|f²T\| ≤ 1` in a transitive tournament (`f` is `τ` in the paper) | sec2 Lemma `lem:internal` |
 | `blowup` | BlowUp | `D[T_m]` (`m > n`) is oriented, has positive indegrees and is strictly concave | sec2 Lemma `lem:blowup` |
 | `seymour_of_noStrictlyConcave` | Main | minimal counterexample (strong induction on `(\|V\|, #arcs)`) + deficit + blow-up | sec2 Prop. `prop:reduction` |
 | `seymour_of_pruningLemma` | Main | `PruningLemma → SeymourStatement` | — |
