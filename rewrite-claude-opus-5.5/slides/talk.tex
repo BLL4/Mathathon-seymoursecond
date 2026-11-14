@@ -129,7 +129,23 @@ $\gamma\approx0.657\to0.7155$.
  \draw (sd) edge node[lab,above=1pt] {blow\\up} (cc);
  \draw (cc) edge node[lab,right] {pairs} (con);
  \draw (pr) edge (con);
- \node[font=\footnotesize,text=black!55,align=center] at (0,-2.9) {Stages 1--2:\\ elementary counting\\[3pt] Stage 3:\\ the new idea};
+ \node[font=\scriptsize,text=black!55] at (2.5,-1.0) {top row (Stages 1--2): elementary counting};
+ \node[font=\scriptsize,text=black!55,below=1pt] at (pr.south) {Stage 3: the new idea};
+ % mini-sketch of F(S) and F^2(S)
+ \begin{scope}[shift={(0.35,-3.05)},scale=1.25]
+  \draw[famL,thick,fill=famL!12] (-0.85,0) ellipse (0.72 and 0.36);
+  \draw[zcol,thick,dashed] (0,0) ellipse (0.72 and 0.56);
+  \draw[famR,thick,densely dotted] (0.85,0) ellipse (0.72 and 0.36);
+  \node[dot] (s1) at (-1.25,0) {}; \node[dot] (s2) at (-0.42,0) {};
+  \node[dot] (u) at (0.42,0) {};   \node[dot] (w) at (1.25,0) {};
+  \draw[-{Stealth[length=1.6mm]}] (s1)--(s2);
+  \draw[-{Stealth[length=1.6mm]}] (s2)--(u);
+  \draw[-{Stealth[length=1.6mm]}] (u)--(w);
+  \draw[-{Stealth[length=1.6mm]}] (s1) to[bend right=50] (u);
+  \node[font=\scriptsize,famL!80!black] at (-1.45,0.48) {$S$};
+  \node[font=\scriptsize,zcol!70!black] at (0,0.78) {$FS$};
+  \node[font=\scriptsize,famR!80!black] at (1.5,0.48) {$F^2S$};
+ \end{scope}
 \end{tikzpicture}
 
 \medskip
