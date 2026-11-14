@@ -415,19 +415,19 @@ $c=(i,s)\in\Cf$, the corner $\cH{h=(p,s)}$ of its rectangle (opposite to the mee
 \item \textbf{Opposite corners were uncovered.}\quad $H\cap(F_1P\cup F_2Q)=\varnothing$,\quad so $\abs H\le d$.
 \end{itemize}
 \begin{columns}[c]
-\begin{column}{0.5\textwidth}
+\begin{column}{0.42\textwidth}
 \small All three are \emph{two-step path} arguments. For example, if $h\in F_1P$ via
 $(u,s)\in P$, then one more step down puts $c$ in $F_1^2P$. But
 $c\in\Cf$, the complement.
 \end{column}
-\begin{column}{0.45\textwidth}
+\begin{column}{0.56\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.75]
   \node[Lpt,label={[font=\footnotesize]right:$(u,s)\in P$}] (us) at (1.6,0) {};
-  \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h$}] (h) at (1.6,-1.3) {};
-  \node[Rpt,label={[font=\footnotesize]right:$c\in\Cf$}] (c) at (1.6,-2.6) {};
+  \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h=(p,s)$}] (h) at (1.6,-1.3) {};
+  \node[Rpt,label={[font=\footnotesize]right:$c=(i,s)\in\Cf$}] (c) at (1.6,-2.6) {};
   \node[Rpt,label={[font=\footnotesize]right:$(p,t)\in Q$}] (pt) at (3.2,-1.3) {};
-  \node[Lpt,label={[font=\footnotesize]left:$r\in\Rf$}] (r) at (0,-1.3) {};
+  \node[Lpt,label={[font=\footnotesize]left:$r=(p,j)\in\Rf$}] (r) at (0,-1.3) {};
   \draw[-{Stealth[length=2mm]},thick,famL] (us) -- (h);
   \draw[-{Stealth[length=2mm]},thick,famL,dashed] (h) -- (c);
   \draw[-{Stealth[length=2mm]},thick,famR] (pt) -- (h);
