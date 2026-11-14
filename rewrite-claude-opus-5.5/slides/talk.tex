@@ -196,11 +196,17 @@ Seymour vertex, and we can analyze what that vertex lost.
 \end{frame}
 
 % ------------------------------------------------------------------
-\begin{frame}{Stage 1: the deletion step}
+\begin{frame}{Stage 1: proving the subset deficit}
+\begin{block}{Goal: for a fixed nonempty proper $S$, show $\abs{F^2S\setminus FS}<\abs{FS\setminus S}$}
+\small Idea: add the vertices of $E=FS\setminus S$ in batches $Q$. Each batch makes
+the two-step image grow by \emph{fewer than} $\abs Q$ vertices. Summing over
+the batches gives the deficit.
+\end{block}
+\vspace{-2pt}
 \begin{columns}[c]
-\begin{column}{0.47\textwidth}
+\begin{column}{0.41\textwidth}
 \centering
-\begin{tikzpicture}[scale=0.64]
+\begin{tikzpicture}[scale=0.56]
  \draw[thick,fill=famL!8] (0,0) ellipse (1.5 and 2.2);
  \node[famL!80!black] at (-1.0,2.25) {$S$};
  \draw[fill=famL!22,draw=famL] (0,1.0) ellipse (0.9 and 0.65); \node at (0,1.0) {$I$};
@@ -213,20 +219,20 @@ Seymour vertex, and we can analyze what that vertex lost.
  \draw[arc,red!70!black,densely dashed] (v) to[out=30,in=200] (3.45,-0.2);
  \draw[arc,red!70!black,densely dashed] (v) to[out=-5,in=190] (3.45,-1.5);
  \draw[arc] (v) to[out=60,in=230] (3.45,1.2);
+ \draw[arc] (v) -- (0,0.38);
  \draw[arc] (5.2,0) -- (7.0,0);
 \end{tikzpicture}
 \end{column}
-\begin{column}{0.5\textwidth}
+\begin{column}{0.57\textwidth}
 \small
 \begin{itemize}
-\item $I=F(S)\cap S$, $E=F(S)\setminus S$. Grow $T$ from $\varnothing$ to $E$; delete all arcs $S\to E\setminus T$.
-\item Fewer arcs $\Rightarrow$ a Seymour vertex $v$; it must be in $S$ and lose
+\item $I=FS\cap S$. Grow $T$ from $\varnothing$ to $E$; each time, delete all arcs $S\to E\setminus T$.
+\item Fewer arcs $\Rightarrow$ a Seymour vertex $v$. It must be in $S$ and lose
 its out-neighbors $Q\subseteq E\setminus T$.
 \item $v$ \emph{loses} $C$ (reached only via $Q$) and gains $\le\abs{Q\cap F(T)}$.
-\item Since $v$ was \emph{not} Seymour in $D$:
-\[ g(T\cup Q)-g(T)=\abs C-\abs{Q\cap F(T)}<\abs Q,\]
-where $g(T)=\abs{F(T)\setminus(I\cup T)}$.
-\item Sum over batches: $\abs{F^2S\setminus FS}=g(E)<\abs E$.
+Since $v$ was \emph{not} Seymour in $D$,
+$g(T\cup Q)-g(T)<\abs Q$, where $g(T)=\abs{F(T)\setminus(I\cup T)}$.
+\item Sum over batches: $\abs{F^2S\setminus FS}=g(E)<\abs E=\abs{FS\setminus S}$.
 \end{itemize}
 \end{column}
 \end{columns}
