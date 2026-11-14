@@ -71,30 +71,30 @@ $\abs\Rf+\abs\Cf=2\abs X^2-\abs{\Fs^2Q}-\abs{\Ff^2P}
 \centering
 \begin{tikzpicture}[scale=1.0]
  \begin{scope}
-  \node[font=\small] at (0,0.75) {$t$}; \node[font=\small] at (1.6,0.75) {$s$}; \node[font=\small] at (3.2,0.75) {$j$};
+  \node[font=\small] at (0,0.75) {$j$}; \node[font=\small] at (2.0,0.75) {$s$}; \node[font=\small] at (4.0,0.75) {$t$};
   \node[font=\small] at (-0.8,0) {$u$}; \node[font=\small] at (-0.8,-1.5) {$p$}; \node[font=\small] at (-0.8,-3.0) {$i$};
-  \foreach \x/\y in {1.6/0,0/-1.5,1.6/-1.5,3.2/-1.5,1.6/-3.0} \node[gridpt] at (\x,\y) {};
-  \node[Lpt,label={[font=\footnotesize]right:$(u,s)\in P$}] (us) at (1.6,0) {};
-  \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h$}] (h) at (1.6,-1.5) {};
-  \node[Rpt,label={[font=\footnotesize]below:$c\in\Cf$}] (c) at (1.6,-3.0) {};
-  \node[Rpt,label={[font=\footnotesize]below:$(p,t)\in Q$}] (pt) at (0,-1.5) {};
-  \node[Lpt,label={[font=\footnotesize]below:$r\in\Rf$}] (r) at (3.2,-1.5) {};
-  \draw[-{Stealth[length=2mm]},thick,famL] (us) -- node[left,font=\footnotesize,black] {$u{\to}p$} (h);
+  \foreach \x/\y in {2.0/0,0/-1.5,2.0/-1.5,4.0/-1.5,2.0/-3.0} \node[gridpt] at (\x,\y) {};
+  \node[Lpt,label={[font=\footnotesize]right:$(u,s)\in P$}] (us) at (2.0,0) {};
+  \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h$}] (h) at (2.0,-1.5) {};
+  \node[Rpt,label={[font=\footnotesize]below:$c\in\Cf$}] (c) at (2.0,-3.0) {};
+  \node[Rpt,label={[font=\footnotesize]below:$(p,t)\in Q$}] (pt) at (4.0,-1.5) {};
+  \node[Lpt,label={[font=\footnotesize]below:$r\in\Rf$}] (r) at (0,-1.5) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (us) -- node[right,font=\footnotesize,black] {$u{\to}p$} (h);
   \draw[-{Stealth[length=2mm]},thick,famL,dashed] (h) -- node[left,font=\footnotesize,black] {$p{\to}i$} (c);
   \draw[-{Stealth[length=2mm]},thick,famR] (pt) -- node[above,font=\footnotesize,black] {$t{\to}s$} (h);
   \draw[-{Stealth[length=2mm]},thick,famR,dashed] (h) -- node[above,font=\footnotesize,black] {$s{\to}j$} (r);
-  \node[font=\small,align=center] at (1.6,-4.3) {(a) why $h\notin\Ff P\cup\Fs Q$};
+  \node[font=\small,align=center] at (2.0,-4.3) {(a) why $h\notin\Ff P\cup\Fs Q$};
  \end{scope}
- \begin{scope}[xshift=7.5cm]
-  \node[font=\small] at (0,0.7) {$s$}; \node[font=\small] at (2.1,0.7) {$v$};
+ \begin{scope}[xshift=8.2cm]
+  \node[font=\small] at (0,0.7) {$v$}; \node[font=\small] at (2.1,0.7) {$s$};
   \node[font=\small] at (-0.8,0) {$s$}; \node[font=\small] at (-0.8,-1.4) {$v$}; \node[font=\small] at (-0.8,-2.8) {$i$};
-  \foreach \x/\y in {0/0,0/-2.8,2.1/-1.4} \node[gridpt] at (\x,\y) {};
-  \node[Lpt,label={[font=\footnotesize]right:$(s,s)\in P$}] (ss) at (0,0) {};
-  \node[gridpt,draw=black] (vs) at (0,-1.4) {};
-  \node[Rpt,label={[font=\footnotesize]below:$(i,s)\in\Cf$}] (is) at (0,-2.8) {};
-  \node[Lpt,label={[font=\footnotesize]below:$(v,v)\in\Rf$}] (vv) at (2.1,-1.4) {};
-  \draw[-{Stealth[length=2mm]},thick,famL] (ss) -- node[left,font=\footnotesize,black] {$s{\to}v$} (vs);
-  \draw[-{Stealth[length=2mm]},thick,famL] (vs) -- node[left,font=\footnotesize,black] {$v{\to}i$} (is);
+  \foreach \x/\y in {2.1/0,2.1/-2.8,0/-1.4} \node[gridpt] at (\x,\y) {};
+  \node[Lpt,label={[font=\footnotesize]right:$(s,s)\in P$}] (ss) at (2.1,0) {};
+  \node[gridpt,draw=black] (vs) at (2.1,-1.4) {};
+  \node[Rpt,label={[font=\footnotesize]below:$(i,s)\in\Cf$}] (is) at (2.1,-2.8) {};
+  \node[Lpt,label={[font=\footnotesize]below:$(v,v)\in\Rf$}] (vv) at (0,-1.4) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (ss) -- node[right,font=\footnotesize,black] {$s{\to}v$} (vs);
+  \draw[-{Stealth[length=2mm]},thick,famL] (vs) -- node[right,font=\footnotesize,black] {$v{\to}i$} (is);
   \node[font=\small,align=center] at (1.0,-4.3) {(b) diagonal members\\ are conflict-free};
  \end{scope}
 \end{tikzpicture}

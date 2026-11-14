@@ -6,7 +6,7 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | What                                                                          | Where                                                                        |
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md)                                 |
-| **Rewritten paper**, 29 pages, 13 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
+| **Rewritten paper**, 31 pages, 14 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
 | **20-minute Beamer talk**, 21 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | Computer checks (Python, standard library only)                               | [`checks/`](checks/)                                                         |
 | Lean 4 / Mathlib formalization                                                | [`SeymourLean/`](SeymourLean/) (see its README)                              |
@@ -17,6 +17,12 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 
 * A one-page **proof map** (Figure 2), plus a "what this section does" box at
   the start and a recap at the end of each section.
+* Section 3 (the grid of pairs) has a table of the two sides (left family =
+  first coordinate moves = vertical = columns; right family = second
+  coordinate moves = horizontal = rows). It also has a remark saying that
+  "left/right" are names, not positions, and a worked example on the
+  directed triangle that shows exactly where strictness is needed. All grid
+  figures draw left members to the left of right members.
 * The proof is reorganized so that **motivation comes before tools**. The grid
   of pairs, the objective `val = |P| + |Q| + #uncovered` and the accounting
   ("ledger", Figure 6) are explained *before* the pruning lemma, so the reader

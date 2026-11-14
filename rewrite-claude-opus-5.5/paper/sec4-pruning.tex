@@ -44,18 +44,18 @@ If $\Rf=\{r\}$ and $\Cf=\{c\}$ conflict, then $Z=\{z\}$ and $H=\{h\}$ as in
 \end{example}
 
 \begin{example}[Deleting more can be cheaper]\label{ex:K22}
-Let $X=\{0,1,2\}$ with the two arrows $0\to1$, $0\to2$, and
+Let $X=\{0,1,2,3\}$ with the four arrows $0\to1$, $0\to2$, $3\to1$, $3\to2$, and
 \[
- \Rf=\{(0,1),(0,2)\},\qquad \Cf=\{(1,0),(2,0)\}
+ \Rf=\{(0,1),(0,2)\},\qquad \Cf=\{(1,3),(2,3)\}
 \]
-(\cref{fig:K22grid}). A left member $(0,j)$ and a right member $(i,0)$
-conflict because $0\to i$ and $0\to j$. So all four pairs conflict, and
+(\cref{fig:K22grid}). A left member $(0,j)$ and a right member $(i,3)$
+conflict because $0\to i$ and $3\to j$. So all four pairs conflict, and
 \[
- Z=\{1,2\}\times\{1,2\},\qquad H=\{(0,0)\}.
+ Z=\{1,2\}\times\{1,2\},\qquad H=\{(0,3)\}.
 \]
 Compatible subfamilies must have $\Rf'=\varnothing$ or $\Cf'=\varnothing$.
 Deleting one whole family costs $2$, but then every point of $Z$ is still
-covered by the other family: $(i,0)$ covers $(i,1),(i,2)$. So the right side
+covered by the other family: $(i,3)$ covers $(i,1),(i,2)$. So the right side
 of~\eqref{eq:pruning-bound} is only $\abs H=1$. The bound fails for the
 \emph{cheapest} pruning! It holds for deleting three members ($3\le1+2$) or
 all four ($4\le1+4$). The construction in the proof deletes all four.
@@ -68,21 +68,23 @@ all four ($4\le1+4$). The construction in the proof deletes all four.
   \node[vtx] (x0) at (0,0) {$0$};
   \node[vtx] (x1) at (1.2,0.8) {$1$};
   \node[vtx] (x2) at (1.2,-0.8) {$2$};
+  \node[vtx] (x3) at (2.4,0) {$3$};
   \draw[arc] (x0)--(x1); \draw[arc] (x0)--(x2);
+  \draw[arc] (x3)--(x1); \draw[arc] (x3)--(x2);
  \end{scope}
- \begin{scope}[xshift=3.6cm,yshift=1.6cm]
-  \foreach \k in {0,1,2} {\node[font=\small] at (\k,0.55) {$\k$}; \node[font=\small] at (-0.6,-\k) {$\k$};}
-  \foreach \i in {0,1,2} \foreach \j in {0,1,2} \node[gridpt] at (\j,-\i) {};
+ \begin{scope}[xshift=4.3cm,yshift=1.6cm]
+  \foreach \k in {0,1,2,3} {\node[font=\small] at (\k,0.55) {$\k$}; \node[font=\small] at (-0.6,-\k) {$\k$};}
+  \foreach \i in {0,1,2,3} \foreach \j in {0,1,2,3} \node[gridpt] at (\j,-\i) {};
   \foreach \i in {1,2} \foreach \j in {1,2} \node[Zpt] at (\j,-\i) {};
-  \node[Hpt] at (0,0) {};
+  \node[Hpt] at (3,0) {};
   \node[Lpt] (r1) at (1,0) {}; \node[Lpt] (r2) at (2,0) {};
-  \node[Rpt] (c1) at (0,-1) {}; \node[Rpt] (c2) at (0,-2) {};
+  \node[Rpt] (c1) at (3,-1) {}; \node[Rpt] (c2) at (3,-2) {};
   \draw[famL,-{Stealth[length=1.8mm]},thick] (r1)--(1,-0.8);
   \draw[famL,-{Stealth[length=1.8mm]},thick] (r2)--(2,-0.8);
-  \draw[famR,-{Stealth[length=1.8mm]},thick] (c1)--(0.8,-1);
-  \draw[famR,-{Stealth[length=1.8mm]},thick] (c2)--(0.8,-2);
+  \draw[famR,-{Stealth[length=1.8mm]},thick] (c1)--(2.2,-1);
+  \draw[famR,-{Stealth[length=1.8mm]},thick] (c2)--(2.2,-2);
  \end{scope}
- \begin{scope}[xshift=7.4cm,yshift=0.9cm,font=\small]
+ \begin{scope}[xshift=8.7cm,yshift=0.9cm,font=\small]
   \node[Lpt] at (0,0) {}; \node[anchor=west] at (0.3,0) {$\Rf$ (left family)};
   \node[Rpt] at (0,-0.6) {}; \node[anchor=west] at (0.3,-0.6) {$\Cf$ (right family)};
   \node[Zpt] at (0,-1.2) {}; \node[anchor=west] at (0.3,-1.2) {$Z$ (conflict points)};
@@ -90,9 +92,9 @@ all four ($4\le1+4$). The construction in the proof deletes all four.
  \end{scope}
 \end{tikzpicture}
 \caption{\Cref{ex:K22}. The left members (blue, row $0$) cover the green
-points below them. The right members (orange, column $0$) cover the green
-points to their right. Each of the four conflicts has the same opposite
-corner $(0,0)$. Removing all conflicts cheaply is impossible relative to
+points below them. The right members (orange, column $3$) cover the green
+points to their left. Each of the four conflicts has the same opposite
+corner $(0,3)$. Removing all conflicts cheaply is impossible relative to
 $\abs H=1$. The lemma pays for the deletions with the green points that are
 left uncovered.}
 \label{fig:K22grid}
@@ -131,25 +133,22 @@ write $\nu(\Gamma)$ for the maximum size of a matching.
   ov/.style={circle,draw,inner sep=1pt,minimum size=7mm,font=\footnotesize},
   cv/.style={rectangle,draw,inner sep=1pt,minimum size=6mm,font=\footnotesize}]
  \begin{scope}
-  \node[cv,fill=zcol!25] (zl) at (0,0) {$z_L$};
-  \node[ov,fill=famR!30] (c) at (2,0) {$c$};
-  \node[ov,fill=famL!30] (r) at (4,0) {$r$};
-  \node[cv,fill=zcol!25] (zr) at (6,0) {$z_R$};
-  \draw[thick,famR] (zl) -- node[above,font=\footnotesize,black] {E3} (c);
-  \draw[thick] (c) -- node[above,font=\footnotesize] {E1} (r);
-  \draw[thick,famL] (r) -- node[above,font=\footnotesize,black] {E2} (zr);
-  \node[font=\footnotesize,text=black!60] at (0,-0.65) {$\Lp$};
-  \node[font=\footnotesize,text=black!60] at (2,-0.65) {$\Rp$};
-  \node[font=\footnotesize,text=black!60] at (4,-0.65) {$\Lp$};
-  \node[font=\footnotesize,text=black!60] at (6,-0.65) {$\Rp$};
-  \node[font=\small] at (3,-1.4) {(a) one conflict};
+  \node[font=\footnotesize] at (1,1.2) {$\Lp$}; \node[font=\footnotesize] at (5,1.2) {$\Rp$};
+  \node[ov,fill=famL!30] (r) at (1,0.4) {$r$};
+  \node[cv,fill=zcol!25] (zl) at (1,-1.2) {$z_L$};
+  \node[ov,fill=famR!30] (c) at (5,0.4) {$c$};
+  \node[cv,fill=zcol!25] (zr) at (5,-1.2) {$z_R$};
+  \draw[thick] (r) -- node[above,font=\footnotesize] {E1} (c);
+  \draw[thick,famL] (r) -- node[pos=0.8,above right=-1pt,font=\footnotesize,black] {E2} (zr);
+  \draw[thick,famR] (zl) -- node[pos=0.2,below right=-1pt,font=\footnotesize,black] {E3} (c);
+  \node[font=\small] at (3,-2.1) {(a) one conflict};
  \end{scope}
  \begin{scope}[xshift=8.6cm,yshift=1.9cm]
   \node[font=\footnotesize] at (0,0.75) {$\Lp$}; \node[font=\footnotesize] at (4,0.75) {$\Rp$};
   \node[ov,fill=famL!30,ultra thick,draw=red!70!black] (r1) at (0,0) {$01$};
   \node[ov,fill=famL!30,ultra thick,draw=red!70!black] (r2) at (0,-0.9) {$02$};
-  \node[ov,fill=famR!30,ultra thick,draw=red!70!black] (c1) at (4,0) {$10$};
-  \node[ov,fill=famR!30,ultra thick,draw=red!70!black] (c2) at (4,-0.9) {$20$};
+  \node[ov,fill=famR!30,ultra thick,draw=red!70!black] (c1) at (4,0) {$13$};
+  \node[ov,fill=famR!30,ultra thick,draw=red!70!black] (c2) at (4,-0.9) {$23$};
   \foreach \z/\y in {11/-2.0,12/-2.75,21/-3.5,22/-4.25} {
    \node[cv,fill=zcol!25] (L\z) at (0,\y) {$\z$};
    \node[cv,fill=zcol!25] (R\z) at (4,\y) {$\z$};
@@ -330,24 +329,24 @@ $N$ and $B$ move the second coordinate backward along $s\to j$.
 \centering
 \begin{tikzpicture}
  \begin{scope}
-  \node[Lpt,label={[famL!80!black]above right:$r=(p,j)$}] (r) at (3,0) {};
-  \node[Hpt,label={[hcol!80!black]above left:$h=(p,s)$}] (h) at (0,0) {};
-  \node[Zpt,label={[zcol!70!black]below right:$z=(i,j)$}] (z) at (3,-2.4) {};
-  \node[Rpt,label={[famR!80!black]below left:$c=(i,s)$}] (c) at (0,-2.4) {};
-  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[right] {$L:\ a_{pi}$} (z);
+  \node[Lpt,label={[famL!80!black]above left:$r=(p,j)$}] (r) at (0,0) {};
+  \node[Hpt,label={[hcol!80!black]above right:$h=(p,s)$}] (h) at (3,0) {};
+  \node[Zpt,label={[zcol!70!black]below left:$z=(i,j)$}] (z) at (0,-2.4) {};
+  \node[Rpt,label={[famR!80!black]below right:$c=(i,s)$}] (c) at (3,-2.4) {};
+  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[left] {$L:\ a_{pi}$} (z);
   \draw[-{Stealth[length=2.4mm]},thick] (z) -- node[below] {$N:\ b_{sj}$} (c);
   \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[above] {$B:\ b_{sj}$} (h);
-  \draw[-{Stealth[length=2.4mm]},thick] (h) -- node[left] {$A:\ a_{pi}$} (c);
+  \draw[-{Stealth[length=2.4mm]},thick] (h) -- node[right] {$A:\ a_{pi}$} (c);
  \end{scope}
  \begin{scope}[xshift=8.3cm,yshift=-1.2cm]
   \node (RR) at (0,1.2) {$\RR^{\Rf}$};
-  \node (RZ) at (2.6,1.2) {$\RR^{Z}$};
-  \node (RH) at (0,-1.2) {$\RR^{H}$};
+  \node (RH) at (2.6,1.2) {$\RR^{H}$};
+  \node (RZ) at (0,-1.2) {$\RR^{Z}$};
   \node (RC) at (2.6,-1.2) {$\RR^{\Cf}$};
-  \draw[-{Stealth},thick] (RR) -- node[above] {$L$} (RZ);
-  \draw[-{Stealth},thick] (RZ) -- node[right] {$N$} (RC);
-  \draw[-{Stealth},thick] (RR) -- node[left] {$B$} (RH);
-  \draw[-{Stealth},thick] (RH) -- node[below] {$A$} (RC);
+  \draw[-{Stealth},thick] (RR) -- node[left] {$L$} (RZ);
+  \draw[-{Stealth},thick] (RZ) -- node[below] {$N$} (RC);
+  \draw[-{Stealth},thick] (RR) -- node[above] {$B$} (RH);
+  \draw[-{Stealth},thick] (RH) -- node[right] {$A$} (RC);
   \node at (1.3,0) {$NL=AB$};
  \end{scope}
 \end{tikzpicture}
@@ -356,7 +355,8 @@ conflict point $z$ (first change the first coordinate, then the second), or
 via the opposite corner $h$ (the other order). For a conflicting pair both
 routes give the entry $a_{pi}b_{sj}$, and for a non-conflicting pair both
 give $0$. This is the identity $NL=AB$. The corners sit at their true
-grid positions (rows $p,i$; columns $s,j$). Arrows show the direction of the
+grid positions (rows $p,i$; columns $j,s$), and the diagram on the right
+has the same shape. Arrows show the direction of the
 linear maps. $L$ and $A$ follow the arc $p\to i$, while $N$ and $B$ run
 \emph{against} the arc $s\to j$, unlike the set operator $\Fs$ in
 \cref{fig:coord}.}

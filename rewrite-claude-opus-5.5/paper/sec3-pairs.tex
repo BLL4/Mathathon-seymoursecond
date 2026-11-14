@@ -3,7 +3,10 @@
 \begin{idea}[What this section does]
 We introduce the language of the rest of the proof: subsets of the grid
 $X\times X$, the two coordinate images $\Ff,\Fs$, conflicts and compatibility,
-and the quantity $\val(P,Q)$ that will be maximized. We then explain
+and the quantity $\val(P,Q)$ that will be maximized. \Cref{tab:sides}
+collects what belongs to the left and to the right family, and
+\cref{ex:triangle-grid} works through all definitions on the directed
+triangle. We then explain
 \emph{heuristically} why maximizing $\val$ leads to a contradiction. The
 explanation is made rigorous in \cref{sec:contradiction}, and the one
 missing tool, the pruning lemma, is proved in \cref{sec:pruning}.
@@ -59,7 +62,7 @@ row) and add.
   \node[vtx] (n2) at (-1,0) {$2$};
   \node[vtx] (n3) at (1,0) {$3$};
   \node[vtx] (n4) at (0,-1.2) {$4$};
-  \draw[arc] (n1)--(n2); \draw[arc] (n1)--(n3); \draw[arc] (n3)--(n4);
+  \draw[arc] (n1)--(n2); \draw[arc] (n1)--(n3); \draw[arc] (n4)--(n1); \draw[arc] (n4)--(n2);
   \node[font=\small] at (0,-2.0) {the relation};
  \end{scope}
  % grid
@@ -71,36 +74,42 @@ row) and add.
   \node[font=\footnotesize,text=black!60] at (2.5,0.55) {column $j$ (second coordinate)};
   \node[font=\footnotesize,text=black!60,rotate=90] at (-0.35,-2.5) {row $i$ (first coord.)};
   \foreach \i in {1,...,4} \foreach \j in {1,...,4} \node[gridpt] at (\j,-\i) {};
-  \node[Lpt,label={[famL!80!black,font=\small]above right:$r$}] (r) at (3,-1) {};
-  \node[Rpt,label={[famR!80!black,font=\small]below left:$c$}] (c) at (1,-2) {};
-  \node[Zpt,label={[zcol!70!black,font=\small]above right:$z$}] (z) at (3,-2) {};
-  \node[circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm] (r3) at (3,-3) {};
+  \node[Lpt,label={[famL!80!black,font=\small]above left:$r$}] (r) at (1,-1) {};
+  \node[Rpt,label={[famR!80!black,font=\small]below right:$c$}] (c) at (4,-2) {};
+  \node[Zpt,label={[zcol!70!black,font=\small]below left:$z$}] (z) at (1,-2) {};
+  \node[Hpt,label={[hcol!80!black,font=\small]above right:$h$}] (h) at (4,-1) {};
+  \node[circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm] (r3) at (1,-3) {};
   \node[rectangle,draw=famR,thick,inner sep=0pt,minimum size=3.4mm] (c2) at (2,-2) {};
   \draw[-{Stealth[length=2mm]},famL,thick] (r) -- (z);
-  \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=35] (r3);
-  \draw[-{Stealth[length=2mm]},famR,thick] (c) -- (c2);
-  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend right=35] (z);
-  \node[font=\small,align=center] at (2.5,-5.0) {$r=(1,3)$: $\Ff\{r\}=\{(2,3),(3,3)\}$\\
-   $c=(2,1)$: $\Fs\{c\}=\{(2,2),(2,3)\}$};
+  \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=40] (r3);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend left=25] (c2);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend left=30] (z);
+  \node[font=\small,align=center] at (2.5,-5.0) {$r=(1,1)$: $\Ff\{r\}=\{(2,1),(3,1)\}$\\
+   $c=(2,4)$: $\Fs\{c\}=\{(2,1),(2,2)\}$};
  \end{scope}
  % abstract rectangle
  \begin{scope}[xshift=7.8cm,yshift=-0.9cm]
-  \node[Hpt,label={[hcol!80!black,font=\small]above left:$h=(p,s)$}] (h) at (0,0) {};
-  \node[Lpt,label={[famL!80!black,font=\small]above right:$r=(p,j)$}] (rr) at (2.6,0) {};
-  \node[Rpt,label={[famR!80!black,font=\small]below left:$c=(i,s)$}] (cc) at (0,-2.4) {};
-  \node[Zpt,label={[zcol!70!black,font=\small]below right:$z=(i,j)$}] (zz) at (2.6,-2.4) {};
-  \draw[-{Stealth[length=2mm]},thick,famL] (rr) -- node[right,font=\footnotesize,black] {$p\to i$} (zz);
+  \node[Lpt,label={[famL!80!black,font=\small]above left:$r=(p,j)$}] (rr) at (0,0) {};
+  \node[Hpt,label={[hcol!80!black,font=\small]above right:$h=(p,s)$}] (h) at (2.6,0) {};
+  \node[Zpt,label={[zcol!70!black,font=\small]below left:$z=(i,j)$}] (zz) at (0,-2.4) {};
+  \node[Rpt,label={[famR!80!black,font=\small]below right:$c=(i,s)$}] (cc) at (2.6,-2.4) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (rr) -- node[left,font=\footnotesize,black] {$p\to i$} (zz);
   \draw[-{Stealth[length=2mm]},thick,famR] (cc) -- node[below,font=\footnotesize,black] {$s\to j$} (zz);
   \draw[black!40,dashed] (h)--(rr); \draw[black!40,dashed] (h)--(cc);
-  \node[font=\small,align=center] at (1.3,-4.1) {a conflict and its\\ two ``free'' corners};
+  \node[font=\small,align=center] at (1.3,-4.1) {a conflict: $r$ is in the\\ column of $z$, $c$ in its row};
  \end{scope}
 \end{tikzpicture}
 \caption{Left: a relation on $X=\{1,2,3,4\}$. Middle: the grid $X\times X$
-(row $=$ first coordinate). The blue point $r$ moves vertically under $\Ff$,
-the orange point $c$ moves horizontally under $\Fs$, and their images meet
-at the green point $z$. So $r$ and $c$ \emph{conflict}. Right: in general a
-conflict between $r=(p,j)$ and $c=(i,s)$ spans a rectangle. The meeting
-point $z=(i,j)$ is the opposite corner to the purple point $h=(p,s)$.}
+(row $=$ first coordinate). The blue point $r$ (a left member) moves
+vertically under $\Ff$, because $1\to2$ and $1\to3$. The orange point $c$
+(a right member) moves horizontally under $\Fs$, because $4\to1$ and
+$4\to2$. Their images meet at the green point $z=(2,1)$, so $r$ and $c$
+\emph{conflict}. The purple point $h=(1,4)$ is the fourth corner of the
+rectangle. Right: the general picture. A conflict between $r=(p,j)$ and
+$c=(i,s)$ spans a rectangle. The meeting point $z=(i,j)$ is opposite to
+$h=(p,s)$. In all our figures the columns are ordered so that left members
+appear to the left of right members, but this is only a drawing choice
+(see \cref{rem:left-right}).}
 \label{fig:coord}
 \end{figure}
 
@@ -108,7 +117,44 @@ point $z=(i,j)$ is the opposite corner to the purple point $h=(p,s)$.}
 
 Throughout, we deal with a \emph{left} family (drawn blue: $P$, $\Rf$, $P'$),
 to which $\Ff$ is applied, and a \emph{right} family (drawn orange: $Q$,
-$\Cf$, $Q'$), to which $\Fs$ is applied.
+$\Cf$, $Q'$), to which $\Fs$ is applied. The two families play symmetric
+but different roles, and it is easy to mix them up. \Cref{tab:sides} lists
+everything that belongs to each side.
+
+\begin{table}[ht]
+\centering\small
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & \cL{\textbf{left} family} & \cR{\textbf{right} family}\\
+\midrule
+families (old, candidate, new) & $P$, $\Rf$, $P'$ & $Q$, $\Cf$, $Q'$\\
+typical member & $r=(p,j)$ & $c=(i,s)$\\
+operator & $\Ff$: the \emph{first} coordinate moves & $\Fs$: the \emph{second} coordinate moves\\
+direction in the grid & vertical (within a column) & horizontal (within a row)\\
+split into & columns $P_j$, with $(\Ff P)_j=F(P_j)$ & rows $Q_i$, with $(\Fs Q)_i=F(Q_i)$\\
+in a conflict & lies in the \emph{column} of $z$ & lies in the \emph{row} of $z$\\
+drawn as & \tikz\node[Lpt]{}; blue disk & \tikz\node[Rpt]{}; orange square\\
+side of $\Gamma$ (\cref{sec:pruning}) & $\Lp=\Rf\sqcup Z_L$ & $\Rp=\Cf\sqcup Z_R$\\
+matrices (\cref{sec:pruning}) & $L,B$ start at its members & $N,A$ end at its members\\
+\bottomrule
+\end{tabular}
+\caption{The two sides. Mnemonic: \emph{left = first coordinate moves =
+vertical = columns}; \emph{right = second coordinate moves = horizontal =
+rows}.}
+\label{tab:sides}
+\end{table}
+
+\begin{remark}[What ``left'' and ``right'' mean]\label{rem:left-right}
+The words \emph{left} and \emph{right} refer to the position of a family in
+the pair $(P,Q)$, which is written with $P$ on the left. They also refer to
+the two sides of the bipartite graph $\Gamma$ in \cref{sec:pruning}. They do
+\emph{not} describe where points lie in the grid. A conflicting left member
+$r$ sits in the same column as the conflict point $z$, and the right member
+$c$ sits in the same row as $z$. Whether $c$ is drawn to the left or to the
+right of $z$ depends only on how the columns are ordered. In every figure
+of this paper we order the columns so that left members appear to the left
+of right members, as in \cref{fig:coord}.
+\end{remark}
 
 \begin{definition}[Conflict, compatibility]\label{def:conflict}
 A left member $r=(p,j)$ and a right member $c=(i,s)$ \emph{conflict} if
@@ -178,6 +224,105 @@ $(j,j)\in\Delta$) and $i\to j$ (from $(i,i)\in\Delta$). These are opposite
 arcs, which an oriented graph does not have.
 \end{proof}
 
+\paragraph{Why these definitions?}
+Each ingredient of the set-up is used once in \cref{sec:contradiction}.
+\begin{itemize}[leftmargin=*]
+\item \emph{The diagonal.} Since $(j,j)\in P$, every column $P_j$ contains
+$j$, so it is nonempty. Since $(i,i)\in Q$, every row $Q_i$ is nonempty.
+Strict concavity applies only to nonempty proper sets, so this is what lets
+us apply it to every line. (Properness comes from positive indegrees,
+\cref{cl:lines-proper}.)
+\item \emph{Compatibility.} By \cref{lem:conflict-geometry}(b) the covered
+sets $\Ff P$ and $\Fs Q$ are disjoint. So $\unc(P,Q)$ counts exactly the
+grid points covered by neither family, and $\abs{\Ff P}+\abs{\Fs Q}\le\abs X^2$.
+Without disjointness, $\unc$ could be negative and would not count
+anything.
+\item \emph{The value.} We maximize $\abs P+\abs Q$ plus the number of
+uncovered points. Both families want to be large, but large families cover
+many points, and compatibility forbids covering a point twice. The
+uncovered points measure the room that is still free. \Cref{rem:why-value}
+explains why they enter with weight exactly~$1$.
+\end{itemize}
+
+\begin{example}[The diagonal pair in a directed triangle]\label{ex:triangle-grid}
+Let $G$ be the directed triangle $1\to2\to3\to1$ and $P=Q=\Delta$
+(\cref{fig:triangle-grid}). Then
+\[
+ \Ff\Delta=\{(i,j): j\to i\}=\{(2,1),(3,2),(1,3)\},\qquad
+ \Fs\Delta=\{(i,j): i\to j\}=\{(1,2),(2,3),(3,1)\}.
+\]
+These are disjoint, as \cref{lem:diag-compatible} predicts. The uncovered
+points are the three diagonal points, so $\unc(\Delta,\Delta)=9-3-3=3$ and
+$\val(\Delta,\Delta)=3+3+3=9$.
+
+The triangle satisfies (G1) but not (G2). For a single vertex $U=\{v\}$
+we get $\abs U+\abs{F^2U}=1+1=2=2\abs{FU}$, which is equality and not strict.
+It is instructive to see where the argument of \cref{sec:ledger} stops.
+Step~2 below builds $\Rf=X^2\setminus\Fs^2\Delta$ and
+$\Cf=X^2\setminus\Ff^2\Delta$, where
+\begin{align*}
+ \Fs^2\Delta&=\{(i,k): i\to\cdot\to k\}=\{(1,3),(2,1),(3,2)\},\\
+ \Ff^2\Delta&=\{(k,j): j\to\cdot\to k\}=\{(3,1),(1,2),(2,3)\}.
+\end{align*}
+So $\abs\Rf+\abs\Cf=6+6=12$, which \emph{equals} $\mu+2d=6+2\cdot3$
+instead of exceeding it. The gain of Step~2 is exactly the strict
+inequality in (G2), and without it there is nothing to pay for the pruning.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.85]
+ \tikzset{hollowL/.style={circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm},
+          hollowR/.style={rectangle,draw=famR,thick,inner sep=0pt,minimum size=3.4mm},
+          unc/.style={circle,fill=black!35,inner sep=0pt,minimum size=2.6mm}}
+ \begin{scope}[xshift=-2.6cm,yshift=-2cm]
+  \node[vtx] (t1) at (90:0.9) {$1$};
+  \node[vtx] (t2) at (210:0.9) {$2$};
+  \node[vtx] (t3) at (330:0.9) {$3$};
+  \draw[arc] (t1)--(t2); \draw[arc] (t2)--(t3); \draw[arc] (t3)--(t1);
+  \node[font=\small] at (0,-1.6) {$G$};
+ \end{scope}
+ % panel a: P = Delta under F1
+ \begin{scope}
+  \foreach \k in {1,2,3} {\node[font=\footnotesize] at (\k,-0.35) {$\k$}; \node[font=\footnotesize] at (0.4,-\k-0.4) {$\k$};}
+  \foreach \i in {1,2,3} \foreach \j in {1,2,3} \node[gridpt] at (\j,-\i-0.4) {};
+  \foreach \k in {1,2,3} \node[Lpt] (p\k) at (\k,-\k-0.4) {};
+  \node[hollowL] (a1) at (1,-2.4) {}; \node[hollowL] (a2) at (2,-3.4) {}; \node[hollowL] (a3) at (3,-1.4) {};
+  \draw[-{Stealth[length=1.8mm]},famL,thick] (p1)--(a1);
+  \draw[-{Stealth[length=1.8mm]},famL,thick] (p2)--(a2);
+  \draw[-{Stealth[length=1.8mm]},famL,thick] (p3) to[bend right=40] (a3);
+  \node[font=\small,align=center] at (2,-4.5) {(a) $P=\Delta$ and $\Ff P$};
+ \end{scope}
+ % panel b: Q = Delta under F2
+ \begin{scope}[xshift=4.2cm]
+  \foreach \k in {1,2,3} {\node[font=\footnotesize] at (\k,-0.35) {$\k$}; \node[font=\footnotesize] at (0.4,-\k-0.4) {$\k$};}
+  \foreach \i in {1,2,3} \foreach \j in {1,2,3} \node[gridpt] at (\j,-\i-0.4) {};
+  \foreach \k in {1,2,3} \node[Rpt] (q\k) at (\k,-\k-0.4) {};
+  \node[hollowR] (b1) at (2,-1.4) {}; \node[hollowR] (b2) at (3,-2.4) {}; \node[hollowR] (b3) at (1,-3.4) {};
+  \draw[-{Stealth[length=1.8mm]},famR,thick] (q1)--(b1);
+  \draw[-{Stealth[length=1.8mm]},famR,thick] (q2)--(b2);
+  \draw[-{Stealth[length=1.8mm]},famR,thick] (q3) to[bend left=35] (b3);
+  \node[font=\small,align=center] at (2,-4.5) {(b) $Q=\Delta$ and $\Fs Q$};
+ \end{scope}
+ % panel c: coverage
+ \begin{scope}[xshift=8.4cm]
+  \foreach \k in {1,2,3} {\node[font=\footnotesize] at (\k,-0.35) {$\k$}; \node[font=\footnotesize] at (0.4,-\k-0.4) {$\k$};}
+  \node[hollowL] at (1,-2.4) {}; \node[hollowL] at (2,-3.4) {}; \node[hollowL] at (3,-1.4) {};
+  \node[hollowR] at (2,-1.4) {}; \node[hollowR] at (3,-2.4) {}; \node[hollowR] at (1,-3.4) {};
+  \foreach \k in {1,2,3} \node[unc] at (\k,-\k-0.4) {};
+  \node[font=\small,align=center] at (2,-4.5) {(c) covered and\\ uncovered points};
+ \end{scope}
+\end{tikzpicture}
+\caption{\Cref{ex:triangle-grid}. (a) In column $j$ the left member $(j,j)$
+moves vertically to row $i$ with $j\to i$; the arrow from $(3,3)$ goes up
+because $3\to1$. (b) In row $i$ the right member $(i,i)$ moves
+horizontally to column $j$ with $i\to j$. (c) The blue circles ($\Ff P$)
+and orange squares ($\Fs Q$) never share a point, so the pair is
+compatible. The three grey points are uncovered.
+$\val=\abs P+\abs Q+\unc=3+3+3=9$.}
+\label{fig:triangle-grid}
+\end{figure}
+
 \subsection{Why maximizing the value leads to a contradiction}\label{sec:ledger}
 
 Here is the plan of \cref{sec:contradiction}, with the verifications
@@ -192,8 +337,19 @@ nonempty proper subset of $X$. Applying strict concavity to each and adding
  \abs P+\abs{\Ff^2P}<2\abs{\Ff P},\qquad \abs Q+\abs{\Fs^2Q}<2\abs{\Fs Q}.
 \]
 \item \textbf{Complement.} Let $\Rf=(X\times X)\setminus\Fs^2Q$ and $\Cf=(X\times X)\setminus\Ff^2P$.
-Adding the two inequalities shows $\abs\Rf+\abs\Cf>\mu+2d$. This is a gain of
-more than $d$ over the old value.
+Adding the two inequalities of Step~1 gives
+\[
+ \abs\Rf+\abs\Cf=2\abs X^2-\abs{\Fs^2Q}-\abs{\Ff^2P}
+ >2\abs X^2+\abs P+\abs Q-2\abs{\Ff P}-2\abs{\Fs Q}=\mu+2d .
+\]
+This is a gain of more than $d$ over the old value $\mu+d$.
+Note the \emph{swap}: the new left family $\Rf$ is the complement of a set
+built from the old \emph{right} family $Q$, and vice versa. So a member of
+$\Rf$ is a point that $Q$ cannot reach in two horizontal steps, and a member
+of $\Cf$ is a point that $P$ cannot reach in two vertical steps. A conflict
+between $r\in\Rf$ and $c\in\Cf$ combines one vertical and one horizontal
+step, and the swap is what lets \cref{sec:contradiction} turn such a
+conflict into a forbidden two-step path (\cref{fig:twostep}).
 \item \textbf{Repair.} $(\Rf,\Cf)$ contains the diagonal but may have conflicts. The
 pruning lemma deletes some members to remove all conflicts. The number
 deleted is at most $\abs H$ plus the number of points of $Z$ left

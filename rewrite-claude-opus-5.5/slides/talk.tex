@@ -317,22 +317,23 @@ of $P$ is nonempty and proper, (G2) column by column gives
 \begin{tikzpicture}[scale=0.72]
   \foreach \k in {1,...,4} {\node[font=\small] at (\k,-0.3) {$\k$}; \node[font=\small] at (0.3,-\k-0.6) {$\k$};}
   \foreach \i in {1,...,4} \foreach \j in {1,...,4} \node[gridpt] at (\j,-\i-0.6) {};
-  \node[Lpt] (r) at (3,-1.6) {}; \node[Rpt] (c) at (1,-2.6) {}; \node[Zpt] (z) at (3,-2.6) {};
-  \node[circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm] (r3) at (3,-3.6) {};
+  \node[Lpt] (r) at (1,-1.6) {}; \node[Rpt] (c) at (4,-2.6) {}; \node[Zpt] (z) at (1,-2.6) {};
+  \node[circle,draw=famL,thick,inner sep=0pt,minimum size=3.6mm] (r3) at (1,-3.6) {};
   \node[rectangle,draw=famR,thick,inner sep=0pt,minimum size=3.4mm] (c2) at (2,-2.6) {};
   \draw[-{Stealth[length=2mm]},famL,thick] (r) -- (z);
-  \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=35] (r3);
-  \draw[-{Stealth[length=2mm]},famR,thick] (c) -- (c2);
-  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend right=35] (z);
-  \node[font=\footnotesize] at (5.5,-2.2) {$G$ arcs:};
-  \node[font=\footnotesize] at (5.5,-2.6) {$1{\to}2,\ 1{\to}3$};
+  \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=40] (r3);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend left=25] (c2);
+  \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend left=30] (z);
+  \node[font=\footnotesize] at (5.7,-1.2) {$G$ arcs:};
+  \node[font=\footnotesize,align=center] at (5.7,-1.9) {$1{\to}2,\ 1{\to}3$,\\ $4{\to}1,\ 4{\to}2$};
   \begin{scope}[every node/.style={circle,draw,inner sep=0pt,minimum size=3.6mm,font=\scriptsize}]
-   \node (g1) at (5.5,-3.25) {1}; \node (g2) at (5.0,-4.15) {2};
-   \node (g3) at (6.0,-4.15) {3}; \node (g4) at (6.3,-3.25) {4};
+   \node (g1) at (5.7,-3.0) {1}; \node (g2) at (5.0,-3.9) {2};
+   \node (g3) at (6.4,-3.9) {3}; \node (g4) at (5.7,-4.8) {4};
   \end{scope}
   \draw[-{Stealth[length=1.6mm]}] (g1)--(g2); \draw[-{Stealth[length=1.6mm]}] (g1)--(g3);
-  \node[font=\footnotesize,align=center] at (2.9,-5.6) {$F_1$ moves {\color{famL}$(1,3)$} down,
-    $F_2$ moves {\color{famR}$(2,1)$} right;\\ both reach $(2,3)$ (later: a \emph{conflict})};
+  \draw[-{Stealth[length=1.6mm]}] (g4)--(g1); \draw[-{Stealth[length=1.6mm]}] (g4)--(g2);
+  \node[font=\footnotesize,align=center] at (2.9,-5.6) {$F_1$ moves {\color{famL}$(1,1)$} down,
+    $F_2$ moves {\color{famR}$(2,4)$} left;\\ both reach $(2,1)$ (later: a \emph{conflict})};
 \end{tikzpicture}
 \end{column}
 \end{columns}
@@ -422,8 +423,8 @@ $c\in\Cf$, the complement.
   \node[Lpt,label={[font=\footnotesize]right:$(u,s)\in P$}] (us) at (1.6,0) {};
   \node[Hpt,label={[font=\footnotesize,hcol!80!black]below right:$h$}] (h) at (1.6,-1.3) {};
   \node[Rpt,label={[font=\footnotesize]right:$c\in\Cf$}] (c) at (1.6,-2.6) {};
-  \node[Rpt,label={[font=\footnotesize]left:$(p,t)\in Q$}] (pt) at (0,-1.3) {};
-  \node[Lpt,label={[font=\footnotesize]above:$r\in\Rf$}] (r) at (3.2,-1.3) {};
+  \node[Rpt,label={[font=\footnotesize]right:$(p,t)\in Q$}] (pt) at (3.2,-1.3) {};
+  \node[Lpt,label={[font=\footnotesize]left:$r\in\Rf$}] (r) at (0,-1.3) {};
   \draw[-{Stealth[length=2mm]},thick,famL] (us) -- (h);
   \draw[-{Stealth[length=2mm]},thick,famL,dashed] (h) -- (c);
   \draw[-{Stealth[length=2mm]},thick,famR] (pt) -- (h);
@@ -454,21 +455,23 @@ that was in no conflict, with
 \begin{columns}[c]
 \begin{column}{0.4\textwidth}
 \centering
-\begin{tikzpicture}[scale=0.95]
-  \begin{scope}[xshift=-2.9cm,yshift=-1.0cm]
-  \node[vtx] (x0) at (0,0) {$0$}; \node[vtx] (x1) at (1.0,0.7) {$1$}; \node[vtx] (x2) at (1.0,-0.7) {$2$};
-  \draw[arc] (x0)--(x1); \draw[arc] (x0)--(x2);
+\begin{tikzpicture}[scale=0.78]
+  \begin{scope}[xshift=-3.3cm,yshift=-1.0cm]
+  \node[vtx] (x0) at (0,0) {$0$}; \node[vtx] (x3) at (1.7,0) {$3$};
+  \node[vtx] (x1) at (0.85,0.8) {$1$}; \node[vtx] (x2) at (0.85,-0.8) {$2$};
+  \draw[arc] (x0)--(x1); \draw[arc] (x0)--(x2); \draw[arc] (x3)--(x1); \draw[arc] (x3)--(x2);
   \end{scope}
-  \foreach \k in {0,1,2} {\node[font=\small] at (\k,0.5) {$\k$}; \node[font=\small] at (-0.5,-\k) {$\k$};}
+  \foreach \k in {0,1,2,3} {\node[font=\small] at (\k,0.5) {$\k$};}
+  \foreach \k in {0,1,2} {\node[font=\small] at (-0.5,-\k) {$\k$};}
   \foreach \i in {1,2} \foreach \j in {1,2} \node[Zpt] at (\j,-\i) {};
-  \node[Hpt] at (0,0) {};
+  \node[Hpt] at (3,0) {};
   \node[Lpt] (r1) at (1,0) {}; \node[Lpt] (r2) at (2,0) {};
-  \node[Rpt] (c1) at (0,-1) {}; \node[Rpt] (c2) at (0,-2) {};
+  \node[Rpt] (c1) at (3,-1) {}; \node[Rpt] (c2) at (3,-2) {};
 \end{tikzpicture}
 \end{column}
 \begin{column}{0.58\textwidth}
 \small
-$\Rf=\{01,02\}$, $\Cf=\{10,20\}$, arcs $0\to1,\ 0\to2$.
+$\Rf=\{01,02\}$, $\Cf=\{13,23\}$; arcs $0\to1,\,0\to2,\,3\to1,\,3\to2$.
 \begin{itemize}
 \item All $4$ pairs conflict; $\abs Z=4$, $\abs H=1$.
 \item Cheapest pruning: delete one side ($2$ deletions). But then all of $Z$
@@ -573,14 +576,14 @@ The conflict matrix factors through $\RR^Z$ \emph{and} through $\RR^H$.
 \begin{column}{0.47\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.95]
-  \node[Lpt,label={[famL!80!black]above right:$r$}] (r) at (3,0) {};
-  \node[Hpt,label={[hcol!80!black]above left:$h$}] (h) at (0,0) {};
-  \node[Zpt,label={[zcol!70!black]below right:$z$}] (z) at (3,-2.4) {};
-  \node[Rpt,label={[famR!80!black]below left:$c$}] (c) at (0,-2.4) {};
-  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[right] {$L$} (z);
+  \node[Lpt,label={[famL!80!black]above left:$r$}] (r) at (0,0) {};
+  \node[Hpt,label={[hcol!80!black]above right:$h$}] (h) at (3,0) {};
+  \node[Zpt,label={[zcol!70!black]below left:$z$}] (z) at (0,-2.4) {};
+  \node[Rpt,label={[famR!80!black]below right:$c$}] (c) at (3,-2.4) {};
+  \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[left] {$L$} (z);
   \draw[-{Stealth[length=2.4mm]},thick] (z) -- node[below] {$N$} (c);
   \draw[-{Stealth[length=2.4mm]},thick] (r) -- node[above] {$B$} (h);
-  \draw[-{Stealth[length=2.4mm]},thick] (h) -- node[left] {$A$} (c);
+  \draw[-{Stealth[length=2.4mm]},thick] (h) -- node[right] {$A$} (c);
 \end{tikzpicture}
 \end{column}
 \end{columns}
