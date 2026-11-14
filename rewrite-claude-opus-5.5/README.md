@@ -63,4 +63,9 @@ cd SeymourLean && lake build      # needs Mathlib cache: `lake exe cache get`
 
 ## Lean
 
-(See `SeymourLean/README.md` for the list of formal statements.)
+`lake build` checks `Seymour.seymour_of_pruningLemma : PruningLemma → SeymourStatement`
+with no `sorry` and only the standard axioms. This covers the minimal
+counterexample, the subset deficit, the blow-up and the extremal contradiction.
+The pruning lemma is an explicit hypothesis whose statement matches Lemma 4.1.
+Formalizing the pruning lemma itself is in progress (`Gamma.lean`,
+`Konig.lean`, `LinAlg.lean`, `Generic.lean`). See `SeymourLean/README.md`.

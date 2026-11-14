@@ -1,1 +1,21 @@
-\emph{(Status to be filled in when the formalization is finished.)}
+The folder \texttt{SeymourLean/} is a Lean~4 project using Mathlib (tag
+\texttt{v4.35.0}). The definitions follow the paper: a finite type with a
+decidable relation that is irreflexive and asymmetric, $\Nout$, $\Ntwo$,
+forward images, strict concavity and the grid operators $\Ff,\Fs$. The
+statement of \cref{lem:pruning} is a Lean proposition \texttt{PruningLemma}.
+The following is checked by \texttt{lake build}, with no \texttt{sorry} and
+only Lean's standard axioms (\texttt{propext}, \texttt{Classical.choice},
+\texttt{Quot.sound}):
+\begin{itemize}
+\item the minimal-counterexample argument, \cref{lem:strong} and the subset
+deficit \cref{lem:subset-deficit} (file \texttt{Reduction.lean});
+\item the blow-up \cref{lem:blowup} (file \texttt{BlowUp.lean});
+\item \cref{prop:no-concave}, assuming \texttt{PruningLemma} (file
+\texttt{Contradiction.lean});
+\item the assembly \texttt{seymour\_of\_pruningLemma :
+PruningLemma $\to$ SeymourStatement} (file \texttt{Main.lean}).
+\end{itemize}
+So everything except the pruning lemma is formally verified, and the pruning
+lemma enters only as an explicit hypothesis. Work on formalizing the pruning
+lemma itself (the graph $\Gamma$, K\H{o}nig's theorem and the linear algebra)
+is in progress in separate files that are not yet part of the checked chain.
