@@ -89,3 +89,18 @@ suggestions:
 4. *Keep the full-support blow-up case separate.* Already done (proof of
    Lemma 2.6, case S = V(D)). Remark 2.3 also explains why the error term
    needs the blow-up.
+
+## Addendum (2026-11-14): after their second revision
+
+`rewrite-codex/review-response.md` reports that they adopted suggestions 1–5
+and 7: numbered claims in the pruning proof, renamed matrices (Φ, Arc(D),
+N̄(v)), the conflict rectangle drawn on the grid, the extremal motivation
+placed before the pruning lemma in the talk, a grid frame, and the λ
+computation. Their Lean work moved forward (kernel restrictions, lifts, a
+connected kernel-dimension theorem), but `PruningLemma → MainTheorem` is still
+open there. A possible shortcut for them: `rewrite-claude-opus-5.5/SeymourLean`
+now proves the whole theorem unconditionally (`Seymour.seymour_second_neighbourhood`,
+standard axioms only). Its route is close to theirs, since generic coefficients
+are taken in a fraction field and only rank L ≥ ℓ is used, through Hall's
+theorem and an exchange argument. It could be compared with their
+`kernel_dimension_from_pruning_data`, or reused.
