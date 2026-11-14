@@ -340,24 +340,29 @@ of $P$ is nonempty and proper, (G2) column by column gives
 
 % ------------------------------------------------------------------
 \begin{frame}{Conflicts and compatibility}
+\begin{block}{Goal: say which pairs of families $(P,Q)$ Stage 3 is allowed to use}
+Stage 3 uses a \emph{left} family $P\subseteq X\times X$, moved vertically by
+$F_1$, and a \emph{right} family $Q$, moved horizontally by $F_2$. It only
+allows pairs $(P,Q)$ whose images never meet (\emph{compatible}) and picks the
+best one.
+\end{block}
 \begin{columns}[c]
 \begin{column}{0.55\textwidth}
-A left member $\cL{r=(p,j)}$ and a right member $\cR{c=(i,s)}$
-\textbf{conflict} if
-\[ p\to i\quad\text{and}\quad s\to j,\]
+A left member $\cL{r=(p,j)}\in P$ and a right member $\cR{c=(i,s)}\in Q$
+\textbf{conflict} if $p\to i$ and $s\to j$ in $G$,
 i.e.\ their images $F_1\{r\}$, $F_2\{c\}$ meet, at $\cZ{z=(i,j)}$.
 
-\medskip
+\smallskip
 $(P,Q)$ is \textbf{compatible} if there is no conflict:
 $F_1P\cap F_2Q=\varnothing$.
 
-\medskip
+\smallskip
 Every conflict spans a rectangle. Its fourth corner $\cH{h=(p,s)}$ will be
 important.
 \end{column}
 \begin{column}{0.42\textwidth}
 \centering
-\begin{tikzpicture}[scale=0.76]
+\begin{tikzpicture}[scale=0.62]
   \node[Hpt,label={[hcol!80!black]above left:$h=(p,s)$}] (h) at (0,0) {};
   \node[Lpt,label={[famL!80!black]above right:$r=(p,j)$}] (rr) at (2.6,0) {};
   \node[Rpt,label={[famR!80!black]below left:$c=(i,s)$}] (cc) at (0,-2.4) {};
