@@ -363,13 +363,14 @@ important.
 \begin{column}{0.42\textwidth}
 \centering
 \begin{tikzpicture}[scale=0.62]
-  \node[Hpt,label={[hcol!80!black]above left:$h=(p,s)$}] (h) at (0,0) {};
-  \node[Lpt,label={[famL!80!black]above right:$r=(p,j)$}] (rr) at (2.6,0) {};
-  \node[Rpt,label={[famR!80!black]below left:$c=(i,s)$}] (cc) at (0,-2.4) {};
-  \node[Zpt,label={[zcol!70!black]below right:$z=(i,j)$}] (zz) at (2.6,-2.4) {};
-  \draw[-{Stealth[length=2mm]},thick,famL] (rr) -- node[right,font=\footnotesize,black] {$p\to i$} (zz);
+  \node[Lpt,label={[famL!80!black]above left:$r=(p,j)$}] (rr) at (0,0) {};
+  \node[Hpt,label={[hcol!80!black]above right:$h=(p,s)$}] (h) at (2.6,0) {};
+  \node[Zpt,label={[zcol!70!black]below left:$z=(i,j)$}] (zz) at (0,-2.4) {};
+  \node[Rpt,label={[famR!80!black]below right:$c=(i,s)$}] (cc) at (2.6,-2.4) {};
+  \draw[-{Stealth[length=2mm]},thick,famL] (rr) -- node[left,font=\footnotesize,black] {$p\to i$} (zz);
   \draw[-{Stealth[length=2mm]},thick,famR] (cc) -- node[below,font=\footnotesize,black] {$s\to j$} (zz);
   \draw[black!40,dashed] (h)--(rr); \draw[black!40,dashed] (h)--(cc);
+  \node[font=\small,align=center] at (1.3,-4.5) {\textbf{a conflict}: $r\in P$ and $c\in Q$\\ both reach $z$};
 \end{tikzpicture}
 \end{column}
 \end{columns}
