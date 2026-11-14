@@ -1,0 +1,5 @@
+'SecondNeighborhood.diagonal_compatible' does not depend on any axioms
+'SecondNeighborhood.conflict_corner_is_old_uncovered' does not depend on any axioms
+'SecondNeighborhood.exact_second_convention' does not depend on any axioms
+'SecondNeighborhood.blowup_slack' depends on axioms: [propext, Quot.sound]
+'SecondNeighborhood.no_extremal_replacement' depends on axioms: [propext, Quot.sound]

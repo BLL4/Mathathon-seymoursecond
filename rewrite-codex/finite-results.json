@@ -1,0 +1,18 @@
+{
+  "pruning_all_relations_and_families_n2": 4096,
+  "worked_star_example": {
+    "H": 1,
+    "Z": 4,
+    "deletions": 3,
+    "uncovered": 2
+  },
+  "pruning_seeded_samples_n3_n4": 1000,
+  "second_neighborhood_all_labeled_oriented_graphs": {
+    "1": 1,
+    "2": 3,
+    "3": 27,
+    "4": 729,
+    "5": 59049
+  },
+  "potential_increment_seeded_checks": 10000
+}

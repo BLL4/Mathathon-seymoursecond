@@ -1,0 +1,14 @@
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small}]
+\node[draw,circle] (x) at (0,0) {$0$};
+\node[draw,circle] (y) at (1.7,.8) {$1$};
+\node[draw,circle] (z) at (1.7,-.8) {$2$};
+\draw[->] (x)--(y);\draw[->] (x)--(z);
+\node at (.8,-1.6) {base relation};
+\node[draw] (r1) at (4,.8) {$(0,1)$};
+\node[draw] (r2) at (4,-.8) {$(0,2)$};
+\node[draw] (c1) at (7,.8) {$(1,0)$};
+\node[draw] (c2) at (7,-.8) {$(2,0)$};
+\draw (r1)--(c1);\draw (r1)--(c2);\draw (r2)--(c1);\draw (r2)--(c2);
+\node at (4,1.5) {$\mathcal R$};\node at (7,1.5) {$\mathcal C$};
+\node at (5.5,-1.6) {original conflict graph $K_{2,2}$};
+\end{tikzpicture}

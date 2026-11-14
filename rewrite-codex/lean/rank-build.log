@@ -1,0 +1,4 @@
+'SecondNeighborhoodRank.kernel_perturbation' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodRank.maximum_support_kernel' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodRank.lifts_give_kernel_dimension' depends on axioms: [propext, Classical.choice, Quot.sound]
+'SecondNeighborhoodRank.matching_bound' depends on axioms: [propext, Classical.choice, Quot.sound]

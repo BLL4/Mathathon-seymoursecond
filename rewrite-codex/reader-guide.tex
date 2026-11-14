@@ -1,0 +1,67 @@
+\section*{How to read this exposition}
+\addcontentsline{toc}{section}{How to read this exposition}
+The question concerns \emph{distinct vertices}, not the number of paths.
+The proof answers a local question about one vertex by introducing sets of
+vertices, then sets of ordered pairs, then matrices. Each change of language
+has a specific purpose. Keep the following chain in view.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth,box/.style={draw,rounded corners,text width=10.8cm,align=center,inner sep=6pt},node distance=7mm]
+\node[box] (a) {A counterexample: every vertex has fewer exact second neighbors};
+\node[box,below=of a] (b) {Minimality and blowup: $|U|+|F^2(U)|<2|F(U)|$ for every nonempty proper $U$};
+\node[box,below=of b] (c) {Maximize $|P|+|Q|+d$ over compatible pair families containing the diagonal};
+\node[box,below=of c] (d) {Complement second images, then prune: obtain a strictly larger objective};
+\draw[->] (a)--(b);\draw[->] (b)--(c);\draw[->] (c)--(d);
+\end{tikzpicture}
+\caption{The dependency chain. The last step uses the pruning lemma, which is proved independently for arbitrary finite relations.}
+\end{figure}
+
+\paragraph{A first pass.}
+Read the definitions, the two reduction statements, the pruning statement,
+and the extremal proof. On this pass accept the pruning lemma as a tool.
+Its unusual cost is the key: deletion is charged partly to points uncovered
+\emph{after} pruning. Then return to the linear algebra proving that cost.
+
+\paragraph{A close pass.}
+In the reduction, check the exact gain/loss identity for $g(T)$ and the
+full-support exception in the blowup. In pruning, check which coordinate
+moves forward and which backward, and why all generic rank conditions can
+hold at once. In the final proof, check that every fiber is proper and the
+diagonal survives. These are the places where an innocent change of
+convention would invalidate the argument.
+
+\subsection*{A small example that fixes the conventions}
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth,v/.style={circle,draw,minimum size=8mm},every node/.style={font=\small}]
+\node[v] (v) at (0,0) {$v$};\node[v] (a) at (2,1) {$a$};
+\node[v] (b) at (2,-1) {$b$};\node[v] (c) at (4,0) {$c$};
+\draw[->] (v)--(a);\draw[->] (v)--(b);\draw[->] (a)--(b);
+\draw[->] (a)--(c);\draw[->] (b)--(c);
+\node[align=left,anchor=west] at (5,0) {$N_1^+(v)=\{a,b\}$\\$F^2(\{v\})=\{b,c\}$\\$N_2^+(v)=\{c\}$};
+\end{tikzpicture}
+\caption{All arcs in this example are drawn. Two paths reach $c$, but it is counted once. The vertex $b$ is reached in two steps and in one step, so it is excluded from the exact second neighborhood. This graph is not a counterexample: $c$ is a sink.}
+\end{figure}
+For an arbitrary set $S$, the image $F(S)$ may meet $S$. For example,
+on a directed triangle and $S$ equal to the whole vertex set, $F(S)=S$.
+Never replace a set-image by its exterior neighborhood without explicitly
+subtracting $S$. For a singleton in an oriented graph, $v\notin F^2(\{v\})$
+because a return in two steps would require opposite arcs. Thus the source's
+formula $N_2^+(v)=F^2(\{v\})\setminus F(\{v\})$ is valid.
+
+\Needspace{13\baselineskip}
+\paragraph{Notation dictionary.}
+\begin{center}
+\begin{tabular}{p{2.5cm}p{9cm}}
+$D$, then $G$ & Minimal counterexample, then its tournament blowup.\\
+$F$, $F^2$ & Union of out-neighbors; its iterate, with no subtraction.\\
+$P,Q$ & Compatible left and right families of ordered pairs.\\
+$F_1,F_2$ & Advance the first or second coordinate along an arc.\\
+$d$ & Points in neither coordinate image of the current pair.\\
+$\mathcal R,\mathcal C$ & Prospective families before pruning.\\
+$H,Z$ & The two opposite intermediate corners of conflicts.\\
+$L,N,B,A$ & Linear maps in the commuting square used only in pruning.
+\end{tabular}
+\end{center}
+The symbols $I,E,T,Q,C$ in the subset-deficit proof are local to that proof;
+in particular its set $Q$ is unrelated to the later pair family $Q$.

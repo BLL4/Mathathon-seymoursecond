@@ -1,0 +1,7 @@
+\begin{tikzpicture}[>=Stealth,box/.style={draw,rounded corners,text width=34mm,align=center,inner sep=7pt},every node/.style={font=\small}]
+\node[box] (a) at (0,0) {Old families\\size $M$\\uncovered $d$};
+\node[box] (b) at (4.8,0) {Complements\\size $>M+2d$\\may conflict};
+\node[box] (c) at (9.6,0) {Pruned families\\delete $\le d+d'$\\uncovered $d'$};
+\draw[->] (a)--(b);\draw[->] (b)--(c);
+\node at (4.8,-1.7) {New objective $>M+2d-(d+d')+d'=M+d$};
+\end{tikzpicture}

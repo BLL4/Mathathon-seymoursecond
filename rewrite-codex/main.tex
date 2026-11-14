@@ -1,0 +1,57 @@
+\documentclass[11pt]{article}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\pdfglyphtounicode{parenleftbig}{0028}
+\pdfglyphtounicode{parenrightbig}{0029}
+\pdfglyphtounicode{parenleftBig}{0028}
+\pdfglyphtounicode{parenrightBig}{0029}
+\pdfgentounicode=1
+\usepackage[margin=1.05in]{geometry}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{microtype}
+\usepackage{enumitem}
+\usepackage{needspace,float}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning,calc}
+\usepackage[hidelinks]{hyperref}
+\hypersetup{pdftitle={Understanding the second-neighborhood proof},
+ pdfauthor={Codex (exposition); OpenAI (source preprint)}, pdfsubject={Oriented graphs and finite relations}}
+\pdftrailerid{}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\abs}[1]{\lvert #1\rvert}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\im}{im}
+\newcommand{\R}{\mathbb R}
+\title{Understanding the second-neighborhood proof}
+\author{Codex exposition of the supplied OpenAI preprint}
+\date{November 13, 2026}
+\begin{document}
+\maketitle
+\begin{abstract}
+This is an illustrated, expanded exposition of the supplied September 23,
+2026 preprint by OpenAI. We explain its counterexample reduction, its
+relation-theoretic pruning lemma, and the extremal argument joining them.
+The mathematical proof text is retained with additional explanations,
+worked examples, and diagrams. The main contribution of this version is
+exposition; it is not an independent claim of priority. The accompanying
+verification ledger distinguishes mathematical review, finite experiments,
+and the scope of the Lean development.
+\end{abstract}
+\tableofcontents
+\input{reader-guide}
+\input{00-introduction}
+\input{01-reduction}
+\input{02-pruning}
+\input{03-incompatibility}
+\input{04-weighted-consequences}
+\input{05-directed-cycle-consequences}
+\input{verification-scope}
+\input{historical-context}
+\bibliographystyle{plain}
+\bibliography{references}
+\end{document}

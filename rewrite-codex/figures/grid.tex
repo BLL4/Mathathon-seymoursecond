@@ -1,0 +1,12 @@
+\begin{tikzpicture}[>=Stealth,every node/.style={font=\small},v/.style={circle,draw,minimum size=8mm,inner sep=1pt}]
+\node[align=left,anchor=west] at (-1,2.4) {First coordinate = row; second coordinate = column.};
+\foreach \x/\j in {0/p,2/i,4/k}{\node at (\x,1.7) {column $\j$};}
+\foreach \y/\i in {1/p,-.5/i,-2/k}{\node[anchor=east] at (-.6,\y) {row $\i$};}
+\foreach \x in {0,2,4}{\foreach \y in {1,-.5,-2}{\fill[black!25] (\x,\y) circle (1.5pt);}}
+\node[v,fill=white] (a) at (0,1) {$(p,p)$};
+\node[v,fill=white] (b) at (0,-.5) {$(i,p)$};
+\node[v,fill=white] (c) at (2,1) {$(p,i)$};
+\draw[->,thick] (a)--node[left] {$F_1$} (b);
+\draw[->,thick] (a)--node[above] {$F_2$} (c);
+\node[anchor=west,align=left] at (5,-.5) {If $p\to i$,\\$F_1$ moves within a column;\\$F_2$ moves within a row.};
+\end{tikzpicture}

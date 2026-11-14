@@ -1,0 +1,70 @@
+# Mathematical and artifact review
+
+This is a review of the supplied proof, not a claim that the complete theorem has been formally certified. The original files were read without modification. The exposition retains the full main proof and its cited consequences. No gap was found in the main proof during this review; that statement describes the review's outcome, not an independent published verification.
+
+## Reduction
+
+- A sink works. A minimal counterexample has more than one vertex. A terminal strong component inherits both exact neighborhoods, so vertex minimality forces strong connectivity.
+- Every proper nonempty S has E = F(S) minus S nonempty. Each deletion from S to E minus T therefore removes an arc. Arc minimality applies to the same vertex set, even if the deleted graph is disconnected or has a sink.
+- A witness in the deleted graph must have lost a first neighbor: if its first neighborhood is unchanged, exact second neighborhoods can only shrink. Thus the witness lies in S and its lost set Q is nonempty.
+- Surviving two-step endpoints lie in I union T union F(T). A new *exact* second neighbor was an old first neighbor and must be in Q intersection F(T). No new walk is created.
+- C consists of old two-step endpoints through Q outside I, T, Q, and F(T). These are old exact second neighbors: no first neighbor is outside I union T union Q, and orientation excludes a return to v through Q.
+- Independently checked the identity delta g = |C| - |Q intersection F(T)| in 10,000 seeded instances for arbitrary relations and disjointness Q intersection (I union T) empty. It does not rely on orientation. Strict negativity comes from the witness comparison and the old strict failure.
+- Each new batch Q is nonempty and disjoint from all previous batches. Summing strict inequalities is legitimate because at least one batch occurs. All deletions restart from the original D.
+- Since I is a subset of S, F(I) is contained in F(S). This identifies the final potential g(E) with the desired exterior second image.
+
+## Blowup
+
+- Inside a block with selected minimum a, f(T) is the tail after a and f²(T) is the tail after a+1 (empty when appropriate). The defect is at most one. At a=m the first and second images are both empty and |T|=1, giving the boundary case.
+- A block of F(S) is completely filled by the first image; other first-image contributions are exactly internal images. For second images, the proof uses an upper bound, allowing full blocks for F(S) union F²(S). Counting internal contributions in an already full block later only increases that upper bound.
+- The integer subset deficit is at most -1. With m>n, multiplying by m beats the at-most-n internal cost. The Lean arithmetic theorem checks the sign with explicit nonnegativity and multiplication hypotheses.
+- Full support is checked separately. Positive base indegrees imply F(S)=V(D), even when the selection U is proper. Positive blowup indegrees imply the second image is full too. The defect equals |U|-|V(G)|<0.
+
+## Pruning
+
+- Families and the two copies of Z are tagged/disjoint, even when coordinates coincide. Conflicts are p→i and s→j, not j→s. Set coverage is forward in the appropriate coordinate; the vertical *linear* maps traverse the second coordinate backward.
+- Initially isolated originals are isolated even after augmentation: any coverage of a conflict target would provide an opposing original with which to conflict.
+- A maximum matching with fewest original-original edges makes each coverage matching maximum in its subgraph. Its augmenting path either increases total size or replaces one original-original edge while preserving size.
+- For an original-original endpoint pair, both routes of the square have exactly one possible intermediate index. If it conflicts, both indices belong to their defined corner sets. If not, both products vanish. Thus NL=AB with no missing sum terms.
+- Each matching minor factors into coordinate blocks. Variables are distinct inside each block, so the matching determinant monomial cannot cancel. Variables shared between blocks do not make a product of nonzero polynomials zero.
+- All auxiliary support-rank minors and both matching minors are chosen simultaneously by a finite nonzero product over the infinite field R. There is no probabilistic claim or assertion that every assignment works.
+- The maximum-support-rank kernel lemma keeps the old image and adds e_s under one allowed perturbation. Its application is at the fixed generic assignment; the hypothetical perturbation need not preserve other ranks.
+- Restriction to D^(p,i) uses the complete B row and N-transpose column equations, not equations truncated to an arbitrary submatrix. A nonzero row/column forces its corner index into H/Z; all-zero rows/columns need no equation.
+- Every ker B vector vanishes on the original matched left endpoints after substituting the normalized right lifts. The left lifts have unit restrictions at those endpoints, so their B-images are independent. Commutativity places those images in ker A.
+- Rank-nullity and rank(NL)≥rank L+rank N-|Z| give the matching bound. The alternating-path cover contains exactly one endpoint of each matched edge, no unmatched vertices, and no isolated vertices.
+- Every covered point of Z forces a distinct copy vertex into the cover. That proves deletions≤|H|+q with q counted *after* pruning. An ordinary minimum original conflict cover need not suffice; the star/K2,2 example in the article demonstrates this explicitly.
+- Exhaustive pruning checks: all 4,096 two-point relation/family triples, including loops and opposite arcs. Further deterministic samples: 500 each at orders three and four. Every test retained initially isolated members. These are finite checks, not a proof for general relations.
+
+## Extremal contradiction
+
+- Orientation makes the initial diagonal pair compatible. Positive indegrees make every nonempty diagonal-containing fiber proper: a full fiber would fill its image fiber and meet the opposing diagonal image. The Lean file proves both proper-fiber statements.
+- Strict fiber inequalities are summed over a nonempty vertex set. Compatibility is essential to interpret N-|F1P|-|F2Q| as an uncovered count.
+- Complementing yields prospective total size strictly larger than M+2d.
+- Checked diagonal membership and isolation separately; the latter is required for the preservation clause. Both are formalized in Lean.
+- An H corner in either old image would extend to a forbidden second image. The corner containment is formalized for arbitrary relations; it needs neither orientation nor diagonal hypotheses once the prospective complements have been defined.
+- After pruning, the uncovered points in Z are a subset of all d' uncovered points. The two charges are bounded by d and d'. No claim d'≤d is needed.
+- All arithmetic uses ordinary integer subtraction. The Lean contradiction exposes the gain, deletion bound, survivor identity, and maximality as explicit inputs; none is smuggled in as an axiom.
+
+## Consequences and scope
+
+- Weighted external equivalences are retained as attributions to the source's references; those papers were not independently checked here. An additional direct argument for the vertex-weighted form explains why zero-weight blocks cause no problem: the clone's exact second neighborhood is contained in, and need not equal, the union of original second-neighbor blocks.
+- In a triangle-free oriented graph, an exact second neighbor cannot be an in-neighbor, so it is a non-neighbor. The partition of n-1 vertices gives 2d+ + d- ≤ n-1. The semidegree corollary uses both minimum indegree and minimum outdegree and includes equality thresholds.
+- Exhaustively tested the unweighted assertion on every labeled oriented graph of orders 1 through 5: 1, 3, 27, 729, and 59,049 cases respectively.
+
+## Presentation revisions
+
+1. Initial construction: fifteen frames, with notes allocating exactly twenty minutes. The talk includes reduction, the rank mechanism, cover charging, and the final contradiction. It is a proof overview; it does not attempt to speak every line of the article.
+2. Mathematical consistency pass: defined coverage explicitly, added the index sets J_p and S_i, and added the coordinate conventions for F1/F2 at the extremal step. Notes distinguish forward set images from backward linear maps and separate generic assignment from hypothetical perturbation.
+3. Flow and layout pass: kept one mathematical mechanism per frame, allocated two minutes to simultaneous minors, and preserved brief transitions back to the roadmap. Added explicit source attribution. All seven diagram-bearing frames were rendered and inspected, along with the remaining frames. The total is a planned speaking allocation, not an observed rehearsal time.
+
+## Artifact review
+
+Both LaTeX entry points compile with latexmk and pdfLaTeX. The bibliography resolves. Final logs are checked for undefined references, overfull boxes, and underfull boxes. All figures are inspected in rendered pages, and the notation table is kept with its heading. Build records and scope details are in README.md and the Lean logs.
+
+## Lean declarations checked
+
+The standard-library development compiles with Lean 4.35.0. Its finite star checks use kernel reduction (`decide`), and its named structural lemmas include `diagonal_compatible`, both `*_fiber_proper` lemmas, both `prospective_*_contains_diag` lemmas, both diagonal isolation lemmas, `conflict_corner_is_old_uncovered`, and `exact_second_convention`. The integer lemmas check amplification, cover charging, complement gain, and the final objective contradiction.
+
+The additional mathlib development checks `kernel_perturbation`, `maximum_support_kernel`, `lifts_give_kernel_dimension`, and `matching_bound`. The maximum-support theorem is the exact matrix statement from the source, proved over any field by adding one allowed matrix unit; the abstract perturbation theorem supplies its image-space argument. In the lift theorem, a coordinate map distinguishes the chosen lifts and vanishes on ker B; the proof formally derives independence of their B-images and membership in ker A. Constructing this coordinate-vanishing property from the conflict kernels and constructing the lifts from the chosen matching remain separate obligations. The matching-bound theorem assumes the resulting kernel dimension bound and proves the rank-nullity accounting. The printed trusted axioms are Lean's standard `propext`, `Classical.choice`, and `Quot.sound`; completed checks contain no `sorryAx`.
+
+The separate speaker-notes PDF was compiled as well as the slides. Rendering the notes exposed two plain-text subscript/superscript expressions that were hidden in slide-only mode; these were corrected and the notes rebuilt. Notes for the rank and lift slides were visually inspected.

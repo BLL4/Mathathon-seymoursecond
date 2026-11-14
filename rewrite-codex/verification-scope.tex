@@ -1,0 +1,36 @@
+\section{Verification and scope of this exposition}
+This exposition is a modified version of the supplied OpenAI preprint,
+licensed under Apache 2.0 in the parent repository. The main proof text and
+bibliography are derived from that source. The reading guide, explanatory
+paragraphs, new figures, presentation, experiments, and Lean development
+are additions. Historical attributions and external weighted equivalences
+are retained as source attributions; their original papers have not been
+independently audited here.
+
+The main proof has three logically separate dependencies:
+\begin{enumerate}
+\item Minimality supplies a subset deficit, and blowup amplifies its integer
+slack. Deletion is always restarted from the original minimal graph.
+\item Pruning applies to arbitrary finite relations. Its proof uses real
+linear algebra, simultaneous nonvanishing of finitely many minors, and the
+matching--cover theorem (whose alternating-path proof is included).
+\item The extremal argument uses orientation to make the diagonal pair
+compatible, and positive indegrees to ensure its fibers are proper.
+\end{enumerate}
+The ledger accompanying this document records checks of these interfaces.
+Finite experiments are regression checks for definitions and charging;
+they do not establish the theorem for arbitrary order. The Lean development proves selected set-image identities, the matrix maximum-support-rank kernel lemma via a rank-one
+perturbation, independence of the lifted images under explicit
+coordinate hypotheses, the commuting-square rank bound, and the numerical
+contradiction. It does not yet formalize the construction of the matching
+lifts, the simultaneous generic coefficient assignment, or the
+minimal-counterexample reductions. It therefore is not a formal proof of
+the whole theorem.
+
+\paragraph{A useful consequence to keep separate from the core.}
+The directed-cycle corollaries use only the proved second-neighborhood
+assertion and a partition of the vertex set. The weighted forms additionally
+use the externally cited equivalences and Farkas alternative. A reader
+checking the new pruning argument need not accept those external inputs to
+check the unweighted implication. The normalized weighting in the second
+weighted form may have zero entries; strict positivity is not asserted.
