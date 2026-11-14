@@ -198,9 +198,7 @@ Seymour vertex, and we can analyze what that vertex lost.
 % ------------------------------------------------------------------
 \begin{frame}{Stage 1: proving the subset deficit}
 \begin{block}{Goal: for a fixed nonempty proper $S$, show $\abs{F^2S\setminus FS}<\abs{FS\setminus S}$}
-\small Idea: add the vertices of $E=FS\setminus S$ in batches $Q$. Each batch makes
-the two-step image grow by \emph{fewer than} $\abs Q$ vertices. Summing over
-the batches gives the deficit.
+\small Idea: add $E=FS\setminus S$ in batches $Q$; each batch adds \emph{fewer than} $\abs Q$ new two-step vertices.
 \end{block}
 \vspace{-2pt}
 \begin{columns}[c]
@@ -225,14 +223,17 @@ the batches gives the deficit.
 \end{column}
 \begin{column}{0.57\textwidth}
 \small
-\begin{itemize}
-\item $I=FS\cap S$. Grow $T$ from $\varnothing$ to $E$; each time, delete all arcs $S\to E\setminus T$.
+\begin{itemize}\setlength{\itemsep}{2pt}
+\item $I=FS\cap S$. Progress counter for $T\subseteq E$:
+$g(T)=\abs{F(T)\setminus(I\cup T)}$, the \emph{new} vertices reached from $T$.
+$g(\varnothing)=0$ and $g(E)=\abs{F^2S\setminus FS}$.
+\item Grow $T$ from $\varnothing$ to $E$; each time, delete all arcs $S\to E\setminus T$.
 \item Fewer arcs $\Rightarrow$ a Seymour vertex $v$. It must be in $S$ and lose
 its out-neighbors $Q\subseteq E\setminus T$.
 \item $v$ \emph{loses} $C$ (reached only via $Q$) and gains $\le\abs{Q\cap F(T)}$.
 Since $v$ was \emph{not} Seymour in $D$,
-$g(T\cup Q)-g(T)<\abs Q$, where $g(T)=\abs{F(T)\setminus(I\cup T)}$.
-\item Sum over batches: $\abs{F^2S\setminus FS}=g(E)<\abs E=\abs{FS\setminus S}$.
+$g(T\cup Q)-g(T)<\abs Q$.
+\item Sum: $\abs{F^2S\setminus FS}=g(E)<\abs E=\abs{FS\setminus S}$.
 \end{itemize}
 \end{column}
 \end{columns}
