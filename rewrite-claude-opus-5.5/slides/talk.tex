@@ -460,25 +460,39 @@ conflict), so these are exactly the conflict points that pruning uncovered.
 % ------------------------------------------------------------------
 \begin{frame}{An exchange rate, not a minimum}
 \begin{columns}[c]
-\begin{column}{0.4\textwidth}
+\begin{column}{0.44\textwidth}
 \centering
-\begin{tikzpicture}[scale=0.78]
-  \begin{scope}[xshift=-3.3cm,yshift=-1.0cm]
+\begin{tikzpicture}[scale=0.72]
+  \begin{scope}[xshift=-3.9cm,yshift=-1.0cm]
   \node[vtx] (x0) at (0,0) {$0$}; \node[vtx] (x3) at (1.7,0) {$3$};
   \node[vtx] (x1) at (0.85,0.8) {$1$}; \node[vtx] (x2) at (0.85,-0.8) {$2$};
   \draw[arc] (x0)--(x1); \draw[arc] (x0)--(x2); \draw[arc] (x3)--(x1); \draw[arc] (x3)--(x2);
   \end{scope}
-  \foreach \k in {0,1,2,3} {\node[font=\small] at (\k,0.5) {$\k$};}
-  \foreach \k in {0,1,2} {\node[font=\small] at (-0.5,-\k) {$\k$};}
+  \node[font=\footnotesize] at (-3.05,-2.55) {the relation};
+  \node[font=\footnotesize,text=black!60] at (1.5,1.0) {column $j$};
+  \node[font=\footnotesize,text=black!60,rotate=90] at (-1.0,-1.5) {row $i$};
+  \foreach \k in {0,1,2,3} {\node[font=\small] at (\k,0.5) {$\k$}; \node[font=\small] at (-0.5,-\k) {$\k$};}
+  \foreach \i in {0,...,3} \foreach \j in {0,...,3} \node[gridpt] at (\j,-\i) {};
   \foreach \i in {1,2} \foreach \j in {1,2} \node[Zpt] at (\j,-\i) {};
   \node[Hpt] at (3,0) {};
   \node[Lpt] (r1) at (1,0) {}; \node[Lpt] (r2) at (2,0) {};
   \node[Rpt] (c1) at (3,-1) {}; \node[Rpt] (c2) at (3,-2) {};
+  \draw[famL,-{Stealth[length=1.6mm]},thick] (r1)--(1,-0.75);
+  \draw[famL,-{Stealth[length=1.6mm]},thick] (r2)--(2,-0.75);
+  \draw[famR,-{Stealth[length=1.6mm]},thick] (c1)--(2.25,-1);
+  \draw[famR,-{Stealth[length=1.6mm]},thick] (c2)--(2.25,-2);
+  \begin{scope}[yshift=-3.75cm,xshift=-4.2cm,font=\footnotesize]
+   \node[Lpt] at (0,0) {}; \node[anchor=west] at (0.2,0) {$\Rf$ (left members)};
+   \node[Rpt] at (0,-0.55) {}; \node[anchor=west] at (0.2,-0.55) {$\Cf$ (right members)};
+   \node[Zpt] at (0,-1.1) {}; \node[anchor=west] at (0.2,-1.1) {$Z$ (conflict points)};
+   \node[Hpt] at (0,-1.65) {}; \node[anchor=west] at (0.2,-1.65) {$H$ (opposite corner)};
+  \end{scope}
 \end{tikzpicture}
 \end{column}
-\begin{column}{0.58\textwidth}
+\begin{column}{0.54\textwidth}
 \small
-$\Rf=\{01,02\}$, $\Cf=\{13,23\}$; arcs $0\to1,\,0\to2,\,3\to1,\,3\to2$.
+$\Rf=\{01,02\}$, $\Cf=\{13,23\}$ (pair $ij$ = row $i$, column $j$); arcs $0\to1,\,0\to2,\,3\to1,\,3\to2$.
+Arrows: what each member covers.
 \begin{itemize}
 \item All $4$ pairs conflict; $\abs Z=4$, $\abs H=1$.
 \item Cheapest pruning: delete one side ($2$ deletions). But then all of $Z$
