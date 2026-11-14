@@ -275,21 +275,22 @@ Result: $\kappa_G(U)\le -m+n<0$ when the support of $U$ is proper\\ {\small(the 
 
 % ------------------------------------------------------------------
 \begin{frame}{After Stages 1--2}
-\begin{alertblock}{What remains to show}
+\begin{block}{Done so far}
+If the theorem fails: a minimal counterexample $D$ has the subset deficit
+(Stage~1), and its blow-up $G=D[T_m]$ satisfies (G1), (G2) below (Stage~2).
+\end{block}
+\begin{alertblock}{What remains to show (Stage 3; this finishes the proof)}
 There is no nonempty oriented graph $G$ such that
 \begin{itemize}
 \item[(G1)] every vertex has an in-neighbor, and
 \item[(G2)] every nonempty proper $U\subseteq V(G)$ is \emph{strictly concave}:
-\[\abs U+\abs{F^2U}<2\abs{FU}.\]
+$\abs U+\abs{F^2U}<2\abs{FU}$,\\ i.e.\ $\abs U,\ \abs{FU},\ \abs{F^2U}$ has
+a smaller second increment than its first.
 \end{itemize}
 \end{alertblock}
-\begin{itemize}
-\item (G2) says that the sequence $\abs U,\ \abs{FU},\ \abs{F^2U}$ has
-a smaller second increment than its first.
-\item Single sets will not give a contradiction. Instead we look at
+Single sets will not give a contradiction. Instead we look at
 \textbf{families of pairs of vertices} and apply (G2) to all of their
 rows and columns at once.
-\end{itemize}
 \end{frame}
 
 % ------------------------------------------------------------------
