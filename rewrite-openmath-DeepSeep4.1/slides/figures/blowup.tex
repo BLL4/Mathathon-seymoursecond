@@ -1,47 +1,40 @@
 \begin{tikzpicture}[
-  base/.style={circle,draw=black!70,fill=black!8,inner sep=0pt,minimum size=5.5mm,font=\scriptsize},
-  labd/.style={circle,draw=black!55,fill=black!6,inner sep=0pt,minimum size=3.4mm},
-  arc/.style={-{Stealth[length=1.5mm]},draw=black!70},
-  thickarc/.style={-{Stealth[length=2.4mm]},draw=black!80,line width=1.4pt},
-  lab/.style={font=\scriptsize,text=black!75},
-  panel/.style={font=\scriptsize\bfseries,text=black!55}
+  base/.style={circle,draw=black!70,fill=black!8,inner sep=0pt,minimum size=6.5mm,font=\small},
+  labd/.style={circle,draw=black!55,fill=black!6,inner sep=0pt,minimum size=4.4mm},
+  arc/.style={-{Stealth[length=1.8mm]},draw=black!70,thick},
+  thin/.style={draw=black!35,line width=0.3pt},
+  lab/.style={font=\small,text=black!80},
+  capt/.style={font=\small\itshape,text=black!60}
 ]
-% ---------------- panel 1: base graph
+% (a) the base graph
 \begin{scope}
-\node[base] (u) at (0,2.2) {$u$};
-\node[base] (v) at (0,1.0) {$v$};
-\node[base] (w) at (1.35,1.0) {$w$};
-\draw[arc] (u) -- (v);
+\node[base] (v) at (0,0) {$v$};
+\node[base] (w) at (1.6,0) {$w$};
 \draw[arc] (v) -- (w);
-\node[lab,anchor=north] at (0.7,-0.15) {base graph $D$};
+\node[capt,anchor=north] at (0.8,-0.65) {(a) base $D$};
 \end{scope}
-% ---------------- panel 2: blowup of one arc
-\begin{scope}[shift={(4.2,0)}]
-\node[base,minimum size=6mm] (U) at (0.2,2.2) {block $u$};
-\draw[rounded corners=3pt,draw=black!30] (-0.45,0.15) rectangle (0.85,1.95);
-\node[base,minimum size=6mm] (W) at (2.9,1.05) {block $w$};
-\draw[rounded corners=3pt,draw=black!30] (2.25,0.15) rectangle (3.55,1.95);
-% block u: 4 labels
-\foreach \i in {0,1,2,3}{
-  \node[labd] (a\i) at (0.2,0.45+\i*0.42) {};
+% (b) one arc becomes all arcs
+\begin{scope}[shift={(4.6,0)}]
+\draw[rounded corners=4pt,draw=black!40] (-0.55,-1.1) rectangle (0.55,1.1);
+\draw[rounded corners=4pt,draw=black!40] (2.15,-1.1) rectangle (3.25,1.1);
+\foreach \i in {0,1,2}{
+  \node[labd] (a\i) at (0,0.7-0.7*\i) {};
+  \node[labd] (b\i) at (2.7,0.7-0.7*\i) {};
 }
-\draw[arc] (a0) -- (a1); \draw[arc] (a1) -- (a2); \draw[arc] (a2) -- (a3);
-\draw[arc] (a0) -- (a3);
-\foreach \i in {0,1,2,3}{
-  \node[labd] (b\i) at (2.9,0.45+\i*0.42) {};
-}
-\draw[arc] (b0) -- (b1); \draw[arc] (b1) -- (b2); \draw[arc] (b2) -- (b3);
-\draw[arc] (b0) -- (b3);
-% complete bipartite
-\foreach \i in {0,1,2,3}{ \foreach \j in {0,1,2,3}{ \draw[black!25] (a\i) -- (b\j); }}
-\node[lab,anchor=north] at (1.55,0.05) {the arc $v\to w$ becomes \emph{all} arcs};
+\draw[arc] (a0) -- (a2); \draw[arc] (b0) -- (b2);
+\foreach \i in {0,1,2}{\foreach \j in {0,1,2}{\draw[thin] (a\i) -- (b\j);}}
+\node[lab,anchor=south] at (0,1.25) {block $v$};
+\node[lab,anchor=south] at (2.7,1.25) {block $w$};
+\node[capt,anchor=north] at (1.35,-1.2) {(b) the arc $v\to w$ becomes all arcs};
 \end{scope}
-% ---------------- panel 3: block classification
-\begin{scope}[shift={(9.4,0)}]
-\node[lab,anchor=south] at (0.45,3.6) {$V(D)$};
-\foreach \k/\c in {0/black!8, 1/black!8, 2/black!55, 3/black!55, 4/black!30, 5/black!8}{
-  \draw[rounded corners=2pt,draw=black!40,fill=\c] (\k*0.52,0.45) rectangle (\k*0.52+0.42,2.6);
-}
-
+% (c) the three kinds of blocks
+\begin{scope}[shift={(9.9,0)}]
+\draw[fill=black!55,draw=black!55] (0,-1.1) rectangle (0.6,1.1);
+\draw[fill=black!28,draw=black!28] (1.5,-1.1) rectangle (2.1,1.1);
+\draw[fill=black!6,draw=black!45] (3.0,-1.1) rectangle (3.6,1.1);
+\node[lab,anchor=north] at (0.3,-1.2) {$F(S)$};
+\node[lab,anchor=north] at (1.8,-1.2) {$F^2(S)\setminus F(S)$};
+\node[lab,anchor=north] at (3.3,-1.2) {else};
+\node[capt,anchor=north] at (1.8,-2.0) {(c) full in $F_G(U)$ / full in $F_G^2(U)$ / partial};
 \end{scope}
 \end{tikzpicture}

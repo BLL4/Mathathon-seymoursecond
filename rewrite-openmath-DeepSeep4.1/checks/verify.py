@@ -566,6 +566,37 @@ def blowup_graph(base, n, m):
             for b in range(m): arcs.add((v*m+a, w*m+b))
     return G(n*m, arcs)
 
+
+# ================================================================ CHECK 8: the H/Z erratum
+def check_pruning_statement_shape():
+    print("[8] pruning bound: H (not Z) in the first term")
+    # the counterexample of the erratum: X = {0,1}, 0->1, 1->1, L = {(0,1),(1,1)}, R = {(1,0),(1,1)}
+    X = [0, 1]
+    rel = {(0, 1), (1, 1)}
+    L = [(0, 1), (1, 1)]
+    R = [(1, 0), (1, 1)]
+    conf = lambda a, b: (a[0], b[0]) in rel and (b[1], a[1]) in rel
+    Z = {(b[0], a[1]) for a in L for b in R if conf(a, b)}
+    H = {(a[0], b[1]) for a in L for b in R if conf(a, b)}
+    check("erratum: |Z| = 1 and |H| = 4", (len(Z), len(H)) == (1, 4), f"{len(Z)},{len(H)}")
+    z_fails = h_fails = 0
+    for mL in range(1 << len(L)):
+        Ls = [L[i] for i in range(len(L)) if mL >> i & 1]
+        for mR in range(1 << len(R)):
+            Rs = [R[i] for i in range(len(R)) if mR >> i & 1]
+            if any(conf(a, b) for a in Ls for b in Rs):
+                continue
+            dels = len(L) - len(Ls) + len(R) - len(Rs)
+            unc_Z = sum(1 for (i, j) in Z
+                        if not any(a[1] == j and (a[0], i) in rel for a in Ls)
+                        and not any(b[0] == i and (b[1], j) in rel for b in Rs))
+            if dels > len(Z) + unc_Z: z_fails += 1
+            if dels > len(H) + unc_Z: h_fails += 1
+    check("erratum: the Z-version of the bound fails", z_fails > 0, f"{z_fails} failures")
+    check("erratum: the H-version of the bound survives this instance", h_fails == 0, f"{h_fails}")
+    done("pruning bound: Z-version refuted, H-version consistent (the H-version is proved in Lemma 3.3)")
+
+
 if __name__ == "__main__":
     print("=" * 78)
     print("computational checks")
@@ -577,6 +608,7 @@ if __name__ == "__main__":
     check_pruning_statement()
     check_consequences()
     check_revision()
+    check_pruning_statement_shape()
     print("=" * 78)
     if FAIL:
         print(f"{len(FAIL)} FAILURES")

@@ -45,3 +45,25 @@ against the original, **E** the verification record, **F** the index.
 * New: why the blowup is needed (with a 4-vertex witness), why the weight on uncovered points is
   exactly 1, a worked pruning example, a directed-triangle trace showing where strictness is used,
   a remark listing where each hypothesis is used, and `m ≥ n` in place of `m > n`.
+* `checks/check_exhaustive5.py` checks the theorem and Proposition 4.1 on **all** oriented graphs
+  with at most 5 vertices (59,809 graphs; none of the 16,292 with positive indegrees is strictly
+  concave) — a larger range than the n ≤ 4 of the first version, adopted after a review noted that
+  n = 5 is cheap.
+
+## Errata fixed in the second commit
+
+An independent review of this folder
+(`rewrite-claude-opus-5.5/REVIEW_OF_rewrite-openmath-DeepSeep4.1.md`) found three things worth
+recording, all now fixed:
+
+1. **The Lean statement of the pruning lemma counted `Z` instead of `H`** and was therefore false;
+   the paper was right, the formal statement was not. Fixed, and `lean/Seymour/PruningStatementCheck.lean`
+   now proves the refutation of the wrong version by `decide` so it cannot return.
+2. **The Lean statement of the blowup lemma was vacuous** (it quantified over an unspecified graph).
+   It now refers to the explicit blowup on `V × Fin m`.
+3. My exhaustive check stopped at n ≤ 4; `checks/check_exhaustive5.py` now covers n ≤ 5.
+
+Two of the review's other points were accepted as improvements rather than errata: the slides' blowup
+and subset-deficit figures were redrawn for legibility, and the word "collision" for the points of `H`
+is now flagged in the paper (Remark 3.5) as a misnomer — the images collide at `z ∈ Z`, and `h ∈ H`
+is the opposite corner of the conflict rectangle.

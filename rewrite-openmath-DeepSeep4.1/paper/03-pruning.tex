@@ -71,6 +71,16 @@ an element may belong to both, and when it does it counts twice.
 Two families are \emph{compatible} if no member of one conflicts with a member of the other.
 \end{definition}
 
+\begin{remark}[Two names, and a warning about one of them]\label{rem:names}
+The points of $Z$ deserve their name: they are the points where the two images meet. The points of
+$H$ do not, and the word we use for them --- \emph{collisions} --- is a historical accident of this
+document: the two images of a conflict collide at $z=(i,j)$, not at $h=(p,s)$.  The right mental
+picture for $h$ is the \emph{opposite corner} of the conflict rectangle in \cref{fig:conflict}.  The
+distinction matters, because the whole pruning bound uses $Z$ for the points that are covered and $H$
+for the corners that are not; a reader who conflates them will write a false statement, and one of us
+did, in the first version of the Lean companion (see \appref{app:checks}).
+\end{remark}
+
 \begin{remark}[Compatibility is disjointness of the images]\label{rem:compat}
 With $\Phi_1,\Phi_2$ as in \eqref{eq:Phi}, $\mathcal L$ and $\mathcal R$ are compatible exactly when
 $\Phi_1\mathcal L\cap\Phi_2\mathcal R=\varnothing$. Indeed $(i,j)$ lies in both images exactly when

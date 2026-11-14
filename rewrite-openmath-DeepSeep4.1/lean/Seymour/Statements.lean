@@ -36,6 +36,28 @@ def IsMinimalCounterexample : Prop :=
 
 end OGraph
 
+/-- The lexicographic product `D[T_m]`: vertices are `V × Fin m`, and there is an arc
+from `(v,a)` to `(w,b)` when `v → w` in `D`, or when `v = w` and `a < b`.  This is the
+blowup of Lemma 2.5. -/
+def blowup (G : OGraph V) (m : ℕ) : OGraph (V × Fin m) where
+  Arc p q := G.Arc p.1 q.1 ∨ (p.1 = q.1 ∧ p.2 < q.2)
+  irrefl := by
+    rintro ⟨v, a⟩ (h | ⟨-, hlt⟩)
+    · exact G.irrefl v h
+    · exact absurd hlt (lt_irrefl a)
+  asymm := by
+    rintro ⟨v, a⟩ ⟨w, b⟩ (h | ⟨hvw, hlt⟩) (h' | ⟨hwv, hlt'⟩)
+    · exact G.asymm h h'
+    · have hwv' : w = v := hwv
+      exact G.irrefl v (hwv' ▸ h)
+    · have hvw' : v = w := hvw
+      exact G.irrefl w (hvw' ▸ h')
+    · exact absurd hlt' (not_lt.mpr (le_of_lt hlt))
+
+noncomputable instance blowupDecidable (G : OGraph V) [DecidableRel G.Arc] (m : ℕ) :
+    DecidableRel (blowup G m).Arc :=
+  Classical.decRel _
+
 /-- **Proposition 2.1** (counterexample reduction), as a proposition. -/
 def ReductionStatement : Prop :=
   ∀ (V : Type) [Fintype V] [DecidableEq V] (G : OGraph V) [DecidableRel G.Arc],
@@ -60,21 +82,26 @@ def SubsetDeficitStatement : Prop :=
         ∀ S : Finset V, S.Nonempty → S ≠ Finset.univ →
           ((D.F (D.F S)) \ (D.F S)).card < ((D.F S) \ S).card
 
-/-- **Lemma 2.3** (transitive-tournament blowup), as a proposition. -/
+/-- **Lemma 2.5** (transitive-tournament blowup), as a proposition, stated about the
+explicit blowup `blowup D m` rather than about an unspecified graph. -/
 def BlowupStatement : Prop :=
   ∀ (V : Type) [Fintype V] [DecidableEq V] (D : OGraph V) [DecidableRel D.Arc] (m : ℕ),
     Fintype.card V < m →
       (∀ v : V, ∃ u : V, D.Arc u v) →
       (∀ S : Finset V, S.Nonempty → S ≠ Finset.univ →
           ((D.F (D.F S)) \ (D.F S)).card < ((D.F S) \ S).card) →
-      ∀ (W : Type) [Fintype W] [DecidableEq W] (H : OGraph W) [DecidableRel H.Arc],
-        -- `H` is the blowup `D[T_m]`: the hypothesis records only its shape,
-        -- so this statement is a *specification* of what must be proved about it
-        (∀ v : W, ∃ u : W, H.Arc u v) →
-          ∀ U : Finset W, U.Nonempty → U ≠ Finset.univ →
-            U.card + (H.F (H.F U)).card < 2 * (H.F U).card
+      (∀ v : V × Fin m, ∃ u : V × Fin m, (blowup D m).Arc u v) ∧
+        ∀ U : Finset (V × Fin m), U.Nonempty → U ≠ Finset.univ →
+          U.card + ((blowup D m).F ((blowup D m).F U)).card
+            < 2 * ((blowup D m).F U).card
 
-/-- **Lemma 3.3** (pruning), as a proposition, in the form used in the paper. -/
+/-- **Lemma 3.3** (pruning), as a proposition, in the form used in the paper.
+
+The first term of the deletion bound counts the *collisions*
+`H = {(a.1, b.2) : a ∈ L, b ∈ R conflict}`, i.e. the opposite corners `(p,s)`; the last
+term counts the conflict points `Z = {(b.1, a.2)}` that the retained families leave
+uncovered.  (An earlier version counted `Z` in both places, which makes the statement
+false; see the erratum in `lean/README.md` and block 8 of `checks/verify.py`.) -/
 def PruningStatement : Prop :=
   ∀ (X : Type) [Fintype X] [DecidableEq X] (r : X → X → Prop) [DecidableRel r]
     (L R : Finset (X × X)),
@@ -88,7 +115,7 @@ def PruningStatement : Prop :=
       -- the deletion bound
       (L.card - L'.card) + (R.card - R'.card) ≤
         (Finset.univ.filter (fun p : X × X =>
-            ∃ a ∈ L, ∃ b ∈ R, a.2 = p.2 ∧ b.1 = p.1 ∧ r a.1 b.1 ∧ r b.2 a.2)).card +
+            ∃ a ∈ L, ∃ b ∈ R, a.1 = p.1 ∧ b.2 = p.2 ∧ r a.1 b.1 ∧ r b.2 a.2)).card +
         (Finset.univ.filter (fun z : X × X =>
             (∃ a ∈ L, ∃ b ∈ R, a.2 = z.2 ∧ b.1 = z.1 ∧ r a.1 b.1 ∧ r b.2 a.2) ∧
             ¬ ((∃ a ∈ L', a.2 = z.2 ∧ r a.1 z.1) ∨ (∃ b ∈ R', b.1 = z.1 ∧ r b.2 z.2)))).card

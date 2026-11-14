@@ -25,5 +25,7 @@ computational checks
   ok    independent-set blowup: exact second neighborhoods
   ok    worked pruning example (Example 3.4)
   ok    directed-triangle trace (Example 4.4)
+[8] pruning bound: H (not Z) in the first term
+  ok    pruning bound: Z-version refuted, H-version consistent (the H-version is proved in Lemma 3.3)
 ==============================================================================
 all checks passed

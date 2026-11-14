@@ -6,7 +6,7 @@
   arc/.style={-{Stealth[length=1.6mm]},draw=black!75},
   del/.style={-{Stealth[length=1.6mm]},draw=black!30,dashed},
   lab/.style={font=\scriptsize,text=black!80},
-  annot/.style={font=\scriptsize,text=black!65,align=left}
+  annot/.style={font=\small,text=black!70,align=left}
 ]
 % v
 \node[circle,draw=black!75,fill=black!10,inner sep=0pt,minimum size=7mm,font=\small] (v) at (0.7,2.8) {$v$};
@@ -39,6 +39,6 @@
 \draw[arc] (5.05,1.25) -- (6.5,1.25);
 \draw[arc] (5.05,0.95) -- (6.5,0.95);
 % side annotations
-\node[annot,anchor=west] at (9.15,3.55) {only possible new\\ points: $Q_v\cap F(Y)$};
-\node[annot,anchor=west] at (8.7,1.1) {counted before,\\ not after the deletion};
+\node[annot,anchor=west] at (9.15,3.55) {new points:\\ $Q_v\cap F(Y)$};
+\node[annot,anchor=west] at (8.7,1.1) {lost:\\ $\Lambda$};
 \end{tikzpicture}

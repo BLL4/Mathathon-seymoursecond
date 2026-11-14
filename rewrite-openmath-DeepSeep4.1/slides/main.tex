@@ -166,8 +166,7 @@
   \begin{itemize}
     \item the graph $D_Y$ has fewer arcs, so minimality gives a vertex $v$ with
       $\abs{N_{1,D_Y}^+(v)}\le\abs{N_{2,D_Y}^+(v)}$;
-    \item $v$ must have lost an out-neighbor, so $v\in S$; let
-      $Q_v=F(\{v\})\cap(E\setminus Y)$ be the lost out-neighbors.
+    \item so $v\in S$, and $Q_v=F(\{v\})\cap(E\setminus Y)$ are the out-neighbors it loses.
   \end{itemize}
   \medskip
   \centering
@@ -205,21 +204,24 @@
 \begin{frame}{Engine 1b: the blowup}
   \small
   The deficit is an integer, so it is at least $1$. Amplify it: replace every vertex by a
-  transitive tournament on $m$ labels $1<\dots<m$, and put all arcs from block $v$ to block $w$
-  when $v\to w$.
-  \medskip
-  \centering
-  \scalebox{0.62}{\input{figures/blowup.tex}}
+  transitive tournament on $m$ labels, and put all arcs from block $v$ to block $w$ when
+  $v\to w$.
   \medskip
 
+  \centering
+  \scalebox{0.72}{\input{figures/blowup.tex}}
+  \medskip
+
+  \raggedright
   For $U$ meeting the blocks in $S$: blocks of $F(S)$ are \emph{full} in $F_G(U)$, blocks of
-  $F^2(S)$ are full in $F_G^2(U)$, and the rest contribute at most $n$ labels in total. Hence
+  $F^2(S)$ are full in $F_G^2(U)$, and inside a partly used block the internal defect is at most
+  one label. Hence, with $n$ blocks,
   \[
     \abs U-2\abs{F_G(U)}+\abs{F_G^2(U)}
-    \le m\underbrace{\bigl(\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}\bigr)}_{\le-1}+\;n<0
-    \qquad\text{when }m>n .
+    \le m\underbrace{\bigl(\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}\bigr)}_{\le-1}+n<0
+    \qquad\text{once } m\ge n .
   \]
-  \takeaway{A margin of one becomes a margin of $m$, which beats the rounding error $n$.}
+  \takeaway{A margin of one becomes a margin of $m$, which beats the bounded defect $n$.}
 \end{frame}
 
 \begin{frame}{The object we now have to destroy}

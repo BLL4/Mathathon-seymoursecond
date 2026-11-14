@@ -221,8 +221,10 @@ theorem and shows that these lemmas can only be verified by re-deriving them.
 \toprule
 what & result \\
 \midrule
-\cref{thm:main} on all oriented graphs with $n\le4$ (760 graphs) and $20000$ random graphs with $5\le n\le9$
+\cref{thm:main} on \emph{all} oriented graphs with $n\le5$ ($59\,809$ graphs), and on $20000$ random graphs with $5\le n\le9$
  & holds in every case \\
+\cref{prop:no-concavity} directly: none of the $16\,292$ graphs with positive indegrees and $n\le5$ is strictly concave (\code{checks/check\_exhaustive5.py})
+ & agrees with the theorem \\
 the ledger of \cref{lem:deficit}: the four inclusions, \eqref{eq:g-diff}, the sandwich, and the strict increment
  & $2336$ random $(D,S,Y)$ configurations, no failure \\
 the algebra of \cref{lem:blowup}: \eqref{eq:FG}, \eqref{eq:FG2}, \eqref{eq:blowup-main}, and also with $m=n$
@@ -260,6 +262,21 @@ are stated in Lean but their proofs are not formalised; they are recorded as exp
 that the reader can see exactly which part of the argument is machine-checked and which is not. The
 formalisation therefore checks the \emph{statements} and the \emph{logical architecture}, not the
 three engines.
+
+\paragraph{(V3$'$) Errata found by review, and what they teach.} An independent review of an earlier
+version of the Lean companion found two defects, both in \emph{statements} rather than in the paper's
+mathematics, and both are now fixed. (i) The formal statement of the pruning lemma counted the
+conflict points $Z$ where the collisions $H$ belong; with $Z$ the statement is false, and the
+smallest counterexample is the two-point family of \cref{rem:names}. (ii) The formal statement of the
+blowup lemma was made about an unspecified graph with positive indegrees, which is true only because
+no graph satisfies the subset deficit; it now refers to the explicit blowup on $V\times\{1,\dots,m\}$.
+The lesson is the one \cref{rem:names} records: a formal statement is only as good as the reader's
+agreement about which of two related sets it mentions, and comparing a formal statement with the
+paper line by line is worth doing \emph{even when both are believed correct}. A complete formalization
+of the theorem now exists in a companion folder (\code{rewrite-claude-opus-5.5/SeymourLean},
+\code{seymour\_second\_neighbourhood}, standard axioms only); it was written independently and is the
+reference for machine-checked confidence, while the development in this folder is the reference for
+the statements in this notation.
 
 \paragraph{What this does not establish.} A pleasant presentation and a passing test suite do not
 prove a theorem. The only complete proof in this document is the mathematical text itself; the
