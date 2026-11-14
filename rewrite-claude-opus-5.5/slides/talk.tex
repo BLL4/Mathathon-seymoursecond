@@ -324,8 +324,13 @@ of $P$ is nonempty and proper, (G2) column by column gives
   \draw[-{Stealth[length=2mm]},famL,thick] (r) to[bend left=35] (r3);
   \draw[-{Stealth[length=2mm]},famR,thick] (c) -- (c2);
   \draw[-{Stealth[length=2mm]},famR,thick] (c) to[bend right=35] (z);
-  \node[font=\footnotesize] at (5.4,-2.2) {arcs:};
-  \node[font=\footnotesize] at (5.4,-2.6) {$1{\to}2,\ 1{\to}3$};
+  \node[font=\footnotesize] at (5.5,-2.2) {$G$ arcs:};
+  \node[font=\footnotesize] at (5.5,-2.6) {$1{\to}2,\ 1{\to}3$};
+  \begin{scope}[every node/.style={circle,draw,inner sep=0pt,minimum size=3.6mm,font=\scriptsize}]
+   \node (g1) at (5.5,-3.25) {1}; \node (g2) at (5.0,-4.15) {2};
+   \node (g3) at (6.0,-4.15) {3}; \node (g4) at (6.3,-3.25) {4};
+  \end{scope}
+  \draw[-{Stealth[length=1.6mm]}] (g1)--(g2); \draw[-{Stealth[length=1.6mm]}] (g1)--(g3);
   \node[font=\footnotesize,align=center] at (2.9,-5.6) {$F_1$ moves {\color{famL}$(1,3)$} down,
     $F_2$ moves {\color{famR}$(2,1)$} right;\\ both reach $(2,3)$ (later: a \emph{conflict})};
 \end{tikzpicture}
