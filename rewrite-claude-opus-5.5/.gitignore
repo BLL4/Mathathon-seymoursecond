@@ -16,3 +16,4 @@ build.log
 # Python
 __pycache__/
 .DS_Store
+!SeymourLean/build.log
