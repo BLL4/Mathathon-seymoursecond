@@ -226,6 +226,59 @@ But $(\mathcal L',\mathcal R')$ is an admissible pair: it is compatible and cont
 \label{fig:extremal}
 \end{figure}
 
+\subsection{Hypotheses, weights, and where strictness is needed}\label{sec:remarks4}
+
+\begin{remark}[Where each hypothesis of \cref{prop:no-concavity} is used]\label{rem:hypotheses}
+The proof uses exactly three properties of $G$, and it is worth knowing where.
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=1pt]
+\item \emph{The relation is oriented}, in four places: the diagonal is compatible with itself
+ (Step~1); the diagonal survives both complement families (Step~5, first half); no diagonal member
+ conflicts (Step~5, second half); and $N_2^+(v)=F^2(\{v\})\setminus F(\{v\})$ in the first place.
+ All four uses are of the same fact --- there is no pair of opposite arcs --- and each of them would
+ fail for a general digraph.
+\item \emph{Every vertex has an in-neighbor}, in two places: a column $P_j$ that equals all of $X$
+ would put $X\times\{j\}$ inside $\Phi_1P$ and a single in-neighbor of $j$ would then put $(w,j)$
+ inside $\Phi_2Q$ (Step~2); and the same for rows. Without in-neighbors, \eqref{eq:hypothesis} cannot
+ be applied to the columns and rows at all.
+\item \emph{Strict concavity} \eqref{eq:hypothesis}, in one place only: Step~3, summed over the
+ columns and the rows. Everything after that is counting.
+\end{itemize}
+So a reader checking the proof should watch exactly four steps: 1, 2, 3 and 5.
+\end{remark}
+
+\begin{remark}[Why the objective weights uncovered points with coefficient exactly $1$]\label{rem:lambda}
+Suppose we maximised $\abs P+\abs Q+\lambda u$ for some other $\lambda>0$. The gain of Step~4 is
+unchanged, $>M+2u$; the pruning deletes at most $\abs H+q\le u+u'$ members and the survivors have
+$u'$ uncovered points, so the new value is larger than
+\[
+ M+2u-(u+u')+\lambda u'=\underbrace{M+\lambda u}_{\text{old value}}+(1-\lambda)u+(\lambda-1)u'
+ =(\text{old value})+(\lambda-1)(u'-u).
+\]
+This is a strict improvement only if $(\lambda-1)(u'-u)\ge0$. For $\lambda=1$ the last term vanishes
+and the strictness comes entirely from the strict gain, which is what we want; for $\lambda<1$ the
+argument fails whenever $u'>u$, and for $\lambda>1$ it fails whenever $u'<u$. Since both cases occur,
+$\lambda=1$ is the only weight that works for all instances. The coefficient $1$ on $u$ is therefore
+forced by the structure of the pruning bound, not chosen for convenience.
+\end{remark}
+
+\begin{example}[Where the argument stops on a directed triangle]\label{ex:triangle}
+Let $G$ be the directed triangle $a\to b\to c\to a$, which has all indegrees positive, and let
+$P=Q=\Delta$. Then
+\[
+ \abs X^2=9,\qquad M=\abs P+\abs Q=6,\qquad u=9-3-3=3,
+\]
+because $\Phi_1\Delta=\Phi_2\Delta=\{(i,j):j\to i\}$, the arc set, has three elements, and
+and $\Phi_1^2\Delta=\Phi_2^2\Delta=\Delta$, so the two complement families of Step~4 satisfy
+\[
+ \abs{\mathcal L}+\abs{\mathcal R}=2\cdot9-3-3=12=M+2u .
+\]
+The gain is $M+2u$ exactly, not more, because strict concavity fails for this graph: at $U=\{a\}$ we
+have $1+1=2=2\cdot1$. Consequently the survivors are worth only
+$\ge M+2u-(u+u')+u'=M+u$, which does not contradict maximality. \Cref{ex:triangle} therefore shows
+precisely which strict inequality the whole argument rests on: the concavity hypothesis must be
+strict, and the contradiction is the difference between `>' and `$\ge$'.
+\end{example}
+
 \begin{proof}[Proof of \cref{thm:main}]
 If \cref{thm:main} were false, \cref{prop:reduction} would produce a nonempty finite oriented graph
 with positive indegrees satisfying \eqref{eq:impossible} for every nonempty proper vertex set, and

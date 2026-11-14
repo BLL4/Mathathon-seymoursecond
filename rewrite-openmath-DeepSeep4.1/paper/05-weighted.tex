@@ -2,16 +2,18 @@
 
 \begin{contract}
 \textbf{Assumes:} \cref{thm:main}. \quad
-\textbf{Produces:} the vertex- and arc-weighted forms of the conjecture
-(\cref{cor:weighted}). \textbf{Why:} these are the forms in which the conjecture is usually applied;
-the passage from the unweighted statement to them is Seacrest's, and is quoted rather than reproved.
-Nothing in this section is used in the proof of \cref{thm:main}.
+\textbf{Produces:} the vertex- and arc-weighted forms of the conjecture (\cref{cor:weighted}).
+\textbf{Why:} these are the forms in which the conjecture is usually applied. Parts (i) and (ii) are
+proved here from \cref{thm:main} alone, by two short arguments; only the arc-weighted form (iii) is
+quoted from Seacrest~\cite{Seacrest2015}. Nothing in this section is used in the proof of
+\cref{thm:main}.
 \end{contract}
 
 The weighted forms come in two quantifier orders, and the difference matters. One can ask that
-\emph{for every} weighting there be a vertex that does well (a max-min statement), or that there be
-\emph{one} weighting for which every vertex does well (a min-max statement). Both hold, and both
-follow from \cref{thm:main} through the equivalence proved by Seacrest~\cite{Seacrest2015}.
+\emph{for every} weighting there be a vertex that does well, or that there be \emph{one} weighting
+for which every vertex does well. Both hold. The first follows from \cref{thm:main} by replacing
+each vertex with a small cluster of twins sized by its weight (\cref{fig:weightblowup}); the second
+follows from the first by linear programming duality and gives the sharpest statement of the three.
 
 \begin{corollary}[Weighted second-neighborhood forms]\label{cor:weighted}
 Let $D$ be a nonempty finite oriented graph and $A(D)$ its arc set. For a vertex weighting
@@ -42,50 +44,107 @@ $\eta:V(D)\to[0,\infty)$ write $\eta(S)=\sum_{x\in S}\eta(x)$. Then:
 weighting makes every vertex good; and the same holds for weights on arcs, with a two-step maximum
 in place of the second neighborhood.}
 
-\begin{proof}
-\emph{(iii)} is Seacrest's arc-weighted conjecture, which his Proposition~2 shows to be equivalent to
-the unweighted conjecture~\cite{Seacrest2015}; \cref{thm:main} is the unweighted conjecture, so (iii)
-holds.
+\subsection{The vertex-weighted forms}\label{sec:vertex-weighted}
 
-\emph{(i) follows from (iii).} Given $\eta$, set $w(us)=\eta(s)$ for every arc $us$. Then for
-$v,s\in V(D)$,
+\begin{proof}[Proof of \cref{cor:weighted}(i)]
+\steplabel{Step 1: rational weights.} Suppose first that $\eta(x)=k_x/K$ with positive integers
+$k_x$ and $K$. Replace each vertex $x$ by an \emph{independent} set $B_x$ of $k_x$ copies, and join
+every copy of $x$ to every copy of $y$ when $x\to y$ (\cref{fig:weightblowup}). The result $D'$ is
+an oriented graph: inside a cluster there are no arcs, and between two clusters the arcs all point
+one way.
+
+Let $v'$ be a copy of $v$. Then
 \[
- \beta_v^w(s)=\begin{cases}\eta(s),&s\in N_2^+(v),\\ 0,&s\notin N_2^+(v),\end{cases}
+ N_1^+(v')=\bigcup_{u\in N_1^+(v)}B_u,\qquad
+ F_{D'}^2(\{v'\})=\bigcup_{w\in F^2(\{v\})}B_w ,
 \]
-as \cref{fig:beta} illustrates: if $v\to s$ then every eligible difference
-$w(us)-w(vs)=\eta(s)-\eta(s)$ is $0$, and if $s$ is at exact distance two from $v$ then $w(vs)=0$ and
-the maximum is $\eta(s)$. So the two sides of (iii) become $\eta(N_2^+(v))$ and $\eta(N_1^+(v))$,
-which is (i).
+and $N_2^+(v')$ is the second of these with the first removed. Clusters are disjoint and $N_1^+(v')$
+is a union of clusters, so removing it removes \emph{whole} clusters:
+\begin{equation}\label{eq:cluster}
+ N_2^+(v')=\bigcup_{w\in N_2^+(v)}B_w .
+\end{equation}
+This is where orientation is used: $v\notin F^2(\{v\})$, because a two-step return would need
+opposite arcs, so the cluster $B_v$ is not part of $F^2_{D'}(\{v'\})$ and no copy of $v$ is its own
+second out-neighbor. Taking cardinalities in \eqref{eq:cluster},
+\[
+ \abs{N_1^+(v')}=K\,\eta(N_1^+(v)),\qquad \abs{N_2^+(v')}=K\,\eta(N_2^+(v)) .
+\]
+\Cref{thm:main} applied to $D'$ gives a copy $v'$ with $\abs{N_1^+(v')}\le\abs{N_2^+(v')}$, and its
+original $v$ satisfies (i) after dividing by $K$.
 
-\emph{(ii) follows from (i) by duality.} Let $M_D$ be the matrix with rows and columns indexed by
-$V(D)$, with entry $1$ at $(v,s)$ when $s\in N_2^+(v)$, entry $-1$ when $s\in N_1^+(v)$, and entry
-$0$ otherwise. Reversing all arcs transposes this matrix, $M_{\overleftarrow D}=M_D^{\mathsf T}$,
-because reversing swaps the roles of first and second out-neighborhoods. By Farkas' lemma in the form
-used by Seacrest~\cite[Theorem~1]{Seacrest2015}, exactly one of the following holds: there is a
-nonzero $\eta\ge0$ with $M_D\eta\ge0$, or there is $\xi\ge0$ with $M_D^{\mathsf T}\xi<0$ entrywise.
-The second alternative is impossible: it would say that in the reversed graph $\overleftarrow D$ every
-vertex $v$ has $\xi(N_1^+(v))>\xi(N_2^+(v))$, contradicting (i) applied to $\overleftarrow D$ with the
-weighting $\xi$. So the first alternative holds; normalizing $\eta$ to total weight $1$ gives (ii).
+\steplabel{Step 2: arbitrary real weights.} Let $\eta\ge0$ be arbitrary. Choose rational weightings
+$\eta_n>0$ with $\eta_n(x)\to\eta(x)$ for every $x$ (for instance, truncate the decimal expansions).
+By Step 1 each $\eta_n$ has a good vertex $v_n$; some fixed vertex $v$ equals $v_n$ for infinitely
+many $n$. For those $n$,
+\[
+ \eta_n(N_1^+(v))\le\eta_n(N_2^+(v)),
+\]
+and letting $n\to\infty$ along them gives $\eta(N_1^+(v))\le\eta(N_2^+(v))$, since the two
+neighborhoods are finite sets and $\eta_n\to\eta$ pointwise.
 \end{proof}
 
 \begin{figure}[t]
 \centering
+\input{figures/weightblowup.tex}
+\caption{Reducing a rational weighting to \cref{thm:main}: the vertex $x$ of weight $2$ becomes two
+ independent twins, and each arc becomes a complete set of arcs between the clusters.
+ \emph{Look at} $x$: its cluster has two vertices and the cluster of its out-neighbor $y$ has one, so
+ counting at the level of copies multiplies both neighborhoods by the total weight $K$.
+ \emph{Why it matters:} the reduction is \emph{exact} --- the second neighborhood of a copy is
+ precisely the union of the clusters of the second out-neighbors, which is
+ \eqref{eq:cluster} --- and it is the reason the vertex-weighted form needs no additional
+ hypothesis. Contrast the transitive-tournament blowup of \cref{lem:blowup}, where the clusters are
+ tournaments because arcs inside a cluster were needed there.}
+\label{fig:weightblowup}
+\end{figure}
+
+\begin{proof}[Proof of \cref{cor:weighted}(ii)]
+Let $M$ be the $V(D)\times V(D)$ matrix with entry $1$ at $(v,s)$ when $s\in N_2^+(v)$, entry $-1$
+when $s\in N_1^+(v)$, and entry $0$ otherwise. Then $(M\eta)_v=\eta(N_2^+(v))-\eta(N_1^+(v))$, so
+(i) says: for every $\eta\ge0$, some coordinate of $M\eta$ is $\ge0$. We must find $\eta\ge0$,
+$\eta\ne0$, with $M\eta\ge0$ in \emph{every} coordinate.
+
+By the Farkas alternative (\cref{thm:farkas}), exactly one of the following holds: such an $\eta$
+exists, or there is $\xi\ge0$ with $M^{\mathsf T}\xi<0$ in every coordinate. Suppose the second
+holds and let $\overleftarrow D$ be $D$ with all arcs reversed. Reversing swaps the two
+neighborhoods: $s\in N_k^+(\overleftarrow D,v)$ exactly when $v\in N_k^+(D,s)$, for $k=1,2$; hence
+the matrix of $\overleftarrow D$ is $M^{\mathsf T}$. So $M^{\mathsf T}\xi<0$ says
+$\xi(N_2^+(v))<\xi(N_1^+(v))$ at every vertex $v$ of $\overleftarrow D$, contradicting (i) applied to
+$\overleftarrow D$ with the weighting $\xi$. So the first alternative holds; normalising $\eta$ to
+total weight $1$ gives (ii).
+\end{proof}
+
+\subsection{The arc-weighted form}\label{sec:arc-weighted}
+
+\begin{proof}[Proof of \cref{cor:weighted}(iii)]
+Seacrest's Proposition~2 states that the arc-weighted statement for all oriented graphs is equivalent
+to \cref{thm:main}~\cite{Seacrest2015}; since \cref{thm:main} holds, so does (iii). We quote this
+rather than reprove it, and record in \cref{rem:inputs} that it is the only result of the paper that
+is used without proof.
+\end{proof}
+
+\Cref{fig:beta} records why (iii) is the most general of the three forms: with the constant arc
+weighting $w(us)=\eta(s)$, the two sides of (iii) become $\eta(N_2^+(v))$ and $\eta(N_1^+(v))$, which
+is (i).
+
+\begin{figure}[t]
+\centering
 \input{figures/beta.tex}
-\caption{The arc weighting $\beta_v^w$ of \cref{cor:weighted}(iii), and the substitution of (i).
-\emph{Left:} for each two-step path $v\to u\to s$ one compares the last arc weight $w(us)$ with the
-first arc weight $w(vs)$; $\beta_v^w(s)$ is the largest excess over all intermediate vertices $u$,
-and $0$ if there is none. \emph{Right:} with the constant weighting $w(us)=\eta(s)$ the excess is
-$\eta(s)$ at an exact second out-neighbor and $0$ everywhere else, so the inequality of (iii) becomes
-$\eta(N_2^+(v))\ge\eta(N_1^+(v))$. \emph{Why it matters:} the figure shows why the arc-weighted form
-is the right common generalization: its two sides are a sum over out-arcs and a sum over two-step
-excesses, and the vertex-weighted statements are the two specializations.}
+\caption{The arc weighting $\beta_v^w$ of \cref{cor:weighted}(iii), and the substitution that
+ recovers (i). \emph{Left:} for each two-step path $v\to u\to s$ one compares the last arc weight
+ $w(us)$ with the first arc weight $w(vs)$; $\beta_v^w(s)$ is the largest excess over all intermediate
+ vertices $u$, and $0$ if there is none. \emph{Right:} with $w(us)=\eta(s)$ the excess is $\eta(s)$ at
+ an exact second out-neighbor and $0$ everywhere else. \emph{Why it matters:} the arc-weighted form is
+ the common generalization: its two sides are a sum over out-arcs and a sum over two-step excesses,
+ and both vertex-weighted statements are specializations and consequences.}
 \label{fig:beta}
 \end{figure}
 
 \begin{remark}[What is new here and what is quoted]\label{rem:quoted}
-Only \cref{thm:main} is new. The passage from it to \cref{cor:weighted} is Seacrest's: (iii)
-$\Leftrightarrow$ unweighted is his Proposition~2, and the Farkas duality between (i) and (ii) is his
-Theorem~1. We quote these rather than reprove them, and we have verified that the statements quoted
-are the ones used: in particular, (iii) is the form with a \emph{maximum over intermediate vertices},
-not a sum over paths, and the arc weights are allowed to vanish.
+Only \cref{thm:main} is new. Parts (i) and (ii) are proved above from it; the arguments are
+elementary (clusters of twins; then Farkas). Part (iii) is Seacrest's, and we quote his equivalence.
+The division of labour is worth stating because the literature usually presents the three forms as
+one package: the unweighted statement implies the vertex-weighted ones directly, and the arc-weighted
+form is the one that genuinely needs an extra argument --- with nonnegative weights and a maximum over
+intermediate vertices, it is not obtainable by any clustering.
 \end{remark}

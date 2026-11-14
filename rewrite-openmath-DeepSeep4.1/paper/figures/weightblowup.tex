@@ -1,0 +1,31 @@
+\begin{tikzpicture}[
+  v/.style={circle,draw=black!70,fill=black!8,inner sep=0pt,minimum size=6mm,font=\scriptsize},
+  cluster/.style={draw=blue!45!black,dashed,rounded corners=4pt,inner sep=3pt},
+  arc/.style={-{Stealth[length=1.5mm]},draw=black!75},
+  thick/.style={-{Stealth[length=3mm]},draw=black!40,line width=1.6pt},
+  dot/.style={circle,draw=black!60,fill=black!10,inner sep=0pt,minimum size=4mm},
+  lab/.style={font=\scriptsize,text=black!75}
+]
+% left: weighted graph
+\node[v,label={[lab]above:$\eta=2$}] (x) at (0,0) {$x$};
+\node[v,label={[lab]above:$\eta=1$}] (y) at (2.0,0) {$y$};
+\node[v,label={[lab]below:$\eta=3$}] (z) at (1.0,-1.5) {$z$};
+\draw[arc] (x) -- (y); \draw[arc] (y) -- (z); \draw[arc] (z) -- (x);
+\node[lab,anchor=north] at (1.0,-2.2) {weighted $D$};
+\draw[arc,black!30] (2.7,-0.75) -- (3.3,-0.75);
+% right: clusters
+\node[dot] (x1) at (4.4,0.22) {};
+\node[dot] (x2) at (4.4,-0.22) {};
+\node[cluster,fit=(x1)(x2),label={[lab]left:$B_x$}] {};
+\node[dot] (y1) at (6.4,0) {};
+\node[cluster,fit=(y1),label={[lab]right:$B_y$}] {};
+\node[dot] (z1) at (5.2,-1.75) {};
+\node[dot] (z2) at (5.75,-1.75) {};
+\node[dot] (z3) at (6.3,-1.75) {};
+\node[cluster,fit=(z1)(z3),label={[lab]below:$B_z$}] {};
+\draw[thick] (4.75,-0.1) -- (6.05,-0.05);
+\draw[thick] (6.3,-0.3) -- (5.85,-1.45);
+\draw[thick] (5.6,-1.55) -- (5.6,-1.55);
+\draw[thick] (5.2,-1.5) -- (4.6,-0.25);
+\node[lab,anchor=north] at (5.5,-2.6) {independent-set blowup $D'$};
+\end{tikzpicture}

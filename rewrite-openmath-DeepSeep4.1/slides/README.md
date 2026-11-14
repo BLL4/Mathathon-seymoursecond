@@ -1,20 +1,24 @@
 # A 20-minute talk on the proof
 
-Build: `latexmk -pdf main.tex`. 21 frames, 16:9.
+Build: `latexmk -pdf main.tex`. 23 frames, 16:9.
 
 ## Timing plan (total 20:30)
 
 | frames | minutes | content |
 |---|---|---|
-| 1–2 | 1:15 | title, the conjecture and the two neighbourhoods |
-| 3–4 | 1:30 | why it is not obvious, the main theorem |
-| 5 | 1:15 | the shape of the proof (one picture) |
-| 6–9 | 5:15 | engine 1: minimal counterexample, subset deficit, the deletion step, the ledger |
+| 1–2 | 1:00 | title, the conjecture and the two neighborhoods |
+| 3–4 | 1:15 | why it is not obvious, the main theorem |
+| 5 | 1:00 | the shape of the proof (one picture) |
+| 6–9 | 5:00 | engine 1: minimal counterexample, subset deficit, the deletion step, the ledger |
 | 10–11 | 2:15 | the blowup, and the statement that is left to destroy |
 | 12–14 | 3:15 | engine 2: families of pairs, the extremal objective, the diagonal |
-| 15–17 | 3:45 | engine 3: pruning, how it is proved, the rank bookkeeping |
+| 15–17 | 3:30 | engine 3: pruning, the matching bound, the rank bookkeeping |
 | 18 | 0:45 | the contradiction |
-| 19–21 | 1:45 | consequences, the three inventions, summary |
+| 19 | 0:30 | consequences |
+| 20–21 | 1:15 | why the weight is 1; what does not simplify |
+| 22–23 | 0:45 | the three inventions, summary |
+
+Total: 20:30. The allocation is a plan, not a measured rehearsal.
 
 ## What each frame is for
 

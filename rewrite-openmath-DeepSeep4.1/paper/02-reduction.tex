@@ -307,6 +307,74 @@ $I$ as well, and $I$ is not controlled by the deletion at all. Working with
 $F(S)\setminus S=E$ means that the internal part of the image is simply not part of the ledger.
 \end{remark}
 
+\subsection{Why the subset deficit is not yet enough}\label{sec:why-blowup}
+
+The deficit \eqref{eq:deficit} involves set differences, and set differences cannot be added over
+many sets: `$|A_1\setminus B_1|+|A_2\setminus B_2|$' is not the size of any single set difference.
+The extremal argument of \cref{sec:incompatibility} has to \emph{sum} an inequality over the columns
+of a family of pairs, so what it needs is an inequality between plain cardinalities. The quantity
+that will be summed is the \emph{second difference}
+\begin{equation}\label{eq:kappa}
+ \kappa(S)=\abs S-2\abs{F(S)}+\abs{F^2(S)}
+ =\bigl(\abs{F^2S}-\abs{FS}\bigr)-\bigl(\abs{FS}-\abs S\bigr),
+\end{equation}
+and strict concavity \eqref{eq:strict-growth} is exactly $\kappa(S)<0$ for every nonempty proper
+$S$. Two computations relate $\kappa$ to the deficit.
+
+\emph{(i) An inequality.} Since $\abs{F^2S}-\abs{FS}=\abs{F^2S\setminus FS}-\abs{FS\setminus F^2S}$
+and $\abs{FS}-\abs S=\abs{FS\setminus S}-\abs{S\setminus FS}$,
+\begin{equation}\label{eq:kappa-bound}
+ \kappa(S)
+ \;=\;\underbrace{\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)}_{\text{controlled by
+ the deficit}}
+ \;-\;\underbrace{\bigl(\abs{FS\setminus F^2S}-\abs{S\setminus FS}\bigr)}_{\text{not controlled}}
+\end{equation}
+and hence $\kappa(S)\le\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)+\abs{S\setminus FS}$.
+So the deficit gives only $\kappa(S)<\abs{S\setminus F(S)}$, which says nothing at all when many
+vertices of $S$ receive no arc from $S$. The second bracket in \eqref{eq:kappa-bound} is an
+\emph{internal imbalance}: $\abs{FS\setminus F^2S}$ counts points of the first image that are lost in
+the second step, $\abs{S\setminus FS}$ counts vertices of $S$ that the first step does not reach. The
+arc-deletion argument controls neither.
+
+\emph{(ii) The imbalance can really cancel the gain.} \Cref{fig:witness} is a graph in which the
+deficit holds at a set $S$ while $\kappa(S)=0$, so the implication `deficit at $S$ $\Rightarrow$
+concavity at $S$' is false. Note that all four indegrees are positive, as in
+\cref{lem:blowup}. The example does not satisfy the deficit at \emph{every} $S$ --- and by
+\appref{app:checks} no oriented graph with positive indegrees of order at most $5$, and none of several
+thousand random ones of order at most $10$, satisfies it at every $S$ --- so it shows precisely what
+it should: the passage from the deficit to concavity cannot be a per-set argument, and something must
+be done about the internal imbalance.
+
+\begin{figure}[t]
+\centering
+\input{figures/witness.tex}
+\caption{The deficit does not imply concavity set by set. \emph{Look at} $S=\{1,3\}$: the first image
+ is $\{0,2,3\}$ and the second image is everything, so the deficit holds at $S$
+ ($1<2$), yet $S$ and its second image are together exactly twice its first image, so $\kappa(S)=0$
+ and the strict concavity needed later fails. \emph{Why it matters:} the second step of a set can add
+ fewer points than the first step lost internally, and no argument that treats one set at a time can
+ rule this out; this is the imbalance that the blowup bounds block by block --- inside a block the
+ imbalance is at most one label, whatever the block size.}
+\label{fig:witness}
+\end{figure}
+
+\begin{ideabox}
+The cure is to make the internal imbalance small compared with the deficit. Inside one block of the
+blowup, a set $T$ of labels has $\abs T-2\abs{\tau(T)}+\abs{\tau^2(T)}\le1$: the imbalance is at most
+one, however large the block. Meanwhile the external bracket
+$\abs{F^2(S)\setminus F(S)}-\abs{F(S)\setminus S}$ is multiplied by the block size $m$, because every
+block of $F(S)$ or $F^2(S)$ that is touched at all is touched completely. Choosing $m$ larger than the
+number $n$ of blocks makes the amplified gain beat the bounded imbalance. That is the whole content
+of \cref{lem:blowup}; \cref{fig:blowup} draws the three kinds of blocks.
+\end{ideabox}
+
+\begin{remark}[How large $m$ must be]\label{rem:m}
+The proof below asks for $m>n$. In fact $m\ge n$ suffices: for a nonempty proper $S$ we have
+$\abs{S\setminus F(S)}\le\abs S\le n-1<m$, and this is the only place where the size of $m$ is used
+in the case $S\ne V(D)$. The hypothesis $m>n$ of the original is therefore a convenience, not a
+necessity; nothing else in the proof changes.
+\end{remark}
+
 \subsection{The blowup}\label{sec:blowup}
 
 \begin{ideabox}

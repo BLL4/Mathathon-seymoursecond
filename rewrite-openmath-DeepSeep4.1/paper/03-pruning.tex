@@ -9,10 +9,24 @@ that do not conflict, retain every member that did not conflict to begin with, a
 \[
  \abs H+\abs{\{z\in Z:\ z\text{ is covered by no member of }\mathcal L'\cup\mathcal R'\}}
 \]
-members, where $Z$ is the set of conflict points and $H$ the set of collisions.
-\textbf{Why:} \cref{sec:incompatibility} produces two families that are almost compatible and worth
-more than a target value; this lemma makes them compatible at a price that the points left
-uncovered pay for. Nothing here uses that $\to$ comes from an oriented graph.
+members, where $Z$ is the set of conflict points and $H$ the set of collisions
+(\cref{def:conflict}). \quad
+\textbf{Why:} \cref{sec:incompatibility} produces two families that are almost compatible and
+worth more than a target value; this lemma makes them compatible at a price that the points left
+uncovered pay for. Nothing here uses that $\to$ comes from an oriented graph, and nothing depends
+on \cref{sec:reduction}.
+
+\textbf{How it is proved.} In three pieces, which can be read independently.
+\begin{enumerate}[label=(\alph*),leftmargin=1.5em,itemsep=1pt,topsep=1pt]
+\item \emph{A cover suffices} (\cref{lem:pruning}, second half): a vertex cover of an auxiliary
+  bipartite graph $\Gamma$, of size $\abs Z+\abs H$, gives the bound; the number of deletions is
+  then the number of members in the cover.
+\item \emph{A matching bounds the cover} (\cref{thm:konig}, proved in \appref{app:toolkit}): K\H{o}nig's
+  theorem turns a bound on the maximum matching of $\Gamma$ into a cover of the same size, so it
+  remains to prove $\nu(\Gamma)\le\abs Z+\abs H$.
+\item \emph{The matching bound} (\cref{lem:matching}): this is the only step that uses linear
+  algebra. Its proof is the longest in the paper and is the paper's second engine.
+\end{enumerate}
 \end{contract}
 
 \subsection{What the lemma says}\label{sec:pruning-statement}
@@ -30,15 +44,13 @@ So $\Phi_1$ replaces the first coordinate by an out-neighbor, $\Phi_2$ the secon
 \begin{figure}[t]
 \centering
 \input{figures/conflict.tex}
-\caption{A conflict, drawn as a rectangle of the grid $X\times X$. \emph{Look at} the two routes from
- the top-left cell to the bottom-right cell: one goes down then right, the other right then down.
- \emph{Why it matters:} the two middle cells are exactly a pair of conflicting members,
- $(p,j)\in\mathcal L$ and $(i,s)\in\mathcal R$; the top-left cell $(p,s)$ is a \emph{collision}
- (an element of $H$) and the bottom-right cell $(i,j)$ is a \emph{conflict point} (an element of
- $Z$). A conflict is the same thing as the existence of this rectangle, which is why $H$ and $Z$
- are the right quantities to count: each conflict is witnessed once by a cell of $H$ and once by a
- cell of $Z$, and the two coordinate orders (down-then-right, right-then-down) are the two ways of
- composing the coordinate maps.}
+\caption{A conflict, drawn as a rectangle of the grid $X\times X$. \emph{Look at} the middle column:
+ the rectangle has corners $(p,s)$, $(p,j)$, $(i,s)$, $(i,j)$, and the two solid arrows are the two
+ arrows of the relation that make the two members conflict. \emph{Why it matters:} the top-left cell
+ $(p,s)$ is a \emph{collision} (an element of $H$) and the bottom-right cell $(i,j)$ is a
+ \emph{conflict point} (an element of $Z$); a conflict is the same thing as such a rectangle, which
+ is why $H$ and $Z$ are the right quantities to count. Many different conflicts can share one
+ collision, and that is the reason the pruning bound cannot be proved by counting conflicts.}
 \label{fig:conflict}
 \end{figure}
 
@@ -106,12 +118,59 @@ Three features of \eqref{eq:pruning-bound} are deliberate.
 \end{enumerate}
 \end{ideabox}
 
+
+\inwords{Two families that are almost compatible can be made compatible by deleting a few members,
+and the number deleted is at most the number of collisions plus the number of conflict points that
+remain uncovered afterwards.}
+
+\usedin{Applied once, in \cref{sec:incompatibility}, to the complement families
+$\mathcal L=(X\times X)\setminus\Phi_2^2Q$ and $\mathcal R=(X\times X)\setminus\Phi_1^2P$. There
+$H$ lies in the uncovered set of the extremal pair and the last term is at most $u'$, so the total
+cost is at most $u+u'$}
+
+\begin{example}[The bound is not the minimum number of deletions]\label{ex:k22}
+Let $X=\{0,1,2\}$ and let $0\to1$, $0\to2$ be the only arrows. Take
+\[
+ \mathcal L=\{(0,1),(0,2)\},\qquad \mathcal R=\{(1,0),(2,0)\}.
+\]
+A left member $(0,j)$ and a right member $(i,0)$ conflict exactly when $0\to i$ and $0\to j$, which
+here holds for all four pairs. So
+\[
+ Z=\{1,2\}\times\{1,2\},\qquad H=\{(0,0)\},\qquad \abs Z=4,\ \abs H=1 .
+\]
+Deleting one whole family costs $2$ deletions and removes all conflicts, but the survivors then
+cover every point of $Z$, so the right-hand side of \eqref{eq:pruning-bound} is $\abs H+0=1$ and the
+bound \emph{fails}. Keeping only $(0,1)$ costs $3$ deletions; the survivor covers $(1,1)$ and
+$(2,1)$, so $q=2$ and $3=\abs H+q$. Thus no pruning with two deletions satisfies the bound, and
+some pruning with three does. The lemma promises \emph{a} pruning, not the cheapest one --- a
+minimum cover of the conflict graph is not enough, which is exactly why the auxiliary graph
+$\Gamma$ of \cref{sec:matching} has two extra copies of every point of $Z$.
+\end{example}
+
+\begin{remark}[Why this is the right statement]\label{rem:why-pruning}
+Three features of \eqref{eq:pruning-bound} are deliberate.
+\begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
+\item \textbf{Only conflicts are repaired.} Members that never conflicted are kept, even if they
+ cover conflict points. This is what allows the diagonal to survive in
+ \cref{sec:incompatibility}: the diagonal members are conflict-free there.
+\item \textbf{The cost is charged twice.} Each conflict contributes a collision, so conflicts are
+ counted by $H$; but different conflicts may share a collision (\cref{fig:conflict}), and a cover
+ does not need to pay per conflict, only per collision. This is the fixed part of the cost.
+\item \textbf{The remainder is charged to the survivors.} If a conflict point $z\in Z$ is still
+ covered after the pruning, some surviving member covers it, and that member occupies a vertex of
+ the cover. So the number of conflict points paid for individually is $\abs Z-q$, where $q$ is the
+ number left uncovered, and the bound reads
+ $\abs{\mathcal L\setminus\mathcal L'}+\abs{\mathcal R\setminus\mathcal R'}\le\abs H+q$. Charging
+ part of the cost to the points still uncovered is exactly what the extremal argument of
+ \cref{sec:incompatibility} needs: it can refund that part.
+\end{enumerate}
+\end{remark}
+
 \subsection{The rank lemma}\label{sec:kernel}
 
-The proof of \cref{lem:pruning} bounds a matching by matrix ranks. The only linear algebra it needs
-is the following observation: at a matrix of maximum rank on a given support, a kernel vector of the
-matrix and a kernel vector of its transpose cannot both be nonzero at the two ends of an allowed
-entry.
+The matching bound is proved by linear algebra. The only ingredient it needs is the following
+observation: at a matrix of maximum rank on a given support, a kernel vector of the matrix and a
+kernel vector of its transpose cannot both be nonzero at the two ends of an allowed entry.
 
 \begin{lemma}[Kernels at maximum support rank]\label{lem:kernel}
 Let $T\subseteq I\times J$ with $I,J$ finite, and let $D\colon\R^J\to\R^I$ be a real matrix of
@@ -141,49 +200,26 @@ $\im D\subsetneq\im D_\tau$ and $\rank D_\tau>\rank D$, contradicting maximality
 \end{proof}
 
 \begin{remark}[What the lemma is for]\label{rem:kernel-use}
-The lemma is applied to the auxiliary matrices $D^{p,i}$ of Step~6 below, whose rows are indexed by
-the right members above $i$ and whose columns by the left members above $j$. The hypothesis that the
-rank is \emph{maximum on the support} is essential and is the reason for the extra family of rank
+The lemma is applied to the auxiliary matrices $D^{p,i}$ introduced in Step~5 of the matching
+bound (\cref{sec:matching}), whose rows are indexed by the right members above $i$ and whose columns
+by the left members above $j$, and it is used in Step~7 to prove \eqref{eq:key}. The hypothesis that
+the rank is \emph{maximum on the support} is essential and is the reason for the extra family of rank
 conditions in Step~5: at a rank below the maximum, two kernel vectors could both be nonzero at an
 allowed entry.
 \end{remark}
 
-\subsection{Proof of the pruning lemma}\label{sec:pruning-proof}
 
-\begin{planbox}
-\begin{enumerate}[leftmargin=1.3em,itemsep=1pt,topsep=1pt]
-\item \textbf{Reduce to a cover} (Step~1): build a bipartite graph $\Gamma$ whose edges are the
-  conflicts and the covering relations. A vertex cover $K$ of $\Gamma$ of size at most
-  $\abs Z+\abs H$ that omits isolated vertices, with the original members in $K$ deleted, gives
-  \eqref{eq:pruning-bound} by counting: the $\abs Z-q$ covered conflict points must each be paid for
-  by a distinct vertex of $K$.
-\item \textbf{Bound the matching} (Steps 2--7): show that a maximum matching $\mathcal M$ of $\Gamma$
-  has at most $\abs Z+\abs H$ edges. Split it into the $k$ original--original edges, the $\ell$ edges
-  $\alpha$ between $\mathcal L$ and $Z_R$, and the $t$ edges $\beta$ between $Z_L$ and $\mathcal R$.
-\item \textbf{Encode by ranks} (Steps 3--5): build four matrices $L,N,A,B$ forming a commutative
-  square $NL=AB$, and choose the coefficients so that $\rank L=\ell$, $\rank N^{\mathsf T}=t$ and
-  some auxiliary matrices have maximum rank on their supports. Rank--nullity plus the square then
-  gives $\abs H\ge k+\ell+t-\abs Z$.
-\item \textbf{Feed the kernel} (Steps 6--7): lift the $k$ original left endpoints to vectors
-  $\lambda^r\in\ker L$ and show that their images $B\lambda^r$ are independent (they lie in
-  $\ker A$), using the rank lemma at the conflicting pairs. Hence $\dim\ker A\ge k$, which is what
-  the rank bookkeeping needs.
-\item \textbf{Matching to cover} (Step~8): the alternating-path construction produces the cover.
-\end{enumerate}
-\end{planbox}
+\subsection{The matching bound}\label{sec:matching}
 
-\begin{proof}[Proof of \cref{lem:pruning}]
-\steplabel{Step 1: the augmented graph, and why a cover suffices.}
-If there is no conflict at all, keep every member; then $Z=H=\varnothing$ and
-\eqref{eq:pruning-bound} is trivial. Assume therefore that conflicts exist. Form the bipartite graph
-$\Gamma$ with parts
+Throughout, fix the two families and let $Z,H$ be as in \cref{def:conflict}. Form the
+bipartite graph $\Gamma$ with parts
 \begin{equation}\label{eq:Gamma}
  \mathcal V_L=\mathcal L\sqcup Z_L,\qquad \mathcal V_R=\mathcal R\sqcup Z_R,
 \end{equation}
 where $Z_L$ and $Z_R$ are two disjoint copies of $Z$, also disjoint from $\mathcal L$ and
 $\mathcal R$. Join two original members when they conflict; join an original member to the opposite
-copy of every point of $Z$ that it covers; put no edge between $Z_L$ and $Z_R$. \Cref{fig:pruning-graph}
-shows one conflict's forced path and a second conflict sharing a member.
+copy of every point of $Z$ that it covers; put no edge between $Z_L$ and $Z_R$.
+\Cref{fig:pruning-graph} shows one conflict's forced path.
 
 \begin{figure}[t]
 \centering
@@ -191,49 +227,47 @@ shows one conflict's forced path and a second conflict sharing a member.
 \caption{The augmented bipartite graph $\Gamma$. \emph{Look at} the path
  $z_L-c-r-z_R$ forced by the conflict between $r=(p,j)\in\mathcal L$ and $c=(i,s)\in\mathcal R$,
  where $z=(i,j)$: the two dashed edges are the covering relations $s\to j$ and $p\to i$, the solid
- edges are conflicts. \emph{Why it matters:} conflicts and covering relations are turned into edges
- of one bipartite graph, so that a single vertex cover can pay for both: the solid edge forces
- ``delete $r$ or delete $c$'', while a dashed edge forces ``delete the member or spend the copy
- of $z$''. The second conflict drawn shares $r$, showing that the graph is not a disjoint union of
- such paths --- which is why a matching bound, not a path count, is needed.}
+ edges are conflicts. \emph{Why it matters:} conflicts and covering relations become edges of one
+ bipartite graph, so that a single vertex cover pays for both: a conflict edge forces ``delete $r$ or
+ delete $c$'', while a covering edge forces ``delete the member or spend the copy of $z$''. The
+ second conflict drawn shares $r$, showing that the graph is not a disjoint union of such paths ---
+ which is why a matching bound, not a path count, is needed.}
 \label{fig:pruning-graph}
 \end{figure}
 
-\emph{An initially conflict-free member is isolated in $\Gamma$.} Let $(p,j)\in\mathcal L$ be
-conflict-free and suppose it covers $(i,j)\in Z$. By definition of $Z$ there is a conflict between
-some $(\tilde p,j)\in\mathcal L$ and some $(i,s)\in\mathcal R$; in particular $s\to j$. Then $(p,j)$
-and $(i,s)$ satisfy $p\to i$ (it covers $(i,j)$) and $s\to j$, so they conflict, contrary to the
-assumption. The same argument with the sides exchanged applies to $\mathcal R$. So conflict-free
-members have no edges at all.
+\begin{lemma}[Matching bound]\label{lem:matching}
+The maximum size $\nu(\Gamma)$ of a matching in $\Gamma$ satisfies
+\[
+ \nu(\Gamma)\le \abs Z+\abs H .
+\]
+\end{lemma}
 
-\emph{A cover gives the bound.} Let $K$ be a vertex cover of $\Gamma$ of size at most $\abs Z+\abs H$
-that contains no isolated vertex --- read Step~8 for the construction --- and delete exactly the
-original members lying in $K$. Since $K$ covers every edge, no conflict survives, and since $K$
-contains no isolated vertex, no initially conflict-free member is deleted. Let $q$ be the number of
-points of $Z$ covered by no surviving member. Each of the other $\abs Z-q$ points $z\in Z$ is covered
-by some surviving member; that member is adjacent to one of the two copies of $z$, so that copy lies
-in $K$, since the edge between them is not covered by the surviving member. Distinct points have
-distinct copies, so
-\begin{equation}\label{eq:cover-charge}
- \abs{K\cap(\mathcal L\sqcup\mathcal R)}
- \le\abs K-(\abs Z-q)\le\abs H+q ,
-\end{equation}
-which is \eqref{eq:pruning-bound}. \Cref{fig:cover} records the counting.
+\inwords{A maximum matching of the augmented graph has at most as many edges as there are conflict
+points plus collisions.}
 
-\begin{figure}[t]
-\centering
-\input{figures/cover.tex}
-\caption{The counting behind \eqref{eq:cover-charge}. \emph{Look at} the row of copies of the points
- of $Z$: the $q$ points left uncovered cost nothing, and each of the remaining $\abs Z-q$ must have a
- copy in $K$ because the edge from it to its surviving member is not covered from the other side.
- \emph{Why it matters:} this is the only place where the ``uncovered'' term of the pruning bound comes
- from, and it is why the bound degrades gracefully: the more the survivors leave uncovered, the less
- the cover has to pay for the points of $Z$.}
-\label{fig:cover}
-\end{figure}
+\begin{planbox}
+\begin{enumerate}[leftmargin=1.3em,itemsep=1pt,topsep=1pt]
+\item \textbf{Split the matching} (Step~2): choose a maximum matching $\mathcal M$ minimizing the
+ number $k$ of original--original edges. Its other edges come in two families, $\alpha$ of size
+ $\ell$ and $\beta$ of size $t$, and each of $\alpha,\beta$ is a maximum matching in its own
+ subgraph.
+\item \textbf{Encode by ranks} (Steps 3--5): build four matrices $L,N,A,B$ forming a commutative
+ square $NL=AB$, and choose the coefficients so that $\rank L=\ell$, $\rank N^{\mathsf T}=t$ and
+ some auxiliary matrices have maximum rank on their supports.
+\item \textbf{Rank bookkeeping} (Step~4, used later): rank--nullity and the square give
+ $\abs H\ge k+\ell+t-\abs Z$ as soon as $\dim\ker A\ge k$.
+\item \textbf{Feed the kernel} (Steps 6--7): lift the $k$ original left endpoints to vectors
+ $\lambda^r\in\ker L$ and show that their images $B\lambda^r$ are independent, using the rank lemma
+ at the conflicting pairs.
+\end{enumerate}
+\end{planbox}
 
-It remains to produce such a cover. We prove that a maximum matching of $\Gamma$ has at most
-$\abs Z+\abs H$ edges (Steps 2--7) and then convert it into a cover (Step~8).
+\begin{proof}
+\steplabel{Step 1: the graph.}\label{step:gamma}
+Throughout, $\Gamma$ is the augmented bipartite graph of \eqref{eq:Gamma}: its vertices are the
+members of $\mathcal L$ and $\mathcal R$ together with the two copies $Z_L,Z_R$ of the conflict
+points, and its edges are the conflicts and the covering relations. We must show that a matching of
+$\Gamma$ has at most $\abs Z+\abs H$ edges.
 
 \steplabel{Step 2: a maximum matching, split in three.}
 Choose a maximum matching $\mathcal M$ of $\Gamma$ with as few edges as possible between two original
@@ -328,11 +362,20 @@ independent vectors in $\ker A$.
 
 \steplabel{Step 5: choosing the coefficients.}
 We must justify that \eqref{eq:rank-conditions} can hold, together with one further family of rank
-conditions, all at the same assignment. The tool is the classical correspondence between the rank of
-a generic matrix and the size of a maximum matching in its support~\cite[Section~5, Theorem~1]{Edmonds1967}:
-for every support, the maximum rank over all matrices supported on it equals the maximum size of a
-matching in the support. We only need the easy half, and we need the maximizing assignment to be
-explicit enough to combine several conditions.
+conditions, all at the same assignment. Two facts about ranks and matchings do all the work, and both
+are proved in \appref{app:toolkit}:
+\begin{itemize}[leftmargin=1.4em,itemsep=1pt,topsep=1pt]
+\item \emph{a nonzero minor exhibits a matching} (\cref{lem:minor-matching}): a matrix supported on a
+ set $T$ has rank at most $\nu(T)$, the largest number of entries of $T$ no two in a row or column;
+\item \emph{an explicit matching gives an explicit maximal-rank matrix}: placing $1$s on the entries
+ of a maximum matching and $0$s elsewhere produces a matrix of rank $\nu(T)$ supported on $T$,
+ and every nonzero minor of such a matrix is a product of \emph{distinct} variables, hence a nonzero
+ polynomial.
+\end{itemize}
+So for each of the matrices below we argue twice: an upper bound for \emph{every} assignment (no
+support-matching is larger than the maximum matching we already have), and the existence of \emph{one}
+assignment attaining it (an explicit minor whose determinant does not vanish identically). The
+maximizing assignments of the various matrices must be combined, which is what (5d) does.
 
 \emph{(5a) $\rank L=\ell$ with the columns $R_\alpha$ a basis of $\im L$.} For any assignment, a
 nonzero $r\times r$ minor of $L$ needs $r$ entries no two in the same row or column and all nonzero,
@@ -355,16 +398,17 @@ coordinate, each block determinant a product of distinct $b$-variables.
 
 \emph{(5c) The auxiliary matrices.} For every arrow $p\to i$ of the relation put
 \begin{equation}\label{eq:Dpi}
- J_p=\{j:(p,j)\in\mathcal L\},\qquad S_i=\{s:(i,s)\in\mathcal R\},\qquad
- D^{p,i}=(b_{sj})_{s\in S_i,\ j\in J_p},
+ J_p=\{j:(p,j)\in\mathcal L\},\qquad S_i=\{s:(i,s)\in\mathcal R\},
+ \qquad D^{p,i}=(b_{sj})_{s\in S_i,\ j\in J_p} .
 \end{equation}
-a matrix with rows indexed by $S_i$ and columns by $J_p$, supported on
+So $D^{p,i}$ has rows indexed by $S_i$ and columns by $J_p$, and it is supported on
 \begin{equation}\label{eq:Tpi}
  T^{p,i}=\{(s,j)\in S_i\times J_p:\ s\to j\}.
 \end{equation}
 For each arrow $p\to i$, choose a minor of $D^{p,i}$ that attains the maximum rank among matrices
 supported on $T^{p,i}$; the entries of the minor are $b$-variables, so its determinant is a nonzero
-polynomial in the $b$-variables, or the empty minor $1$ if that maximum rank is $0$.
+polynomial in the $b$-variables, or the empty minor $1$ if that maximum rank is $0$. These matrices
+are what connects the two kernels in Step~7: a conflict is exactly a triple with $(s,j)\in T^{p,i}$.
 
 \emph{(5d) One assignment for everything.} Multiply the finitely many nonzero polynomials obtained in
 (5a)--(5c). The product is a nonzero polynomial in the finitely many variables $a_{xy},b_{xy}$, since
@@ -439,28 +483,54 @@ by \eqref{eq:commute}, because $\lambda^r\in\ker L$. So the $B\lambda^r$ are $k$
 of $\ker A$, i.e.\ $\dim\ker A\ge k$. This is the third condition of \eqref{eq:rank-conditions}, and
 Step~4 now gives $\abs{\mathcal M}\le\abs Z+\abs H$.
 
-\steplabel{Step 8: from the matching to the cover.}
-For completeness, here is the alternating-path construction of a cover of size $\abs{\mathcal M}$ that
-omits isolated vertices (K\H{o}nig's theorem~\cite{konig1931}). Starting from all unmatched vertices
-of $\mathcal V_L$, follow edges outside $\mathcal M$ from left to right and edges of $\mathcal M$ from
-right to left; let $W_L,W_R$ be the sets of vertices of the two sides reached. No unmatched vertex of
-$\mathcal V_R$ is reached, since an alternating path to one would augment the maximum matching. The
-two endpoints of a matched edge are either both reached or both unreached: a reached right endpoint
-leads to its mate, and a matched left endpoint can only have been reached through its mate. Hence
-\begin{equation}\label{eq:cover}
- K=(\mathcal V_L\setminus W_L)\cup W_R
-\end{equation}
-covers every edge: an edge from a reached left vertex to an unreached right vertex would be neither
-outside $\mathcal M$ (which would make the right endpoint reached) nor in $\mathcal M$ (whose
-endpoints share their reachability). The cover contains exactly one endpoint of each matched edge and
-no unmatched vertex, so $\abs K=\abs{\mathcal M}\le\abs Z+\abs H$ and $K$ omits every isolated vertex.
-Applying \eqref{eq:cover-charge} to this $K$ proves \eqref{eq:pruning-bound}.
 \end{proof}
 
+\subsection{From the matching bound to the pruning}\label{sec:matching-to-pruning}
+
+\begin{proof}[Proof of \cref{lem:pruning}]
+If there is no conflict at all, keep every member; then $Z=H=\varnothing$ and
+\eqref{eq:pruning-bound} is trivial. Otherwise build $\Gamma$ as in \eqref{eq:Gamma}.
+
+\emph{An initially conflict-free member is isolated in $\Gamma$.} Let $(p,j)\in\mathcal L$ be
+conflict-free and suppose it covers $(i,j)\in Z$. By definition of $Z$ there is a conflict between
+some $(\tilde p,j)\in\mathcal L$ and some $(i,s)\in\mathcal R$; in particular $s\to j$. Then
+$(p,j)$ and $(i,s)$ satisfy $p\to i$ and $s\to j$, so they conflict, contrary to the assumption.
+The same argument with the sides exchanged applies to $\mathcal R$. So conflict-free members have
+no edges at all.
+
+\emph{A cover gives the bound.} By \cref{thm:konig} (proved in \appref{app:toolkit}) the graph
+$\Gamma$ has a vertex cover $K$ with $\abs K=\nu(\Gamma)\le\abs Z+\abs H$ that contains exactly one
+endpoint of each edge of a maximum matching and no unmatched vertices; in particular it contains no
+isolated vertex. Delete exactly the original members lying in $K$. Since $K$ covers every edge, no
+conflict survives, and since $K$ contains no isolated vertex, no initially conflict-free member is
+deleted. Let $q$ be the number of points of $Z$ covered by no surviving member. Each of the other
+$\abs Z-q$ points $z\in Z$ is covered by some surviving member; that member is adjacent to one of
+the two copies of $z$, so that copy lies in $K$, because the edge between them is not covered from
+the other side (the member is not in $K$). Distinct points have distinct copies, so
+\begin{equation}\label{eq:cover-charge}
+ \abs{K\cap(\mathcal L\sqcup\mathcal R)}
+ \le\abs K-(\abs Z-q)\le\abs H+q ,
+\end{equation}
+which is \eqref{eq:pruning-bound}. \Cref{fig:cover} records the counting.
+\end{proof}
+
+\begin{figure}[t]
+\centering
+\input{figures/cover.tex}
+\caption{The counting behind \eqref{eq:cover-charge}. \emph{Look at} the row of copies of the points
+ of $Z$: the $q$ points left uncovered cost nothing, and each of the remaining $\abs Z-q$ must have a
+ copy in $K$ because the edge from it to its surviving member is not covered from the other side.
+ \emph{Why it matters:} this is the only place where the ``uncovered'' term of the pruning bound comes
+ from, and it is why the bound degrades gracefully: the more the survivors leave uncovered, the less
+ the cover has to pay for the points of $Z$.}
+\label{fig:cover}
+\end{figure}
+
 \begin{checkpoint}
-The lemma is proved. Three sentences to keep: \emph{conflicts and covering relations become edges of a
-bipartite graph}; \emph{a vertex cover of size $\abs Z+\abs H$ gives the bound}; \emph{a maximum
-matching has size at most $\abs Z+\abs H$, because the two maximum matchings $\alpha,\beta$ and the
+The lemma is proved. Three sentences to keep: \emph{conflicts and covering relations become edges of
+a bipartite graph $\Gamma$}; \emph{K\"onig turns a bound on the maximum matching of $\Gamma$ into a
+vertex cover of the same size, and deleting its original members is the pruning}; \emph{a maximum
+matching has at most $\abs Z+\abs H$ edges, because the two coverage matchings $\alpha,\beta$ and the
 $k$ original--original edges are three quantities that ranks can count, and the commuting square
 $NL=AB$ forces the $k$ lifts into the kernel of $A$}. The next section applies the lemma to the
 families produced by the subset inequalities of \cref{sec:reduction}.
@@ -471,7 +541,8 @@ It is worth separating the three roles of linear algebra in Steps 3--7, because 
 read as a sequence of tricks.
 \begin{enumerate}[leftmargin=1.3em,itemsep=2pt,topsep=1pt]
 \item \textbf{Rank as a matching counter.} The maximum rank of a matrix supported on a set $T$ equals
-  the maximum size of a matching in $T$ (Edmonds). Here this is used in the easy direction: a nonzero
+  the maximum size of a matching in $T$; only the easy direction is needed
+  (\cref{lem:minor-matching}): a nonzero
   minor exhibits a matching, so $\rank\le$ matching size; and the explicit minors of (5a), (5b) are
   chosen to \emph{achieve} the matching bound. Thus $\rank L=\ell$ is a certificate that
   $\alpha$ is maximum, and $\rank N^{\mathsf T}=t$ that $\beta$ is.

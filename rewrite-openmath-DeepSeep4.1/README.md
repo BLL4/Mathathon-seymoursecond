@@ -14,11 +14,12 @@ checked. The source in `../original/` was read only; nothing was written there.
 |---|---|
 | `plan/00-charter-draft-v1.md` | first draft of "what does it mean to make the write-up more readable" |
 | `plan/01-charter-revised-v2.md` | the revised charter: the rules the rewrite is held to, and the record of how it was reviewed |
-| `paper/main.pdf` | the rewritten paper (35 pages, 15 figures) |
+| `paper/main.pdf` | the rewritten paper (46 pages, 17 figures) |
 | `paper/` | its LaTeX sources; build with `latexmk -pdf main.tex` |
 | `slides/main.pdf` | the 20-minute beamer deck (21 frames) |
 | `slides/` | its sources (`latexmk -pdf main.tex`) |
 | `checks/verify.py` | the computational checks; run `python3 verify.py` in `checks/` |
+| `critique/` | reviews of the two sibling rewrites (`rewrite-claude-opus-5.5`, `rewrite-codex`) |
 | `checks/run.log` | the last recorded run: all checks pass |
 | `lean/` | the Lean 4 companion; see `lean/README.md` |
 
@@ -27,5 +28,20 @@ checked. The source in `../original/` was read only; nothing was written there.
 `paper/00-howtoread.tex` (printed right after the abstract) gives three reading routes — five
 minutes, an hour, a day — the conventions, the meaning of the four kinds of box, and a notation table.
 The paper opens every section with a contract ("what goes in, what comes out, why") and closes it
-with a summary; every statement is followed by an "In words" line and a proof plan; Appendix B
-translates the notation and the numbering back to the original preprint.
+with a summary; every statement is followed by an "In words" line and a proof plan.
+
+Appendices: **A** the toolkit (König's theorem, rank–nullity, Sylvester, the minor–matching bound,
+the Farkas alternative — everything taken from outside graph theory, with proofs), **B** alternative
+proofs and dead ends, **C** the dependency graph, **D** the dictionary of notation and numbering
+against the original, **E** the verification record, **F** the index.
+
+## What changed in the revision pass
+
+* The pruning lemma is factored into a **matching bound** (Lemma 3.8, the linear algebra) and
+  **König's theorem** (Theorem A.1), with the pruning proof then being three paragraphs of counting.
+* **Edmonds' rank formula is gone**: only the easy direction is used, and it is Lemma A.3.
+* The **vertex-weighted forms are proved** from the main theorem (clusters of twins; then Farkas),
+  so only the arc-weighted form is quoted from Seacrest.
+* New: why the blowup is needed (with a 4-vertex witness), why the weight on uncovered points is
+  exactly 1, a worked pruning example, a directed-triangle trace showing where strictness is used,
+  a remark listing where each hypothesis is used, and `m ≥ n` in place of `m > n`.

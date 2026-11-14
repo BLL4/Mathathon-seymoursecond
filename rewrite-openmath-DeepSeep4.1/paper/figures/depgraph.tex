@@ -15,6 +15,7 @@
 \node[st] (L31) at (2.7,-3.5) {\cref{lem:pruning}};
 \node[st] (L32) at (2.7,-5.2) {\cref{lem:kernel}};
 \node[st] (KON) at (5.6,-5.2) {K\H{o}nig's theorem};
+\node[st,draw=black!35,dashed] (AT) at (0.2,-5.2) {\appref{app:toolkit}\\ ranks, minors, K\H{o}nig};
 \node[cons] (C) at (0,-7.2)
   {\cref{cor:weighted} (weighted forms)\qquad \cref{cor:cycles} (directed cycles)\\[1pt]
    consequences of \cref{thm:main}, not used in its proof};
@@ -23,6 +24,7 @@
 \draw[dep] (L31.north) -- (P4.south);
 \draw[dep] (L32.north) -- (L31.south);
 \draw[dep] (KON.north west) -- (L31.south east);
+\draw[ddep] (AT.north) to[out=80,in=200] (L31.south west);
 \draw[dep] (P2.north) -- (T.south west);
 \draw[dep] (P4.north) -- (T.south east);
 \draw[ddep] (T.south) -- (C.north);

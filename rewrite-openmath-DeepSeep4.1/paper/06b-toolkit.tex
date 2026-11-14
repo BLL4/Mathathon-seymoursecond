@@ -1,0 +1,127 @@
+\appendix
+\section{Toolkit: the five facts we use from outside graph theory}\label{app:toolkit}
+
+Everything in this appendix is standard, and none of it is new. It is collected here, with proofs,
+because the rewrite is addressed to a reader who has had one course in graph theory and none in
+linear algebra beyond the rank of a matrix. The main text uses \cref{thm:konig,lem:minor-matching}
+repeatedly; \cref{thm:farkas} is used exactly once, in \cref{sec:weighted}, and a reader willing to
+take the vertex-weighted corollary on trust may skip it.
+
+\subsection{Matchings, covers, and K\H{o}nig's theorem}\label{app:konig}
+
+Let $\Gamma$ be a bipartite graph with parts $A$ and $B$. A \emph{matching} is a set of edges no two
+of which share a vertex; $\nu(\Gamma)$ is the largest size of a matching. A \emph{vertex cover} is a
+set $K\subseteq A\cup B$ meeting every edge.
+
+\begin{theorem}[K\H{o}nig]\label{thm:konig}
+In a bipartite graph $\Gamma$, the maximum size of a matching equals the minimum size of a vertex
+cover. Moreover, if $\mathcal M$ is a maximum matching and $A_0$ is the set of vertices of $A$
+unmatched by $\mathcal M$, then the set $K$ constructed below is a vertex cover with
+$\abs K=\abs{\mathcal M}$ that contains exactly one endpoint of every edge of $\mathcal M$ and no
+unmatched vertex.
+\end{theorem}
+
+\begin{proof}
+A cover has at least one vertex from each edge of a matching, so $\abs K\ge\nu(\Gamma)$ for every
+cover $K$; it suffices to exhibit a cover of size $\nu(\Gamma)$. Let $\mathcal M$ be a maximum
+matching. Starting from all unmatched vertices of $A$, follow edges \emph{outside} $\mathcal M$ from
+$A$ to $B$ and edges \emph{in} $\mathcal M$ from $B$ to $A$; let $W_A\subseteq A$ and $W_B\subseteq B$
+be the sets of vertices reached.
+
+\emph{No unmatched vertex of $B$ is reached}: an alternating path from an unmatched vertex of $A$ to
+an unmatched vertex of $B$ would be augmenting, and augmenting it would enlarge $\mathcal M$.
+
+\emph{The endpoints of a matched edge are either both reached or both unreached}. If the $B$-endpoint
+is reached, the matching edge leads to its $A$-endpoint, so that is reached too; conversely a reached
+$A$-vertex that is matched was reached along its matching edge from its partner.
+
+Put $K=(A\setminus W_A)\cup W_B$. It covers every edge: an edge $ab$ with $a\in W_A$ and
+$b\notin W_B$ would be neither outside $\mathcal M$ (then $b$ would be reached) nor in $\mathcal M$
+(since matched endpoints share their status). It contains exactly one endpoint of each matched edge
+and no unmatched vertex, because every unmatched vertex of $A$ lies in $W_A$ and, by the first
+paragraph, no unmatched vertex of $B$ lies in $W_B$. Hence
+$\abs K=\abs{\mathcal M}=\nu(\Gamma)$.
+\end{proof}
+
+\subsection{Ranks}\label{app:ranks}
+
+For a real matrix $M$ with $c$ columns, \emph{rank--nullity} is the statement
+$\dim\ker M=c-\rank M$: the rank is the dimension of the image and the domain splits as the kernel
+direct sum a complement.
+
+\begin{lemma}[Sylvester's rank inequality]\label{lem:sylvester}
+For real matrices $X$ (with $c$ columns) and $Y$ (with $c$ rows),
+\[
+ \rank(XY)\ \ge\ \rank X-\dim\ker Y .
+\]
+\end{lemma}
+
+\begin{proof}
+The map $Y$ sends $\im X$ onto $\im(XY)$, and its kernel on $\im X$ is $\im X\cap\ker Y$. A linear
+map on a space of dimension $d$ with kernel of dimension $e$ has image of dimension $d-e$, so
+$\rank(XY)=\dim\im X-\dim(\im X\cap\ker Y)\ge\rank X-\dim\ker Y$.
+\end{proof}
+
+\begin{lemma}[A nonzero minor exhibits a matching]\label{lem:minor-matching}
+Let $T\subseteq I\times J$ be finite and let $M$ be a real matrix supported on $T$, that is, with
+$M_{ij}=0$ whenever $(i,j)\notin T$. Then
+\[
+ \rank M\ \le\ \nu(T),
+\]
+where $\nu(T)$ is the largest size of a set of entries of $T$ no two in the same row or column.
+In particular, if $\mathcal M$ is a maximum matching in the support $T$, then every matrix supported
+on $T$ has rank at most $\abs{\mathcal M}$, and equality is attained by some matrix supported
+on $T$.
+\end{lemma}
+
+\begin{proof}
+Let $r=\rank M$, so $M$ has an $r\times r$ submatrix $\widehat M$ with $\det\widehat M\ne0$. Expanding
+the determinant,
+\[
+ \det\widehat M=\sum_{\sigma}\operatorname{sgn}(\sigma)\prod_{i}\widehat M_{i\sigma(i)},
+\]
+and every product in the sum is a product of entries of $T$ with distinct rows and distinct columns,
+i.e.\ of a matching of size $r$ in $T$; such a matching exists as soon as one product is nonzero, and
+one is nonzero because the sum is. Hence $r\le\nu(T)$.
+
+For the last sentence: the identity matrix on a matching of size $\nu(T)$ (entries $1$ on the matched
+pairs, $0$ elsewhere) is supported on $T$ and has rank $\nu(T)$.
+\end{proof}
+
+\begin{remark}[What we do and do not need]\label{rem:no-edmonds}
+The classical statement is that the \emph{maximum rank} over matrices supported on $T$ equals
+$\nu(T)$; the second half of \cref{lem:minor-matching} is that statement, in the easy direction,
+and we use only this. In the proof of the matching bound (\cref{sec:matching}) the two inequalities
+are used as follows: an upper bound $\rank L\le\ell$ for \emph{every} assignment of the variables,
+because the support of $L$ contains no matching larger than $\ell$ (\cref{lem:minor-matching},
+first part); and the existence of \emph{one} assignment with $\rank L=\ell$, exhibited by an explicit
+minor whose determinant is a nonzero polynomial (\cref{sec:matching}, Step~5). No appeal to the
+hard direction is needed, and in particular this document does not rely on the
+Edmonds/Egerv\'ary rank formula.
+\end{remark}
+
+\subsection{The Farkas alternative}\label{app:farkas}
+
+\begin{theorem}[Farkas, in the form we use]\label{thm:farkas}
+For a real matrix $M$ with $n$ columns, exactly one of the following holds:
+\begin{enumerate}[label=\textup{(\roman*)},leftmargin=1.6em,itemsep=1pt,topsep=1pt]
+\item there is $\eta\in\R^n$ with $\eta\ge0$, $\eta\ne0$ and $M\eta\ge0$;
+\item there is $\xi\ge0$ with $M^{\mathsf T}\xi<0$ in every coordinate.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}[Sketch]
+Apply Farkas' lemma in the form: exactly one of
+$\{\xi\ge0:\ A\xi\ge b\}\ne\varnothing$ and $\{\eta\ge0:\ A^{\mathsf T}\eta\le0,\ b^{\mathsf T}\eta>0\}\ne\varnothing$
+holds. Take $A=-M^{\mathsf T}$ and $b=\mathbf 1$. The first alternative becomes
+$\xi\ge0$, $M^{\mathsf T}\xi\le-\mathbf 1$, which is equivalent to (ii) by rescaling; the second
+becomes $\eta\ge0$, $M\eta\ge0$, $\mathbf 1^{\mathsf T}\eta>0$, which is (i).
+\end{proof}
+
+\begin{remark}[Where each external input is used]\label{rem:inputs}
+For the main theorem, the only inputs from outside the definitions are \cref{thm:konig} and
+\cref{lem:sylvester,lem:minor-matching} (all proved above, all elementary). The weighted forms of
+\cref{sec:weighted} additionally use \cref{thm:farkas} for part (ii) and Seacrest's
+equivalence~\cite{Seacrest2015} for part (iii); \cref{sec:cycles} uses nothing beyond
+\cref{thm:main}.
+\end{remark}

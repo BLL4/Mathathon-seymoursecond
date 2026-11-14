@@ -423,6 +423,49 @@
   \takeaway{These are corollaries, not inputs: the main theorem is proved before they appear.}
 \end{frame}
 
+\begin{frame}{Why the weight on uncovered points is exactly 1}
+  \small
+  Suppose the objective were $|P|+|Q|+\lambda u$ for some other $\lambda>0$. The ledger of the
+  previous frame becomes
+  \[
+    \text{new value} > \underbrace{M+\lambda u}_{\text{old value}}+(\lambda-1)(u'-u).
+  \]
+  \medskip
+  \begin{itemize}
+    \item $\lambda=1$: the last term vanishes, the gain is the strict inequality, done.
+    \item $\lambda<1$: the argument fails as soon as $u'>u$.
+    \item $\lambda>1$: the argument fails as soon as $u'<u$.
+  \end{itemize}
+  \medskip
+  Both cases occur, so no other weight works for all instances.
+  \takeaway{the coefficient $1$ is forced by the shape of the pruning bound, not a lucky guess.}
+\end{frame}
+
+\begin{frame}{What does \emph{not} simplify}
+  \small
+  \begin{columns}[T]
+  \begin{column}{0.49\textwidth}
+    \textbf{Removed (this talk's rewriting)}
+    \begin{itemize}
+      \item Edmonds' rank formula: only the easy direction is used, and it is a determinant
+        expansion.
+      \item Seacrest's equivalence for the vertex-weighted forms: clusters of twins give (i),
+        Farkas gives (ii).
+      \item $m>n$: the blowup works with $m\ge n$.
+    \end{itemize}
+  \end{column}
+  \begin{column}{0.49\textwidth}
+    \textbf{Not removable}
+    \begin{itemize}
+      \item The blowup: the deficit holds at $S$ but concavity fails there, in a 4-vertex graph.
+      \item The rank argument: a collision is shared by many conflicts, so no injection exists.
+      \item The weight $1$: see the previous frame.
+    \end{itemize}
+  \end{column}
+  \end{columns}
+  \takeaway{the three engines are irremovable; what surrounds them can be made lighter.}
+\end{frame}
+
 \begin{frame}{The three inventions}
   \begin{enumerate}
     \item \textbf{A subset inequality with the right right-hand side.}

@@ -336,3 +336,32 @@ prevent, and it was caught by checking the compiled numbers against the plan.
 | R27 computational checks | `checks/verify.py`, all pass; results in Appendix C |
 | R28 Lean | `lean/`: definitions, statements, assembly, Corollary 6.1 proved; the three deep lemmas stated, not proved |
 | R30 deck | 21 frames, 20 minutes, every page inspected; five frames were adjusted after inspection |
+
+## 14. Fourth pass: the revision after comparing with the two sibling rewrites
+
+Two critiques are in `../critique/`. Six ideas were adopted from them, and four attempts at
+shortening the proof are recorded in Appendix B of the paper. What changed, and which charter rule
+each change answers:
+
+| change | why | rule |
+|---|---|---|
+| the pruning lemma split into matching bound + König | the hardest proof had one goal, not two, and the reader could not see where the algebra ended | R5, R8 |
+| Edmonds' rank formula replaced by a self-contained lemma | the paper quoted a theorem it used in one direction only; for an audience with one graph-theory course that is a real cost | R6 |
+| vertex-weighted (i), (ii) proved from the main theorem | removes an external equivalence from two of the three weighted forms | R6 |
+| a "why the blowup is needed" subsection with a 4-vertex witness | the reader's first question about §2 is "why not use the deficit directly?" | R22 |
+| the $\lambda$-weight remark, the worked pruning example, the triangle trace | the three places where a reader cannot tell whether the argument is forced or lucky | R22, R31 |
+| a toolkit appendix (König, Sylvester, minors, Farkas) | the audience has had one course in graph theory and none in linear algebra | R1, R9 |
+| a remark listing where each hypothesis is used | four steps carry the whole proof; a reader should know which | R19 |
+| `m ≥ n` instead of `m > n` | the strict inequality was stronger than needed | R26 |
+
+**R31 (added in this pass).** Every coefficient and every hypothesis that a reader might suspect of
+being arbitrary must either be shown to be forced or be flagged as a convenience. Two places were
+found: the weight $1$ on uncovered points (forced, Remark 4.3) and the size $m>n$ of the blowup
+(convenience, Remark 2.4). This rule is what turned two "magic choices" into arguments.
+
+**Ledger of the acceptance checklist after the revision.** All items of §11 still hold; the figure
+count rose from 15 to 18 (witness, independent-set blowup, and the pruning example's figure was
+already counted), the page count from 35 to 46, and the paper still compiles with 0 overfull boxes,
+0 undefined references and 0 duplicate labels. The Lean development gained `Seymour/Arithmetic.lean`
+(the two arithmetic facts of R31), and `checks/verify.py` gained a seventh block of checks covering
+every new claim in this pass; all pass.

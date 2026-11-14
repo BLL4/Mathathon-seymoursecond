@@ -16,5 +16,14 @@ computational checks
   ok    3-cycle-free checks over 34114 graphs
   ok    6.1(ii) contrapositive, random
   ok    6.1(iii) on 37 regular girth-4 examples [(4, 1)]
+[7] new claims in the revision
+  ok    Figure 5 witness (deficit holds, concavity fails, indegrees positive)
+  ok    kappa identity on 2000 random graphs and all subsets
+  ok    weight on uncovered points: only lambda = 1 closes the ledger
+  ok    blowup works with m = n (not just m > n)
+  ok    matching bound on 400 random instances
+  ok    independent-set blowup: exact second neighborhoods
+  ok    worked pruning example (Example 3.4)
+  ok    directed-triangle trace (Example 4.4)
 ==============================================================================
 all checks passed

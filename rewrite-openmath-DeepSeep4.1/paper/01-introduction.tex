@@ -188,7 +188,13 @@ left uncovered after pruning.
 \item[\Cref{sec:weighted,sec:cycles}] Consequences: the vertex- and arc-weighted forms via
   Seacrest's equivalences, and consequences for directed triangles, minimum degree and girth.
   Neither is used in the proof of \cref{thm:main}.
-\item[\Cref{app:depgraph,app:dictionary,app:checks}] A dependency graph of the numbered statements,
+\item[\appref{app:toolkit}] The five facts used from outside graph theory, with proofs: K\H{o}nig's
+  theorem, rank--nullity, Sylvester's inequality, the minor--matching bound, and the Farkas
+  alternative. Nothing in the main text depends on anything else.
+\item[\appref{app:alternatives}] What was tried in search of a shorter proof: two simplifications that
+  were adopted (no Edmonds, no Seacrest for the vertex-weighted forms) and four attempts that failed,
+  with the reason.
+\item[Appendices~\ref{app:depgraph}, \ref{app:dictionary} and \ref{app:checks}] A dependency graph of the numbered statements,
   a dictionary of notation against the original preprint, and a record of how each step was
   checked (re-derivation, exhaustive computation on small cases, and a Lean formalisation).
 \end{description}

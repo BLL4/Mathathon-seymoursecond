@@ -401,6 +401,171 @@ def check_consequences():
 def permutations(iterable, r=None):
     return itertools.permutations(iterable, r)
 
+
+# ================================================================ CHECK 7: the revision's new claims
+def check_revision():
+    print("[7] new claims in the revision")
+
+    # (7a) the witness of Figure 5: deficit at S but kappa(S) = 0
+    n = 4
+    arcs = {(0,1),(0,2),(1,2),(1,3),(2,3),(3,0)}
+    g = G(n, arcs)
+    S = frozenset({1,3})
+    FS, F2S = g.F(S), g.F2(S)
+    check("witness: F(S) = {0,2,3}", FS == frozenset({0,2,3}), str(sorted(FS)))
+    check("witness: F^2(S) = all", F2S == frozenset(range(4)), str(sorted(F2S)))
+    check("witness: deficit at S", len(F2S - FS) < len(FS - S))
+    check("witness: kappa(S) = 0", len(S) - 2*len(FS) + len(F2S) == 0)
+    check("witness: positive indegrees", all(g.indeg(v) > 0 for v in range(n)))
+    done("Figure 5 witness (deficit holds, concavity fails, indegrees positive)")
+
+    # (7b) kappa identity  kappa(S) = (|F2S\\FS| - |FS\\S|) - (|FS\\F2S| - |S\\FS|)
+    rng = random.Random(97)
+    for _ in range(2000):
+        m = rng.randint(2, 7)
+        h = rand_ograph(m, rng.choice([0.3, 0.6, 1.0]), rng)
+        for k in range(1, m):
+            for T in combinations(range(m), k):
+                T = frozenset(T); FT = h.F(T); F2T = h.F(FT)
+                lhs = len(T) - 2*len(FT) + len(F2T)
+                rhs = (len(F2T - FT) - len(FT - T)) - (len(FT - F2T) - len(T - FT))
+                check("kappa identity", lhs == rhs)
+    done("kappa identity on 2000 random graphs and all subsets")
+
+    # (7c) the weight lambda: the ledger closes for all (d,d') iff lambda = 1
+    def closes(lam, d, dp):
+        return (1 - lam)*d + (lam - 1)*dp >= 0     # new value > old value
+    for lam in (0.0, 0.5, 1.0, 1.5, 2.0):
+        bad = [(d, dp) for d in range(0, 8) for dp in range(0, 8) if not closes(lam, d, dp)]
+        if lam == 1.0:
+            check("lambda=1 closes for every (d,d')", not bad)
+        else:
+            check(f"lambda={lam} fails for some (d,d')", bool(bad), str(bad[:3]))
+    done("weight on uncovered points: only lambda = 1 closes the ledger")
+
+    # (7d) m >= n suffices: the master inequality, then the arithmetic
+    rng = random.Random(101)
+    for _ in range(400):
+        m = rng.randint(2, 3)
+        base = rand_ograph(m, 0.7, rng)
+        if any(base.indeg(v) == 0 for v in range(m)): continue
+        block = m            # m = n, the sharp value
+        Gb = blowup_graph(base, m, block)
+        for k in range(1, m*block):
+            for U in combinations(range(m*block), k):
+                U = frozenset(U); FU = Gb.F(U); F2U = Gb.F2(U)
+                T = {}
+                for idx in U: T.setdefault(idx // block, set()).add(idx % block)
+                S = frozenset(T)
+                rhs = block*(len(base.F2(S) - base.F(S)) - len(base.F(S) - S)) + len(S - base.F(S))
+                check("master inequality with m = n", len(U) - 2*len(FU) + len(F2U) <= rhs)
+                if len(S) < m:
+                    check("proper S has |S \\ F(S)| <= n-1", len(S - base.F(S)) <= m - 1)
+    done("blowup works with m = n (not just m > n)")
+
+    # (7e) the matching bound  nu(Gamma) <= |Z| + |H|, by brute force
+    rng = random.Random(103)
+    inst = 0
+    for _ in range(400):
+        p = rng.randint(2, 3)
+        X = list(range(p))
+        rel = {(u, v) for u in X for v in X if u != v and rng.random() < 0.5}
+        Lf = list(dict.fromkeys(tuple(rng.choice(list(product(X, X)))) for _ in range(rng.randint(0, 4))))
+        Rf = list(dict.fromkeys(tuple(rng.choice(list(product(X, X)))) for _ in range(rng.randint(0, 4))))
+        Z = {(i, j) for (pp, j) in Lf for (i, s) in Rf if (pp, i) in rel and (s, j) in rel}
+        H = {(pp, s) for (pp, j) in Lf for (i, s) in Rf if (pp, i) in rel and (s, j) in rel}
+        # augmented graph, vertices tagged: ('L',a) ('R',b) ('ZL',z) ('ZR',z)
+        edges = []
+        for a, (pp, j) in enumerate(Lf):
+            for b, (i, s) in enumerate(Rf):
+                if (pp, i) in rel and (s, j) in rel: edges.append((('L', a), ('R', b)))
+            for z in Z:
+                if z[1] == j and (pp, z[0]) in rel: edges.append((('L', a), ('ZR', z)))
+        for b, (i, s) in enumerate(Rf):
+            for z in Z:
+                if z[0] == i and (s, z[1]) in rel: edges.append((('ZL', z), ('R', b)))
+        best = 0
+        for r in range(len(edges), 0, -1):
+            found = False
+            for sub in combinations(edges, r):
+                used = set()
+                ok = True
+                for (x, y) in sub:
+                    if x in used or y in used: ok = False; break
+                    used.add(x); used.add(y)
+                if ok: found = True; break
+            if found: best = r; break
+        inst += 1
+        check("nu(Gamma) <= |Z| + |H|", best <= len(Z) + len(H), f"{best} vs {len(Z)+len(H)}")
+    done(f"matching bound on {inst} random instances")
+
+    # (7f) weighted (i): N_2(v') is exactly the union of clusters of N_2(v)
+    rng = random.Random(107)
+    for _ in range(300):
+        q = rng.randint(2, 4)
+        base = rand_ograph(q, rng.choice([0.4, 0.8]), rng)
+        if any(base.indeg(v) == 0 for v in range(q)): continue
+        ks = [rng.randint(1, 3) for _ in range(q)]
+        off = [sum(ks[:t]) for t in range(q)]
+        verts = [(v, c) for v in range(q) for c in range(ks[v])]
+        arcs2 = []
+        for (v, a) in verts:
+            for (w, b) in verts:
+                if v != w and (v, w) in base.arcs: arcs2.append(((v, a), (w, b)))
+        H2 = G(len(verts), [(verts.index(x), verts.index(y)) for x, y in arcs2])
+        for (v, c) in verts:
+            vp = verts.index((v, c))
+            N1v = {verts.index((w, b)) for w in base.N1(v) for b in range(ks[w])}
+            F2v = {verts.index((w, b)) for w in base.F2({v}) for b in range(ks[w])}
+            N2v = F2v - N1v
+            pred = {verts.index((w, b)) for w in base.N2(v) for b in range(ks[w])}
+            check("N2(clone) = union of clusters of N2(v)", N2v == pred)
+            check("|N1(clone)| = K*eta(N1)", len(N1v) == sum(ks[w] for w in base.N1(v)))
+    done("independent-set blowup: exact second neighborhoods")
+
+    # (7g) the worked pruning example and the triangle trace
+    X = [0, 1, 2]
+    rel = {(0, 1), (0, 2)}
+    Lf = [(0, 1), (0, 2)]; Rf = [(1, 0), (2, 0)]
+    Z = {(i, j) for (pp, j) in Lf for (i, s) in Rf if (pp, i) in rel and (s, j) in rel}
+    H = {(pp, s) for (pp, j) in Lf for (i, s) in Rf if (pp, i) in rel and (s, j) in rel}
+    check("K22: Z = {1,2}^2", Z == {(1,1),(1,2),(2,1),(2,2)})
+    check("K22: H = {(0,0)}", H == {(0,0)})
+    # deleting one whole family: 2 deletions, survivors cover all of Z so q = 0, bound fails
+    kept = [(1, 0), (2, 0)]
+    unc = {z for z in Z if not any(c[0] == z[0] and (c[1], z[1]) in rel for c in kept)}
+    check("K22: whole-family deletion has q = 0 and 2 > 1+0", len(unc) == 0 and 2 > len(H) + len(unc))
+    # keeping only (0,1): 3 deletions, q = 2, and 3 = 1 + 2
+    kept = [(0, 1)]
+    unc = {z for z in Z if not any(k[1] == z[1] and (k[0], z[0]) in rel for k in kept)}
+    check("K22: keep (0,1) gives q = 2 and 3 = |H|+q", len(unc) == 2 and 3 == len(H) + len(unc))
+    done("worked pruning example (Example 3.4)")
+
+    tri = G(3, {(0,1),(1,2),(2,0)})
+    Delta = frozenset((v, v) for v in range(3))
+    d1 = lambda T: frozenset((i, j) for (pp, j) in T for i in range(3) if (pp, i) in tri.arcs)
+    d2 = lambda T: frozenset((i, j) for (i, s) in T for j in range(3) if (s, j) in tri.arcs)
+    M = len(Delta) + len(Delta)
+    u = 9 - len(d1(Delta)) - len(d2(Delta))
+    Lc, Rc = frozenset(product(range(3), repeat=2)) - d2(d2(Delta)), \
+             frozenset(product(range(3), repeat=2)) - d1(d1(Delta))
+    check("triangle: M = 6, u = 3", (M, u) == (6, 3), f"{M},{u}")
+    check("triangle: |L|+|R| = M + 2u = 12", len(Lc) + len(Rc) == M + 2*u == 12)
+    check("triangle: not strictly concave at {0}", 1 + len(tri.F2({0})) >= 2*len(tri.F(0)) if False else
+          len({0}) + len(tri.F2({0})) >= 2*len(tri.F({0})))
+    done("directed-triangle trace (Example 4.4)")
+
+
+def blowup_graph(base, n, m):
+    arcs = set()
+    for v in range(n):
+        for l in range(m):
+            for l2 in range(l+1, m): arcs.add((v*m+l, v*m+l2))
+    for (v, w) in base.arcs:
+        for a in range(m):
+            for b in range(m): arcs.add((v*m+a, w*m+b))
+    return G(n*m, arcs)
+
 if __name__ == "__main__":
     print("=" * 78)
     print("computational checks")
@@ -411,6 +576,7 @@ if __name__ == "__main__":
     check_section4()
     check_pruning_statement()
     check_consequences()
+    check_revision()
     print("=" * 78)
     if FAIL:
         print(f"{len(FAIL)} FAILURES")

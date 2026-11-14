@@ -1,7 +1,114 @@
-\appendix
+\section{Alternative proofs, and what does not simplify}\label{app:alternatives}
+
+This appendix records what was tried in the hope of a shorter proof, what replaced what, and where a
+simplification is not available. It is written after the fact and is not needed for the proof. Two of
+the attempts succeeded and are now part of the text; three failed, and the failure of one of them is
+itself informative.
+
+\subsection*{Simplifications that were adopted}
+
+\begin{enumerate}[leftmargin=1.5em,itemsep=3pt,topsep=2pt]
+\item \textbf{Edmonds' rank formula is not needed.} The original invokes the correspondence between
+ generic rank and maximum matching size. But only two facts are ever used: that a matrix supported on
+ $T$ has rank at most $\nu(T)$ (the easy direction, proved by expanding a nonzero determinant), and
+ that an explicit matching gives an explicit maximum-rank matrix. Both are in
+ \cref{lem:minor-matching} and cost ten lines. The pruning lemma's proof therefore depends on no
+ theorem beyond K\H{o}nig's (\cref{thm:konig}) and Sylvester's inequality
+ (\cref{lem:sylvester}).
+\item \textbf{The weighted forms (i) and (ii) do not need Seacrest.} Part (i) follows from
+ \cref{thm:main} by replacing each vertex with a cluster of twins (\cref{sec:vertex-weighted}); part
+ (ii) then follows from (i) by the Farkas alternative (\cref{thm:farkas}). The original obtains all
+ three forms from Seacrest's equivalences. Only the arc-weighted form (iii), where a maximum over
+ intermediate vertices replaces a count, seems to need an argument of its own.
+\item \textbf{The weight on uncovered points is forced to be $1$} (\cref{rem:lambda}), so the
+ objective is not a lucky guess. This does not shorten the proof, but it removes the only place where
+ the reader might suspect a magic choice.
+\item \textbf{$m\ge n$ suffices} in the blowup instead of $m>n$ (\cref{rem:m}); the proof of the
+ strict inequality uses only $\abs{S\setminus F(S)}\le n-1$ for a proper $S$.
+\item \textbf{The pruning lemma factors into a matching bound and K\H{o}nig's theorem}
+ (\cref{lem:matching,thm:konig}). This does not shorten the hardest step, but it separates the part
+ that is linear algebra from the part that is counting, and each can now be checked alone.
+\end{enumerate}
+
+\subsection*{Attempt 1: dispense with the blowup}
+
+The blowup exists to turn the subset deficit into the concavity inequality. Could the deficit be used
+directly? For a single set $S$ the answer is no, and \cref{fig:witness} is a witness: there the
+deficit holds at $S$ while $\kappa(S)=0$. The exact reason is \eqref{eq:kappa-bound}:
+\[
+ \kappa(S)=\bigl(\abs{F^2S\setminus FS}-\abs{FS\setminus S}\bigr)
+ -\bigl(\abs{FS\setminus F^2S}-\abs{S\setminus FS}\bigr),
+\]
+and the deficit controls only the first bracket. A per-set argument can therefore never work, and the
+blowup is precisely a device that makes the second bracket at most $1$ per block while multiplying
+the first by $m$.
+
+The \emph{global} question --- does the deficit at \emph{every} proper nonempty $S$ imply concavity at
+every $U$, for the same graph $D$? --- cannot be settled by search, because the hypothesis is
+(conjecturally) empty: by \appref{app:checks} no oriented graph with positive indegrees of order at most
+$5$, and none of several thousand random ones of order at most $10$, satisfies the deficit at every
+set. This is not an accident: the deficit is exactly the property that a minimal counterexample would
+have, so a proof that it implies concavity directly would already be a proof of the theorem. There is
+no shortcut here, only two routes to the same conclusion.
+
+\subsection*{Attempt 2: a combinatorial proof of the pruning bound}
+
+The matching bound $\nu(\Gamma)\le\abs Z+\abs H$ is proved by linear algebra. A purely combinatorial
+proof would be preferable for a graph-theory audience, and we looked for one. Two natural strategies
+fail for a structural reason worth recording.
+\begin{itemize}[leftmargin=1.4em,itemsep=2pt,topsep=1pt]
+\item \emph{An explicit injection into $Z\sqcup H$.} One would like to charge each conflict edge of a
+ maximum matching to a distinct corner. But one collision $h=(p,s)$ can be the corner of \emph{many}
+ conflicts: all pairs $(p,j),(i,s)$ with $p\to i$ and $s\to j$ share it (\cref{fig:conflict}), and
+ they can all appear in a matching at once, since they use distinct members. So no injection can
+ exist, and any combinatorial proof must count something other than conflicts.
+\item \emph{A greedy cover.} Taking all of $Z_L$ costs $\abs Z$ and kills every $Z_L$--$\mathcal R$
+ edge; what remains is a graph on $\mathcal L\sqcup\mathcal R\sqcup Z_R$ whose cover needs a further
+ $\abs H$ vertices in the best case, but we found no choice rule that attains $\abs H$ without
+ solving the matching problem --- which is what K\H{o}nig's theorem does anyway.
+\end{itemize}
+The rank argument evades both obstructions by counting \emph{directions} rather than conflicts: the
+quantity $k+\ell+t$ is bounded by $\abs Z+\abs H$ through dimensions of kernels, and dimensions do not
+suffer from the sharing that defeats injections. We conclude that the linear algebra is not an
+accident of the original presentation; it is doing the work.
+
+\subsection*{Attempt 3: complete the oriented graph to a tournament}
+
+For tournaments the conjecture is known (Fisher; Havet--Thomass\'e). A tempting proof of the general
+case would be: complete $D$ to a tournament $T$, take a Seymour vertex $v$ of $T$, and show that $v$
+is good in $D$ as well. The second step is false in general, because adding arcs \emph{increases}
+$N_1^+$ and can \emph{decrease} $N_2^+$ (a vertex at distance two may become a vertex at distance
+one).
+
+We tested the weaker hope that \emph{some} completion works: for every oriented graph $D$ on at most
+five vertices, is there a tournament $T\supseteq D$ and a vertex $v$ that is good in both $T$ and $D$?
+The answer is yes for all $59{,}805$ graphs tested. This is consistent with the theorem but gives no
+proof: selecting the completion uses the conclusion one is trying to prove, and we have no rule for
+finding it. We record the experiment as a negative result --- the completion route is not refuted, but
+it does not simplify anything we could see.
+
+\subsection*{Attempt 4: an averaging proof}
+
+The theorem would follow from a distribution $\mu$ on $V(D)$ with
+$\mathbb E_\mu\abs{N_1^+(v)}\le\mathbb E_\mu\abs{N_2^+(v)}$, since then some vertex is good. Such a
+$\mu$ is exactly a fractional solution of the problem, and \cref{cor:weighted}(ii) produces a much
+stronger object (a weighting for which \emph{every} vertex is good). We found no direct construction
+of $\mu$; by LP duality, a certificate for the non-existence of $\mu$ is a weighting $\xi\ge0$ with
+$\xi(N_1^+(v))>\xi(N_2^+(v))$ in aggregate, which is exactly the kind of object the extremal argument
+of \cref{sec:incompatibility} builds from sets rather than from vertices. A slick averaging proof
+would therefore have to be a slick proof of the weighted min-max statement, and we have none.
+
+\subsection*{What this says about the shape of the proof}
+
+The three engines are not replaceable by one another: the deficit is genuinely weaker than
+concavity (\cref{fig:witness}), the pruning bound genuinely needs the rank argument, and the extremal
+objective genuinely needs the weight $1$ (\cref{rem:lambda}). What \emph{can} be removed is the
+external machinery around them: Edmonds' formula, Seacrest's equivalence for the vertex-weighted
+forms, and the unnecessary strict inequality $m>n$.
+
 \section{Proof dependency graph}\label{app:depgraph}
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \centering
 \input{figures/depgraph.tex}
 \caption{Which numbered statement uses which. Read upwards: an arrow from $A$ to $B$ means that the
@@ -13,11 +120,11 @@
 \label{fig:depgraph}
 \end{figure}
 
-\begin{table}[h]
+\begin{table}[ht]
 \centering
 \small
 \renewcommand{\arraystretch}{1.2}
-\begin{tabular}{@{}llp{6.6cm}@{}}
+\begin{tabular}{@{}llp{6.2cm}@{}}
 \toprule
 statement & depends on & role \\
 \midrule
@@ -26,9 +133,11 @@ statement & depends on & role \\
 \cref{lem:deficit} & minimality of the counterexample & subset deficit in a minimal counterexample \\
 \cref{lem:blowup} & \cref{lem:deficit} & amplifies the deficit by the block size \\
 \cref{prop:no-concavity} & \cref{lem:pruning} & extremal argument, disjoint from \cref{prop:reduction} \\
-\cref{lem:pruning} & \cref{lem:kernel}, K\H{o}nig's theorem & pruning of two families of pairs \\
-\cref{lem:kernel} & --- & linear algebra of maximum-rank matrices \\
-\cref{cor:weighted} & \cref{thm:main}, \cite{Seacrest2015} & weighted forms (quoted equivalence) \\
+\cref{lem:pruning} & \cref{lem:matching}, \cref{thm:konig} & pruning of two families of pairs \\
+\cref{lem:matching} & \cref{lem:kernel}, \cref{lem:minor-matching}, \cref{lem:sylvester} & the rank argument \\
+
+\cref{lem:kernel} & \cref{lem:minor-matching} & linear algebra of maximum rank \\
+\cref{cor:weighted} & \cref{thm:main}, \cref{thm:farkas}, \cite{Seacrest2015} & (i),(ii) proved here; (iii) quoted \\
 \cref{cor:cycles} & \cref{thm:main} & directed-cycle and degree consequences \\
 \bottomrule
 \end{tabular}
@@ -96,11 +205,15 @@ deserve a note because they are easy to misread.
  For $(s,j)\notin T^{p,i}$ the entry $b_{sj}$ is zero and there is nothing to prove.
 \end{itemize}
 
-\paragraph{(V2) Exhaustive and random computation.} The combinatorial statements of the paper were
-checked on small instances by the scripts in \code{checks/verify.py} of the repository. All checks
-pass. The checks are implications and identities rather than the statements themselves, since the
-hypotheses of \cref{lem:deficit,lem:blowup,prop:no-concavity} are (conjecturally) unsatisfiable ---
-that is the theorem.
+\paragraph{(V2) Exhaustive and random computation.} The combinatorial statements were checked on
+small instances by the scripts in \code{checks/verify.py} of the repository; all checks pass and the
+recorded run is \code{checks/run.log}. The checks are implications and identities rather than the
+statements themselves, and there is a reason for that: the hypotheses of \cref{lem:deficit,lem:blowup}
+and \cref{prop:no-concavity} are (conjecturally) \emph{empty}. In particular no oriented graph with
+positive indegrees of order at most $5$, and none of several thousand random ones of order at most
+$10$, satisfies the subset deficit at every nonempty proper set --- which is consistent with the
+theorem and shows that these lemmas can only be verified by re-deriving them.
+
 \begin{center}
 \small
 \renewcommand{\arraystretch}{1.15}
@@ -110,15 +223,29 @@ what & result \\
 \midrule
 \cref{thm:main} on all oriented graphs with $n\le4$ (760 graphs) and $20000$ random graphs with $5\le n\le9$
  & holds in every case \\
-the ledger of the ledger step of \cref{lem:deficit}: the four inclusions, \eqref{eq:g-diff}, the sandwich, and the strict increment
+the ledger of \cref{lem:deficit}: the four inclusions, \eqref{eq:g-diff}, the sandwich, and the strict increment
  & $2336$ random $(D,S,Y)$ configurations, no failure \\
-the algebra of \cref{lem:blowup}: \eqref{eq:FG}, \eqref{eq:FG2}, \eqref{eq:blowup-main}
+the algebra of \cref{lem:blowup}: \eqref{eq:FG}, \eqref{eq:FG2}, \eqref{eq:blowup-main}, and also with $m=n$
  & $24942$ random $(D,m,U)$ instances, no failure \\
 the identities of \cref{prop:no-concavity}: fibrewise images, complement gain, diagonal survival, $H$ uncovered
  & $250$ random compatible pairs, no failure \\
 the statement of \cref{lem:pruning}, by brute force over all subfamilies
  & $1200$ random instances with $\abs X\le4$, no counterexample \\
-\cref{cor:cycles}(i) and the partition \eqref{eq:partition} on $3$-cycle-free graphs; (ii) on random graphs; (iii) on regular girth-$4$ graphs
+the matching bound of \cref{lem:matching}, with $\nu(\Gamma)$ computed by brute force
+ & $400$ random instances, no counterexample \\
+the identity \eqref{eq:kappa-bound} for $\kappa$, on all subsets of $2000$ random graphs
+ & no failure \\
+\cref{fig:witness}: deficit at $S$, $\kappa(S)=0$, all indegrees positive
+ & verified \\
+\cref{ex:k22}: $Z,H$, the failing two-deletion pruning and the working three-deletion one
+ & verified \\
+\cref{ex:triangle}: $M=6$, $u=3$, $\abs{\mathcal L}+\abs{\mathcal R}=12=M+2u$
+ & verified \\
+\cref{sec:vertex-weighted}: $N_2^+(v')=\bigcup_{w\in N_2^+(v)}B_w$ for the independent-set blowup
+ & $300$ random weightings, exact in every case \\
+\cref{rem:lambda}: the ledger closes for all $(d,d')$ exactly when $\lambda=1$
+ & verified for $\lambda\in\{0,\tfrac12,1,\tfrac32,2\}$ \\
+\cref{cor:cycles}(i),(ii),(iii) on $3$-cycle-free, random, and regular girth-$4$ graphs
  & $34114$ graphs, no failure \\
 \bottomrule
 \end{tabular}
@@ -156,6 +283,14 @@ architecture. Neither substitutes for reading the proofs of \cref{lem:deficit,le
 \cref{prop:no-concavity} & no graph & \eqref{eq:impossible} is impossible \\
 \cref{cor:weighted} & weighted forms & vertex- and arc-weighted statements \\
 \cref{cor:cycles} & directed cycles & degree and order bounds without directed triangles \\
+\midrule
+\cref{lem:matching} & matching bound & $\nu(\Gamma)\le\abs Z+\abs H$ for the augmented graph \\
+\cref{thm:konig} & K\H{o}nig's theorem & matching $=$ cover in a bipartite graph (\appref{app:toolkit}) \\
+\cref{lem:minor-matching} & minors and matchings & a nonzero minor exhibits a matching \\
+\cref{lem:sylvester} & Sylvester & $\rank(XY)\ge\rank X-\dim\ker Y$ \\
+\cref{thm:farkas} & Farkas alternative & used once, for \cref{cor:weighted}(ii) \\
+\cref{ex:k22} & worked pruning & the bound is not the minimum number of deletions \\
+\cref{ex:triangle} & where it stops & on a directed triangle the gain is exactly $M+2u$ \\
 \bottomrule
 \end{tabular}
 \end{center}}
@@ -171,6 +306,7 @@ architecture. Neither substitutes for reading the proofs of \cref{lem:deficit,le
 \cref{fig:fourmaps}: the commutative square & \cref{fig:grid}: families in the grid \\
 \cref{fig:diagonal}: the diagonal survives & \cref{fig:extremal}: the four moves of \cref{sec:incompatibility} \\
 \cref{fig:beta}: the arc weighting & \cref{fig:cycles}: non-neighbors and the partition \\
+\cref{fig:witness}: deficit $\not\Rightarrow$ concavity & \cref{fig:weightblowup}: the independent-set blowup \\
 \cref{fig:depgraph}: dependencies & \\
 \end{tabular}
 \end{center}
