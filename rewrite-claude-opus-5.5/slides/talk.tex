@@ -512,13 +512,19 @@ much as members.
 
 % ------------------------------------------------------------------
 \begin{frame}{The ledger closes up}
-\begin{columns}[c]
-\begin{column}{0.5\textwidth}
 Prune $(\Rf,\Cf)$ to $(P',Q')$, admissible, with $d'=\unc(P',Q')$:
 \begin{align*}
- \val(P',Q')&\ge\abs\Rf+\abs\Cf-(\abs H+d')+d'\\
- &>\mu+2d-d=\val(P,Q).
+ \val(P',Q')&=\underbrace{\abs{P'}+\abs{Q'}}_{\ge\,\abs\Rf+\abs\Cf-\abs H-d'}
+ +\underbrace{\unc(P',Q')}_{=\,d'}\\
+ &\ge\ \abs\Rf+\abs\Cf-\abs H\ >\ \mu+2d-d=\val(P,Q).
 \end{align*}
+{\small\textbf{Why $-d'$?} The pruning lemma allows $\abs H$ deletions plus one per
+conflict point left uncovered, and those are among the $d'$ uncovered points.
+\textbf{Why $+d'$?} It is the $\unc$ term in the definition of $\val$: uncovered
+points count like members, so those deletions are paid back exactly.\par}
+\medskip
+\begin{columns}[c]
+\begin{column}{0.5\textwidth}
 Contradiction with maximality, so \textbf{no strictly concave graph exists}
 and the theorem follows.
 
@@ -529,7 +535,7 @@ always works.
 \end{column}
 \begin{column}{0.48\textwidth}
 \centering
-\begin{tikzpicture}[yscale=0.36,xscale=0.5]
+\begin{tikzpicture}[yscale=0.3,xscale=0.5]
  \draw[dashed,thick] (-0.4,6) node[left,font=\scriptsize] {$\mu{+}d$} --(10.6,6);
  \fill[famL!45] (0,0) rectangle (1.1,4); \fill[black!18] (0,4) rectangle (1.1,6);
  \fill[famR!45] (2.4,0) rectangle (3.5,8.4);
