@@ -183,3 +183,36 @@ are proper) and in the case $S=V(D)$ of \cref{lem:blowup}.
 inequality would no longer be strict. The pruning lemma itself uses none
 of these hypotheses.
 \end{remark}
+
+\begin{remark}[Stage 3 as an algorithm]\label{rem:algorithm}
+The proof of \cref{prop:no-concave} can be \emph{run} on any oriented graph
+$G$ with positive indegrees, whether or not~\eqref{eq:concave-again} holds.
+Start with $(\Delta,\Delta)$. Given an admissible pair, form $\Rf,\Cf$,
+build $\Gamma$, compute a maximum matching and the vertex cover of
+\cref{cl:konig}, and delete the members in the cover. Everything here is
+polynomial in $\abs X$; the ``fewest conflict edges'' condition of
+\cref{sec:strategy} is used only to \emph{prove} the matching bound, not
+to construct the pruning.
+\Cref{cl:lines-proper,cl:diag-free,cl:H-uncovered,cl:new-admissible} do
+not use~\eqref{eq:concave-again}, so the new pair is admissible, and the
+ledger together with the exact identity of \cref{rem:error-term} gives
+\[
+ \val(P',Q')\ \ge\ \abs\Rf+\abs\Cf-d\ =\ \val(P,Q)-\sum_j\kappa(P_j)-\sum_i\kappa(Q_i).
+\]
+So as long as every line is strictly concave, the value strictly increases,
+and since $\val\le3\abs X^2$ this can happen at most $3\abs X^2$ times.
+When the iteration stops, some column $P_j$ or row $Q_i$ has $\kappa\ge0$:
+a nonempty proper set $U$ with $\abs U+\abs{F^2U}\ge2\abs{FU}$, found in
+polynomial time. If $G=D[T_m]$ is the blow-up of \cref{lem:blowup}, the
+master inequality~\eqref{eq:blowup-master} applied to this $U$ shows that
+its support $S$ is a nonempty proper subset of $V(D)$ with
+$\abs{F^2S\setminus FS}\ge\abs{FS\setminus S}$ (the case $S=V(D)$ always
+has $\kappa<0$, and for $S\ne V(D)$ an integer bracket with
+$m\cdot\text{bracket}+n\ge0$ and $m>n$ is nonnegative). Thus Stages~2
+and~3 together are a polynomial-time algorithm that, given an oriented
+graph with positive indegrees, finds a set $S$ violating the subset
+deficit~\eqref{eq:subset-deficit}. We do not know how to turn this into a
+polynomial-time algorithm for a Seymour \emph{vertex}: Stage~1 argues by
+minimality and would have to be unwound recursively. The animation in
+\texttt{animation/} runs exactly this iteration on a $4$-vertex graph.
+\end{remark}

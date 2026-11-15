@@ -392,6 +392,26 @@ So every conflict spans a rectangle with corners $r,z,c,h$ as in
 and $h$ is the remaining corner. Conversely, $z$ and $h$ determine the
 conflict: $r=(h_1,z_2)$ and $c=(z_1,h_2)$.
 
+\begin{remark}[Reversing the relation swaps $Z$ and $H$]\label{rem:reversal}
+Write $\leftarrow$ for the reversed relation ($x\leftarrow y$ iff $y\to x$).
+A left member $(p',j')$ and a right member $(i',s')$ conflict for
+$\leftarrow$ when $p'\leftarrow i'$ and $s'\leftarrow j'$. Take
+$(p',j')=c=(i,s)$ and $(i',s')=r=(p,j)$: the two conditions become
+$p\to i$ and $s\to j$. So $r$ and $c$ conflict for $\to$ exactly when
+$c$, now read as a \emph{left} member, and $r$, read as a \emph{right}
+member, conflict for $\leftarrow$. Under this exchange the conflict point
+$(i',j')=(p,s)$ is the old opposite corner $h$, and the new opposite corner
+$(p',s')=(i,j)$ is the old $z$. Thus $Z$ and $H$ are the same kind of object,
+seen from the two directions of the relation, and every statement about
+conflicts has a mirror image with $Z$ and $H$ exchanged. For the pruning
+lemma (\cref{lem:pruning}) the mirror image is a second inequality for the
+same two families: a pruning whose cost is at most $\abs Z$ plus the number
+of corners $h=(p,s)\in H$ that no kept member \emph{reaches}, where
+$c=(i,s)$ reaches $(p,s)$ if $p\to i$ and $r=(p,j)$ reaches $(p,s)$ if
+$s\to j$. We do not use this mirror form: in \cref{sec:contradiction} it is
+$\abs H$, not $\abs Z$, that we can bound by the number of uncovered points.
+\end{remark}
+
 \subsection{The extremal set-up}
 
 Now let the relation be the arc relation of a nonempty oriented graph $G$
@@ -600,4 +620,48 @@ every $d,d'\ge0$ only when $\lambda=1$. (The strict increase comes from the
 strict inequality in the ledger, not from the weight.) So it is essential that the pruning cost is charged partly
 to points left uncovered \emph{after} pruning ($d'$), and that this charge
 enters with the same weight as the uncovered points in the value.
+\end{remark}
+
+\begin{remark}[Move, then repair]\label{rem:move-repair}
+Here is a second reading of the ledger, which explains what the
+complements of Step~2 achieve. Call
+\[
+ \varepsilon_1(S)=\abs{\Ff S}-\abs S,\qquad \varepsilon_2(S)=\abs{\Fs S}-\abs S
+\]
+the \emph{expansion} of a family under one move. For a compatible pair,
+$\abs X^2=\abs{\Ff P}+\abs{\Fs Q}+\unc(P,Q)$, so
+\[
+ \val(P,Q)=\abs X^2-\varepsilon_1(P)-\varepsilon_2(Q):
+\]
+to maximize the value is to find admissible families that expand as little
+as possible (this is the ``fixed board'' of \cref{sec:story}). The most
+naive improvement is to \emph{move}: replace $(P,Q)$ by $(\Ff P,\Fs Q)$. Its
+value would formally be $\abs X^2-\varepsilon_1(\Ff P)-\varepsilon_2(\Fs Q)$, and
+strict concavity on every line says exactly
+\[
+ \varepsilon_1(\Ff P)<\varepsilon_1(P),\qquad \varepsilon_2(\Fs Q)<\varepsilon_2(Q),
+\]
+since $\varepsilon_1(\Ff P)<\varepsilon_1(P)$ is $\abs P+\abs{\Ff^2P}<2\abs{\Ff P}$.
+So the moved pair would gain exactly $-\sum\kappa$, the quantity of
+\cref{rem:error-term} summed over the lines. But the moved pair need not be
+admissible, and nothing forces its opposite corners to be uncovered. The
+complements $\Rf,\Cf$ of Step~2 are a \emph{different} pair with the same
+count:
+\[
+ \abs\Rf+\abs\Cf-d
+ =\abs X^2-\bigl(\abs{\Ff^2P}-\abs{\Ff P}\bigr)-\bigl(\abs{\Fs^2Q}-\abs{\Fs Q}\bigr)
+ =\abs X^2-\varepsilon_1(\Ff P)-\varepsilon_2(\Fs Q),
+\]
+and Steps~3--4 give $\val(P',Q')\ge\abs\Rf+\abs\Cf-d$. So the pruned pair is
+at least as good as the moved pair would formally be:
+\[
+ \varepsilon_1(P')+\varepsilon_2(Q')\ \le\ \varepsilon_1(\Ff P)+\varepsilon_2(\Fs Q)
+ \ <\ \varepsilon_1(P)+\varepsilon_2(Q).
+\]
+In this form \cref{sec:contradiction} is one sentence: \emph{move, then
+repair; the repair is free in terms of expansion.} The families $\Ff P$ and
+$\Rf$ are genuinely different (in random examples $\Ff P\not\subseteq\Rf$ is
+the rule, not the exception); what they share is the count. What the
+complement buys is \cref{cl:H-uncovered}: its opposite corners were
+uncovered, so the repair can be paid for.
 \end{remark}

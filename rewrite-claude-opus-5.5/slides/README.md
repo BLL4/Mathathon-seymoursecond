@@ -31,3 +31,8 @@ rank N = t, and the conflict edges give k independent vectors in ker A".
 3. Consistency pass: made the side conditions explicit (concavity applies to
    *nonempty proper* lines; κ_G(U) ≤ −m + n only when the support is proper),
    removed an unverified date, and defined I and E on the deletion slide.
+
+4. Insight pass: frame 9 ("Why pairs? Why a grid?") added; frames 19–21 now
+   present the matching bound through the three-term complex
+   ℝ^R → ℝ^Z ⊕ ℝ^H → ℝ^C (NL = AB because F₁ and F₂ commute), which replaces
+   Sylvester's inequality and rank–nullity for A.

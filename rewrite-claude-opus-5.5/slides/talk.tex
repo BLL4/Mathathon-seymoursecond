@@ -33,6 +33,9 @@
 \newcommand{\Ntwo}{N^+_2}
 \newcommand{\val}{\operatorname{val}}
 \newcommand{\unc}{\operatorname{unc}}
+\newcommand{\LB}{\left(\begin{smallmatrix}L\\ B\end{smallmatrix}\right)}
+\newcommand{\NA}{\left(\begin{smallmatrix}N & A\end{smallmatrix}\right)}
+\newcommand{\NmA}{\left(\begin{smallmatrix}N & -A\end{smallmatrix}\right)}
 \DeclareMathOperator{\rank}{rank}
 \newcommand{\cL}[1]{\textcolor{famL}{#1}}
 \newcommand{\cR}[1]{\textcolor{famR}{#1}}
@@ -621,15 +624,15 @@ For one block alone, delete all $a+b$ members: this uncovers its $ab$
 conflict points, and $a+b\le 1+ab$. \\
 The difficulty: blocks share members, and other members may still cover $z$.
 
-\medskip
+\smallskip
 \textbf{Plan.}
 \begin{enumerate}
-\setlength{\itemsep}{1pt}
+\setlength{\itemsep}{0pt}
 \item[I.] Recast pruning as a vertex cover of a bipartite graph $\Gamma$; by
 K\H{o}nig it suffices to show $\nu(\Gamma)\le\abs Z+\abs H$.
 \item[II.] The conflict matrix factors in two ways, through $\RR^Z$ and through $\RR^H$: $NL=AB$.
-\item[III.] Generic coefficients and Sylvester's inequality turn this into a rank count.
-\item[IV.] A kernel trick makes $\ker A$ large: one dimension per matched conflict edge.
+\item[III.] $NL=AB$ makes $\RR^{\Rf}\to\RR^Z\oplus\RR^H\to\RR^{\Cf}$ a complex: its two ranks sum to $\le\abs Z+\abs H$.
+\item[IV.] Generic coefficients and a kernel trick bound the ranks below by $\ell+k$ and $t$.
 \end{enumerate}
 \end{frame}
 
@@ -671,7 +674,7 @@ By K\H{o}nig, it suffices to prove
 \begin{frame}{Proving the pruning lemma, II: two factorizations}
 \begin{columns}[c]
 \begin{column}{0.5\textwidth}
-Variables $a_{xy},b_{xy}$ on the arcs. Four matrices:
+Variables $a_{xy},b_{xy}$ on the arcs:
 \begin{itemize}
 \item $L:\RR^{\Rf}\!\to\RR^Z$ and $A:\RR^H\!\to\RR^{\Cf}$ move the first coordinate ($a_{pi}$);
 \item $B:\RR^{\Rf}\!\to\RR^H$ and $N:\RR^Z\!\to\RR^{\Cf}$ move the second ($b_{sj}$).
@@ -679,6 +682,8 @@ Variables $a_{xy},b_{xy}$ on the arcs. Four matrices:
 Both routes from $r$ to $c$ give $a_{pi}b_{sj}$ exactly on conflicts:
 \[\boxed{\ NL=AB\ }\]
 The conflict matrix factors through $\RR^Z$ \emph{and} through $\RR^H$.
+{\small\textbf{Why:} $L,A$ restrict $\mathsf a^{\mathsf T}\otimes I$, $N,B$ restrict
+$I\otimes\mathsf b$; different coordinates commute.}
 \end{column}
 \begin{column}{0.47\textwidth}
 \centering
@@ -698,20 +703,19 @@ The conflict matrix factors through $\RR^Z$ \emph{and} through $\RR^H$.
 
 % ------------------------------------------------------------------
 \begin{frame}{Proving the pruning lemma, III: counting dimensions}
-Take a maximum matching with the fewest conflict edges:
-$k$ conflict edges, $\ell$ E2 edges, $t$ E3 edges.
-
-\medskip
-Choose \textbf{generic} real values for the variables (a finite product of
-nonzero polynomials is nonzero somewhere). Then
+Maximum matching with the fewest conflict edges: $k$ conflict, $\ell$ E2, $t$ E3 edges.
+$NL=AB$ says the composite below is zero, so it is a \textbf{complex}:
 \[
- \rank L=\ell,\qquad \rank N=t\qquad\text{(Edmonds: generic rank = matching number)}.
+ \RR^{\Rf}\xrightarrow{\ \LB\ }\RR^{Z}\oplus\RR^{H}\xrightarrow{\ \NmA\ }\RR^{\Cf},
+ \qquad\text{hence}\qquad \rank\LB+\rank\NA\le\abs Z+\abs H .
 \]
-If also $\dim\ker A\ge k$, then
+\textbf{Generic} real values (a finite product of nonzero polynomials is nonzero somewhere) give
+$\rank L=\ell$, $\rank N=t$ (Edmonds: generic rank $=$ matching number).
+If also $\rank\LB\ge\ell+k$ (next slide), then
 \[
- \abs H=\dim\ker A+\rank A\ \ge\ k+\rank(AB)=k+\rank(NL)\ \ge\ k+\ell+t-\abs Z
+ \nu(\Gamma)=k+\ell+t\ \le\ \rank\LB+\rank\NA\ \le\ \abs Z+\abs H.\ \checkmark
 \]
-by Sylvester's inequality. So $\nu(\Gamma)=k+\ell+t\le\abs Z+\abs H$. \checkmark
+{\small (The preprint uses rank--nullity for $A$ and Sylvester's inequality instead; the complex packages both.)}
 \end{frame}
 
 % ------------------------------------------------------------------
@@ -730,9 +734,9 @@ For each matched conflict edge $(r,c)$:
 \item $u^r\in\ker L$ with $u^r_r=1$ (since $r$ is not used by the E2 edges),
 \item $v^c\in\ker N^{\mathsf T}$ with $v^c_c=1$.
 \end{itemize}
-Then $Bu^r\in\ker A$ (as $ABu^r=NLu^r=0$), and these $k$ vectors are
-independent: any relation gives $u\in\ker B$ with $u_r\ne0=u_rv^c_c$.
-So $\dim\ker A\ge k$.
+The $\ell$ columns $\LB e_a$ ($a$ matched by E2) and the $k$ vectors $\LB u^r=(0,Bu^r)$
+are independent: the $\RR^Z$-parts kill the first coefficients, and a relation among
+the $Bu^r$ gives $u\in\ker B$ with $u_r\ne0=u_rv^c_c$. So $\rank\LB\ge\ell+k$.
 \end{frame}
 
 % ------------------------------------------------------------------
@@ -749,7 +753,8 @@ Complementing second images gains $\mu+2d$.
 \item \textbf{Pruning with an outcome-dependent cost.} Pay $\abs H$ (old uncovered
 points) plus the points left uncovered after pruning.
 \item \textbf{Linear algebra for a matching bound.} The conflict matrix factors as
-$NL=AB$, generic coefficients are used, and a kernel lemma completes the count.
+$NL=AB$ because $F_1,F_2$ commute; this gives a three-term complex, and generic
+coefficients plus a kernel lemma complete the count.
 \end{enumerate}
 \end{frame}
 

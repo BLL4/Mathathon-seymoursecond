@@ -106,6 +106,60 @@ $\abs H$ must be paid for by a conflict point that becomes uncovered. In the
 application (\cref{sec:contradiction}) uncovered points count in the
 objective exactly like members, so such trades are free.
 
+\begin{example}[Deleting less is necessary]\label{ex:star}
+The opposite extreme. Let
+$X=\{p_1,\dots,p_n\}\sqcup\{j_1,\dots,j_n\}\sqcup\{i_0,s_0\}$ with the
+arrows $p_k\to i_0$ and $s_0\to j_m$ for all $k,m$, and
+\[
+ \Rf=\{(p_k,j_m):1\le k,m\le n\},\qquad\Cf=\{c\},\quad c=(i_0,s_0).
+\]
+Every $(p_k,j_m)$ conflicts with $c$, because $p_k\to i_0$ and $s_0\to j_m$
+(\cref{fig:star}). So all $n^2+1$ members are in conflicts, while
+\[
+ Z=\{(i_0,j_m):m\le n\},\qquad H=\{(p_k,s_0):k\le n\},\qquad \abs Z+\abs H=2n.
+\]
+Deleting every member that is in a conflict costs $n^2+1$, far above the
+budget $\abs H+\abs Z=2n$ even when all of $Z$ is left uncovered. Deleting
+$c$ alone costs $1\le\abs H$ and keeps every conflict point covered.
+Together with \cref{ex:K22}, where everything must go, this shows that a
+pruning within the budget has to be chosen with some care: the pruning
+lemma is a statement about matchings, not about a greedy rule. (In the
+graph $\Gamma$ of the next subsection, $\{c\}\cup Z_R$ is a vertex cover of
+size $n+1=\nu(\Gamma)$.)
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.0]
+ \begin{scope}[yshift=-0.9cm]
+  \node[vtx] (p1) at (0,0.7) {$p_1$}; \node[vtx] (p2) at (0,-0.7) {$p_2$};
+  \node[vtx] (i0) at (1.5,0) {$i_0$};
+  \node[vtx] (s0) at (3.2,0) {$s_0$};
+  \node[vtx] (j1) at (4.7,0.7) {$j_1$}; \node[vtx] (j2) at (4.7,-0.7) {$j_2$};
+  \draw[arc] (p1)--(i0); \draw[arc] (p2)--(i0); \draw[arc] (s0)--(j1); \draw[arc] (s0)--(j2);
+ \end{scope}
+ \begin{scope}[xshift=8.0cm,yshift=0.1cm]
+  \foreach \x/\l in {0/j_1,1/j_2,2/s_0} \node[font=\small] at (\x,0.6) {$\l$};
+  \foreach \y/\l in {0/p_1,-1/p_2,-2/i_0} \node[font=\small] at (-0.7,\y) {$\l$};
+  \foreach \x in {0,1,2} \foreach \y in {0,-1,-2} \node[gridpt] at (\x,\y) {};
+  \node[Lpt] (r11) at (0,0) {}; \node[Lpt] (r12) at (1,0) {}; \node[Lpt] (r21) at (0,-1) {}; \node[Lpt] (r22) at (1,-1) {};
+  \node[Rpt] (c) at (2,-2) {};
+  \node[Zpt] at (0,-2) {}; \node[Zpt] at (1,-2) {};
+  \node[Hpt] at (2,0) {}; \node[Hpt] at (2,-1) {};
+  \draw[famL,-{Stealth[length=1.6mm]},thick] (r21)--(0,-1.75);
+  \draw[famL,-{Stealth[length=1.6mm]},thick] (r22)--(1,-1.75);
+  \draw[famR,-{Stealth[length=1.6mm]},thick] (c)--(1.25,-2);
+ \end{scope}
+\end{tikzpicture}
+\caption{\Cref{ex:star} with $n=2$; only the rows $p_1,p_2,i_0$ and the
+columns $j_1,j_2,s_0$ of the grid are drawn. The four left members (blue)
+all conflict with the single right member $c$ (orange). The conflict points
+(green) lie in row $i_0$ and the opposite corners (purple) in column $s_0$.
+Deleting $c$ removes every conflict at cost $1$; deleting the left members
+instead would cost $n^2=4$ against $\abs H=2$.}
+\label{fig:star}
+\end{figure}
+
 \subsection{Reduction to a matching bound}\label{sec:gamma}
 
 \begin{definition}[The augmented graph]\label{def:gamma}
@@ -272,7 +326,8 @@ since a vertex is matched only once.
 \caption{The three kinds of edges in the maximum matching $\Mm$: conflict
 edges (black), edges of $\Gamma_L$ from $\Rf$ to $Z_R$ (blue) and edges of
 $\Gamma_N$ from $Z_L$ to $\Cf$ (orange). The linear algebra handles $\ell$ and $t$
-by the ranks of two matrices $L,N$, and $k$ by a kernel.}
+by the ranks of two matrices $L,N$, and $k$ by vectors of $\ker L$ that
+survive under $B$.}
 \label{fig:decomposition}
 \end{figure}
 
@@ -296,13 +351,17 @@ contradicting the choice of $\Mm$. The argument for $\beta$ is symmetric.
 We will put real numbers on the arrows of the relation and build four
 matrices $L,N,A,B$ (\cref{sec:matrices}). We will show:
 \begin{itemize}
+\item the identity $NL=AB$ makes
+$\RR^{\Rf}\to\RR^Z\oplus\RR^H\to\RR^{\Cf}$ a \emph{complex}, so the ranks of
+its two maps add up to at most $\abs Z+\abs H$ (\cref{sec:rank});
 \item $\rank L=\ell$ and $\rank N=t$, using Edmonds' principle that a generic
 matrix with prescribed zero pattern has rank equal to the maximum matching
 size (\cref{sec:generic});
-\item $\dim\ker A\ge k$, using the conflict edges of $\Mm_1$ and a kernel
-lemma (\cref{sec:kernel});
-\item these three facts imply $k+\ell+t\le\abs Z+\abs H$ (\cref{sec:rank}).
+\item the $k$ conflict edges of $\Mm_1$ add $k$ dimensions to the first
+map, through vectors of $\ker L$ that $B$ keeps independent; this uses a
+kernel lemma (\cref{sec:kernel}).
 \end{itemize}
+Together: $\nu(\Gamma)=k+\ell+t\le\abs Z+\abs H$.
 
 \subsection{Four matrices and two factorizations}\label{sec:matrices}
 
@@ -394,30 +453,80 @@ supported on the conflict edges. The first factorization passes through
 $\RR^Z$ and the second through $\RR^H$. The whole proof plays these two
 against each other.
 
-\subsection{The rank inequality}\label{sec:rank}
-
-\begin{claim}\label{cl:rank-inequality}
-Suppose that for some real assignment
+\begin{remark}[The four matrices are two commuting operators]\label{rem:kronecker}
+There is a structural reason for \cref{cl:commute}. Let
+$\mathsf a,\mathsf b\in\RR^{X\times X}$ be the matrices of the variables,
+$(\mathsf a)_{xy}=a_{xy}$ and $(\mathsf b)_{xy}=b_{xy}$ (zero off the relation),
+and consider the two operators on $\RR^{X\times X}$, with coordinates
+indexed by grid points,
 \[
- \rank L=\ell,\qquad\rank N=t,\qquad\dim\ker A\ge k .
+ (\mathcal A x)_{(i,j)}=\sum_{p}a_{pi}\,x_{(p,j)},\qquad
+ (\mathcal B x)_{(i,s)}=\sum_{j}b_{sj}\,x_{(i,j)} .
 \]
-Then $k+\ell+t\le\abs Z+\abs H$.
+In Kronecker notation $\mathcal A=\mathsf a^{\T}\otimes I$ and
+$\mathcal B=I\otimes\mathsf b$: $\mathcal A$ moves the first coordinate
+forward along the relation and $\mathcal B$ moves the second coordinate
+backward. They are the linear versions of $\Ff$ and of $\Fs$ for the
+reversed relation, and they \emph{commute},
+$\mathcal A\mathcal B=\mathcal B\mathcal A=\mathsf a^{\T}\otimes\mathsf b$,
+simply because they act on different coordinates. This is the linear
+shadow of $\Ff\Fs=\Fs\Ff$. The four matrices are restrictions of these
+two: $L$ and $A$ are $\mathcal A$ with rows and columns restricted to
+$Z\times\Rf$ and $\Cf\times H$, while $N$ and $B$ are $\mathcal B$
+restricted to $\Cf\times Z$ and $H\times\Rf$. The $(c,r)$ entry of
+$\mathcal B\mathcal A$ is a single term, with middle index $z=(i,j)$, and
+the $(c,r)$ entry of $\mathcal A\mathcal B$ is a single term with middle
+index $h=(p,s)$; both equal $a_{pi}b_{sj}$. When this is nonzero $r$ and
+$c$ conflict, so $z\in Z$ and $h\in H$, and restricting the middle index to
+$Z$, respectively $H$, loses nothing. That is $NL=AB$. The whole of
+\cref{sec:pruning} can thus be read as linear algebra on the grid, with the
+same two commuting moves as in \cref{sec:pairs}.
+\end{remark}
+
+\subsection{A three-term complex}\label{sec:rank}
+
+The identity $NL=AB$ says that the square in \cref{fig:square} commutes.
+Put the two routes side by side: the maps
+\[
+ \LB:\RR^{\Rf}\to\RR^{Z}\oplus\RR^{H},\qquad
+ \NmA:\RR^{Z}\oplus\RR^{H}\to\RR^{\Cf}
+\]
+compose to $NL-AB=0$. In other words,
+\begin{equation}\label{eq:complex}
+ \RR^{\Rf}\xrightarrow{\ \LB\ }\RR^{Z}\oplus\RR^{H}\xrightarrow{\ \NmA\ }\RR^{\Cf}
+\end{equation}
+is a \emph{complex}: the image of the first map lies in the kernel of the
+second.
+
+\begin{claim}[Dimension count]\label{cl:rank-inequality}
+For every assignment, $\rank\LB+\rank\NA\le\abs Z+\abs H$.
 \end{claim}
 
 \begin{proof}
-By rank--nullity for $A$ (which has $\abs H$ columns), and since a product has
-rank at most that of each factor,
-\[
- \abs H=\dim\ker A+\rank A\ \ge\ k+\rank(AB)=k+\rank(NL).
-\]
-Applying rank--nullity to $N$ restricted to $\im L$, and then to $N$ itself
-(which has $\abs Z$ columns),
-\[
- \rank(NL)=\rank L-\dim(\im L\cap\ker N)\ \ge\ \rank L-\dim\ker N=\ell-(\abs Z-t).
-\]
-This is Sylvester's rank inequality $\rank(NL)\ge\rank L+\rank N-\abs Z$.
-Combining gives $\abs H\ge k+\ell+t-\abs Z$.
+By~\eqref{eq:complex} and rank--nullity for the second map,
+$\rank\LB\le\dim\ker\NmA=\abs Z+\abs H-\rank\NmA$, and
+$\rank\NmA=\rank\NA$, since changing the sign of a block of columns does
+not change the rank.
 \end{proof}
+
+So \cref{prop:matching-bound} follows once we find an assignment with
+\begin{equation}\label{eq:two-lower-bounds}
+ \rank\LB\ \ge\ \ell+k\qquad\text{and}\qquad \rank\NA\ \ge\ t .
+\end{equation}
+The second inequality only needs $\rank N=t$, as $N$ is a submatrix of
+$\NA$. In the first, $\ell$ comes from $\rank L=\ell$, and the remaining
+$k$ dimensions come from the conflict edges of $\Mm_1$: each gives a vector
+of $\ker L$ that $B$ does not kill, and these images stay independent. The
+next two subsections provide the assignment and the vectors.
+
+\begin{remark}
+The original preprint counts in two steps, with rank--nullity for $A$ and
+Sylvester's inequality $\rank(NL)\ge\rank L+\rank N-\abs Z$, placing the
+$k$ extra dimensions in $\ker A$, where $B$ sends $\ker L$ because
+$AB=NL$. The complex~\eqref{eq:complex} packages both steps into
+\cref{cl:rank-inequality}, and $\ker A$ is no longer needed. The Lean
+formalization follows the two-step count.
+\end{remark}
 
 \subsection{Choosing the coefficients}\label{sec:generic}
 
@@ -527,6 +636,26 @@ rank $2$) the conclusion fails: $x=y=(1,-1)$.
 So at a generic point the left and right kernels ``avoid each other'' on
 the support. We apply this to the matrices $\Phi^{p,i}$.
 
+\begin{remark}[What the kernel lemma says combinatorially]\label{rem:DM}
+Read $T$ as a bipartite graph between the rows $S$ and the columns $J$, and
+call a column \emph{inessential} if some maximum matching of $T$ misses it;
+likewise for rows. If $x\in\ker\Phi$ and $x_j\ne0$, then column $j$ of
+$\Phi$ is a combination of the other columns, so deleting it does not lower
+the rank. The matrix without column $j$ is supported in $T\setminus\{j\}$,
+so its rank is at most $\nu(T\setminus\{j\})$ by the Leibniz argument of
+\cref{cl:edmonds}(a), while $\rank\Phi=\nu(T)$. Hence
+$\nu(T\setminus\{j\})=\nu(T)$: some maximum matching misses $j$. So
+$\ker\Phi$ is supported on inessential columns and $\ker\Phi^\T$ on
+inessential rows, and \cref{lem:kernel} says: \emph{there is no edge of
+$T$ between an inessential row and an inessential column.} This is a
+basic fact of matching theory, part of the Dulmage--Mendelsohn
+decomposition of a bipartite graph~\cite{DulmageMendelsohn1958,LovaszPlummer1986},
+and the perturbation argument above is a quick proof of it. Only the
+maximum rank is needed, not that the entries be generic. In
+\cref{cl:conflict-kernel} the graph is the relation $s\to j$ between
+$S_i$ and $J_p$, and a conflict $(r,c)$ is one of its edges.
+\end{remark}
+
 \begin{claim}[Kernels separate conflicts]\label{cl:conflict-kernel}
 For every $u\in\ker B$, every $v\in\ker N^\T$, and every conflicting pair
 $r\in\Rf$, $c\in\Cf$,
@@ -564,7 +693,7 @@ perturbation in its proof is only a thought experiment about $\Phi^{p,i}$
 and does not change any of the other matrices.
 
 \begin{claim}\label{cl:kerA}
-$\dim\ker A\ge k$.
+$\rank\LB\ge\ell+k$.
 \end{claim}
 
 \begin{proof}
@@ -577,29 +706,67 @@ columns $Le_a$, $a\in R_\alpha$. That is, there is a vector
 Similarly, since $c\notin C_\beta$, \cref{cl:simultaneous}(b) gives
 $v^c=e_c+\sum_{b\in C_\beta}\mu^c_be_b\in\ker N^\T$, with $v^c_c=1$.
 
-\emph{The vectors $Bu^r$ lie in $\ker A$:} $A(Bu^r)=N(Lu^r)=0$ by \cref{cl:commute}.
-
-\emph{They are linearly independent ($r\in R_1$):} suppose
-$\sum_{r\in R_1}\theta_rBu^r=0$. Then $u=\sum_r\theta_ru^r\in\ker B$. For each
-$r\in R_1$, with partner $c$ in $\Mm_1$, \cref{cl:conflict-kernel} applied to $u$
-and $v^c$ gives $u_r=u_rv^c_c=0$. But $u_r=\theta_r$, because $u^{r'}$ is supported
-on $\{r'\}\cup R_\alpha$ and $R_1\cap R_\alpha=\varnothing$. So all $\theta_r=0$.
+We claim that the $\ell+k$ vectors
+\[
+ \LB e_a=(Le_a,Be_a)\quad(a\in R_\alpha),\qquad
+ \LB u^r=(0,Bu^r)\quad(r\in R_1)
+\]
+are linearly independent. Suppose
+$\sum_{a\in R_\alpha}\theta_a\LB e_a+\sum_{r\in R_1}\theta_r\LB u^r=0$.
+The $\RR^Z$-components give $\sum_a\theta_aLe_a=0$, and the columns $Le_a$,
+$a\in R_\alpha$, are independent by \cref{cl:simultaneous}(a), so every
+$\theta_a=0$. The $\RR^H$-components then give $\sum_r\theta_rBu^r=0$, that
+is, $u=\sum_{r\in R_1}\theta_ru^r\in\ker B$. For each $r\in R_1$, with
+partner $c$ in $\Mm_1$, \cref{cl:conflict-kernel} applied to $u$ and $v^c$
+gives $u_r=u_rv^c_c=0$. But $u_r=\theta_r$, because $u^{r'}$ is supported on
+$\{r'\}\cup R_\alpha$ and $R_1\cap R_\alpha=\varnothing$. So all $\theta_r=0$.
 \end{proof}
 
 \begin{proof}[Proof of \cref{prop:matching-bound} and of \cref{lem:pruning}]
-At the assignment fixed after \cref{cl:simultaneous} we have
-$\rank L=\ell$, $\rank N=t$, and $\dim\ker A\ge k$ by \cref{cl:kerA}. By \cref{cl:rank-inequality},
-$\nu(\Gamma)=k+\ell+t\le\abs Z+\abs H$. \Cref{cl:konig} gives a vertex cover of
-this size with no isolated vertex, and \cref{cl:cover-to-pruning} turns it into
-the required pruning.
+At the assignment fixed after \cref{cl:simultaneous} we have $\rank N=t$,
+and $\rank\LB\ge\ell+k$ by \cref{cl:kerA}. By \cref{cl:rank-inequality},
+\[
+ \nu(\Gamma)=k+\ell+t\ \le\ \rank\LB+\rank\NA\ \le\ \abs Z+\abs H .
+\]
+\Cref{cl:konig} gives a vertex cover of this size with no isolated vertex,
+and \cref{cl:cover-to-pruning} turns it into the required pruning.
 \end{proof}
 
 \begin{idea}[Summary of the pruning lemma]
-The matching bound is the heart of the matter. A maximum matching of $\Gamma$
-consists of $\ell$ edges counted by $\rank L$, $t$ edges counted by $\rank N$,
-and $k$ conflict edges. Each conflict edge contributes a kernel vector of $L$
-that $B$ maps into $\ker A$. The two factorizations of the conflict matrix,
-$NL=AB$, make this possible, and the kernel lemma keeps these vectors
-independent. Counting dimensions in $\RR^H$ then gives
-$k+\ell+t\le\abs Z+\abs H$.
+The matching bound is the heart of the matter. Because $\Ff$ and $\Fs$
+commute, the conflict matrix factors through $\RR^Z$ and through $\RR^H$,
+$NL=AB$, and this makes $\RR^{\Rf}\to\RR^Z\oplus\RR^H\to\RR^{\Cf}$ a
+complex: the ranks of its two maps add up to at most $\abs Z+\abs H$. A
+maximum matching of $\Gamma$ certifies lower bounds for these ranks:
+$\ell$ edges through $L$ and $t$ edges through $N$ (generic rank $=$
+matching number), and $k$ conflict edges, each contributing a vector of
+$\ker L$ whose image under $B$ is new. The kernel lemma keeps these images
+independent.
 \end{idea}
+
+\begin{remark}[Towards a combinatorial proof?]\label{rem:combinatorial}
+Neither orientation nor linear algebra appears in the \emph{statement} of
+\cref{prop:matching-bound}, and one may ask for a proof by alternating
+paths. Here is what a maximum matching sees. With the notation of
+\cref{sec:strategy}, let $Z_\alpha$ and $Z_\beta$ be the sets of $z\in Z$
+whose copies $z_R$, respectively $z_L$, are matched by $\Mm$. Then
+\[
+ \nu(\Gamma)=k+\abs{Z_\alpha}+\abs{Z_\beta}
+ =k+\abs{Z_\alpha\cup Z_\beta}+\abs{Z_\alpha\cap Z_\beta},
+\]
+so the bound would follow from $k+\abs{Z_\alpha\cap Z_\beta}\le\abs H$.
+Each of the $k+\abs{Z_\alpha\cap Z_\beta}$ objects on the left comes with
+an opposite corner: a conflict edge $(r,c)$ has its $h$, and a doubly
+matched $z$ is matched to some $r_z$ and some $c_z$, which both cover $z$
+and therefore conflict, with a corner $h_z$. If these corners were always
+distinct we would be done. They need not be, and the inequality can fail
+for a maximum matching with the fewest conflict edges. In a computer
+search over about $5000$ random instances with small $\Gamma$ (the folder
+\texttt{experiments/}), there was always \emph{some} maximum matching
+satisfying $k+\abs{Z_\alpha\cap Z_\beta}\le\abs H$. Whether this holds in
+general, and whether it has a direct proof, we do not know. The kernel
+lemma itself has a combinatorial meaning (\cref{rem:DM}); the place where
+linear algebra seems essential is the \emph{sum} $\sum_r\theta_ru^r$ in the
+proof of \cref{cl:kerA}, which handles several alternating structures at
+once.
+\end{remark}
