@@ -50,14 +50,13 @@ def user_text(entry):
     msg = entry.get("message") or {}
     content = msg.get("content")
     if isinstance(content, str):
-        return content.strip() or None
-    parts = []
-    for b in content or []:
-        if isinstance(b, dict) and b.get("type") == "text":
-            parts.append(b.get("text", ""))
-    text = "\n".join(parts).strip()
+        text = content.strip()
+    else:
+        parts = [b.get("text", "") for b in content or []
+                 if isinstance(b, dict) and b.get("type") == "text"]
+        text = "\n".join(parts).strip()
     if not text or text.startswith("<system-reminder>") or "<local-command-stdout>" in text \
-            or text.startswith("<command-name>"):
+            or "<command-name>" in text:
         return None
     return text
 
