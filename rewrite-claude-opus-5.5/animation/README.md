@@ -14,10 +14,12 @@ Source: [`why_grid.py`](why_grid.py), scene `WhyGrid`.
 1. **Concavity alone is not contradictory.** The complete digraph on 4
    vertices with all opposite arcs satisfies (G1) and (G2) (checked by
    `engine.py`). So the proof must use "no opposite arcs".
-2. **Orientation lives on pairs.** On the digraph 1⇄2, 2→3, 3→1, the
+2. **Orientation lives on pairs.** To see what orientation forbids, the
+   video first shows a digraph that is *not* oriented (1⇄2, 2→3, 3→1): the
    vertical image F₁Δ = Aᵀ and the horizontal image F₂Δ = A of the diagonal
-   meet at (1,2) and (2,1): opposite arcs are a conflict. After deleting
-   2→1 the graph is oriented and the images are disjoint.
+   meet at (1,2) and (2,1), a conflict. Removing the opposite arc gives our
+   situation, an oriented graph: the images never meet, so (Δ,Δ) is a valid
+   starting pair. This is the only place Stage 3 uses orientation.
 3. **Concavity lifts line by line:** a column for F₁, a row for F₂.
 4. **A fixed board.** Disjoint images give |X|² = |F₁P| + |F₂Q| + unc, so
    val = |X|² − (|F₁P| − |P|) − (|F₂Q| − |Q|). Concavity says expansion

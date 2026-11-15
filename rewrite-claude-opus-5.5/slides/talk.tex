@@ -298,18 +298,18 @@ rows and columns at once. \emph{Next slide: why.}
 
 % ------------------------------------------------------------------
 \begin{frame}{Why pairs? Why a grid?}
-\begin{alertblock}{(G1)+(G2) alone are \emph{not} contradictory}
-\small $K_n^{\leftrightarrow}$ ($n\ge4$, all opposite arcs) satisfies both. So we must use \textbf{no opposite arcs}.
+\begin{alertblock}{$G$ is oriented, and the proof must \emph{use} it somewhere}
+\footnotesize (G1)+(G2) also hold for $K_n^{\leftrightarrow}$ (all opposite arcs, $n\ge4$): vertex sets
+$U,FU,F^2U$ alone cannot see orientation, a statement about \textbf{pairs} $(i,j)$.
 \end{alertblock}
 \vspace{-3pt}
 \begin{columns}[T]
 \begin{column}{0.62\textwidth}
 \small
 \begin{enumerate}\setlength{\itemsep}{2pt}
-\item \textbf{Orientation lives on pairs:} $A\cap A^{\mathsf T}=\varnothing$ for $A=\{(i,j):i\to j\}$.
-As $F_2\Delta=A$, $F_1\Delta=A^{\mathsf T}$:\
-oriented $\iff F_1\Delta\cap F_2\Delta=\varnothing$.
-Opposite arcs $=$ a \cZ{conflict}.
+\item \textbf{Where pairs live: the grid.} $F_2\Delta=A$, $F_1\Delta=A^{\mathsf T}$:
+oriented $\iff F_1\Delta\cap F_2\Delta=\varnothing\iff(\Delta,\Delta)$ admissible.
+Stage 3 uses orientation \emph{only} here: it provides the seed.
 \item \textbf{Concavity lifts to pairs} line by line:
 columns for $F_1$, rows for $F_2$.
 \item \textbf{A fixed board of $\abs X^2$ cells.} Disjoint images:
@@ -339,13 +339,12 @@ conflicts are paid in free cells.
   \draw[-{Stealth[length=1.5mm]},famL,thick,shorten >=2mm] (d1) -- (1,-2.4);
   \draw[-{Stealth[length=1.5mm]},famR,thick,shorten >=2mm] (d2) -- (1,-2.4);
  \end{scope}
- \node[font=\scriptsize,align=center] at (0.6,-4.6) {$1\rightleftarrows2$: {\color{famL}$F_1\Delta$} and {\color{famR}$F_2\Delta$}\\ meet at \cZ{$(2,1)$, $(1,2)$}};
+ \node[font=\scriptsize,align=center] at (0.6,-4.6) {what orientation forbids: with $1\rightleftarrows2$,\\ {\color{famL}$F_1\Delta$} and {\color{famR}$F_2\Delta$} meet at \cZ{$(2,1)$, $(1,2)$}};
 \end{tikzpicture}
 \end{column}
 \end{columns}
-\vspace{4pt}
-\small\textbf{Story:} the grid is where \emph{both} hypotheses act: one family per direction,
-and compatibility $F_1P\cap F_2Q=\varnothing$ generalizes orientation.
+\small\textbf{Story:} the grid is where \emph{both} hypotheses act: concavity line by line, orientation as the
+seed $(\Delta,\Delta)$. After the seed, everything holds for any relation.
 \end{frame}
 
 % ------------------------------------------------------------------

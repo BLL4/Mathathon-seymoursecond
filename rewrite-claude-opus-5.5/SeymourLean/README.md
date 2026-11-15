@@ -13,8 +13,8 @@ a new `axiom`.
 ```
 
 **Evidence without rebuilding.** `build.log` records a full `lake build`, the output of
-`lake env lean CheckAxioms.lean` (the statement and `#print axioms` for the main theorem and
-the pruning lemma) and a `grep` for `sorry`/`admit`/`axiom`. To reproduce:
+`lake env lean CheckAxioms.lean` (the statement and `#print axioms` for the main theorem,
+the pruning lemma and the theorems of the insights pass). To reproduce:
 
 ```sh
 lake exe cache get && lake build && lake env lean CheckAxioms.lean
@@ -58,10 +58,17 @@ The definitions are in `SeymourLean/Defs.lean`:
 | `generic_kernel` | Generic | kernel lemma for a generic matrix | sec4 Lemma `lem:kernel` |
 | `NL_eq_AB` | MatchingCore | `NL = AB` | sec4 Claim `cl:commute` |
 | `kernel_claim` | MatchingCore | `u ∈ ker B`, `v ∈ ker Nᵀ`, `r,c` conflict ⇒ `u_r v_c = 0` | sec4 Claim `cl:conflict-kernel` |
+| `rank_add_rank_le_of_mul_eq_zero`, `sideCols_mul_stackRows`, `complex_count` | ComplexCount | `G F = 0 ⇒ rank F + rank G ≤ dim(middle)`; `NL = AB ⇒ (N,-A)(L;B) = 0`; the count `k+ℓ+t ≤ \|Z\|+\|H\|` from independent columns of `L`, `Nᵀ` and kernel vectors of `L` with independent images under `B` | sec4 `sec:rank`, Claims `cl:rank-inequality`, `cl:kerA` |
+| `dimension_count` | MatchingCore | `rank (L;B) + rank (N,-A) ≤ \|Z\|+\|H\|` for the matrices of the paper | sec4 Claim `cl:rank-inequality` |
 | `core_bound` | MatchingCore | `k+ℓ+t ≤ \|Z\|+\|H\|` for a decomposed matching with the two maximality properties | sec4 Claims `cl:kerA`, `cl:rank-inequality` |
 | `matchingBound` | MatchingBound | `ν(Γ) ≤ \|Z\|+\|H\|` | sec4 Prop. `prop:matching-bound` |
 | `pruningLemma` | MatchingBound | the pruning lemma, proved | sec4 Lemma `lem:pruning` |
 | `seymour_second_neighbourhood` | Final | the main theorem, unconditional | Theorem `thm:main` |
+| `F1_F2_comm`, `kronecker_comm` | Insights | `F₁F₂ = F₂F₁`; `(aᵀ⊗I)(I⊗b) = (I⊗b)(aᵀ⊗I)` | sec4 Remark `rem:kronecker` |
+| `diag_compatible_iff_oriented`, `exists_admissible_iff_oriented` | Insights | `(Δ,Δ)` compatible ⇔ oriented; an admissible pair exists ⇔ oriented | sec3 Lemma `lem:admissible-iff-oriented` |
+| `conflict_swap`, `Zset_swap`, `Hset_swap` | Insights | reversing the relation swaps the roles in a conflict and exchanges `Z` and `H` | sec3 Remark `rem:reversal` |
+| `gain_identity`, `moved_identity` | Insights | `\|R\|+\|C\|+Σκ = μ+2d`; `\|R\|+\|C\|-d` is the formal value of `(F₁P,F₂Q)` | sec3 Remark `rem:move-repair`, sec5 Remark `rem:algorithm` |
+| `step_ledger`, `step_value` | Insights | for any relation and admissible `(P,Q)`: pruning the complements gives an admissible pair of value `≥ \|R\|+\|C\|-d = val(P,Q) - Σκ`, no concavity assumed | sec3 `sec:ledger` Steps 3–4, sec5 Remark `rem:algorithm` |
 
 ## Where the formal proof differs from the paper (same mathematics, different route)
 
@@ -90,9 +97,12 @@ The definitions are in `SeymourLean/Defs.lean`:
    Any matrix `Ψ` supported there has `rank Ψ` independent columns. Hall gives a matching of the
    support saturating them, so the same columns of the generic `Φ` are independent. The lemma is
    stated for `Φᵀ`, which is harmless.
-6. **Rank inequality.** We use `Sylvester: rank L + rank N ≤ rank(NL) + |Z|` (proved in `LinAlg`),
-   rank–nullity for `A` in the form `rank W + rank A ≤ |H|` when `AW = 0`, and
-   `rank(AB) ≤ rank A`.
+6. **Rank inequality.** As in the paper (`sec:rank`), the count goes through the three-term complex
+   `K^R → K^Z ⊕ K^H → K^C`: Sylvester's inequality (`rank_mul_ge` in `LinAlg`) applied to the zero
+   product `(N,-A)(L;B) = NL - AB = 0` gives `rank (L;B) + rank (N,-A) ≤ |Z| + |H|`, and the matching
+   gives `rank (L;B) ≥ ℓ + k` (independent columns `R_α` of `L` plus the vectors `(0, B u^r)`) and
+   `rank (N,-A) ≥ rank N ≥ t`. An earlier version of the project used Sylvester twice
+   (`rank L + rank N ≤ rank(NL) + |Z|` and `rank W + rank A ≤ |H|` for `AW = 0`).
 
 ## Notes on the mathematics
 

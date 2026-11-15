@@ -25,6 +25,10 @@ rule out an oriented graph $G$ on $X$ with
 \item[(G2)] $\abs U+\abs{F^2U}<2\abs{FU}$ for every nonempty proper $U\subseteq X$.
 \end{itemize}
 
+The graph $G$ handed to us by \cref{prop:reduction} is oriented. The point
+of this subsection is not to make it so, but to find a place where that
+fact can be \emph{used}.
+
 \paragraph{Concavity alone is not contradictory.}
 Neither (G1) nor (G2) mentions the orientation, and without it both
 can hold. Let $K_n^{\leftrightarrow}$ be the complete digraph on $n\ge4$
@@ -68,7 +72,34 @@ the vertical image and the horizontal image of the diagonal do not meet
 (\cref{fig:story}). A pair of opposite arcs $p\rightleftarrows i$ shows up
 as a point $(i,p)$ reached both vertically from $(p,p)$ and horizontally
 from $(i,i)$. This is the simplest instance of what \cref{def:conflict} will
-call a \emph{conflict}.
+call a \emph{conflict}. In the language of \cref{def:value} below, the
+equivalence says that $(\Delta,\Delta)$ is \emph{admissible}, and in fact
+it is sharp in the following sense.
+
+\begin{lemma}[Admissible pairs exist exactly for oriented graphs]\label{lem:admissible-iff-oriented}
+Let $\to$ be any relation on a finite set $X$. The following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $\to$ is irreflexive and antisymmetric (the relation of an oriented graph);
+\item $\Ff\Delta\cap\Fs\Delta=\varnothing$;
+\item there are families $P,Q\supseteq\Delta$ with $\Ff P\cap\Fs Q=\varnothing$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+$\Ff\Delta=\{(i,j):j\to i\}$ and $\Fs\Delta=\{(i,j):i\to j\}$ meet at $(i,j)$
+exactly when $j\to i$ and $i\to j$; for $i=j$ this is a loop and for $i\ne j$
+a pair of opposite arcs. So (i)$\Leftrightarrow$(ii). (ii)$\Rightarrow$(iii)
+with $P=Q=\Delta$, and (iii)$\Rightarrow$(ii) because $\Ff$ and $\Fs$ are
+monotone, so $\Ff\Delta\cap\Fs\Delta\subseteq\Ff P\cap\Fs Q$.
+\end{proof}
+
+This lemma is where orientation enters Stage~3, and it is the \emph{only}
+place (\cref{rem:hypotheses}): \cref{sec:pruning,sec:contradiction} work
+for an arbitrary relation that has an admissible pair, and by the lemma,
+having one is the same as being oriented. In other words, Stage~3 proves:
+\emph{a finite relation with positive indegrees that admits an admissible
+pair is not strictly concave}, and the grid is the device that turns ``no
+opposite arcs'' into ``there is a seed for the extremal argument''.
 
 \begin{figure}[ht]
 \centering
@@ -140,10 +171,8 @@ $r\in P$ and $c\in Q$ is a ``pair of opposite arcs'' between the column of
 $r$ and the row of $c$. With only one family, or only one direction, the grid
 would just be $\abs X$ independent copies of $X$, and an argument there
 could not tell $G$ apart from $K_n^{\leftrightarrow}$. It is the interaction
-of a vertical family with a horizontal one that encodes the orientation. In
-fact, in \cref{sec:pairs,sec:pruning,sec:contradiction} the orientation is
-used exactly once: to see that $(\Delta,\Delta)$ is compatible
-(\cref{lem:diag-compatible}).
+of a vertical family with a horizontal one that encodes the orientation,
+and \cref{lem:admissible-iff-oriented} says that this encoding is exact.
 
 \paragraph{Why it works: a fixed board and a budget.}
 The grid has a fixed number $\abs X^2$ of cells. If $P$ and $Q$ are

@@ -25,16 +25,34 @@ Mathlib's Hall theorem) and \cref{cl:cover-to-pruning};
 \texttt{MatchingBound.lean}: Sylvester's inequality, the kernel lemma
 (\cref{lem:kernel}), $NL=AB$, \cref{cl:conflict-kernel},
 \cref{prop:matching-bound}, and \cref{lem:pruning};
-\item \texttt{Final.lean}: the unconditional theorem.
+\item \texttt{Final.lean}: the unconditional theorem;
+\item \texttt{Insights.lean}: the remarks of the insights pass, see below.
 \end{itemize}
+The remarks added in \cref{sec:story,sec:ledger,sec:pruning,sec:contradiction}
+are formalized in \texttt{Insights.lean}: \texttt{F1\_F2\_comm} ($\Ff\Fs=\Fs\Ff$)
+and \texttt{kronecker\_comm} (\cref{rem:kronecker});
+\texttt{diag\_compatible\_iff\_oriented} and
+\texttt{exists\_admissible\_iff\_oriented} (\cref{lem:admissible-iff-oriented});
+\texttt{conflict\_swap}, \texttt{Zset\_swap}, \texttt{Hset\_swap}
+(\cref{rem:reversal}); \texttt{gain\_identity} (the exact form of
+\cref{cl:gain}) and \texttt{moved\_identity} (\cref{rem:move-repair});
+and \texttt{step\_ledger}, \texttt{step\_value}: for an arbitrary relation
+and any admissible pair, pruning the complements gives an admissible pair of
+value at least $\val(P,Q)-\sum\kappa$ (\cref{rem:algorithm}), with no
+concavity assumed. Not formalized: the Dulmage--Mendelsohn reading of the
+kernel lemma (\cref{rem:DM}), the computer observations of
+\cref{rem:combinatorial}, and the running-time statement of
+\cref{rem:algorithm}. \texttt{CheckAxioms.lean} prints the axioms of
+these theorems as well.
 A few steps are argued differently in Lean. Generic coefficients are taken
 as the variables themselves in the fraction field of a polynomial ring
 rather than as a real point. Only $\rank L\ge\ell$ is used, obtained from
 Hall's theorem and an exchange argument, instead of the full statement
-$\rank L=\nu(\Gamma_L)$. The rank count follows the original preprint
-(Sylvester's inequality and rank--nullity for $A$); \cref{sec:rank} of
-this paper packages the same two inequalities as a three-term complex,
-which is logically equivalent. Strong connectivity is replaced by ``every nonempty
+$\rank L=\nu(\Gamma_L)$. The rank count goes through the three-term complex of \cref{sec:rank}
+(\texttt{ComplexCount.lean}: \texttt{complex\_count} is the counting of
+\cref{cl:kerA,cl:rank-inequality}, and \texttt{dimension\_count} is
+\cref{cl:rank-inequality} for the matrices of the paper); the earlier
+version of the project used Sylvester's inequality twice instead. Strong connectivity is replaced by ``every nonempty
 proper set has an arc leaving it''. The formalization found no mathematical
 error in the paper. It also shows that the pruning lemma holds for an
 arbitrary relation and that orientation is used exactly at the places listed

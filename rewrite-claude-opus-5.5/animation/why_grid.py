@@ -130,7 +130,8 @@ class WhyGrid(Scene):
         pos = {0: np.array([-5.6, 1.5, 0]), 1: np.array([-6.3, 0.2, 0]), 2: np.array([-4.9, 0.2, 0])}
         verts, arcs = self.graph(REL_CYCLE, pos)
         gname = Tex(r"$G$", font_size=32).move_to(np.array([-5.6, 2.3, 0]))
-        cap = self.caption(r"A digraph with one pair of opposite arcs, $1\rightleftarrows 2$.", cap)
+        cap = self.caption(r"Our $G$ is oriented. To see what that buys, first look at a digraph "
+                           r"that is \emph{not}: it has the opposite arcs $1\rightleftarrows 2$.", cap)
         self.play(Create(verts), FadeIn(gname))
         self.play(LaggedStart(*[GrowArrow(a) for a in arcs.values()], lag_ratio=0.15))
 
@@ -178,7 +179,7 @@ class WhyGrid(Scene):
         dia = VGroup(*[Square(side_length=0.22, color=GREEN_Z, fill_opacity=1).rotate(PI / 4)
                        .move_to(cell(i, j)).set_z_index(5) for i, j in both])
         cap = self.caption(r"$(1,1)$ moves down and $(2,2)$ moves left: both reach $(2,1)$. "
-                           r"Opposite arcs $=$ a point covered twice: a \emph{conflict}.", cap)
+                           r"Opposite arcs $=$ a point covered twice: a \emph{conflict}. This is what orientation forbids.", cap)
         down = self.move_arrow((0, 0), (1, 0), BLUE_L)
         left = self.move_arrow((1, 1), (1, 0), ORANGE_R)
         self.play(GrowArrow(down), GrowArrow(left))
@@ -189,8 +190,8 @@ class WhyGrid(Scene):
         self.wait(1)
 
         # remove the arc 2 -> 1: oriented triangle
-        cap = self.caption(r"Delete the arc $2\to1$. Now $G$ is oriented, and the two images "
-                           r"no longer meet.", cap)
+        cap = self.caption(r"Remove the opposite arc: this is our situation, an oriented $G$. "
+                           r"The two images never meet, so $(\Delta,\Delta)$ is a valid starting pair.", cap)
         F1o, F2o = F1(REL_ORIENTED, DELTA), F2(REL_ORIENTED, DELTA)
         gone = [circ[p] for p in circ if p not in F1o] + [sq[p] for p in sq if p not in F2o]
         new_arc = Arrow(pos[0], pos[1], buff=0.3, color=BLACK, stroke_width=3,
@@ -205,8 +206,8 @@ class WhyGrid(Scene):
         box = SurroundingRectangle(key, color=GREEN_Z, buff=0.15)
         self.play(Write(key), Create(box))
         self.wait(1.2)
-        cap = self.caption(r"Two families, two directions: compatibility $F_1P\cap F_2Q=\varnothing$ "
-                           r"generalizes orientation from $(\Delta,\Delta)$ to $(P,Q)$.", cap)
+        cap = self.caption(r"This is the only place Stage 3 uses orientation. Compatibility "
+                           r"$F_1P\cap F_2Q=\varnothing$ carries it from $(\Delta,\Delta)$ to any pair $(P,Q)$.", cap)
         self.wait(2)
 
         # ------------------------------------------------ 3. concavity lifts line by line
@@ -254,7 +255,7 @@ class WhyGrid(Scene):
         self.play(*[FadeOut(m) for m in self.mobjects if m is not title])
         summary = VGroup(
             Tex(r"1.\ Concavity alone is not contradictory: orientation must be used.", font_size=32),
-            Tex(r"2.\ Orientation lives on pairs: $F_1\Delta\cap F_2\Delta=\varnothing$.", font_size=32),
+            Tex(r"2.\ Orientation lives on pairs: it says $(\Delta,\Delta)$ is a valid seed.", font_size=32),
             Tex(r"3.\ Concavity lifts to the grid, line by line, in both directions.", font_size=32),
             Tex(r"4.\ A fixed board: value $=|X|^2-$ expansion, and it is bounded.", font_size=32),
         ).arrange(DOWN, aligned_edge=LEFT, buff=0.45).move_to(ORIGIN)

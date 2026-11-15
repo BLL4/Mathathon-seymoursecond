@@ -1,51 +1,36 @@
-# lake build (Lean Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)), 2026-11-14T13:55Z
+# lake build (Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)), 2026-11-15T13:11Z
 # Mathlib rev:    "rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
 $ lake build
-  i̵f̵_̵n̵e̵g̵i̲t̲e̲_̲e̲q̲_̲r̲i̲g̲h̲t̲
-⚠ [2114/2117] Replayed SeymourLean.MatchingBound
-warning: SeymourLean/MatchingBound.lean: imports `Mathlib.Tactic.Linarith` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
-warning: SeymourLean/MatchingBound.lean: imports `Mathlib.Tactic.Ring` from package `mathlib`, which is designed for use with the module system; consider adding `module` to the start of this file
-warning: SeymourLean/MatchingBound.lean:1:1: * `-/`:
+  omit [DecidableEq V] in theorem ...
+  omit [DecidableEq V] in theorem ...
+  omit [DecidableEq V] in theorem ...
+modifies the current goal, which was modified by the flexible tactic `simp` on line 278!
 Copyright too short!
-
-
-Note: This linter can be disabled with `set_option linter.style.header false`
-warning: SeymourLean/MatchingBound.lean:58:18: `dif_pos` has been deprecated: Use `dite_eq_left` instead
-
-Hint: Replace the deprecated name:
-  d̵i̵f̵_̵p̵o̵s̵d̲i̲t̲e̲_̲e̲q̲_̲l̲e̲f̲t̲
-warning: SeymourLean/MatchingBound.lean:62:19: `dif_pos` has been deprecated: Use `dite_eq_left` instead
-
-Hint: Replace the deprecated name:
-  d̵i̵f̵_̵p̵o̵s̵d̲i̲t̲e̲_̲e̲q̲_̲l̲e̲f̲t̲
-warning: SeymourLean/MatchingBound.lean:66:19: `dif_pos` has been deprecated: Use `dite_eq_left` instead
-
-Hint: Replace the deprecated name:
-  d̵i̵f̵_̵p̵o̵s̵d̲i̲t̲e̲_̲e̲q̲_̲l̲e̲f̲t̲
-warning: SeymourLean/MatchingBound.lean:127:62: Unused tactic linter: `done` does nothing.
-
-Note: This linter can be disabled with `set_option linter.unusedTactic false`
-warning: SeymourLean/MatchingBound.lean:158:52: `Set.diff_subset` has been deprecated: Use `Set.sdiff_subset` instead
-
-Hint: Replace the deprecated name:
-  Set.s̲diff_subset
-warning: SeymourLean/MatchingBound.lean:180:52: `Set.diff_subset` has been deprecated: Use `Set.sdiff_subset` instead
-
-Hint: Replace the deprecated name:
-  Set.s̲diff_subset
-⚠ [2115/2117] Replayed SeymourLean.Final
-warning: SeymourLean/Final.lean:1:1: * `-/`:
+  omit [Fintype α] [Fintype β] [DecidableEq β] in theorem ...
 Copyright too short!
-
-
-Note: This linter can be disabled with `set_option linter.style.header false`
+info: SeymourLean/Generic.lean:228:4: `exact hv0 h1`
+uses `h1`, which was modified by the flexible tactic `simp` on line 227!
+Copyright too short!
+Copyright too short!
+  Set.s̲diff_subset
+  Set.s̲diff_subset
+Copyright too short!
 info: SeymourLean/Final.lean:24:0: 'Seymour.seymour_second_neighbourhood' depends on axioms: [propext, Classical.choice, Quot.sound]
-Build completed successfully (2117 jobs).
+Copyright too short!
+  omit [Fintype X] [DecidableEq X] [DecidableRel adj] in theorem ...
+Build completed successfully (2119 jobs).
+
 $ lake env lean CheckAxioms.lean
 Seymour.seymour_second_neighbourhood : ∀ (V : Type) [inst : Fintype V] [inst_1 : DecidableEq V] [Nonempty V]
   (adj : V → V → Prop) [inst_3 : DecidableRel adj],
   Seymour.IsOriented adj → ∃ v, (Seymour.N1 adj v).card ≤ (Seymour.N2 adj v).card
 'Seymour.seymour_second_neighbourhood' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.pruningLemma' depends on axioms: [propext, Classical.choice, Quot.sound]
-$ grep -rnE "sorry|admit|^axiom" SeymourLean
-(no matches)
+'Seymour.complex_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.dimension_count' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.F1_F2_comm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.kronecker_comm' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.exists_admissible_iff_oriented' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.Zset_swap' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.gain_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.step_value' depends on axioms: [propext, Classical.choice, Quot.sound]

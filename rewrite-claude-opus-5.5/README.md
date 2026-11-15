@@ -87,3 +87,13 @@ König's theorem from Hall's theorem, generic matrices, the kernel lemma and
 the matching bound. `SeymourLean/README.md` maps each Lean theorem to the
 paper and lists the few steps that are argued differently. No mathematical
 error was found.
+
+The claims added in the insights pass are formalized too:
+`SeymourLean/ComplexCount.lean` proves the matching bound's count through the
+three-term complex ℝ^R → ℝ^Z ⊕ ℝ^H → ℝ^C (and `core_bound` now uses it), and
+`SeymourLean/Insights.lean` proves that F₁ and F₂ commute, that the Kronecker
+operators aᵀ⊗I and I⊗b commute, that an admissible pair exists exactly when
+the relation is oriented, that reversing the relation swaps Z and H, the
+exact gain identity |R| + |C| + Σκ = μ + 2d, and the ledger
+val(P′,Q′) ≥ val(P,Q) − Σκ for an arbitrary relation (no concavity assumed).
+`CheckAxioms.lean` prints the axioms of these theorems as well.

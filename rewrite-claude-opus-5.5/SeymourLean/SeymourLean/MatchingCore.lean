@@ -1,5 +1,6 @@
 import SeymourLean.Generic
 import SeymourLean.Gamma
+import SeymourLean.ComplexCount
 
 /-!
 # The linear-algebra core of the matching bound
@@ -15,6 +16,8 @@ We fix a finite set `X` with a relation `adj` and `R, C ⊆ X × X`, and build o
 prove `NL = AB` (Claim `cl:commute`), the kernel separation (Claim `cl:conflict-kernel`), and the
 counting theorem `core_bound`: given the decomposition `M = M₁ ⊔ α ⊔ β` of a matching with the
 two maximality properties, `k + ℓ + t ≤ |Z| + |H|` (Claims `cl:kerA`, `cl:rank-inequality`).
+The final count goes through the three-term complex of `ComplexCount.lean`
+(`dimension_count` is Claim `cl:rank-inequality` for the matrices of the paper).
 -/
 
 open Finset Module
@@ -85,6 +88,16 @@ lemma NL_eq_AB : (Ntm adj R C)ᵀ * Lm adj R C = Am adj R C * Bm adj R C := by
     · intro z _
       split_ifs with h1 h2 <;> try simp only [mul_zero, zero_mul]
       rw [h1, h2]; exact h0
+
+/-- **Dimension count** (Claim `cl:rank-inequality`) for the matrices of the paper:
+`rank (L; B) + rank (N, -A) ≤ |Z| + |H|`. -/
+theorem dimension_count :
+    (stackRows (Lm adj R C) (Bm adj R C)).rank + (sideCols (Ntm adj R C) (Am adj R C)).rank ≤
+      (Zset adj R C).card + (Hset adj R C).card := by
+  have := rank_add_rank_le_of_mul_eq_zero _ _
+    (sideCols_mul_stackRows (Lm adj R C) (Bm adj R C) (Ntm adj R C) (Am adj R C)
+      (NL_eq_AB adj R C))
+  rwa [Fintype.card_sum, Fintype.card_coe, Fintype.card_coe] at this
 
 omit [DecidableRel adj] in
 /-- Reindexing a sum over a first-coordinate fiber. -/
@@ -260,18 +273,8 @@ theorem core_bound (s1 sα : Finset R) (sβ : Finset C) (π : R → X × X) (gα
       simp [mul_comm]
     · simp [hnot]
   choose vv hvv using hvex
-  -- (6)+(7) the vectors `B u^r` are independent and lie in `ker A`
+  -- (6)+(7) the vectors `B u^r` are independent
   let W : Matrix (Hset adj R C) R (KK X) := Matrix.of fun h r => (B *ᵥ uvec r) h
-  have hAW : A * W = 0 := by
-    ext c r
-    have : A *ᵥ (B *ᵥ uvec r) = 0 := by
-      rw [Matrix.mulVec_mulVec, ← NL_eq_AB, ← Matrix.mulVec_mulVec]
-      by_cases hr : r ∈ s1
-      · rw [hLu r hr, Matrix.mulVec_zero]
-      · have : uvec r = 0 := by ext r'; simp [uvec, hr]
-        rw [this, Matrix.mulVec_zero, Matrix.mulVec_zero]
-    have := congrFun this c
-    simpa [Matrix.mul_apply, Matrix.mulVec, dotProduct, W] using this
   have indW : ColIndep W s1 := by
     intro θ hθ r hr
     set U : R → KK X := ∑ r' ∈ s1, θ r' • uvec r'
@@ -291,19 +294,8 @@ theorem core_bound (s1 sα : Finset R) (sβ : Finset C) (π : R → X × X) (gα
         rw [hu_at r' hr' r hr, if_neg (Ne.symm hne), mul_zero]
       · intro h; exact absurd hr h
     rw [← hUr]; exact hk
-  -- (8) counting
-  have c1 := indW.card_le_rank
-  have c2 := rank_mul_ge A W
-  rw [hAW, Matrix.rank_zero] at c2
-  have c3 : (A * B).rank ≤ A.rank := Matrix.rank_mul_le_left A B
-  rw [← NL_eq_AB] at c3
-  have c4 := rank_mul_ge Ntᵀ L
-  have e4 : (Ntᵀ * L).rank = ((Ntm adj R C)ᵀ * Lm adj R C).rank := rfl
-  rw [e4] at c4
-  have c5 := indL.card_le_rank
-  have c6 := indN.card_le_rank
-  rw [← Matrix.rank_transpose Nt] at c6
-  rw [Fintype.card_coe] at c2 c4
-  omega
+  -- (8) counting, through the three-term complex `R^R → R^Z ⊕ R^H → R^C` (`sec:rank`)
+  have := complex_count L B Nt A (NL_eq_AB adj R C) s1 sα sβ uvec hLu indL indN indW hdisj
+  rwa [Fintype.card_coe, Fintype.card_coe] at this
 
 end Seymour
