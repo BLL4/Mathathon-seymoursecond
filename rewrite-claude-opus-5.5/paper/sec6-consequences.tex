@@ -386,7 +386,9 @@ $\eta$ with $\eta(\Ntwo(v))\ge\eta(\Nout(v))$ and $\eta(N^-_1(v))\ge\eta(\Nout(v
 every $v$'' holds for all triangle-free oriented graphs with at most five vertices but
 fails for the triangle-free graph on $\{0,\dots,5\}$ with arcs
 $03,\,10,\,15,\,20,\,24,\,34,\,35,\,41,\,52$. Equivalently (Ville's theorem, as in the
-proof of \cref{cor:weighted}(ii)), the two-weight statement ``for all $\xi,\zeta\ge0$
+proof of \cref{cor:weighted}(ii); the reversal there is harmless because this graph is
+isomorphic to its reverse via $0\leftrightarrow1$, $2\leftrightarrow5$,
+$3\leftrightarrow4$), the two-weight statement ``for all $\xi,\zeta\ge0$
 some $v$ has $\xi(\Ntwo(v))+\zeta(N^-_1(v))\ge(\xi+\zeta)(\Nout(v))$'' is false: in this
 graph, $\xi=(0,1,1,1,0,0)$ and $\zeta=(3,0,0,0,3,3)$ violate it at every vertex (the
 left side is $0,5,5,5,0,0$, the right side $1,6,6,6,1,1$). The case $\xi=\zeta$ is the
@@ -502,3 +504,165 @@ open problems.
 
 \Cref{cor:triangles} and the triangle case of \cref{lem:girth-grid} are formalized in
 \texttt{Triangles.lean} (\cref{app:checks}).
+
+\subsection{Related conjectures and problems}\label{sec:related}
+
+\begin{idea}[What this subsection does]
+Sullivan's survey of the Caccetta--H\"aggkvist problem~\cite{Sullivan2006} and the later
+literature contain a dozen statements that circle around Seymour's conjecture. We sort
+them into three groups: those that \cref{thm:main} settles outright, one that it
+refutes, and the open ones. For the open ones we say whether the three-stage method of
+this paper has a chance, and we report a computer search for counterexamples
+(\texttt{experiments/related.py}; \cref{tab:related}).
+\end{idea}
+
+\paragraph{Settled by the theorem.}
+\begin{enumerate}[label=(\alph*),leftmargin=2em]
+\item \emph{Thomass\'e's non-neighbour conjecture}~\cite[Conjecture~6.12]{Sullivan2006}:
+without directed triangles some vertex has at most as many out-neighbours as
+non-neighbours. This is \cref{cor:triangles}(i); Lean: \texttt{thomasse\_nonneighbours}.
+\item \emph{Behzad--Chartrand--Wall for girth four}~\cite{BehzadChartrandWall1970}, in the
+regular case: \cref{cor:triangles}(iii).
+\item \emph{Sullivan's compromise}~\cite[Conjecture~6.7]{Sullivan2006}: some vertex $v$
+satisfies
+\[
+ d^+(v)+\abs{\Ntwo(v)}\ \ge\ 2\min\bigl(d^-(v),d^+(v)\bigr).
+\]
+A Seymour vertex has $d^+(v)+\abs{\Ntwo(v)}\ge2d^+(v)$; Lean: \texttt{sullivan\_min}.
+It was proposed as a common weakening of Seymour's conjecture and of (i) below.
+\item \emph{Seacrest's subset form}~\cite{Seacrest2019}: some set $S$ of vertices has at
+least as many vertices at distance exactly two as at distance exactly one. He proved it
+equivalent to the conjecture; the case $S=\{v\}$ is a Seymour vertex.
+\item The weighted forms (\cref{cor:weighted}) and the symmetric Caccetta--H\"aggkvist
+case (\cref{cor:triangles}(ii)).
+\item Two easy consequences. Every nonempty \emph{closed} set $C$ (no arc leaves $C$;
+for instance a terminal strong component) contains a Seymour vertex of $D$: apply
+\cref{thm:main} to $D[C]$, whose first and second out-neighbourhoods are those of $D$.
+And for a loopless digraph $D$ with digons, let $s(v)$ be the number of digons at $v$
+and delete both arcs of every digon; a Seymour vertex $v$ of the resulting oriented
+graph has $d^+(v)-s(v)$ out-neighbours there, and its second out-neighbourhood there
+lies in $\Ntwo(v)$ together with at most $s(v)$ digon neighbours, so
+$\abs{\Ntwo(v)}\ge d^+(v)-2s(v)$ in $D$.
+\end{enumerate}
+
+\paragraph{Refuted.}
+DeVos~\cite[Conjecture~6.28]{Sullivan2006} asked whether every triangle-free oriented
+graph has a probability vector $p$ with $p(\Nout(v))\ge p(N^-_1(v))$ and
+$p(N^-_2(v))\ge p(N^-_1(v))$ at every vertex $v$, where $N^-_2(v)$ is the second
+in-neighbourhood; the survey notes that this holds for tournaments and would imply
+Seymour's conjecture. It is false. Multiply the second inequality at $v$ by $\xi_v\ge0$,
+the first by $\zeta_v\ge0$, and add: the coefficient of $p_u$ in the sum is
+$\xi(\Ntwo(u))+\zeta(N^-_1(u))-(\xi+\zeta)(\Nout(u))$, because $u\in N^-_2(v)$ means
+$v\in\Ntwo(u)$, and so on. If weights $\xi,\zeta$ make every coefficient negative, no
+$p$ exists (and by Ville's theorem the converse holds too). The six-vertex graph and the
+weights of \cref{rem:ch-barriers}(1) make every coefficient equal to $-1$. The script
+confirms this and finds further counterexamples among random triangle-free graphs on
+eight and nine vertices. The weakening mentioned in the survey, that
+$p(N^-_2(v))\ge p(N^-_1(v))$ hold on average over $v$, is \cref{thm:main} itself: the
+average is $\sum_up_u(\abs{\Ntwo(u)}-d^+(u))$, which is nonnegative for $p$
+concentrated on a Seymour vertex.
+
+\paragraph{Open, with a chance for the method.}
+\begin{enumerate}[label=(\alph*),leftmargin=2em,start=7]
+\item \emph{A matching instead of a count}~\cite{BaiLiPark2026}: some vertex $v$ has a
+matching of $\Nout(v)$ into $\Ntwo(v)$ along arcs, each out-neighbour $u$ matched to a
+vertex of $\Ntwo(v)\cap\Nout(u)$. Bai, Li and Park prove this for minimum outdegree at
+most five and for planar oriented graphs. Stage~1 transfers verbatim: deleting arcs
+that leave $S$ keeps $\Nout(x)$ for $x\notin S$ and can only remove vertices of
+$\Ntwo(x)$ and arcs into them, so a matching for $x$ in the smaller graph is one in
+$D$, and the good vertex of the smaller graph lies in $S$. Hence a minimal
+counterexample is strongly connected and satisfies the analogue of
+\cref{lem:subset-deficit}. Where it stops: Hall's condition failing at $v$ gives a set
+$A\subseteq\Nout(v)$ with fewer than $\abs A$ vertices of $\Ntwo(v)$ adjacent from $A$,
+a deficit for a \emph{part} of the out-neighbourhood, while Stages~2 and~3 need the
+deficit for the whole of $\Nout(v)$ at every vertex. The matching bound inside the
+pruning lemma is about the conflict relation, not about these arcs.
+\item \emph{Two Seymour vertices.} Havet and Thomass\'e~\cite{HavetThomasse2000} proved
+that a tournament without a sink has two Seymour vertices, and asked the same for
+oriented graphs; it is known for tournaments missing a matching
+\cite{DaraFrancisJacobNarayanan2022,Ghazal2015}. Half of Stage~1 transfers. In a
+minimal counterexample (no sink, exactly one Seymour vertex $s$) take $v\ne s$ and
+$\varnothing\ne B\subsetneq\Nout(v)$: deleting the arcs from $v$ to $B$ leaves a
+sink-free graph with fewer arcs whose Seymour vertices lie in $\{v,s\}$ (vertices other
+than $v$ keep $\Nout$ and lose part of $\Ntwo$), so $v$ is a Seymour vertex of $D$
+minus these arcs. With $B=\{b\}$ this gives $d^+(v)-1\le\abs{\Ntwo(v)}+1$, so every
+vertex of a minimal counterexample has $\abs{\Ntwo(v)}\ge d^+(v)-2$. Stage~3, however,
+ends with \emph{one} line of nonnegative $\kappa$ and cannot be asked for two.
+\end{enumerate}
+
+\paragraph{Open, out of reach of the method.}
+\begin{enumerate}[label=(\alph*),leftmargin=2em,start=9]
+\item \emph{Sullivan's conjecture}~\cite[Conjecture~6.6]{Sullivan2006}: some vertex has
+$\abs{\Ntwo(v)}\ge d^-(v)$; and \cite[Conjecture~6.4]{Sullivan2006}: some vertex has
+$d^+(v)+\abs{\Ntwo(v)}\ge2d^-(v)$. Known for local tournaments~\cite{LiLiang2018} and
+for almost every orientation of a random graph~\cite{EspunyDiazEtAl2025}. Stage~1
+breaks: deleting the arc $v\to b$ lowers $d^-(b)$, so $b$ may become good in the smaller
+graph, and the good vertex need not lie in $S$. Stage~3 compares two counts of the
+\emph{same} family (row $v$ of $\Fs\Delta$ with row $v$ of $\Fs^2\Delta$), whereas
+$N^-_1(v)$ is row $v$ of $\Ff\Delta$ (\cref{lem:girth-grid}); the ledger of
+\cref{sec:ledger} never compares across the two families.
+\item \emph{Burckel's $k$-th neighbourhood}~\cite[Conjecture~6.13]{Sullivan2006}: without
+directed cycles of length at most $k$, some vertex has at least as many vertices at
+distance exactly $k$ as at distance exactly $k-1$; $k=2$ is \cref{thm:main}. The ledger
+compares $\Fs\Delta$ with $\Fs^2\Delta$; for $k=3$ it would have to compare
+$\Fs^2\Delta$ with $\Fs^3\Delta$, say from the seed $(\Delta,\Delta\cup\Fs\Delta)$ of
+\cref{lem:girth-grid}, but \cref{rem:ch-obstacle} says that the conclusion of Stage~3
+does not depend on the seed. A new objective would be needed.
+\item \emph{Burckel's distance statement}~\cite[Conjecture~6.14]{Sullivan2006}: every
+vertex of outdegree $k$ is within directed distance $k$ of a Seymour vertex. For $k=1$,
+$\Nout(v)=\{u\}$ and either $u$ has an out-neighbour other than $v$, so $v$ is a Seymour
+vertex, or $u$ is a sink. This is a statement about \emph{where} Seymour vertices are,
+and the method only locates one inside every closed set, as in (f).
+\item \emph{Eulerian averages.} \cite[Conjecture~6.15]{Sullivan2006} (Seymour, Jackson):
+if $d^+=d^-$ at every vertex then $\sum_v\abs{\Ntwo(v)}\ge\sum_vd^+(v)$;
+and \cite[Conjecture~6.16]{Sullivan2006} (Thomass\'e, Kr\'al'): an Eulerian oriented
+graph with at least $n^2/3$ arcs has a directed triangle. Both are statements about
+averages, and the theorem controls one vertex. What it does give is
+\cref{cor:weighted}(ii) summed over $v$: an $\eta\ge0$ with
+$\sum_u\eta(u)\,d^+(u)\le\sum_u\eta(u)\abs{N^-_2(u)}$ in an Eulerian graph, the first
+conjecture with an unknown weight in place of the uniform one.
+\item \emph{Digons.} Is $\abs{\Ntwo(v)}\ge d^+(v)-s(v)$ for some vertex of every
+loopless digraph, improving the $2s(v)$ of (f)? Stage~3 needs orientation from the
+start: admissible pairs exist only for oriented relations
+(\cref{lem:admissible-iff-oriented}).
+\item \emph{Minimum outdegree.} Is some vertex of minimum outdegree a Seymour vertex?
+On at most six vertices \emph{every} such vertex is, but in the tournament on
+$\{0,\dots,7\}$ with arcs $01,02,03$, $12,23,31$, $14,15,24,25,34,35$,
+$40,50,60,70$, $61,62,63,71,72,73$, $45,46,56,57,74,67$ the vertex $0$ has the minimum
+outdegree $3$ and $\Ntwo(0)=\{4,5\}$. The method does not see outdegrees.
+\item \emph{Infinite graphs}~\cite[Conjecture~6.11]{Sullivan2006}: does a locally finite
+infinite oriented graph (all outdegrees finite) have a Seymour vertex? The proof uses a
+counterexample with fewest arcs. By (f), an infinite counterexample has no finite
+closed set, and that is all we can say.
+\item The rainbow conjecture of Seymour and Sullivan~\cite[Conjecture~6.1]{Sullivan2006},
+which implies both Seymour's and the Caccetta--H\"aggkvist conjecture, is out of reach.
+\end{enumerate}
+
+\begin{table}[H]
+\centering\small
+\begin{tabular}{@{}p{0.30\textwidth}p{0.43\textwidth}p{0.17\textwidth}@{}}
+\toprule
+statement & exhaustive, no counterexample & random, none\\
+\midrule
+(g) matching, (h) two vertices, (i) Sullivan, (k) distance, (n) minimum outdegree
+ & all $14{,}408{,}716$ labelled oriented graphs with $n\le6$ & $n\le16$\\
+(j) $k=3$ & all $4{,}200{,}048$ triangle-free graphs with $n\le6$ & $n\le13$\\
+(j) $k=4$ & all $3{,}822{,}372$ graphs of girth $\ge5$ with $n\le6$ & $n\le13$\\
+(l) Eulerian average; (g), (h), (i) & all $785{,}147$ Eulerian oriented graphs with
+ $n\le7$ & $n\le14$\\
+(l) Thomass\'e--Kr\'al' & all Eulerian oriented graphs with $\ge n^2/3$ arcs and
+ $n\le7$ & $n\le14$\\
+(m) digons & all $1{,}052{,}741$ loopless digraphs with $n\le5$ & $n\le10$\\
+\bottomrule
+\end{tabular}
+\caption{Counterexample searches for the open statements of \cref{sec:related}, by
+the script \texttt{related.py}; the random graphs have random densities. None was
+found. The only failures the script reports are for DeVos's conjecture and for the two
+sanity statements ``a vertex that is both Seymour and Sullivan'' and ``a vertex that is
+Seymour in both directions'', which fail already on a single arc.}
+\label{tab:related}
+\end{table}
+
+\Cref{tab:related} is evidence of the usual kind, not a proof. The group
+``with a chance'' is where we would start: (g) because Stage~1 goes through unchanged,
+and (h) because the minimal counterexample is already so constrained.

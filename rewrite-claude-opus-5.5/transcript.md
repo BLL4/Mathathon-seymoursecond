@@ -1,6 +1,6 @@
 # Transcript of the Claude Code session on the Seymour paper
 
-Session `3ce2e957-d885-461a-bd37-fd214bf36439`, exported 2026-11-15 16:15 by `tools/export_transcript.py`. 49 user messages, 48 replies.
+Session `3ce2e957-d885-461a-bd37-fd214bf36439`, exported 2026-11-15 16:43 by `tools/export_transcript.py`. 50 user messages, 49 replies.
 
 What is included: every message typed by the user and every reply written by Claude, verbatim, in order; each tool call as a one-line note (🔧); and markers where the context window was compacted. Not included: tool outputs, file contents, and Claude's private reasoning. Re-run the script to bring this file up to date.
 
@@ -1847,3 +1847,122 @@ Yes, and more directly than my proof suggests. I'll correct the paper, the READM
 Edits are in. Now rebuilding the paper and fixing the stale page count in the README.
 > 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/README.md
 > 🔧 `Bash` — Rebuild the paper and report warnings and page count
+Clean build, 44 pages, no overfull boxes or undefined references. Now syncing, exporting the transcript, and committing.
+> 🔧 `Bash` — Sync, export transcript, commit and push
+Yes. For tournaments the statement is not new, and my earlier phrasing ("proved it for tournaments") oversold it. I have corrected the paper and README and pushed as `7319702`.
+
+**Why it is old.** In a tournament every vertex other than v is an in-neighbour or an out-neighbour, so the second out-neighbourhood N⁺⁺(v) sits inside N⁻(v). Any Seymour vertex therefore has d⁻(v) ≥ |N⁺⁺(v)| ≥ d⁺(v) automatically. So for tournaments Conjecture 6.4 is exactly Seymour's conjecture for tournaments, which is Dean's conjecture, proved by Fisher in 1996 and again by Havet and Thomassé in 2000.
+
+**What the median-order argument adds.** Nothing for tournaments. The reason I kept it is that it is the proof that could extend: the last vertex of a median order has d⁻ ≥ d⁺ in any oriented graph, so Conjecture 6.11 (some median order ends in a Seymour vertex) would give Conjecture 6.4 by the same two lines. Conjecture 6.4 is only interesting away from tournaments, where second out-neighbours live among the non-neighbours and the in-degree is an independent quantity.
+
+**For completeness,** Caccetta–Häggkvist itself is trivial for tournaments: a triangle-free tournament is transitive and has a sink.
+
+**Changes made.** Proposition 6.6 now states that every Seymour vertex of a tournament is in-heavy, cites Fisher, and keeps the Havet–Thomassé proof with the reason for keeping it. The subsection overview, the Lean status appendix, and the README say "Fisher's theorem" instead of "proved for tournaments". The README page count is fixed to 44. Paper rebuilds cleanly at 44 pages; transcript regenerated.
+
+## User — 2026-11-15 22:16 UTC
+
+Search for more consequences of resolution of the second neighborhood conjecture. List related conjectures and problems and see if any of them could be apporach in a similar way or if not, check quickly for counterexamples.
+
+## Claude — 2026-11-15 22:19 UTC
+I'll start from the two sources already at hand (Sullivan's survey text and the original preprint's own remarks), then search the web for related conjectures, then test candidates by computer.
+> 🔧 `Bash` — List conjectures and problems in the saved Sullivan survey
+> 🔧 `Bash` — Read Sections 3 and 6.1–6.2 of the Sullivan survey
+> 🔧 `ToolSearch` — select:WebSearch,WebFetch
+> 🔧 `Bash` — Read conjectures 6.25–6.30 of the Sullivan survey
+> 🔧 `Bash` — Find open problems and corollaries stated in the original preprint
+> 🔧 `WebSearch` — Sullivan "compromise conjecture" second neighborhood |N2+(v)| >= |N-(v)| counterexample
+> 🔧 `WebSearch` — "second neighborhood" conjecture oriented graph "feed vertex" "median order" conjecture Ghazal
+> 🔧 `WebSearch` — "second neighborhood" oriented graph "at least two" vertices sink conjecture Havet Thomassé "two vertices"
+> 🔧 `WebSearch` — Seymour second neighborhood conjecture proof 2026 consequences follow-up arXiv
+> 🔧 `WebSearch` — "second neighborhood" conjecture Eulerian digraph sum of second out-neighborhoods Seymour Jackson
+> 🔧 `WebSearch` — "second neighborhood" conjecture digraphs with digons generalization "quasi-kernel"
+> 🔧 `WebSearch` — Behzad Chartrand Wall conjecture girth 4 regular digraph 3r+1 vertices known cases
+> 🔧 `WebSearch` — Burckel kth neighborhood conjecture digraph no cycles of length at most k "|N_k^+(v)|"
+> 🔧 `Bash` — Read the original's directed-cycle consequences and my attributions
+> 🔧 `Bash` — Recall the generator API in the existing experiment script
+> 🔧 `WebFetch` — State precisely the strengthening of the second neighborhood conjecture that this paper proposes (the exact...
+> 🔧 `WebFetch` — What are "Pisa graphs" and what conjecture does the paper state about them? Give the exact definitions and ...
+> 🔧 `WebFetch` — Does this paper (Ghazal, A contribution to the second neighborhood problem) state any conjecture or questio...
+> 🔧 `WebFetch` — Summarize the results and any conjectures stated, in particular about Eulerian digraphs and the statement t...
+> 🔧 `WebFetch` — State the exact conjecture(s) this paper proposes about subsets of vertices (the generalization of Seymour'...
+> 🔧 `Bash` — Check earlier S4 and LP results and scipy availability
+> 🔧 `WebFetch` — What does this paper say about Sullivan's conjectures (the "compromise" conjectures: a vertex with |N2+(v)|...
+> 🔧 `WebFetch` — Does this survey on the small quasi-kernel conjecture mention any connection to Seymour's second neighborho...
+> 🔧 `WebFetch` — List every statement in this paper about feed vertices of median orders or local median orders of oriented ...
+> 🔧 `WebFetch` — State the conjecture(s) of this paper about Eulerian digraphs and squaring (e.g. |E(D^2)| >= 2|E(D)|), the ...
+> 🔧 `Write` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Bash` — Run the related-conjecture tests on all oriented graphs with up to 5 vertices
+> 🔧 `Bash` — Run the digon, Eulerian and DeVos tests on small cases
+> 🔧 `WebFetch` — State every conjecture in this paper exactly (with numbers), especially anything about Eulerian digraphs, t...
+> 🔧 `WebFetch` — What does this paper (and its appendix) say about Sullivan vertices (vertices with |N2+(v)| >= |N-(v)|) or ...
+> 🔧 `Bash` — Check the LP and DeVos statements on the 6-vertex graph and its reverse
+> 🔧 `Bash` — Locate the Ville/reversal steps in Section 6
+> 🔧 `Bash` — Write three batch scripts for the longer searches
+> 🔧 `Bash` — Run random and small exhaustive related-conjecture searches
+> 🔧 `Bash` — Run the exhaustive search on all oriented graphs with 6 vertices
+> 🔧 `Bash` — Run the exhaustive triangle-free, girth-5 and Eulerian searches
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Bash` — Read Remark 6.10 and the end of Section 6
+> 🔧 `Bash` — Read the Lean Triangles header and list bib keys
+> 🔧 `WebFetch` — Give the author(s), title, year, journal if any, and the abstract. In particular: does it prove that every ...
+> 🔧 `WebFetch` — Give the authors, title, year, journal if any, and abstract. Does it state as open the problem whether ever...
+> 🔧 `Bash` — Show every nonzero failure from the random searches
+> 🔧 `Bash` — List bib keys and read the Lean index and axiom-check files
+> 🔧 `Write` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/SeymourLean/SeymourLean/Related.lean
+> 🔧 `Bash` — Register the new Lean file and check lemma names and the Seacrest entry
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Bash` — Build the Lean project with the new Related file
+> 🔧 `Bash` — Add three bibliography entries
+> 🔧 `Bash` — Fix the argument and rebuild Lean
+> 🔧 `Bash` — Show the exhaustive 6-vertex results
+> 🔧 `Bash` — Fix lemma applications and rebuild Lean
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Bash` — Add the Thomassé–Kral check, test it, and launch the 7-vertex run
+> 🔧 `Bash` — Run the axiom check for the new theorems
+Lean builds cleanly with the two new theorems. Now I'm locating the Lean build log to refresh it and drafting the new paper subsection on related conjectures.
+> 🔧 `Bash` — Find the build log, the end of Section 6, and the Lean status mentions
+> 🔧 `Bash` — Regenerate the Lean build log and read the status files to update
+> 🔧 `Bash` — Check the 8-vertex tournament example and find the smallest example
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/lean-status.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/lean-status.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/SeymourLean/README.md
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/README.md
+> 🔧 `Bash` — Check progress of the exhaustive triangle-free, girth-5, Eulerian and TK runs
+> 🔧 `Bash` — Stop the oversized girth-5 enumeration so the Eulerian run can start
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Bash` — Verify the tournament example and prepare the rerun with the new statement
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/README.md
+> 🔧 `Bash` — Rerun the exhaustive and random searches with the minimum-outdegree statement
+> 🔧 `Bash` — Build the paper and report warnings and page count
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/README.md
+> 🔧 `Bash` — Read the Eulerian results and the overfull paragraph
+Paper builds at 47 pages with two overfull lines (the new table is too wide). Fixing those and adding the final Eulerian count, then rebuilding.
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/README.md
+> 🔧 `Bash` — Rebuild the paper and check for overfull boxes
+> 🔧 `Bash` — Locate the new subsection in the PDF and render its pages
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/README.md
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/lean-status.tex
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Bash` — Render the pages of the new subsection and check the rerun results
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/main.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Bash` — Rebuild the paper and render the table pages
+The paper rebuilt cleanly. Checking the table placement and the last search results, then committing.
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Bash` — Show the minimum-outdegree results from the rerun
+> 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/README.md
+> 🔧 `Bash` — Sync, export transcript, commit and push the related-conjectures work

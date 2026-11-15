@@ -29,3 +29,7 @@ The expected output is recorded in `build.log`. -/
 #print axioms Seymour.inheavy_of_closed
 #print axioms Seymour.indeg_ge_outdeg_sub_one
 #print axioms Seymour.subset_deficit_inheavy
+
+-- Related.lean (Section 6.4: Sullivan's Conjecture 6.7 and Thomassé's Conjecture 6.12)
+#print axioms Seymour.sullivan_min
+#print axioms Seymour.thomasse_nonneighbours

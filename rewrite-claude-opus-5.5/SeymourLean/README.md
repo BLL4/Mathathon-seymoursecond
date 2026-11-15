@@ -76,6 +76,8 @@ The definitions are in `SeymourLean/Defs.lean`:
 | `inheavy_of_sink`, `inheavy_of_closed` | InHeavy | a sink is an in-heavy Seymour vertex; a minimal counterexample to Conjecture `conj:inheavy` has no closed nonempty proper set | sec6 Proposition `prop:inheavy-minimal` (a) |
 | `inheavy_delArcs_mem`, `indeg_ge_outdeg_sub_one` | InHeavy | the in-heavy Seymour vertex of the arc-deleted graph lies in `S`; every vertex of a minimal counterexample has `d⁺(u) ≤ d⁻(u) + 1` (any class closed under arc deletion) | sec6 Proposition `prop:inheavy-minimal` (b) |
 | `subset_deficit_inheavy`, `triangleFree_delArcs` | InHeavy | every nonempty set of in-heavy vertices with an arc leaving it has `\|F²S \ FS\| < \|FS \ S\|` in a minimal counterexample; triangle-freeness survives arc deletion | sec6 Proposition `prop:inheavy-minimal` (d) |
+| `sullivan_min` | Related | some `v` has `2 min(d⁻(v), d⁺(v)) ≤ d⁺(v) + d⁺₂(v)` (Sullivan's Conjecture 6.7) | sec6 §6.4 (c) |
+| `thomasse_nonneighbours` | Related | oriented, no directed triangle ⇒ some `v` has at most as many out-neighbours as non-neighbours (Thomassé's Conjecture 6.12) | sec6 §6.4 (a) |
 
 ## Where the formal proof differs from the paper (same mathematics, different route)
 

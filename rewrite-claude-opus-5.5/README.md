@@ -6,7 +6,7 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | What                                                                          | Where                                                                        |
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md)                                 |
-| **Rewritten paper**, 44 pages, 17 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
+| **Rewritten paper**, 47 pages, 17 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
 | **20-minute Beamer talk**, 23 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | **Animations** (Manim): why the grid (prologue); one improvement step worked out on a 4-vertex graph | [`animation/WhyGrid.mp4`](animation/WhyGrid.mp4), [`animation/ImprovementStep.mp4`](animation/ImprovementStep.mp4), [`animation/README.md`](animation/README.md) |
 | **Experiments**: computer searches behind the new remarks (three-term complex, tightness of the matching bound, an unproven local form) | [`experiments/README.md`](experiments/README.md) |
@@ -125,3 +125,23 @@ out (a single distribution, Fisher-type averaging, every median order), and
 Conjecture 6.11 asks for a median order ending in a Seymour vertex.
 Remark 6.13 explains why the proof's three stages do not see the hypothesis
 δ⁺ ≥ n/3.
+
+## Related conjectures
+
+Section 6.4 of the paper goes through the conjectures around Seymour's that are
+recorded in Sullivan's 2006 survey and in later papers. Settled by the theorem:
+Thomassé's non-neighbour conjecture, Behzad–Chartrand–Wall for girth four (regular
+case), Sullivan's "compromise" Conjecture 6.7, Seacrest's subset form, and two easy
+consequences (every closed set contains a Seymour vertex; digraphs with digons have a
+vertex with d⁺₂ ≥ d⁺ − 2s(v)). Refuted: DeVos's Conjecture 6.28 (a single
+distribution that is out-heavy and in-Seymour at every vertex of a triangle-free
+graph), by the same 6-vertex graph and weights as Remark 6.10. Open, with the
+method's chances assessed: the matching strengthening of Bai–Li–Park (Stage 1
+transfers verbatim), two Seymour vertices in sink-free graphs (half of Stage 1
+transfers), Sullivan's conjecture d⁺₂ ≥ d⁻, Burckel's k-th neighbourhood and distance
+conjectures, the Eulerian average and Thomassé–Kral' conjectures, a digon-corrected
+form, and whether some vertex of minimum outdegree is Seymour. `experiments/related.py`
+searched for counterexamples (all oriented graphs ≤ 6 vertices, all triangle-free ≤ 6,
+girth ≥ 5 ≤ 6, Eulerian ≤ 7, loopless digraphs ≤ 5, random up to 16) and found none
+except for DeVos's conjecture. `SeymourLean/Related.lean` proves the two settled
+conjectures that need only one Seymour vertex.

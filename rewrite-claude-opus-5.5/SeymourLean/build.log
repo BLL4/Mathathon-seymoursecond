@@ -2,30 +2,8 @@
 # Mathlib rev: "rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
 $ lake build
 
-
-
-Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
-  [apply] _hS
-
-
-info: SeymourLean/InHeavy.lean:349:32: `exact ⟨x, hx, hxy⟩`
-modifies the current goal, which was modified by the flexible tactic `simp` on line 349!
-  [Fintype V]
-  [DecidableEq V]
-  [DecidableRel adj]
-consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
-  omit [Fintype V] [DecidableEq V] [DecidableRel adj] in theorem ...
-
-  • [DecidableEq V] (#3)
-  • [DecidableRel adj] (#5)
-
-Consider removing these hypotheses and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
-
-  • [Fintype V] (#2)
-
-Consider replacing this hypothesis with the corresponding instance of `Finite` and using `Fintype.ofFinite` in the proof, or removing it entirely.
-
-Build completed successfully (2121 jobs).
+Note: This linter can be disabled with `set_option linter.style.header false`
+Build completed successfully (2122 jobs).
 
 $ lake env lean CheckAxioms.lean
 Seymour.seymour_second_neighbourhood : ∀ (V : Type) [inst : Fintype V] [inst_1 : DecidableEq V] [Nonempty V]
@@ -50,3 +28,5 @@ Seymour.seymour_second_neighbourhood : ∀ (V : Type) [inst : Fintype V] [inst_1
 'Seymour.inheavy_of_closed' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.indeg_ge_outdeg_sub_one' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.subset_deficit_inheavy' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.sullivan_min' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.thomasse_nonneighbours' depends on axioms: [propext, Classical.choice, Quot.sound]

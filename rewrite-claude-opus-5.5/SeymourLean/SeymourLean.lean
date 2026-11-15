@@ -14,3 +14,4 @@ import SeymourLean.Final
 import SeymourLean.Insights
 import SeymourLean.Triangles
 import SeymourLean.InHeavy
+import SeymourLean.Related

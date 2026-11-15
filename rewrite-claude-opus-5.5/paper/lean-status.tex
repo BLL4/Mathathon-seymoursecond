@@ -28,7 +28,10 @@ Mathlib's Hall theorem) and \cref{cl:cover-to-pruning};
 \item \texttt{Final.lean}: the unconditional theorem;
 \item \texttt{Insights.lean}: the remarks of the insights pass, see below;
 \item \texttt{Triangles.lean}: \cref{cor:triangles} and the triangle case of
-\cref{lem:girth-grid}, see below.
+\cref{lem:girth-grid}, see below;
+\item \texttt{InHeavy.lean} and \texttt{Related.lean}: \cref{prop:inheavy-minimal}
+and the two conjectures of \cref{sec:related} that follow from one Seymour vertex,
+see below.
 \end{itemize}
 The remarks added in \cref{sec:story,sec:ledger,sec:pruning,sec:contradiction}
 are formalized in \texttt{Insights.lean}: \texttt{F1\_F2\_comm} ($\Ff\Fs=\Fs\Ff$)
@@ -56,7 +59,11 @@ relation, with a loop, a digon or a directed triangle as the conclusion
 $\Ff^2\Delta\cap\Fs\Delta=\varnothing$) and \texttt{seed\_compatible\_iff}
 (the seed $(\Delta\cup\Ff\Delta,\Delta)$ is compatible iff the relation is
 oriented and has no directed triangle), the triangle case of
-\cref{lem:girth-grid}. \texttt{InHeavy.lean} formalizes
+\cref{lem:girth-grid}. \texttt{Related.lean} formalizes the two statements of
+\cref{sec:related} that the theorem settles at once: \texttt{sullivan\_min}
+(Sullivan's Conjecture~6.7, $d^+(v)+\abs{\Ntwo(v)}\ge2\min(d^-(v),d^+(v))$ for some
+$v$) and \texttt{thomasse\_nonneighbours} (Thomass\'e's Conjecture~6.12, with the
+non-neighbours counted explicitly). \texttt{InHeavy.lean} formalizes
 \cref{prop:inheavy-minimal}(a), (b) and (d) for any class of relations
 closed under arc deletion: \texttt{inheavy\_of\_closed} (no closed
 nonempty proper set), \texttt{indeg\_ge\_outdeg\_sub\_one}
@@ -69,7 +76,9 @@ Not formalized in \cref{sec:ch}: the weighted \cref{prop:ch-weighted},
 \cref{prop:tournament-inheavy} (Fisher's theorem, median orders), part (c) of
 \cref{prop:inheavy-minimal}, and the computer evidence of
 \cref{rem:ch-evidence,rem:ch-barriers}; \cref{conj:inheavy,conj:median}
-are conjectures.
+are conjectures. Of \cref{sec:related}, only items (a) and (c) are formalized;
+the refutation of DeVos's conjecture there is a computer check with an explicit
+certificate, and the rest are open problems.
 A few steps are argued differently in Lean. Generic coefficients are taken
 as the variables themselves in the fraction field of a polynomial ring
 rather than as a real point. Only $\rank L\ge\ell$ is used, obtained from

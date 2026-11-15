@@ -136,3 +136,57 @@ best possible if true.
   at every vertex. Random oriented graphs repaired to have these properties (about
   112,000 graphs with 7–15 vertices, and 9,800 triangle-free ones with 8–13 vertices)
   all have an in-heavy Seymour vertex.
+
+## `related.py`: conjectures related to Seymour's (paper, Section 6.4)
+
+Statements tested (d⁺, d⁻ degrees, d⁺₂ = |N₂⁺|, dₖ⁺ = number of vertices at
+out-distance exactly k; sources are the conjecture numbers of Sullivan's 2006 survey
+unless stated):
+
+* **SUL** some v has d⁺₂ ≥ d⁻ (Sullivan, 6.6); **SUL4** some v has d⁺ + d⁺₂ ≥ 2d⁻ (6.4).
+* **TWO** no sink ⇒ at least two Seymour vertices (Havet–Thomassé for tournaments).
+* **MATCH** some v has a complete matching N₁⁺(v) → N₂⁺(v) along arcs (Bai–Li–Park,
+  arXiv:2607.18047).
+* **DIST** every vertex of outdegree k is within distance k of a Seymour vertex
+  (Burckel, 6.14).
+* **BUR3** triangle-free ⇒ some v has d₃⁺ ≥ d₂⁺; **BUR4** girth ≥ 5 ⇒ some v has
+  d₄⁺ ≥ d₃⁺ (Burckel, 6.13).
+* **EUL** Eulerian (d⁺ = d⁻ everywhere) ⇒ Σ d⁺₂ ≥ Σ d⁺ (6.15); **TK** Eulerian with
+  ≥ n²/3 arcs ⇒ directed triangle (Thomassé–Kral', 6.16).
+* **DIGON** loopless digraphs: some v has d⁺₂ ≥ d⁺ − s(v), s(v) = number of digons at v
+  (the theorem gives d⁺ − 2s(v)).
+* **DEVOS** triangle-free ⇒ a probability vector p with p(N₁⁺(v)) ≥ p(N⁻(v)) and
+  p(N₂⁻(v)) ≥ p(N⁻(v)) at every v (DeVos, 6.28; LP with scipy).
+* **MINOUT** some vertex of minimum outdegree is Seymour; **ALLMIN** every such vertex
+  is; sanity statements **SULSEY** (a vertex that is Seymour and Sullivan) and **BOTH**
+  (Seymour in both directions), which fail on a single arc.
+
+Modes: `all N` (all labelled oriented graphs, N ≤ 6), `random N TRIALS`, `tf N`
+(all triangle-free), `girth5 N`, `eulerian N`, `tk N`, `randeul N TRIALS`,
+`randtf N TRIALS`, `digon N` (all loopless digraphs, N ≤ 5), `randdigon N TRIALS`,
+`devos N TRIALS`, `verify NAME N arcs...`.
+
+**Findings.**
+
+* No counterexample to SUL, SUL4, TWO, MATCH, DIST, MINOUT on all 14,408,716 labelled
+  oriented graphs with ≤ 6 vertices (102 s for n = 6) and on 30,000 random graphs each
+  on 7 and 8 vertices, 20,000 on 10, 10,000 on 12 and 3,000 on 16 (random densities).
+* No counterexample to BUR3 on all 4,200,048 triangle-free graphs with ≤ 6 vertices, to
+  BUR4 on all 3,822,372 graphs of girth ≥ 5 with ≤ 6 vertices (the 7-vertex
+  enumeration was stopped as too large), nor to either on random graphs with 8, 10 and
+  13 vertices (45,000 in all).
+* No counterexample to EUL, SEY, SUL, TWO, MATCH on all 785,147 Eulerian oriented
+  graphs with ≤ 7 vertices (7 s), to TK on all 53,880 Eulerian oriented graphs on 7 vertices with ≥ 17
+  arcs (and all smaller ones), nor to any of these on 45,000 random Eulerian graphs
+  with 8, 10 and 14 vertices (unions of random directed cycles).
+* No counterexample to DIGON on all 1,052,741 loopless digraphs with ≤ 5 vertices and
+  30,000 random ones on 7 and 10 vertices.
+* **DeVos's Conjecture 6.28 is false.** On the 6-vertex graph with arcs 03, 10, 15, 20,
+  24, 34, 35, 41, 52 the LP is infeasible, and the weights ξ = (0,1,1,1,0,0),
+  ζ = (3,0,0,0,3,3) of Remark 6.10 certify it: the coefficient of every p_u in
+  Σ ξ_v(p(N₂⁻(v)) − p(N⁻(v))) + ζ_v(p(N₁⁺(v)) − p(N⁻(v))) equals −1. It also fails on
+  9 of 500 random triangle-free graphs on 8 vertices and 13 of 300 on 9.
+* ALLMIN holds on all oriented graphs with ≤ 6 vertices and on the 60,000 random graphs
+  on 7 and 8 vertices, but fails on the 8-vertex tournament listed in the `verify`
+  example of the script (vertex 0 has the minimum outdegree 3 and only two second
+  out-neighbours), so small-graph evidence for it is misleading.
