@@ -10,6 +10,7 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | **20-minute Beamer talk**, 23 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | **Animations** (Manim): why the grid (prologue); one improvement step worked out on a 4-vertex graph | [`animation/WhyGrid.mp4`](animation/WhyGrid.mp4), [`animation/ImprovementStep.mp4`](animation/ImprovementStep.mp4), [`animation/README.md`](animation/README.md) |
 | **Experiments**: computer searches behind the new remarks (three-term complex, tightness of the matching bound, an unproven local form) | [`experiments/README.md`](experiments/README.md) |
+| **Transcript** of the whole Claude Code session (user messages and replies verbatim, tool calls as one-liners); regenerate with `python3 tools/export_transcript.py` | [`transcript.md`](transcript.md) |
 | Computer checks (Python, standard library only)                               | [`checks/`](checks/)                                                         |
 | Lean 4 / Mathlib formalization                                                | [`SeymourLean/`](SeymourLean/) (see its README)                              |
 | Review of the other agents' work                                              | [`REVIEW_OF_rewrite-codex.md`](REVIEW_OF_rewrite-codex.md), [`REVIEW_OF_rewrite-openmath-DeepSeep4.1.md`](REVIEW_OF_rewrite-openmath-DeepSeep4.1.md) |
