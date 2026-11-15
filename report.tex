@@ -34,7 +34,7 @@
 
 
 \title{Report on Seymour's second-neighborhood proof}
-\author{An Cao, Bernard Lidicky, Jan Volec}
+\author{An Cao, Bernard Lidick\'y, Jan Volec}
 
 \begin{document}
 \maketitle
@@ -147,7 +147,7 @@ The present report records the mathematical arguments in text; the
 slides and animations provide supporting explanations. The assistance
 and the limits of the verification claimed here are recorded at the end.
 
-\section{Definitions and notation}
+\section{Definitions and notations}
 \label{sec:definitions}
 
 An \emph{oriented graph} is a finite directed graph with no loops,
@@ -228,6 +228,7 @@ changes both neighborhood directions; it does not give Sullivan's
 mixed comparison between a second out-neighborhood and an indegree.
 \end{remark}
 
+The following sections present an overview of the proof in the source \cite{openai}.
 \subsection{Two stages of extremal reasoning}
 \label{sec:reduction-overview}
 Assume that a counterexample exists. First choose one, $D$, with a
@@ -265,27 +266,21 @@ resulting strict subset inequality against itself. Section~\ref{sec:reproof}
 reformulates the passage between them, and
 Section~\ref{sec:grid-pruning} explains the final mechanism.
 
-\subsection{A self-contained proof map}
+\subsection{Flowchart of the proof}
 \label{sec:flow}
 
 The left column constructs a graph with a strong subset inequality; the
-right column shows why it cannot exist. This is the conceptual route
+right column shows why such a graph cannot exist. This is the conceptual route
 through Sections 2--4 of the source \cite{openai}.
 
-\noindent\textbf{Images in the left column.}
-$V(D)$ is the vertex set of $D$, and $F_D(S)$ is the set reached
-from $S$ by one directed edge. Its two-step image is
-$F_D^2(S)=F_D(F_D(S))$. The subscript $G$ means use $G$ instead.
-These images retain vertices reached earlier.
-
-\noindent\textbf{Families in the right column.}
-The grid consists of ordered pairs of vertices of $G$. A member of the
-first family covers points reached by moving its first coordinate along
-one directed edge; a member of the second covers points reached by
-moving its second coordinate. \emph{Compatible} means no point is
-covered by both families; \emph{uncovered} means covered by neither.
-The \emph{diagonal} consists of the pairs $(v,v)$. Family members are
-counted separately on each side.
+% \noindent\textbf{Families in the right column.}
+% The grid consists of ordered pairs of vertices of $G$. A member of the
+% first family covers points reached by moving its first coordinate along
+% one directed edge; a member of the second covers points reached by
+% moving its second coordinate. \emph{Compatible} means no point is
+% covered by both families; \emph{uncovered} means covered by neither.
+% The \emph{diagonal} consists of the pairs $(v,v)$. Family members are
+% counted separately on each side.
 
 \begingroup
 \newcommand{\flowcell}[2]{%
