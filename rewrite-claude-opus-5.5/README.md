@@ -6,7 +6,7 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | What                                                                          | Where                                                                        |
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md)                                 |
-| **Rewritten paper**, 42 pages, 17 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
+| **Rewritten paper**, 44 pages, 17 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
 | **20-minute Beamer talk**, 23 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | **Animations** (Manim): why the grid (prologue); one improvement step worked out on a 4-vertex graph | [`animation/WhyGrid.mp4`](animation/WhyGrid.mp4), [`animation/ImprovementStep.mp4`](animation/ImprovementStep.mp4), [`animation/README.md`](animation/README.md) |
 | **Experiments**: computer searches behind the new remarks (three-term complex, tightness of the matching bound, an unproven local form) | [`experiments/README.md`](experiments/README.md) |
@@ -111,7 +111,9 @@ Section 6.3 of the paper records what the theorem gives for the
 Caccetta–Häggkvist conjecture with k = 3: the symmetric case (minimum in- and
 out-degree ≥ n/3) is now a sharp theorem; the full case would follow from a
 strengthening of Seymour's theorem, Conjecture 6.4 ("some Seymour vertex has
-d⁻(v) ≥ d⁺(v)"), which is proved for tournaments via median orders and tested
+d⁻(v) ≥ d⁺(v)"). For tournaments this is not new: every Seymour vertex of a
+tournament is in-heavy (N⁺⁺(v) ⊆ N⁻(v)), so it is Fisher's theorem, and the
+median-order proof of Havet–Thomassé gives the in-heavy vertex directly. It is tested
 by `experiments/ch_triangle.py` on all oriented graphs with ≤ 6 vertices, all
 tournaments with ≤ 7 vertices and random graphs with up to 20 vertices.
 Proposition 6.8 (formalized in `SeymourLean/InHeavy.lean`) describes a

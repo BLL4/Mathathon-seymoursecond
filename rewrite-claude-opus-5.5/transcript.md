@@ -1,6 +1,6 @@
 # Transcript of the Claude Code session on the Seymour paper
 
-Session `3ce2e957-d885-461a-bd37-fd214bf36439`, exported 2026-11-15 11:51 by `tools/export_transcript.py`. 48 user messages, 47 replies.
+Session `3ce2e957-d885-461a-bd37-fd214bf36439`, exported 2026-11-15 16:15 by `tools/export_transcript.py`. 49 user messages, 48 replies.
 
 What is included: every message typed by the user and every reply written by Claude, verbatim, in order; each tool call as a one-line note (🔧); and markers where the context window was compacted. Not included: tool outputs, file contents, and Claude's private reasoning. Re-run the script to bring this file up to date.
 
@@ -1811,3 +1811,39 @@ Using the structure theorem to search for counterexamples where they would have 
 > 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
 Recording the structured search result and committing the final state.
 > 🔧 `Bash` — Record the search, rebuild the paper, refresh the transcript, commit and push
+Pushed as `5038ea4` (and `52be2aa` before it); branch matches `origin/main`.
+
+**Outcome: no proof of the k = 3 case.** I did not find one, and I want to be plain about that. What the extra hours produced is a reduction, three negative results that close off the obvious proof routes, a sharper conjecture, and Lean proofs for the parts that are theorems. All of it is in Section 6.3 of the paper (now 44 pages, clean build).
+
+**The reduction (Proposition 6.8, Lean file `InHeavy.lean`).** The conjecture that would settle the triangle case is Conjecture 6.4: every oriented graph has a Seymour vertex v with d⁻(v) ≥ d⁺(v). The paper's own Stage 1 argument transfers to it with one change. A minimal counterexample is strongly connected, every vertex has d⁻ ≥ d⁺ − 1, the in-heavy vertices are all non-Seymour, and every set of in-heavy vertices satisfies the subset deficit of Lemma 2.2. If that deficit held for all sets, the blow-up and the grid argument would finish the proof unchanged. The gap is the nonempty set of vertices with d⁻ = d⁺ − 1 exactly: such a vertex fails the conjecture for a reason that arc deletion cannot see. Parts (a), (b), (d) are formalized for any class closed under arc deletion, so the result covers both all oriented graphs and triangle-free ones. Lean builds with standard axioms only.
+
+**Three routes that are closed (Remark 6.10, `experiments/ch_probe.py`).**
+- **No single distribution.** Unlike Seymour's weighted form (ii), there is no probability vector that is simultaneously Seymour-heavy and in-heavy at every vertex. My earlier claim that this held up to 5 vertices was correct but misleading: it fails from 6 vertices on, with an exact integer certificate given in the paper. Only the one-weight form survives.
+- **No Fisher-type averaging.** Averaging over out-heavy distributions, which is how Fisher proved the tournament case, already fails on a 4-vertex graph.
+- **Not every median order.** For tournaments the last vertex of every median order is Seymour (Havet–Thomassé). For oriented graphs some median orders end badly, but in every graph tested some median order ends in a Seymour vertex. This is Conjecture 6.11, and it implies Conjecture 6.4 because the last vertex of a median order has d⁻ ≥ d⁺.
+
+**Searches.** A targeted search for counterexamples restricted to graphs with the structure of Proposition 6.8 (about 112,000 oriented and 9,800 triangle-free graphs, 7 to 15 vertices) found none. Conjecture 6.11 holds on all oriented graphs with at most 5 vertices and random graphs up to 9.
+
+**What I would try next.** Either a Stage 1 that uses arc reversal at the d⁻ = d⁺ − 1 vertices (I checked where the good vertex of the reversed graph can lie; it gives local structure but no contradiction yet), or a proof of the median-order conjecture by adapting Havet–Thomassé's injection to triangle-free graphs, where second neighbours are non-neighbours rather than in-neighbours.
+
+---
+*[The context window was compacted here; the conversation continued from a summary.]*
+
+## User — 2026-11-15 22:13 UTC
+
+Was it known for tournaments before?
+
+## Claude — 2026-11-15 22:14 UTC
+> 🔧 `Bash` — Find tournament mentions in Section 6
+> 🔧 `Bash` — Show the tournament proposition and its proof
+> 🔧 `Bash` — Find other tournament claims and check bib keys
+Yes, and more directly than my proof suggests. I'll correct the paper, the README, and the Lean status note, then rebuild and push.
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Bash` — Show the other places that cite the tournament proposition
+> 🔧 `Bash` — Show the section overview sentence
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/lean-status.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/README.md
+Edits are in. Now rebuilding the paper and fixing the stale page count in the README.
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/README.md
+> 🔧 `Bash` — Rebuild the paper and report warnings and page count

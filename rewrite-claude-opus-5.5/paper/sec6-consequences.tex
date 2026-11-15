@@ -175,8 +175,8 @@ $\delta^\pm\ge\lceil n/3\rceil$, which includes the case $3\mid n$.)
 \Cref{cor:triangles}(ii) is the \emph{symmetric} case of the Caccetta--H\"aggkvist
 conjecture for triangles. We record what \cref{thm:main} and its weighted forms give
 towards the full conjecture, isolate a strengthening of \cref{thm:main} that would
-settle it (\cref{conj:inheavy}), prove that strengthening for tournaments, report
-computer evidence for it, and explain where the proof of
+settle it (\cref{conj:inheavy}), note that for tournaments it is Fisher's theorem,
+report computer evidence for it, and explain where the proof of
 \cref{sec:pairs,sec:pruning,sec:contradiction} would have to change.
 \end{idea}
 
@@ -261,17 +261,30 @@ approximation, as there.
 \end{proof}
 
 \begin{proposition}[Tournaments]\label{prop:tournament-inheavy}
-\Cref{conj:inheavy} holds for every tournament.
+\Cref{conj:inheavy} holds for every tournament. In fact every Seymour vertex of a
+tournament is in-heavy.
 \end{proposition}
 
 \begin{proof}
-Let $v_1,\dots,v_n$ be a \emph{median order} of the tournament: an ordering of the
-vertices with the maximum number of forward arcs $v_iv_j$, $i<j$. Havet and
-Thomass\'e~\cite{HavetThomasse2000} proved that the last vertex $v_n$ is a Seymour
-vertex. Moving $v_n$ to the front turns its $d^+(v_n)$ out-arcs, all of them backward,
-into forward arcs, and its $d^-(v_n)$ in-arcs into backward arcs; by maximality,
-$d^-(v_n)\ge d^+(v_n)$.
+In a tournament every vertex other than $v$ is an in- or an out-neighbour of $v$, so
+$\Ntwo(v)\subseteq N^-_1(v)$ and a Seymour vertex satisfies
+$d^-(v)\ge\abs{\Ntwo(v)}\ge d^+(v)$. So for tournaments \cref{conj:inheavy} is exactly
+Seymour's conjecture for tournaments, proved by Fisher~\cite{Fisher1996}. This is not
+new; what is worth recording is the second proof, by Havet and
+Thomass\'e~\cite{HavetThomasse2000}, because it produces the in-heavy vertex
+directly and is the one that \cref{conj:median} below asks to extend. Let
+$v_1,\dots,v_n$ be a \emph{median order} of the tournament: an ordering of the
+vertices with the maximum number of forward arcs $v_iv_j$, $i<j$. They proved that
+the last vertex $v_n$ is a Seymour vertex. Moving $v_n$ to the front turns its
+$d^+(v_n)$ out-arcs, all of them backward, into forward arcs, and its $d^-(v_n)$
+in-arcs into backward arcs; by maximality, $d^-(v_n)\ge d^+(v_n)$.
 \end{proof}
+
+The inclusion $\Ntwo(v)\subseteq N^-_1(v)$ is also why \cref{conj:inheavy} is only
+interesting away from tournaments: in an oriented graph the second out-neighbourhood
+lives among the non-neighbours, and the in-degree is a separate quantity. (The
+Caccetta--H\"aggkvist statement itself is trivial for tournaments, since a tournament
+without directed triangles is transitive and has a sink.)
 
 \begin{remark}[Computer evidence]\label{rem:ch-evidence}
 The script \texttt{experiments/ch\_triangle.py} finds no counterexample to
