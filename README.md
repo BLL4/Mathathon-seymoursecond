@@ -1,7 +1,16 @@
 # [A proof of Seymour’s second-neighborhood conjecture](original/paper.pdf)
 
-This is a Mathaton attempt to make the paper more readable and understandable for humans.
-The original was authored by OpenAI, dated September 23, 2026
+This Mathathon project aims to make OpenAI's September 23, 2026 paper more
+understandable through illustrated rewrites and visual explanations.
+
+The repository includes:
+
+- [`report.tex`](report.tex): the main report's LaTeX source.
+- [`report.pdf`](report.pdf): the compiled report.
+- `slides.pdf`: the final presentation slides, to be added.
+- [`original/`](original/): the original paper and its LaTeX source.
+- The `rewrite-*` folders: complementary rewrites, slides, animations, figures,
+  computational checks, and Lean developments.
 
 ## Original Citation
 
