@@ -285,7 +285,7 @@ holds with equality at the best vertex for the directed cycles and for the circu
 above, so (b) is best possible if true.
 \end{remark}
 
-\paragraph{What a minimal counterexample would look like.}
+\paragraph{Minimal counterexamples.}
 The arc-deletion argument of \cref{lem:subset-deficit} also works for
 \cref{conj:inheavy}. It needs one change, and the change is the whole difficulty.
 
@@ -355,7 +355,11 @@ from $L$. So it suffices to prove \cref{conj:inheavy} for strongly connected ori
 graphs with $d^-\ge d^+-1$ everywhere whose in-heavy vertices are non-Seymour and
 satisfy the subset deficit, and in which the set $L$ is nonempty with
 $\abs L=\sum_{M}(d^--d^+)$. Parts (a), (b) and (d) are formalized in
-\texttt{InHeavy.lean} for any class closed under arc deletion.
+\texttt{InHeavy.lean} for any class closed under arc deletion. A random search
+restricted to graphs with properties (a) and (b) (strongly connected, $d^-\ge d^+-1$
+everywhere; about $112{,}000$ oriented graphs with $7$ to $15$ vertices and $9{,}800$
+triangle-free ones with $8$ to $13$ vertices, \texttt{ch\_triangle.py structured})
+found no counterexample either.
 \end{remark}
 
 \begin{remark}[Three things a proof cannot be]\label{rem:ch-barriers}

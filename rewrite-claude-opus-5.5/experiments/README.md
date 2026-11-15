@@ -131,3 +131,8 @@ best possible if true.
   vertex (p(N₁⁺(u)) ≥ p(N⁻(u))), the minimum of Σ p(v)(d⁺⁺(v) − d⁺(v)) is negative for
   36 of the 549 triangle-free graphs on 4 vertices and 3,470 of 30,535 on 5 (minimum −1),
   and the same holds for Σ p(v)(d⁺⁺ + d⁻ − 2d⁺); over in-heavy p it fails almost always.
+* **Structured search** (`ch_triangle.py structured N TRIALS SEED [tf]`). Proposition 6.8
+  says a minimal counterexample to Conjecture 6.4 is strongly connected with d⁻ ≥ d⁺ − 1
+  at every vertex. Random oriented graphs repaired to have these properties (about
+  112,000 graphs with 7–15 vertices, and 9,800 triangle-free ones with 8–13 vertices)
+  all have an in-heavy Seymour vertex.

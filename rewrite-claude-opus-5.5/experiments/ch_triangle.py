@@ -359,9 +359,67 @@ def run_random_all(n, trials, seed=7, tournaments=False):
                  f"({trials}, seed {seed})")
 
 
+def run_structured(n, trials, seed=21, triangle_free=False):
+    """Search for counterexamples to S2 where Proposition 6.8 says they must live: random
+    oriented graphs repaired so that every vertex has d- >= d+ - 1 (delete out-arcs of
+    offending vertices), no sinks, strongly connected."""
+    rng = random.Random(seed)
+    tally = Tally(["SEY", "S2"])
+    kept = 0
+    for _ in range(trials):
+        if triangle_free:
+            out, inn = random_triangle_free(n, rng)
+        else:
+            out = [0] * n
+            inn = [0] * n
+            dens = rng.uniform(0.3, 1.0)
+            for x, y in itertools.combinations(range(n), 2):
+                if rng.random() > dens:
+                    continue
+                if rng.random() < 0.5:
+                    x, y = y, x
+                out[x] |= 1 << y
+                inn[y] |= 1 << x
+        # repair: while some vertex has d+ > d- + 1, delete one of its out-arcs
+        changed = True
+        while changed:
+            changed = False
+            for v in range(n):
+                if bits(out[v]) > bits(inn[v]) + 1:
+                    ys = list(members(out[v]))
+                    y = rng.choice(ys)
+                    out[v] &= ~(1 << y)
+                    inn[y] &= ~(1 << v)
+                    changed = True
+        if any(out[v] == 0 for v in range(n)):
+            continue
+        # strong connectivity
+        def reach(start, adjm):
+            seen = 1 << start
+            frontier = [start]
+            while frontier:
+                x = frontier.pop()
+                m = adjm[x] & ~seen
+                seen |= m
+                frontier.extend(members(m))
+            return seen
+        full = (1 << n) - 1
+        if reach(0, out) != full or reach(0, inn) != full:
+            continue
+        kept += 1
+        nb = neighbourhoods(n, out, inn)
+        tally.add(n, out, {k: v for k, v in evaluate(n, nb).items() if k in tally.names})
+    tally.report(f"n={n} structured{' triangle-free' if triangle_free else ''} "
+                 f"({kept} of {trials} candidates kept, seed {seed})")
+
+
 def main():
     mode = sys.argv[1] if len(sys.argv) > 1 else "exhaustive"
-    if mode == "exhaustive":
+    if mode == "structured":
+        run_structured(int(sys.argv[2]), int(sys.argv[3]) if len(sys.argv) > 3 else 10000,
+                       int(sys.argv[4]) if len(sys.argv) > 4 else 21,
+                       triangle_free=(len(sys.argv) > 5 and sys.argv[5] == "tf"))
+    elif mode == "exhaustive":
         run_exhaustive(int(sys.argv[2]) if len(sys.argv) > 2 else 5)
     elif mode == "all":
         run_all(int(sys.argv[2]) if len(sys.argv) > 2 else 5)
