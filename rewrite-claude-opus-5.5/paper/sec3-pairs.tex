@@ -1,7 +1,11 @@
 \section{Pairs of vertices: the grid picture}\label{sec:pairs}
 
 \begin{idea}[What this section does]
-We introduce the language of the rest of the proof: subsets of the grid
+We first explain \emph{why} the proof moves to pairs of vertices
+(\cref{sec:story}): the orientation is a statement about pairs, and the
+grid $X\times X$ is the smallest arena in which both the orientation and
+strict concavity can be used. Then we introduce the language of the rest of
+the proof: subsets of the grid
 $X\times X$, the two coordinate images $\Ff,\Fs$, conflicts and compatibility,
 and the quantity $\val(P,Q)$ that will be maximized. \Cref{tab:sides}
 collects what belongs to the left and to the right family, and
@@ -11,6 +15,197 @@ triangle. We then explain
 explanation is made rigorous in \cref{sec:contradiction}, and the one
 missing tool, the pruning lemma, is proved in \cref{sec:pruning}.
 \end{idea}
+
+\subsection{The story: why pairs, and why a grid?}\label{sec:story}
+
+Before the formal definitions, here is the reason for the set-up. We must
+rule out an oriented graph $G$ on $X$ with
+\begin{itemize}[leftmargin=*]
+\item[(G1)] every vertex has an in-neighbor, and
+\item[(G2)] $\abs U+\abs{F^2U}<2\abs{FU}$ for every nonempty proper $U\subseteq X$.
+\end{itemize}
+
+\paragraph{Concavity alone is not contradictory.}
+Neither (G1) nor (G2) mentions the orientation, and without it both
+can hold. Let $K_n^{\leftrightarrow}$ be the complete digraph on $n\ge4$
+vertices with \emph{both} arcs between every two vertices (no loops). For a
+single vertex, $F\{v\}=X\setminus\{v\}$ and $F^2\{v\}=X$, so
+$1+n<2(n-1)$. For $2\le\abs U<n$, $FU=F^2U=X$ and $\abs U+n<2n$. So
+$K_n^{\leftrightarrow}$ satisfies (G1) and (G2) (we checked this by computer
+for $n=4,5$ as well). Any proof must therefore use ``no opposite arcs''
+somewhere, and in an essential way. This rules out arguments that look at one
+vertex set at a time, for instance iterating (G2) along $U,FU,F^2U,\dots$:
+such an argument would apply verbatim to $K_n^{\leftrightarrow}$.
+
+\paragraph{Orientation is a statement about pairs.}
+Write $A=\{(i,j): i\to j\}\subseteq X\times X$ for the arc set, i.e.\ the
+support of the adjacency matrix. Row $i$ of $A$ is the out-neighborhood of
+$i$, and column $j$ is the in-neighborhood of $j$. ``No opposite arcs''
+says
+\[
+ A\cap A^{\T}=\varnothing .
+\]
+No single row or column shows this: one has to compare row $i$ with column
+$i$. So the natural home of the orientation hypothesis is the set
+$X\times X$ of ordered pairs, with \emph{both} its rows and its columns in
+play.
+
+The two operators of the next subsection make this precise. $\Fs$ moves the
+second coordinate of a pair along an arc (a horizontal move), and $\Ff$
+moves the first coordinate (a vertical move). Starting from the diagonal
+$\Delta=\{(v,v)\}$,
+\[
+ \Fs\Delta=A,\qquad \Ff\Delta=A^{\T},\qquad
+ \text{row } i \text{ of } \Fs^2\Delta = F^2\{i\}.
+\]
+So the grid stores the first and second out-neighborhoods of all vertices at
+once, and Seymour's conjecture is a comparison of rows of $\Delta$,
+$\Fs\Delta$ and $\Fs^2\Delta$. More importantly,
+\[
+ G\text{ has no opposite arcs}\iff \Ff\Delta\cap\Fs\Delta=\varnothing :
+\]
+the vertical image and the horizontal image of the diagonal do not meet
+(\cref{fig:story}). A pair of opposite arcs $p\rightleftarrows i$ shows up
+as a point $(i,p)$ reached both vertically from $(p,p)$ and horizontally
+from $(i,i)$. This is the simplest instance of what \cref{def:conflict} will
+call a \emph{conflict}.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=0.85]
+ \tikzset{hollowL/.style={circle,draw=famL,thick,inner sep=0pt,minimum size=3.9mm},
+          hollowR/.style={rectangle,draw=famR,thick,inner sep=0pt,minimum size=3.1mm},
+          dpt/.style={circle,fill=black!70,inner sep=0pt,minimum size=2.4mm}}
+ % ---------- (a) oriented triangle
+ \begin{scope}[xshift=-1.6cm,yshift=-2.4cm]
+  \node[vtx] (t1) at (90:0.8) {$1$}; \node[vtx] (t2) at (210:0.8) {$2$}; \node[vtx] (t3) at (330:0.8) {$3$};
+  \draw[arc] (t1)--(t2); \draw[arc] (t2)--(t3); \draw[arc] (t3)--(t1);
+ \end{scope}
+ \begin{scope}
+  \foreach \k in {1,2,3} {\node[font=\footnotesize] at (\k,-0.35) {$\k$}; \node[font=\footnotesize] at (0.4,-\k-0.4) {$\k$};}
+  \foreach \i in {1,2,3} \foreach \j in {1,2,3} \node[gridpt] at (\j,-\i-0.4) {};
+  \foreach \k in {1,2,3} \node[dpt] at (\k,-\k-0.4) {};
+  % A^T = F1 Delta = {(i,j): j->i} : (2,1),(3,2),(1,3)
+  \foreach \i/\j in {2/1,3/2,1/3} \node[hollowL] at (\j,-\i-0.4) {};
+  % A = F2 Delta = {(i,j): i->j} : (1,2),(2,3),(3,1)
+  \foreach \i/\j in {1/2,2/3,3/1} \node[hollowR] at (\j,-\i-0.4) {};
+  \node[font=\small,align=center] at (1.0,-4.6) {(a) oriented: $\Ff\Delta$ and $\Fs\Delta$\\ never share a point};
+ \end{scope}
+ % ---------- (b) with a 2-cycle
+ \begin{scope}[xshift=5.6cm,yshift=-2.4cm]
+  \node[vtx] (u1) at (90:0.8) {$1$}; \node[vtx] (u2) at (210:0.8) {$2$}; \node[vtx] (u3) at (330:0.8) {$3$};
+  \draw[arc] (u1) to[bend right=18] (u2); \draw[arc] (u2) to[bend right=18] (u1);
+  \draw[arc] (u2)--(u3); \draw[arc] (u3)--(u1);
+ \end{scope}
+ \begin{scope}[xshift=7.2cm]
+  \foreach \k in {1,2,3} {\node[font=\footnotesize] at (\k,-0.35) {$\k$}; \node[font=\footnotesize] at (0.4,-\k-0.4) {$\k$};}
+  \foreach \i in {1,2,3} \foreach \j in {1,2,3} \node[gridpt] at (\j,-\i-0.4) {};
+  \node[Zpt] at (2,-1.4) {}; \node[Zpt] at (1,-2.4) {};
+  \foreach \k in {1,2,3} \node[dpt] (d\k) at (\k,-\k-0.4) {};
+  % F1 Delta = {(i,j): j->i}: (2,1),(1,2),(3,2),(1,3)
+  \foreach \i/\j in {2/1,1/2,3/2,1/3} \node[hollowL] at (\j,-\i-0.4) {};
+  % F2 Delta = {(i,j): i->j}: (1,2),(2,1),(2,3),(3,1)
+  \foreach \i/\j in {1/2,2/1,2/3,3/1} \node[hollowR] at (\j,-\i-0.4) {};
+  \draw[-{Stealth[length=1.8mm]},famL,thick,shorten >=2.2mm] (d1) -- (1,-2.4);
+  \draw[-{Stealth[length=1.8mm]},famR,thick,shorten >=2.2mm] (d2) -- (1,-2.4);
+  \node[font=\small,align=center] at (1.0,-4.6) {(b) $1\rightleftarrows2$: both images\\ contain $(1,2)$ and $(2,1)$};
+ \end{scope}
+\end{tikzpicture}
+\caption{Orientation, seen in the grid. Black dots: the diagonal $\Delta$.
+Blue circles: $\Ff\Delta=A^{\T}$ (move $(j,j)$ vertically to $(i,j)$ when
+$j\to i$). Orange squares: $\Fs\Delta=A$ (move $(i,i)$ horizontally to
+$(i,j)$ when $i\to j$). (a) In the directed triangle the two images are
+disjoint. (b) The pair of opposite arcs $1\rightleftarrows2$ makes
+$(1,1)$ (down) and $(2,2)$ (left) both reach $(2,1)$, and symmetrically
+both images contain $(1,2)$. These doubly covered points (green) are
+conflicts between diagonal points.}
+\label{fig:story}
+\end{figure}
+
+\paragraph{Concavity survives the passage to pairs.}
+$\Ff$ acts on each column separately, by the ordinary image $F$, and $\Fs$
+acts on each row separately (\eqref{eq:columnwise} below). So (G2) applies to
+every line of a set of pairs, and summing over the lines turns it into an
+inequality for the whole set, in either direction. Concavity is a
+one-dimensional statement, and the grid has two directions in which it can
+be used.
+
+\paragraph{The grid is where both hypotheses speak.}
+We therefore work with \emph{two} families: a left family $P$ moved
+vertically by $\Ff$ and a right family $Q$ moved horizontally by $\Fs$.
+Concavity is used on the columns of $P$ and on the rows of $Q$. The
+orientation is generalized from $(\Delta,\Delta)$ to $(P,Q)$ as
+\emph{compatibility}: $\Ff P\cap\Fs Q=\varnothing$. A conflict between
+$r\in P$ and $c\in Q$ is a ``pair of opposite arcs'' between the column of
+$r$ and the row of $c$. With only one family, or only one direction, the grid
+would just be $\abs X$ independent copies of $X$, and an argument there
+could not tell $G$ apart from $K_n^{\leftrightarrow}$. It is the interaction
+of a vertical family with a horizontal one that encodes the orientation. In
+fact, in \cref{sec:pairs,sec:pruning,sec:contradiction} the orientation is
+used exactly once: to see that $(\Delta,\Delta)$ is compatible
+(\cref{lem:diag-compatible}).
+
+\paragraph{Why it works: a fixed board and a budget.}
+The grid has a fixed number $\abs X^2$ of cells. If $P$ and $Q$ are
+compatible, their images are disjoint, so
+\[
+ \abs X^2=\abs{\Ff P}+\abs{\Fs Q}+\unc(P,Q),
+\]
+where $\unc$ counts the cells covered by neither image. Hence the value we
+are going to maximize can be rewritten as
+\[
+ \val(P,Q)=\abs P+\abs Q+\unc(P,Q)
+ =\abs X^2-\bigl(\abs{\Ff P}-\abs P\bigr)-\bigl(\abs{\Fs Q}-\abs Q\bigr).
+\]
+Maximizing the value means finding compatible families that \emph{expand}
+as little as possible when moved once. Strict concavity says that expansion
+shrinks one step further: $\abs{F^2U}-\abs{FU}<\abs{FU}-\abs U$. So the second
+images $\Fs^2Q$ and $\Ff^2P$ are smaller than a linear extrapolation
+predicts, and their complements
+\[
+ \Rf=(X\times X)\setminus\Fs^2Q,\qquad \Cf=(X\times X)\setminus\Ff^2P
+\]
+are large: $\abs\Rf+\abs\Cf>\val(P,Q)+\unc(P,Q)$ (Step~2 of \cref{sec:ledger}).
+The new families are again subsets of the same board and again contain the
+diagonal, so they are the same kind of object. Only compatibility can fail:
+new ``opposite arcs'' (conflicts) may appear. The pruning lemma removes them,
+and the bill is paid in the board's own currency, cells: cells that were free
+before (the corners $H$) and cells freed by the pruning itself. The value
+goes up. It cannot go up forever, since it is at most $3\abs X^2$. Read as
+an algorithm, a graph satisfying (G1) and (G2) would let us improve
+compatible pairs indefinitely.
+
+\paragraph{The main features.} To summarize, the grid works because it has:
+\begin{enumerate}[label=(\roman*),leftmargin=*]
+\item \emph{line-by-line additivity:} concavity of vertex sets adds up over
+the rows and columns;
+\item \emph{two transversal directions:} two families can be moved
+without competing on the same lines, and they interact only at conflict
+points, which generalize pairs of opposite arcs. This is where the
+orientation enters;
+\item \emph{a fixed finite board:} expansion, gain and pruning cost are all
+counted in cells of the same board, and the value is bounded;
+\item \emph{the diagonal:} it is the seed provided by the orientation, it
+keeps every line nonempty (so (G2) applies), and it survives each step;
+\item \emph{closure:} one step turns an admissible pair into an admissible
+pair, so a maximal pair cannot exist.
+\end{enumerate}
+
+\begin{remark}[Other ways to see the grid]\label{rem:other-views}
+(a) \emph{The matrix view.} Taking $P=Q=\Delta$ only, the grid is the
+adjacency matrix, and Seymour's conjecture compares the rows of $\Delta$,
+$A$ and the support of $A^2$. The proof gains its strength by replacing
+$\Delta$ with arbitrary families, which gives room to optimize. The
+directed triangle (\cref{ex:triangle-grid}) shows the diagonal pair in this
+view.
+(b) \emph{One vertex set at a time.} This is ruled out by
+$K_n^{\leftrightarrow}$, as explained above.
+(c) \emph{The improvement step as a game.} The value is a bounded integer
+potential, and every hypothesis enters the step: concavity produces the gain,
+orientation produces the starting pair and the disjointness behind the
+budget identity, and the pruning lemma converts conflicts into cells. The
+animation in \texttt{animation/} plays one such step on a small graph.
+\end{remark}
 
 \subsection{Coordinate images}
 

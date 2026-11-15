@@ -163,7 +163,11 @@ the second increment is smaller than the first.
 \paragraph{Stage 3: no graph is strictly concave
 (\cref{sec:pairs,sec:pruning,sec:contradiction}).}
 This is the heart of the proof. We work with \emph{sets of ordered pairs}
-of vertices, drawn as subsets of a grid $X\times X$. On pairs there are two
+of vertices, drawn as subsets of a grid $X\times X$. The reason is that
+strict concavity alone is not contradictory (the complete digraph with all
+pairs of opposite arcs satisfies it), and ``no opposite arcs'' is a
+statement about pairs: $A\cap A^{\T}=\varnothing$ for the arc set $A$
+(\cref{sec:story}). On pairs there are two
 natural image operators: $\Ff$ moves the first coordinate along an arc and
 $\Fs$ moves the second. We consider pairs $(P,Q)$ of such families that are
 \emph{compatible} ($\Ff P$ and $\Fs Q$ are disjoint), both containing the

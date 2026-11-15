@@ -1,4 +1,29 @@
-# Animation: one improvement step, worked out
+# Animations: why the grid, and one improvement step
+
+Watch them in this order:
+
+1. [`WhyGrid.mp4`](WhyGrid.mp4) (70 s): the story behind Stage 3 (paper
+   §3.1, slide 9).
+2. [`ImprovementStep.mp4`](ImprovementStep.mp4) (80 s): one step of the
+   proof on a concrete graph.
+
+## Prologue: why pairs, why a grid
+
+Source: [`why_grid.py`](why_grid.py), scene `WhyGrid`.
+
+1. **Concavity alone is not contradictory.** The complete digraph on 4
+   vertices with all opposite arcs satisfies (G1) and (G2) (checked by
+   `engine.py`). So the proof must use "no opposite arcs".
+2. **Orientation lives on pairs.** On the digraph 1⇄2, 2→3, 3→1, the
+   vertical image F₁Δ = Aᵀ and the horizontal image F₂Δ = A of the diagonal
+   meet at (1,2) and (2,1): opposite arcs are a conflict. After deleting
+   2→1 the graph is oriented and the images are disjoint.
+3. **Concavity lifts line by line:** a column for F₁, a row for F₂.
+4. **A fixed board.** Disjoint images give |X|² = |F₁P| + |F₂Q| + unc, so
+   val = |X|² − (|F₁P| − |P|) − (|F₂Q| − |Q|). Concavity says expansion
+   shrinks one step later, which frees cells for the new families.
+
+## One improvement step, worked out
 
 [`ImprovementStep.mp4`](ImprovementStep.mp4) (80 s, 1080p, white background)
 runs the key step of Section 5 on a concrete graph.
@@ -49,6 +74,7 @@ the maintained fork of 3b1b's manim, and it renders headless to a video file.
 cd animation
 python3.14 -m venv .venv && .venv/bin/pip install manim   # needs cairo, pango, ffmpeg, LaTeX
 .venv/bin/manim -qh --media_dir media improvement_step.py ImprovementStep
+.venv/bin/manim -qh --media_dir media why_grid.py WhyGrid
 ```
 
 Use `-ql` instead of `-qh` for a quick 480p draft.
