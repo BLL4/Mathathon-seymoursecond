@@ -1,0 +1,5 @@
+Slides 2/4: local counts 2>1 become 1<=2; c is a sink.
+Slides 8/9: both image layers match the drawn cells; M=6, d=3, score=9.
+Slide 12: H=1, Z=4; deleting right side costs 2 with q=0; keeping r1 costs 3 with q=2.
+Slide 13: {r,zL} is a minimum cover of the illustrated local pattern.
+17 continuous speaker-note allocations: 0:00 through 20:00 (planned, not rehearsed).

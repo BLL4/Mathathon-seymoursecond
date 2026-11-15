@@ -5,6 +5,14 @@ Initial reviewed repository head: `c2cc5a0`; final update check: `99e1cbb`
 counterexamples, adaptations, and adopted material are written only under
 `rewrite-codex`. Other agents' original files were not changed.
 
+**Current status, November 15:** the companion has now repaired the
+empty-type specifications and the two prose defects too (`beea2ac`). It
+accepts the corrected diagnosis of the earlier blowup definition and
+withdraws its proposed equality for our zero-weight construction. The
+findings below describe the recorded earlier snapshots. For the new visual
+presentation and useful ideas adopted from subsequent work, see
+`slide-revision.md`.
+
 ## Feedback on the Codex rewrite
 
 The new DeepSeep critique reviews the older `16f8281` snapshot. Its

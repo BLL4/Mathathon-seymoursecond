@@ -147,3 +147,18 @@ and specifies the actual blowup in `f6f6460`. Those two refutations concern
 our recorded earlier snapshot. Its live empty-graph issues remain; see
 `updates-review.md`. A numerical budget trace was added in response to the
 new critique of our older snapshot.
+
+## November 15 visual presentation revision
+
+Replaced the main deck with a 17-frame visual account of the proof ideas.
+Diagrams now carry every substantive main frame. The prior 16-frame source
+and PDF are preserved as `talk-technical.tex` and `talk-technical.pdf`.
+The new grid motivation and exchange-rate emphasis adopt useful ideas from
+Claude's recent slides and animations, with attribution in the deck and
+`slide-revision.md`. Independently checked the concrete examples using
+`check_slide_examples.py`; its timing audit gives continuous 0:00–20:00.
+All main frames were rendered and inspected. Main slides, notes and the
+technical deck compile without layout or reference warnings. No Lean source
+was changed; the mathematical scope of the formalization is unchanged.
+The companion's empty-type and explanatory-text defects are now repaired,
+and our older refutations remain explicitly identified as snapshot results.

@@ -1,258 +1,204 @@
 \documentclass[aspectratio=169,11pt]{beamer}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern,amsmath,amssymb,tikz}
-\usetikzlibrary{arrows.meta,positioning,calc}
-\usetheme{Boadilla}
+\usetikzlibrary{arrows.meta,positioning,calc,decorations.pathreplacing,shapes.geometric}
+\definecolor{bluefam}{RGB}{30,105,175}
+\definecolor{orangefam}{RGB}{195,87,20}
+\definecolor{target}{RGB}{35,133,87}
+\definecolor{corner}{RGB}{132,69,160}
+\definecolor{gold}{RGB}{216,164,37}
+\definecolor{ink}{RGB}{33,46,65}
+\definecolor{soft}{RGB}{243,246,250}
+\usetheme{default}
 \setbeamertemplate{navigation symbols}{}
-\setbeamertemplate{footline}[frame number]
+\setbeamertemplate{footline}{\hfill\color{ink!65}\small\insertframenumber/\inserttotalframenumber\hspace{4mm}\vspace{2mm}}
+\setbeamercolor{frametitle}{fg=ink}
+\setbeamerfont{frametitle}{series=\bfseries,size=\Large}
+\setbeamercolor{structure}{fg=bluefam}
+\setbeamercolor{block title}{fg=ink,bg=bluefam!12}
+\setbeamercolor{block body}{fg=ink,bg=soft}
+\setbeamercolor{block title alerted}{fg=ink,bg=orangefam!17}
+\setbeamercolor{block body alerted}{fg=ink,bg=orangefam!5}
 \ifdefined\SpeakerNotes
 \setbeameroption{show only notes}
 \else
 \setbeameroption{hide notes}
 \fi
-\newcommand{\R}{\mathbb R}
 \newcommand{\abs}[1]{\lvert#1\rvert}
-\DeclareMathOperator{\rank}{rank}
-\DeclareMathOperator{\im}{im}
+\newcommand{\takeaway}[1]{\par\medskip{\color{bluefam!85!black}\bfseries #1}\par}
+\tikzset{
+ vertex/.style={circle,draw=ink,fill=white,minimum size=6mm,inner sep=1pt},
+ arc/.style={-{Stealth[length=2mm]},thick},
+ stage/.style={draw=ink!65,rounded corners,align=center,text width=32mm,minimum height=18mm,inner sep=5pt,font=\small},
+ leftpt/.style={circle,draw=bluefam!80!black,fill=bluefam,minimum size=4mm,inner sep=0pt},
+ rightpt/.style={rectangle,draw=orangefam!80!black,fill=orangefam,minimum size=3.8mm,inner sep=0pt},
+ targetpt/.style={diamond,draw=target!80!black,fill=target,minimum size=4.8mm,inner sep=0pt},
+ starpt/.style={star,star points=5,draw=corner!80!black,fill=corner,minimum size=5.5mm,inner sep=0pt}}
+\input{talk-figures/diagrams}
 \title{Finding a second neighborhood}
-\subtitle{The architecture of the supplied OpenAI proof}
+\subtitle{The main ideas of the supplied OpenAI proof}
 \author{Codex exposition}
-\date{20-minute presentation}
+\date{A visual twenty-minute talk}
 \begin{document}
+
 \begin{frame}
 \titlepage
-\note{0:00--0:30. This talk explains the supplied September 2026 preprint. The exposition is derived from it. State the three inventions to listen for: subset deficit, pruning with an output-dependent cost, and an extremal objective that pays that cost.}
-\end{frame}
-
-\begin{frame}{1. The question is about distinct vertices}
-An oriented graph has no loops and no opposite pair of arcs.
-\[
-N_1^+(v)=\{u:v\to u\},\quad
-N_2^+(v)=\{w\notin\{v\}\cup N_1^+(v):v\to u\to w\text{ for some }u\}.
-\]
-\begin{center}
-\begin{tikzpicture}[>=Stealth,v/.style={circle,draw,minimum size=7mm}]
-\node[v] (v) at (0,0) {$v$};\node[v] (a) at (2,.8) {$a$};\node[v] (b) at (2,-.8) {$b$};\node[v] (c) at (4,0) {$c$};
-\draw[->] (v)--(a);\draw[->] (v)--(b);\draw[->] (a)--(b);\draw[->] (a)--(c);\draw[->] (b)--(c);
-\node[anchor=west,align=left] at (5,0) {Two paths to $c$: count once.\\A two-step path to $b$: exclude $b$.};
-\end{tikzpicture}
+\vspace{-8mm}
+\begin{center}\small
+\textcolor{bluefam}{Compare}\quad$\longrightarrow$\quad
+\textcolor{orangefam}{Amplify}\quad$\longrightarrow$\quad
+\textcolor{target}{Improve}
 \end{center}
-\begin{block}{The theorem in the supplied preprint}
-Some vertex satisfies $|N_1^+(v)|\le |N_2^+(v)|$.
-\end{block}
-\note{0:30--1:45. Explain the example before the theorem. At v the sizes are two and one, but c is a sink and satisfies the theorem. The assertion is existential. Avoid saying a second neighbor is simply a two-walk endpoint.}
+\note{0:00--0:15. This is an explanation of the supplied September 23, 2026 OpenAI preprint. The mathematical question is local, but the proof goes through subsets and then pairs of subsets on a grid. We will follow the constructions and their purposes. The separate technical deck retains the rank calculations.}
 \end{frame}
 
-\begin{frame}{2. The three bridges}
-\begin{enumerate}
-\item A counterexample gives a graph with
+\begin{frame}{The question: can the second neighborhood catch up?}
+An oriented graph has no loops and no opposite pair of arcs.
+\begin{center}\NeighborhoodPicture\end{center}
+\begin{block}{The theorem}
+Every nonempty finite oriented graph has a vertex $v$ with
+$|N_1^+(v)|\le |N_2^+(v)|$.
+\end{block}
+\note{0:15--1:30. Start with the picture. First means one arc; second means shortest directed distance exactly two. Count vertices, not walks. At v there are two first neighbors and one second neighbor. The graph is not a counterexample because c is a sink. The theorem asks for one good vertex, not for all vertices to work. This graph will return in the deletion illustration.}
+\end{frame}
+
+\begin{frame}{Three transformations expose the contradiction}
+\begin{center}\ProofMap\end{center}
+\takeaway{The final move builds a better object than an object chosen to be best.}
+\note{1:30--2:15. Assume every vertex fails. Minimum order and then minimum arc count give a set deficit. A transitive-tournament blowup turns the deficit into strict concavity for every nonempty proper subset. The last stage optimizes a pair of families on a grid. Concavity makes a larger candidate; pruning repairs it. The proof is finished if repair costs less than the gain measured by the chosen score.}
+\end{frame}
+
+\begin{frame}{Minimality gives a useful before-and-after comparison}
+Choose a counterexample with the fewest vertices, then the fewest arcs.
+\begin{center}\DeletionPicture\end{center}
+\takeaway{Fewer arcs guarantee a good vertex. Compare what that vertex lost and gained.}
+\note{2:15--3:30. The displayed graph is a local illustration, not a counterexample: its sink already works. In the hypothetical minimum counterexample, deleting at least one arc preserves orientation and nonemptiness, so arc minimality guarantees some good vertex. If its first neighborhood had not changed, its second neighborhood could only shrink: deleting arcs cannot create two-step paths, and the excluded first neighbors would be unchanged. Therefore the witness loses a first neighbor. For a fixed S, delete arcs from S to the as-yet-unprocessed part of F(S) outside S. The witness lies in S and the lost neighbors form a nonempty batch Q. Vertex minimality also implies strong connectivity, giving positive indegrees and an outgoing arc from every nonempty proper S.}
+\end{frame}
+
+\begin{frame}{Process the exterior neighbors in batches}
+Put $F(S)=\{y:x\to y\text{ for some }x\in S\}$; let $F^2=F\circ F$.
+\begin{center}\scalebox{.9}{\BatchPicture}\end{center}
 \[
-|U|+|F^2(U)|<2|F(U)|\quad(\varnothing\ne U\subsetneq V).
+ |F^2(S)\setminus F(S)|<|F(S)\setminus S|
+ \qquad(\varnothing\ne S\subsetneq V).
 \]
-\item A pruning lemma repairs conflicting families at a controlled cost.
-\item That cost contradicts a maximum of $|P|+|Q|+d$.
+\note{3:30--4:30. This is the reduction's key invention: a vertex inequality becomes an inequality for every nonempty proper subset. The strip E is partitioned into the batches produced by repeated deletion comparisons. To track the exact net change, put I=F(S) intersection S and g(T)=|F(T) minus (I union T)|. Start with T empty and add Q each time. The comparison at the good vertex gives g(T union Q)-g(T)<|Q|. A net increment may be negative; the picture makes no positivity assertion. At the end g(E)=|F squared(S) minus F(S)|. Add the strict batch inequalities. Each modified graph is formed from the original graph, rather than by accumulating previous deletions.}
+\end{frame}
+
+\begin{frame}{Blowup makes a small deficit dominate the errors}
+\begin{center}\BlowupPicture\end{center}
+\takeaway{Replace each vertex by a large ordered block: amplify the signal, bound the error.}
+\note{4:30--5:45. There are n base vertices and every block is a transitive tournament of size m>n. A base arc gives every arc between the corresponding blocks. The subset deficit is a negative integer, so at most minus one. For a subset U whose block support is proper, its contribution scales by m, whereas the internal-block correction is at most one per block. Thus the total is at most minus m plus n, strictly negative. For full support, use positive indegrees: F(U) and F squared(U) are the full blown-up graph, and the desired expression is |U|-|V|<0. That separate case matters. The drawing shows representative three-vertex blocks, not the value of m used in the proof.}
+\end{frame}
+
+\begin{frame}{What the reduction has produced}
+A nonempty oriented graph with positive indegrees and, for every
+nonempty proper $U$,
+\[
+ |U|+|F^2(U)|<2|F(U)|.
+\]
+\begin{center}\ConcavityPicture\end{center}
+\takeaway{We must show that this uniform drop in set expansion is impossible.}
+\note{5:45--6:30. Read the inequality as second increment smaller than first increment, without claiming either increment is positive. F is a set image: it does not remove U. The three boxes are stages, not disjoint sets. A single application of the inequality does not contradict anything. We need to use many sets at once and make orientation participate in the argument. This motivates the grid.}
+\end{frame}
+
+\begin{frame}{Why a grid? Orientation becomes disjoint coverage}
+A cell $(i,j)$ records a pair. $F_1$ moves its row; $F_2$ moves its column.
+\begin{center}\WhyGridPicture\end{center}
+\takeaway{The two images of the diagonal meet exactly when opposite arcs exist.}
+\note{6:30--8:00. This adapts the useful motivation in Claude's November 14 update. The example is the directed cycle 1 to 2 to 3 to 1. Black dots are the diagonal, which belongs to both families as separate copies. F1 changes the first coordinate vertically: from (1,1) it reaches (2,1). F2 changes the second coordinate horizontally: from (1,1) it reaches (1,2). A shared cell (i,j) would require j to i and i to j. Thus orientation says the diagonal pair starts compatible. For general families, compatibility means their coordinate images are disjoint. Concavity still acts on each column for F1 and each row for F2. This is why pairs simultaneously encode orientation and make the subset inequality reusable. The cycle illustrates the dictionary; it is not the graph with impossible concavity.}
+\end{frame}
+
+\begin{frame}{What makes a pair worth keeping?}
+$P,Q$ are two sets of grid cells; their images must be disjoint.
+\begin{center}\ScorePicture\end{center}
+\small The diagonal keeps every relevant line nonempty. Positive indegrees
+and compatibility keep those lines proper.
+\takeaway{Reward members and uncovered cells: both will pay for the next move.}
+\note{8:00--9:15. P and Q are sets of grid points, counted as separate families. Family members are not their images. The colored marks in the board show the images; the black diagonal dots show the members in this example. For the three-cycle, M is six and the three diagonal cells are uncovered by the images, giving score nine. It is just an admissible example, not a claim about a maximizer. In the proof choose a pair containing the diagonal, with disjoint images, maximizing M+d. The board has finitely many cells, so a maximum exists. Each left column contains its diagonal point; each right row does too. If a left column were full, positive indegrees would fill its image column, which meets the other image of the diagonal. Similarly for rows. Hence concavity is applicable to all these lines.}
+\end{frame}
+
+\begin{frame}{The planned improvement has one obstruction}
+\begin{center}\ImprovementPicture\end{center}
+\takeaway{Concavity creates a gain. The new conflicts are the price of realizing it.}
+\note{9:15--10:15. Apply concavity to all left columns and right rows, and sum. Replace the left family by the complement of the right second image, and the right by the complement of the left second image. These candidates have more than M+2d members in total. This does not say that either family contains its old version. They need not be compatible. We need to remove conflicts while preserving the diagonal, and the total price must be measured in the same score as before. The pruning lemma is exactly that repair tool.}
+\end{frame}
+
+\begin{frame}{Every conflict has two different corner sets}
+\begin{columns}[c]
+\begin{column}{.54\textwidth}
+\centering\RectanglePicture
+\end{column}
+\begin{column}{.43\textwidth}
+\textcolor{target!80!black}{$Z$}: all common targets $z$.\\[8pt]
+\textcolor{corner}{$H$}: all opposite corners $h$.
+\medskip
+\begin{block}{Pruning lemma}
+Remove conflicts, retain initially conflict-free members, and achieve
+\[
+ \#\text{deleted}\le |H|+q,
+\]
+where $q$ counts targets in $Z$ left uncovered \emph{after} pruning.
+\end{block}
+\end{column}
+\end{columns}
+\note{10:15--11:30. A left r=(p,j) and a right c=(i,s) conflict when p to i and s to j. In this picture both coverage arrows are forward set images; they meet at z=(i,j). The other corner h=(p,s) records the same conflict, but is not its common target. H and Z collect corners, not edges with multiplicity. Many conflicts can share a corner. The tool is valid for arbitrary finite relations, even with loops or opposite arcs. q refers only to the original conflict targets Z, not to every hole in the board. The cost is output-dependent; we are not minimizing the number deleted.}
+\end{frame}
+
+\begin{frame}{Deleting more can be the right trade}
+\small Base arcs: $0\to1,\ 0\to2$. Left: $r_1=(0,1),r_2=(0,2)$;
+right: $c_1=(1,0),c_2=(2,0)$. Here $|H|=1$, $|Z|=4$.
+\medskip
+\begin{center}\PruningExamplePicture\end{center}
+\small Crosses mean deleted members. Thin lines are original conflicts.
+Hollow diamonds are uncovered targets.
+\takeaway{The useful pruning balances deletions against what the survivors leave uncovered.}
+\note{11:30--13:00. This star example is already in our article and appears in the other rewrites; Claude's exchange-rate explanation makes it especially effective in a talk. Every left member conflicts with every right member. The sole H point is (0,0), and Z is {1,2} squared. If we delete the entire right side, both left members remain and cover all four targets. Two deletions and q zero fail the desired inequality. If we retain only r1=(0,1), it covers the two cells in column 1 of the target board; the two cells in column 2 are uncovered. Three deletions equal |H|+q=1+2. All members were originally in conflict, so no preservation condition is violated. The two target boards share the same row/column convention as earlier. This is an actual oriented relation, but no claim is made that it satisfies the impossible concavity assumption.}
+\end{frame}
+
+\begin{frame}{Survivors pay part of the cover bill}
+\begin{center}\CoverPicture\end{center}
+\small Add two copies of each $z\in Z$ to the bipartite conflict graph.
+A suitable cover has size at most $|H|+|Z|$.
+\[
+ \#\text{deleted}\le (|H|+|Z|)-(|Z|-q)=|H|+q.
+\]
+\note{13:00--14:30. A vertex cover meets every undirected edge of the augmented bipartite graph. Its sides are left originals together with left copies of Z, versus right originals together with right copies. Connect originals if they conflict, and connect each original to the opposite copy of every target it covers. The picture is one local pattern, not all of the graph. The highlighted cover here is {r,zL}: delete the original r; the kept c forces zL into the cover. In the full graph, each covered target forces at least one distinct copy into K. Therefore |Z|-q of the cover budget is spent on copies rather than deleting originals. A minimum cover omits isolated vertices, so originally conflict-free members survive. The substantial theorem still needed is the bound on cover size; that is where algebra enters.}
+\end{frame}
+
+\begin{frame}{Why linear algebra enters the pruning proof}
+\begin{center}\AlgebraPicture\end{center}
+\small These are linear maps on coordinate spaces. Here the second-coordinate
+maps $B,N$ run \emph{against} the relation.
+\takeaway{Maximum-rank kernels connect this space budget to the matching.}
+\note{14:30--16:00. Maximum matching equals minimum vertex-cover size in a bipartite graph. Give coordinate moves weights. The two routes act on different coordinates and have identical products: NL=AB. The horizontal linear maps run backward, unlike the earlier coverage arrows. Claude/Fable's update e7337a2 gives the shorter count drawn here. Combine incoming=(L,B) and outgoing=(N,-A). Their composite is zero, so the incoming image lies in the outgoing kernel. Their ranks share the middle-space dimension |Z|+|H|. Normalize the matching into k original conflict edges and ell,t coverage edges. Simultaneously chosen maximum ranks give incoming rank at least ell and outgoing rank at least t. The hard kernel argument and normalized lifts supply k additional independent incoming directions. Hence the whole matching k+ell+t fits within |Z|+|H|. The kernel principle is that an allowed entry cannot couple nonzero left- and right-kernel coordinates: changing it would increase rank. This counts independent directions, not distinct corners for each conflict. The technical deck and unchanged Lean proof retain the equivalent original rank count.}
+\end{frame}
+
+\begin{frame}{Why the repaired pair is a legal competitor}
+\begin{center}\LegalityPicture\end{center}
+\small These diagrams show the three roles. The same finite optimization
+problem applies before and after the move.
+\takeaway{Pruning costs at most $|H|+q\le d+d'$.}
+\note{16:00--17:15. The first panel represents the diagonal, which remains in both candidate families and is isolated there, so pruning preserves it. A conflict involving a diagonal point would make a forbidden two-step image, contradicting the definition by complements. The middle panel represents H among old uncovered cells. If an H corner were in either old image, following one more arc would put one conflicting candidate in the second image excluded from that candidate family. Hence |H|<=d. Finally the conflict targets left uncovered after pruning are among all newly uncovered cells, so q<=d'. The panels are local schematics, not enumerated graphs. They justify both admissibility and the cost bound. The new pair has disjoint images by pruning and contains the diagonal, so its score can be compared with the original maximum.}
+\end{frame}
+
+\begin{frame}{The score pays exactly the repair cost}
+\begin{center}\LedgerPicture\end{center}
+\takeaway{The actual gain is strict, so the new score exceeds the chosen maximum.}
+\note{17:15--19:00. Walk through the three cards before the formula. Summed concavity and the complements give more than M+2d candidates. The cost is at most d+d'. Counting uncovered cells in the new objective returns d'. The line on the slide is the cancellation threshold; because the first gain is strict, the real new score is strictly greater than M+d. No comparison between d and d' is assumed. Why coefficient one? It makes the unknown output term cancel. The board is finite, a best admissible pair exists, and the legal improvement contradicts its maximality. Thus no graph produced by the reduction can exist; the initial assumption that all vertices fail is impossible.}
+\end{frame}
+
+\begin{frame}{Three ideas to take away}
+\begin{center}\ProofMap\end{center}
+\begin{enumerate}
+\item Compare a minimal obstruction with a simpler version.
+\item Amplify a strict integer margin until bounded errors cannot hide it.
+\item Count uncovered points so that repairing a better candidate pays for itself.
 \end{enumerate}
 \medskip
-Here $F(S)=\{y:x\to y\text{ for some }x\in S\}$ and $F^2(S)=F(F(S))$; no subtraction.
-\begin{alertblock}{Why the middle term is the difficult part}
-The deletion cost depends on the points uncovered \emph{after} pruning.
-\end{alertblock}
-\note{1:45--2:30. Give the destination first. Strict subset growth is an intermediate impossibility, not a property asserted for all oriented graphs. Explain why F replaces exact neighborhoods: iterating a union-preserving operator is easier.}
-\end{frame}
-
-\begin{frame}{3. Minimality turns vertex failure into a subset deficit}
-Choose a counterexample of minimum order, then minimum arc count.
-\[
-|F^2(S)\setminus F(S)|<|F(S)\setminus S|
-\quad(\varnothing\ne S\subsetneq V(D)).
-\]
-\begin{enumerate}
-\item Vertex minimality gives strong connectivity.
-\item Delete arcs from $S$ to its unprocessed exterior neighbors.
-\item Arc minimality supplies a good vertex in the modified graph.
-\item Its lost first neighbors form a batch $Q$ with $\Delta g<|Q|$.
-\end{enumerate}
-\note{2:30--3:45. A terminal strong component would otherwise be a smaller counterexample. Every nonempty proper S has an exiting edge. Define I=F(S) intersection S, E=F(S) minus S and g(T)=|F(T) minus (I union T)| verbally. The witness must lose a first neighbor, because with its first neighborhood unchanged deletion only removes second neighbors.}
-\end{frame}
-
-\begin{frame}{4. The gain/loss identity makes the deficit telescope}
-\small Put $I=F(S)\cap S$, $E=F(S)\setminus S$. Goal: $|F^2(S)\setminus F(S)|<|E|$.
-\begin{center}\input{figures/deletion}\end{center}
-\[
- g(T)=|F(T)\setminus(I\cup T)|,\qquad
- \Delta g=|C|-|Q\cap F(T)|<|Q|.
-\]
-\small
-$C=F(Q)\setminus(I\cup T\cup Q\cup F(T))$ is lost from the second neighborhood.
-New exact second neighbors lie in $Q\cap F(T)$.
-\medskip
-Repeat until $T=E$: $g(E)<|E|$. Always delete from the original $D$.
-\note{3:45--5:15. The dashed edge is deleted; the solid lower edge is an old path continuation, not necessarily retained. State d1-|Q| <= d2-|C|+|Q intersection F(T)|. Since d2<d1 we get the strict increment. Batches are disjoint and nonempty, so the process terminates. The schematic specifies roles, not every arc.}
-\end{frame}
-
-\begin{frame}{5. Blowup amplifies one integer unit of slack}
-\begin{center}\input{figures/blowup}\end{center}
-\small
-Replace each of $n$ base vertices by a transitive tournament of size $m>n$.
-For a selection $U$ with proper support $S$,
-\[
-|U|-2|F_G(U)|+|F_G^2(U)|\le m\underbrace{\bigl(|F^2(S)\setminus F(S)|-|F(S)\setminus S|\bigr)}_{\le-1}+n<0.
-\]
-Full support is separate: $F_G(U)=F_G^2(U)=V(G)$, so the expression is $|U|-|V(G)|<0$.
-\note{5:15--6:45. Explain why a transitive block contributes at most one unit: if its selected minimum is a, first image is a+1 through m and second is a+2 through m, allowing empty tails. The sketch uses three vertices but the theorem requires m>n. Positive indegrees fill all blocks for full support, even if U itself is proper.}
-\end{frame}
-
-\begin{frame}{6. Coordinates turn one inequality into many}
-\begin{center}\input{figures/grid}\end{center}
-\small
-Columns $P_j$ of the left family use $F_1$; rows $Q_i$ of the right family
-use $F_2$. The diagonal makes every such fiber nonempty.
-\note{6:45--7:45. Fix first coordinate as the row and second as the column. A relation arrow moves F1 vertically inside a column and F2 horizontally inside a row. These are set images, so paths merge and points are counted once. With the diagonal included, each left column and each right row has its diagonal vertex. The next frame turns the sum of these fiber inequalities into a gain in family size.}
-\end{frame}
-
-\begin{frame}{7. The extremal pair problem}
-\small
-For $P,Q\subseteq X^2$, require
-\[
-\Delta\subseteq P\cap Q,\qquad F_1P\cap F_2Q=\varnothing.
-\]
-Maximize $M+d$, where $M=|P|+|Q|$ and $d=|X|^2-|F_1P|-|F_2Q|$.
-\medskip
-Columns of $P$ and rows of $Q$ are nonempty proper sets. Summing the
-strict subset inequality and taking complements gives
-\[
-\mathcal R=X^2\setminus F_2^2Q,\quad
-\mathcal C=X^2\setminus F_1^2P,\quad
-|\mathcal R|+|\mathcal C|>M+2d.
-\]
-\small
-We need a pruning that retains $\Delta$ and deletes at most $d+d'$, where
-$d'$ is the new uncovered count. Then the new objective exceeds $M+d$.
-\note{7:45--9:15. Orientation makes the initial diagonal pair compatible. Positive indegrees force every fiber proper: a full column fills its whole image column and conflicts with an image of a diagonal point. The desired gain is now visible before we introduce the pruning lemma. Its output-dependent term is exactly the new uncovered count in our objective. We return to diagonal preservation and the old uncovered bound after proving the tool.}
-\end{frame}
-
-\begin{frame}{8. The pruning tool we need}
-Left members $r=(p,j)$ and right members $c=(i,s)$ conflict when
-$p\to i$ and $s\to j$.
-\begin{center}\input{figures/conflict-square}\end{center}
-\small
-Keep conflict-free subfamilies, preserving initially isolated members, with
-\[
-\text{deletions}\le |H|+|\{z\in Z:\text{uncovered after pruning}\}|.
-\]
-Here $H,Z$ collect these corners over all conflicts. A kept $(p,j)$ covers
-$(i,j)$ if $p\to i$; a kept $(i,s)$ covers it if $s\to j$.
-\note{9:15--10:45. This is valid for arbitrary finite binary relations, including loops and opposite arrows. Covering z means one forward coordinate step from a retained original member. In the grid rectangle the horizontal maps N and B run backward in the second coordinate; distinguish them from forward coverage. Both families are separate copies even if a pair belongs to both.}
-\end{frame}
-
-\begin{frame}{9. Add two copies of every target point}
-\begin{center}\input{figures/pruning}\end{center}
-\small
-Choose a maximum matching with the fewest original--original edges.
-Write its size as $k+\ell+t$:
-\begin{itemize}
-\item $k$: conflict edges between originals;
-\item $\ell,t$: coverage edges to the two copies of $Z$.
-\end{itemize}
-The two coverage matchings are maximum in their respective subgraphs.
-\note{10:45--12:00. The path drawn is only one local pattern. Many such paths share nodes. An augmenting path in a coverage subgraph either enlarges the full matching, or trades an original conflict edge for a coverage edge and lowers k. This is why the secondary minimization is needed. Isolated original members remain isolated after augmentation.}
-\end{frame}
-
-\begin{frame}{10. One square controls the matching}
-\[
-\begin{array}{ccc}
-\R^H&\xleftarrow{B}&\R^{\mathcal R}\\
-{\scriptstyle A}\downarrow&&\downarrow{\scriptstyle L}\\
-\R^{\mathcal C}&\xleftarrow{N}&\R^Z
-\end{array}
-\qquad NL=AB.
-\]
-\small
-Here $J_p=\{j:(p,j)\in\mathcal R\}$ and $S_i=\{s:(i,s)\in\mathcal C\}$.
-Choose coefficients simultaneously so that
-\[
-\rank L=\ell,\quad \rank N=t,
-\quad \Phi^{p,i}=(b_{sj})_{s\in S_i,j\in J_p}\text{ has maximum support rank}.
-\]
-\begin{block}{Why simultaneous is possible}
-Each condition is certified by a nonzero minor polynomial. Their finite
-product is nonzero over $\mathbb R$, even with shared variables.
-\end{block}
-\note{12:00--14:00. Spend two minutes here. In L the blocks have j fixed, with distinct a variables within each block; in N transpose the blocks have i fixed, with distinct b variables. The matching minor factors into nonzero block determinants. Shared variables across blocks do not matter for a product of nonzero polynomials. Auxiliary matrices $\Phi^{p,i}$ use the same b variables. All conditions are fixed once, before kernel vectors are chosen.}
-\end{frame}
-
-\begin{frame}{11. The maximum-rank kernel principle}
-If $\Phi$ has maximum rank on its allowed support, then
-\[
-\Phi x=0,\quad \Phi^{\mathsf T}y=0,\quad(s,j)\text{ allowed}
-\quad\Longrightarrow\quad x_jy_s=0.
-\]
-\begin{center}\input{figures/kernel}\end{center}
-\note{14:00--15:15. If the product is nonzero, perturb the allowed entry. Then $e_s$ is in the new image, the old image remains inside the new image, and $y_s$ nonzero says $e_s$ was outside the old image. Contradiction to maximal rank. The perturbation is hypothetical and local to $\Phi$; it need not preserve any of the other chosen ranks.}
-\end{frame}
-
-\begin{frame}{12. Kernel lifts bound the remaining $k$ edges}
-Coverage bases give, for every original matched edge $(r,c)$,
-\[
-u^r=e_r+\text{coverage-basis terms}\in\ker L,\qquad
-v^c=e_c+\text{coverage-basis terms}\in\ker N^{\mathsf T}.
-\]
-The kernel principle, applied to each $\Phi^{p,i}$, implies
-\[
-u\in\ker B,\ v\in\ker N^{\mathsf T},\ r\sim c
-\quad\Longrightarrow\quad u_rv_c=0.
-\]
-Thus every $u\in\ker B$ vanishes at the $k$ matched left endpoints.
-The vectors $Bu^r$ are independent and lie in $\ker A$.
-\[
-|H|\ge k+\rank A\ge k+\rank(NL)\ge k+\ell+t-|Z|.
-\]
-\note{15:15--16:45. The full row equations of B and full column equations of N restrict to $\Phi^{p,i}$ and its transpose, including zero rows and columns. With $v=v^c$, its coordinate c is one. In a linear combination of the lifts, each matched original coordinate is exactly its coefficient. This proves independence after B. Commutativity puts their images in ker A. The last inequality is the rank bound for a product through the $|Z|$-dimensional space.}
-\end{frame}
-
-\begin{frame}{13. From a matching bound to the desired pruning}
-The augmented graph has a vertex cover $K$ of size at most $|H|+|Z|$.
-Delete the original members in $K$.
-\medskip
-If $q$ points of $Z$ are uncovered afterwards, the other $|Z|-q$ points
-force distinct copy vertices into $K$.
-\[
-\text{deletions}\le |K|-(|Z|-q)\le |H|+q.
-\]
-\begin{block}{The invention in the bound}
-Coverage by the survivors forces part of the cover budget to be spent on
-copies rather than deleted originals.
-\end{block}
-\note{16:45--18:00. Mention the alternating-path proof of the bipartite matching-cover theorem: start at unmatched left vertices; cover consists of unreached left and reached right vertices. It uses one endpoint per matched edge and omits isolated vertices. That last property preserves the diagonal later. This slide completes the independent pruning lemma.}
-\end{frame}
-
-\begin{frame}{14. The uncovered term cancels exactly}
-\small
-In the prospective families, $\Delta$ is isolated and $H$ consists of old
-uncovered points. Thus $|H|\le d$; new uncovered targets number at most $d'$.
-\begin{center}\input{figures/objective}\end{center}
-\[
-|P'|+|Q'|+d'
->M+2d-(d+d')+d'=M+d.
-\]
-This contradicts maximality. The strict subset graph cannot exist,
-so the counterexample cannot exist.
-\note{18:00--19:30. A conflict with a diagonal member gives a two-step path into a forbidden second image, so the diagonal survives. An H corner in either old image extends one more step into a forbidden second image, so H is old uncovered. At most d' conflict targets are uncovered, since they are a subset of all new uncovered points. Thus pruning costs at most d+d'. No estimate d'<=d is needed. The new pair still contains the diagonal and is compatible, so it is in exactly the same finite optimization problem.}
-\end{frame}
-
-\begin{frame}{15. What to remember}
-\begin{enumerate}
-\item Minimality produces a strict \emph{subset} deficit.
-\item Blowup makes integer slack dominate internal errors.
-\item Maximum-rank kernels control a matching in an augmented graph.
-\item The objective pays the pruning cost with its uncovered-point term.
-\end{enumerate}
-\medskip
-\small
-Source: OpenAI, September 23, 2026 preprint, supplied with this project.\\
-The companion article contains the full proofs and source bibliography.
-The companion files include Codex component checks and a rebuilt complete
-reference formalization by Claude Opus 5.5.
-\note{19:30--20:00. Return to the local question: the whole chain began by assuming every vertex failed. Emphasize the output-dependent cost as the connection between the algebraic and extremal halves. Distinguish the finite experiments and Codex component checks from the complete attributed reference proof, which was separately rebuilt.}
+\footnotesize Source: supplied OpenAI preprint, September 23, 2026.
+Grid motivation and exchange-rate presentation adapted from the other rewrites;
+see \texttt{slide-revision.md}. Full calculations: \texttt{talk-technical.pdf}.
+\note{19:00--20:00. Ask the audience to remember the three transformations and, within the final stage, the grid, the repair and its refund. Algebra is the proof of the repair guarantee; it is not the motivation for the extremal objective. The article retains every mathematical detail and explains the weighted and cycle consequences. The separate technical deck retains the previous rank-focused presentation. The project also includes a complete attributed reference Lean proof by Claude Opus 5.5, rebuilt locally, plus independent Codex component checks; this visual revision does not alter their mathematical scope.}
 \end{frame}
 \end{document}

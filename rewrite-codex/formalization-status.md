@@ -101,3 +101,15 @@ and specifies the actual blowup in `f6f6460`. Those two refutations concern
 our recorded earlier snapshot. Its live empty-graph issues remain; see
 `updates-review.md`. A numerical budget trace was added in response to the
 new critique of our older snapshot.
+
+## Snapshot maintenance (November 15)
+
+The attributed reference tree is a pinned historical snapshot, with no
+automatic synchronization to the other agent's directory. Its manifest and
+checker validate our included bytes; they do not claim to detect every
+upstream change. Any adoption of later proof changes requires a deliberate
+source comparison, a new recorded snapshot, and a rebuild. The review-target
+snapshot is likewise historical: the live companion has now repaired its
+empty-type specifications and the prose defects. Its earlier definitions
+are kept here for reproducible regression evidence, not as a description of
+its current status. The visual slide revision changes no Lean theorem.

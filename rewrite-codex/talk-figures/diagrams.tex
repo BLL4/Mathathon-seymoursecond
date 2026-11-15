@@ -1,0 +1,255 @@
+% New Codex vector diagrams, November 15. Shared conventions are in talk.tex.
+\newcommand{\NeighborhoodPicture}{%
+\begin{tikzpicture}
+\fill[bluefam!7,rounded corners] (1.4,-1.25) rectangle (2.65,1.25);
+\fill[target!9,rounded corners] (3.6,-1.25) rectangle (4.85,1.25);
+\node[vertex,fill=ink!10] (v) at (0,0) {$v$};
+\node[vertex,draw=bluefam] (a) at (2,0.8) {$a$};
+\node[vertex,draw=bluefam] (b) at (2,-0.8) {$b$};
+\node[vertex,draw=target] (c) at (4.2,0) {$c$};
+\draw[arc] (v)--(a);\draw[arc] (v)--(b);\draw[arc] (a)--(b);
+\draw[arc] (a)--(c);\draw[arc] (b)--(c);
+\node[font=\small,bluefam] at (2,1.6) {first neighbors};
+\node[font=\small,target!80!black] at (4.2,1.6) {exactly second};
+\node[align=left,text width=55mm,anchor=west] at (5.8,0.2)
+{Two paths to $c$: count $c$ once.\\[5pt]A two-step path to $b$: $b$ is already a first neighbor.};
+\node[font=\small] at (2.2,-1.65) {Here $2>1$ at $v$; the sink $c$ works.};
+\end{tikzpicture}}
+
+\newcommand{\ProofMap}{%
+\begin{tikzpicture}
+\node[stage,fill=bluefam!9] (a) at (0,0) {\textbf{Minimality}\\delete arcs\\[4pt]a deficit for every set};
+\node[stage,fill=orangefam!10] (b) at (4.6,0) {\textbf{Blowup}\\enlarge the margin\\[4pt]strict set concavity};
+\node[stage,fill=target!10] (c) at (9.2,0) {\textbf{Grid + pruning}\\improve a best pair\\[4pt]contradiction};
+\draw[arc] (a)--(b);\draw[arc] (b)--(c);
+\node[anchor=north,align=center,text width=11cm] at (4.6,-1.4)
+{Assume every vertex fails.\\Each step gives a stronger obstruction.};
+\end{tikzpicture}}
+
+\newcommand{\DeletionPicture}{%
+\begin{tikzpicture}[scale=0.95]
+\foreach \shift/\tag in {0/old,7/new}{
+\begin{scope}[xshift=\shift cm]
+\node[vertex] (v\tag) at (0,0) {$v$};
+\node[vertex] (a\tag) at (1.8,.85) {$a$};
+\node[vertex] (b\tag) at (1.8,-.85) {$b$};
+\node[vertex] (c\tag) at (3.6,0) {$c$};
+\draw[arc] (v\tag)--(a\tag);\draw[arc] (a\tag)--(b\tag);
+\draw[arc] (a\tag)--(c\tag);\draw[arc] (b\tag)--(c\tag);
+\end{scope}}
+\draw[arc,red!70!black] (vold)--(bold);
+\draw[arc,line width=1.2pt] (4.1,0)--node[above,font=\small,align=center] {delete\\$v\to b$} (6.3,0);
+\node[align=center] at (1.8,-1.65) {Before: $2>1$\\$v$ fails};
+\node[align=center] at (8.8,-1.65) {After: $1\le2$\\$v$ works};
+\node[font=\small,align=center] at (5.3,-2.65)
+{Deleting arcs can turn an old first neighbor into an exact second neighbor.};
+\end{tikzpicture}}
+
+\newcommand{\BatchPicture}{%
+\begin{tikzpicture}
+\node[anchor=east] at (-.3,.7) {$E=F(S)\setminus S$};
+\foreach \x/\q/\shade in {0/1/15,3/2/25,6/3/35}{
+\draw[fill=bluefam!\shade,draw=bluefam] (\x,0) rectangle ++(2.8,1.1);
+\node at (\x+1.4,.55) {$Q_{\q}$};
+\draw[arc] (\x+1.4,-.15)--(\x+1.4,-1.05);
+\node[align=center,font=\small,text width=24mm] at (\x+1.4,-1.65)
+{net new reach\\$<|Q_{\q}|$};}
+\draw[decorate,decoration={brace,amplitude=5pt,mirror}] (0,-2.45)--(8.8,-2.45);
+\node at (4.4,-3.1) {Total new second-step reach $<$ total exterior first-step reach};
+\end{tikzpicture}}
+
+\newcommand{\BlowupPicture}{%
+\begin{tikzpicture}
+\node[vertex] (v) at (0,1.3) {$v$};\node[vertex] (w) at (5.2,1.3) {$w$};
+\draw[arc] (v)--node[above] {base arc} (w);
+\draw[arc,black!35] (v)--(0,.25);\draw[arc,black!35] (w)--(5.2,.25);
+\foreach \shift/\tag in {0/v,5.2/w}{
+\begin{scope}[xshift=\shift cm]
+\draw[rounded corners,fill=bluefam!5] (-1.25,-1.15) rectangle (1.25,.1);
+\foreach \x/\n in {-.8/1,0/2,.8/3} {\node[vertex,minimum size=4mm] (\tag\n) at (\x,-.45) {};}
+\draw[arc] (\tag1)--(\tag2);\draw[arc] (\tag2)--(\tag3);
+\draw[arc] (\tag1) to[bend right=45] (\tag3);
+\end{scope}}
+\draw[arc,line width=2pt] (1.5,-.5)--node[above,font=\small] {every arc} (3.7,-.5);
+\node[align=left,anchor=west,text width=40mm] at (7,.3)
+{One unit of deficit\\becomes $m$ units.\\[7pt]Total internal error\\is at most $n$.};
+\node[font=\small] at (2.6,-1.8) {Transitive blocks of size $m>n$; three vertices shown as a schematic.};
+\end{tikzpicture}}
+
+\newcommand{\ConcavityPicture}{%
+\begin{tikzpicture}
+\node[stage,minimum width=25mm,text width=24mm,fill=bluefam!7] (s) at (0,0) {$U$\\initial set};
+\node[stage,minimum width=25mm,text width=24mm,fill=orangefam!9] (f) at (4.5,0) {$F(U)$\\first image};
+\node[stage,minimum width=25mm,text width=24mm,fill=target!9] (ff) at (9,0) {$F^2(U)$\\second image};
+\draw[arc] (s)--node[above,font=\small,align=center] {first\\change} (f);
+\draw[arc] (f)--node[above,font=\small,align=center] {smaller\\change} (ff);
+\node[align=center,font=\small] at (4.5,-1.6)
+{$|F^2(U)|-|F(U)|<|F(U)|-|U|$\\[4pt]These are image stages; the sets may overlap.};
+\end{tikzpicture}}
+
+% Exact board for the directed cycle 1 -> 2 -> 3 -> 1.
+\newcommand{\CycleBoard}{%
+\foreach \i in {1,2,3}{
+\node[font=\small] at (.25,-\i) {$\i$};\node[font=\small] at (\i,-.25) {$\i$};
+\foreach \j in {1,2,3}{\draw[black!25] (\j-.45,-\i-.45) rectangle ++(.9,.9);}}
+\foreach \i/\j in {2/1,3/2,1/3}{\node[leftpt] at (\j,-\i) {};}
+\foreach \i/\j in {1/2,2/3,3/1}{\node[rightpt] at (\j,-\i) {};}
+\foreach \k in {1,2,3}{\node[circle,fill=ink,minimum size=3mm,inner sep=0pt] (d\k) at (\k,-\k) {};}}
+
+\newcommand{\WhyGridPicture}{%
+\begin{tikzpicture}
+\node[vertex] (v1) at (0,-.6) {$1$};
+\node[vertex] (v2) at (1.3,-2.6) {$2$};\node[vertex] (v3) at (-1.3,-2.6) {$3$};
+\draw[arc] (v1)--(v2);\draw[arc] (v2)--(v3);\draw[arc] (v3)--(v1);
+\node[font=\small] at (0,-3.6) {an oriented $3$-cycle};
+\draw[arc,black!45] (2.1,-1.7)--node[above,font=\small] {pairs} (3.8,-1.7);
+\begin{scope}[xshift=4cm]\CycleBoard
+\draw[arc,bluefam] (d1)--(1,-1.8);
+\draw[arc,orangefam] (d1)--(1.8,-1);
+\end{scope}
+\node[anchor=west,align=left,text width=4cm] at (8.1,-1.65)
+{\textbf{Diagonal:} $\Delta$\\[7pt]\textcolor{bluefam}{Circles: $F_1\Delta$}\\[7pt]\textcolor{orangefam}{Squares: $F_2\Delta$}};
+\node[font=\small] at (6,-3.85) {row = first coordinate; column = second coordinate};
+\end{tikzpicture}}
+
+\newcommand{\ScorePicture}{%
+\begin{tikzpicture}
+\begin{scope}\CycleBoard\end{scope}
+\draw[orangefam,dashed,thick,rounded corners] (.5,-1.5) rectangle (3.5,-.5);
+\draw[bluefam,dashed,thick,rounded corners] (.5,-3.5) rectangle (1.5,-.5);
+\node[align=center,font=\small] at (2,-4) {Example: $P=Q=\Delta$\\three uncovered diagonal cells};
+\node[stage,text width=28mm,fill=bluefam!8] (m) at (6.2,-1.3)
+{family members\\$M=|P|+|Q|$\\here: $6$};
+\node at (8.35,-1.3) {$+$};
+\node[stage,text width=28mm,fill=gold!17] (d) at (10.5,-1.3)
+{uncovered cells\\$d$\\here: $3$};
+\node[align=center] at (8.35,-3.2) {Choose a compatible pair containing $\Delta$\\with the largest possible score $M+d$.};
+\end{tikzpicture}}
+
+\newcommand{\ImprovementPicture}{%
+\begin{tikzpicture}
+\node[stage,fill=bluefam!8] (a) at (0,0) {\textbf{Best old pair}\\compatible\\contains $\Delta$};
+\node[stage,fill=orangefam!10] (b) at (4.7,0) {\textbf{New candidates}\\more members\\may conflict};
+\node[stage,fill=target!9] (c) at (9.4,0) {\textbf{Repaired pair}\\compatible again\\still contains $\Delta$};
+\draw[arc] (a)--(b);
+\draw[arc] (b)--node[above,font=\small] {prune} (c);
+\node[below=8mm of b,align=center] (w) {Take complements of the opposite second images.};
+\draw[arc,corner,rounded corners] (c.south)--++(0,-2.6)--node[below] {If its score is larger, ``best'' was impossible.} (0,-3.3)--(a.south);
+\end{tikzpicture}}
+
+\newcommand{\RectanglePicture}{%
+\begin{tikzpicture}
+\node[leftpt,label=above:{$r=(p,j)$}] (r) at (0,0) {};
+\node[starpt,label=above:{$h=(p,s)$}] (h) at (3.5,0) {};
+\node[targetpt,label=below:{$z=(i,j)$}] (z) at (0,-2.4) {};
+\node[rightpt,label=below:{$c=(i,s)$}] (c) at (3.5,-2.4) {};
+\draw[arc,bluefam] (r)--node[left] {$p\to i$} (z);
+\draw[arc,orangefam] (c)--node[below=3pt] {$s\to j$} (z);
+\draw[black!35,dashed] (r)--(h)--(c);
+\node[font=\small] at (1.75,-3.6) {Both members cover the same target $z$.};
+\end{tikzpicture}}
+
+\newcommand{\PruningExamplePicture}{%
+\begin{tikzpicture}[font=\small]
+\foreach \shift/\mode in {0/1,7/2}{
+\begin{scope}[xshift=\shift cm]
+\node[leftpt,label=left:{$r_1$}] (r1\mode) at (0,0) {};
+\node[leftpt,label=left:{$r_2$}] (r2\mode) at (0,-1.1) {};
+\node[rightpt,label=right:{$c_1$}] (c1\mode) at (2,0) {};
+\node[rightpt,label=right:{$c_2$}] (c2\mode) at (2,-1.1) {};
+\foreach \a in {1,2}\foreach \b in {1,2}{\draw[black!35] (r\a\mode)--(c\b\mode);}
+\foreach \b in {1,2}{
+\draw[red!75!black,line width=1.3pt] ($(c\b\mode)+(-.18,-.18)$)--($(c\b\mode)+(.18,.18)$);
+\draw[red!75!black,line width=1.3pt] ($(c\b\mode)+(-.18,.18)$)--($(c\b\mode)+(.18,-.18)$);}
+\ifnum\mode=2
+\draw[red!75!black,line width=1.3pt] ($(r2\mode)+(-.18,-.18)$)--($(r2\mode)+(.18,.18)$);
+\draw[red!75!black,line width=1.3pt] ($(r2\mode)+(-.18,.18)$)--($(r2\mode)+(.18,-.18)$);
+\fi
+\node at (4.5,.8) {targets $Z$};
+\foreach \i in {1,2}\foreach \j in {1,2}{
+\draw[black!25] (3.5+\j*.65,-\i*.65+.65) rectangle ++(.65,-.65);
+\ifnum\mode=1
+\node[targetpt] at (3.825+\j*.65,-\i*.65+.325) {};
+\else
+\ifnum\j=1
+\node[targetpt] at (3.825+\j*.65,-\i*.65+.325) {};
+\else
+\node[targetpt,fill=white,dashed] at (3.825+\j*.65,-\i*.65+.325) {};
+\fi\fi}
+\end{scope}}
+\node[align=center] at (2.4,-2.15) {Delete the entire right family\\$2$ deletions, $q=0$\\\textcolor{red!75!black}{$2>1+0$: wrong trade}};
+\node[align=center] at (9.4,-2.15) {Keep only $r_1$\\$3$ deletions, $q=2$\\\textcolor{target!70!black}{$3=1+2$: the lemma's trade}};
+\end{tikzpicture}}
+
+\newcommand{\CoverPicture}{%
+\begin{tikzpicture}
+\fill[corner!8,rounded corners] (-.8,1.35) rectangle (.8,-1.8);
+\node[font=\small,corner] at (0,1.7) {chosen cover $K$};
+\node[leftpt,minimum size=6mm,label=left:{$r$}] (r) at (0,.6) {};
+\node[draw,rectangle,fill=corner!18,minimum size=9mm] (zl) at (0,-1) {$z_L$};
+\node[rightpt,minimum size=6mm,label=right:{$c$ kept}] (c) at (3.4,.6) {};
+\node[draw,rectangle,minimum size=9mm] (zr) at (3.4,-1) {$z_R$};
+\draw[thick] (r)--node[above,font=\small] {conflict} (c);
+\draw[thick,dashed] (r)--(zr);\draw[thick,dashed] (zl)--(c);
+\node[red!70!black,font=\small] at (-.1,-2.2) {delete original $r$};
+\node[font=\small,align=center] at (3.4,-2.25) {Dashed edges record\\coverage of $z$.};
+\draw[arc,corner] (4.6,-.3)--(5.6,-.3);
+\node[stage,text width=47mm,fill=corner!7] at (8.2,-.3)
+{Kept $c$ lies outside $K$.\\[5pt]Its edge forces the copy $z_L$ into $K$.};
+\end{tikzpicture}}
+
+\newcommand{\AlgebraPicture}{%
+\begin{tikzpicture}
+\node[draw,rounded corners,fill=bluefam!9,minimum width=23mm] (r) at (0,0) {left members};
+\node[draw,rounded corners,fill=corner!9,minimum width=23mm] (h) at (4,0) {corners $H$};
+\node[draw,rounded corners,fill=target!9,minimum width=23mm] (z) at (0,-2.7) {targets $Z$};
+\node[draw,rounded corners,fill=orangefam!10,minimum width=23mm] (c) at (4,-2.7) {right members};
+\draw[arc,corner] (r)--node[above] {$B$} (h);
+\draw[arc,corner] (h)--node[right] {$A$} (c);
+\draw[arc,bluefam] (r)--node[left] {$L$} (z);
+\draw[arc,bluefam] (z)--node[below] {$N$} (c);
+\node[align=center] at (2,-1.35) {same weighted\\coordinate changes\\$NL=AB$};
+\node[stage,text width=47mm,fill=soft] (weights) at (8.6,-.1)
+{Combine the two routes;\\subtract their outputs.\\The composite is zero.};
+\node[stage,text width=47mm,fill=target!8] (budget) at (8.6,-2.4)
+{Incoming and outgoing ranks\\share the middle-space\\budget $|Z|+|H|$.};
+\draw[arc] (weights)--node[right,font=\small] {dimension count} (budget);
+\end{tikzpicture}}
+
+\newcommand{\LegalityPicture}{%
+\begin{tikzpicture}
+\foreach \shift/\mode in {0/1,4.5/2,9/3}{
+\begin{scope}[xshift=\shift cm]
+\foreach \i in {0,1,2}\foreach \j in {0,1,2}{\draw[black!25] (\j*.6,-\i*.6) rectangle ++(.6,-.6);}
+\ifnum\mode=1
+\foreach \i in {0,1,2}{\node[circle,fill=ink,inner sep=0pt,minimum size=3mm] at (\i*.6+.3,-\i*.6-.3) {};}
+\node[align=center,text width=35mm] at (.9,-2.5) {$\Delta$ survives\\initially conflict-free};
+\else\ifnum\mode=2
+\fill[bluefam!30] (0,0) rectangle (.6,-1.8);
+\fill[orangefam!30] (.6,0) rectangle (1.8,-.6);
+\node[starpt] at (.9,-.9) {};
+\node[align=center,text width=35mm] at (.9,-2.5) {$H$ lies in old holes\\$|H|\le d$};
+\else
+\fill[target!20] (0,0) rectangle (1.8,-.6);
+\fill[target!20] (0,-.6) rectangle (.6,-1.8);
+\node[targetpt,fill=white,dashed] at (.9,-.9) {};
+\node[targetpt,fill=white,dashed] at (1.5,-1.5) {};
+\node[align=center,text width=35mm] at (.9,-2.5) {Uncovered targets\\are among new holes\\$q\le d'$};
+\fi\fi
+\end{scope}}
+\end{tikzpicture}}
+
+\newcommand{\LedgerPicture}{%
+\begin{tikzpicture}
+\node[stage,fill=orangefam!12,text width=31mm] (gain) at (0,0)
+{\textbf{Gain}\\more than $2d$\\extra members};
+\node[stage,fill=corner!10,text width=31mm] (cost) at (4.7,0)
+{\textbf{Repair}\\delete at most\\$d+d'$ members};
+\node[stage,fill=target!12,text width=31mm] (credit) at (9.4,0)
+{\textbf{New score}\\also counts $d'$\\uncovered cells};
+\draw[arc] (gain)--(cost);\draw[arc] (cost)--(credit);
+\draw[corner,thick,rounded corners] (4.7,-1.05)--(4.7,-1.65)--node[below,font=\small] {The two appearances of $d'$ cancel.} (9.4,-1.65)--(9.4,-1.05);
+\node at (4.7,-2.85) {$\underbrace{M+2d}_{\text{candidates}}\;-
+\underbrace{(d+\textcolor{corner}{d'})}_{\text{repair}}\;+
+\underbrace{\textcolor{corner}{d'}}_{\text{credit}}\;=\;M+d$};
+\end{tikzpicture}}

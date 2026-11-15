@@ -3,7 +3,9 @@
 This folder contains a modified, illustrated exposition of the supplied OpenAI preprint of September 23, 2026. Original source files were not changed. The original work is licensed under Apache 2.0; see [the repository license](../LICENSE).
 
 - [Illustrated article](main.pdf), with [LaTeX entry point](main.tex). It retains the complete argument, reorganizes the pruning proof into seven claims, and adds a reading guide, eleven figures, proof explanations, a worked pruning example, and a direct explanation of the vertex-weighted consequence.
-- [Twenty-minute Beamer presentation](talk.pdf), with [source and timed speaker notes](talk.tex): sixteen frames, with a separate [speaker-notes PDF](talk-notes.pdf). Notes allocate 0:00–20:00; this is a planned duration, not a measured rehearsal.
+- [Visual twenty-minute presentation](talk.pdf), with [source](talk.tex) and a separate [speaker-notes PDF](talk-notes.pdf): seventeen frames, with diagrams on all sixteen substantive frames. It emphasizes the constructions and main ideas. Notes allocate 0:00–20:00; this is a planned duration, not a measured rehearsal.
+- [Technical presentation](talk-technical.pdf), with [source](talk-technical.tex), preserves the previous sixteen-frame deck and its detailed rank argument.
+- [Visual revision and cross-review](slide-revision.md) explains the adopted ideas, timing, and figure checks.
 - [Readability plan](readability-plan.md): initial draft, self-review, and revised specification, written before the mathematical rewrite.
 - [Correctness ledger](correctness-ledger.md): mathematical dependencies, finite checks, presentation revisions, and limitations.
 - [Lean structural checks](lean/SecondNeighborhood.lean): arbitrary-relation image identities, compatibility, proper fibers, diagonal membership and isolation, the uncovered-corner containment, neighborhood conventions, and integer accounting. This file uses only Lean's standard library.
@@ -25,6 +27,8 @@ Run commands from this folder:
 latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
 latexmk -pdf -interaction=nonstopmode -halt-on-error talk.tex
 latexmk -pdf -interaction=nonstopmode -halt-on-error talk-notes.tex
+latexmk -pdf -interaction=nonstopmode -halt-on-error talk-technical.tex
+python3 check_slide_examples.py
 python3 check_finite.py
 lean +leanprover/lean4:v4.35.0 lean/SecondNeighborhood.lean
 ```
@@ -45,7 +49,7 @@ The seven component files compile without warnings, unfinished proofs, or custom
 
 ## What was checked
 
-The finite experiments cover every labeled oriented graph through five vertices (59,809 graphs total), all 4,096 two-point relation/family triples for pruning, 1,000 deterministic larger samples, and 10,000 potential-increment identities. All passed. The article, slides, and speaker-notes PDFs were compiled, all eleven figures were rendered and inspected, and all sixteen slides were visually checked. The ledger records mathematical checks at the proof's interfaces.
+The finite experiments cover every labeled oriented graph through five vertices (59,809 graphs total), all 4,096 two-point relation/family triples for pruning, 1,000 deterministic larger samples, and 10,000 potential-increment identities. All passed. The article, slides, and speaker-notes PDFs were compiled, all eleven figures were rendered and inspected, and all seventeen current main slides were visually checked. The concrete examples and continuous twenty-minute allocation are checked by `check_slide_examples.py`; results are in `slide-checks.txt`. The ledger records mathematical checks at the proof's interfaces.
 
 A **complete attributed reference formalization** is now included under `lean/reference/`. It is an unchanged source snapshot of Claude Opus 5.5's formalization from the other work directory, rebuilt here without copying its compiled objects. The build checks the snapshot hashes, compiles the graph reductions, blowup, pruning, and extremal contradiction, and checks our definition bridge:
 
