@@ -6,7 +6,7 @@ to make the OpenAI preprint in `../original` (read-only) easier to understand.
 | What                                                                          | Where                                                                        |
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
 | Readability plan (draft, self-review, final plan), written before the rewrite | [`READABILITY_PLAN.md`](READABILITY_PLAN.md)                                 |
-| **Rewritten paper**, 38 pages, 16 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
+| **Rewritten paper**, 42 pages, 17 TikZ figures                                | [`paper/main.pdf`](paper/main.pdf) (source: `paper/*.tex`)                   |
 | **20-minute Beamer talk**, 23 frames, with timing plan                        | [`slides/talk.pdf`](slides/talk.pdf), [`slides/README.md`](slides/README.md) |
 | **Animations** (Manim): why the grid (prologue); one improvement step worked out on a 4-vertex graph | [`animation/WhyGrid.mp4`](animation/WhyGrid.mp4), [`animation/ImprovementStep.mp4`](animation/ImprovementStep.mp4), [`animation/README.md`](animation/README.md) |
 | **Experiments**: computer searches behind the new remarks (three-term complex, tightness of the matching bound, an unproven local form) | [`experiments/README.md`](experiments/README.md) |
@@ -97,4 +97,22 @@ operators aᵀ⊗I and I⊗b commute, that an admissible pair exists exactly whe
 the relation is oriented, that reversing the relation swaps Z and H, the
 exact gain identity |R| + |C| + Σκ = μ + 2d, and the ledger
 val(P′,Q′) ≥ val(P,Q) − Σκ for an arbitrary relation (no concavity assumed).
+`SeymourLean/Triangles.lean` proves Corollary 6.2: without directed
+triangles a Seymour vertex has 2d⁺(v) + d⁻(v) + 1 ≤ n, so a digraph with all
+out- and in-degrees at least n/3 has a directed cycle of length at most 3
+(the symmetric Caccetta–Häggkvist case for triangles, `ch3_symmetric`), and
+an r-regular triangle-free oriented graph has at least 3r + 1 vertices; it
+also proves that triangle-freeness is the grid statement F₁²Δ ∩ F₂Δ = ∅.
 `CheckAxioms.lean` prints the axioms of these theorems as well.
+
+## Caccetta–Häggkvist for triangles
+
+Section 6.3 of the paper records what the theorem gives for the
+Caccetta–Häggkvist conjecture with k = 3: the symmetric case (minimum in- and
+out-degree ≥ n/3) is now a sharp theorem; the full case would follow from a
+strengthening of Seymour's theorem, Conjecture 6.4 ("some Seymour vertex has
+d⁻(v) ≥ d⁺(v)"), which is proved for tournaments via median orders and tested
+by `experiments/ch_triangle.py` on all oriented graphs with ≤ 6 vertices, all
+tournaments with ≤ 7 vertices and random graphs with up to 20 vertices.
+Remark 6.9 explains why the proof's three stages do not see the hypothesis
+δ⁺ ≥ n/3.

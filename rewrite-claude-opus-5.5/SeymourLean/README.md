@@ -69,6 +69,10 @@ The definitions are in `SeymourLean/Defs.lean`:
 | `conflict_swap`, `Zset_swap`, `Hset_swap` | Insights | reversing the relation swaps the roles in a conflict and exchanges `Z` and `H` | sec3 Remark `rem:reversal` |
 | `gain_identity`, `moved_identity` | Insights | `\|R\|+\|C\|+Σκ = μ+2d`; `\|R\|+\|C\|-d` is the formal value of `(F₁P,F₂Q)` | sec3 Remark `rem:move-repair`, sec5 Remark `rem:algorithm` |
 | `step_ledger`, `step_value` | Insights | for any relation and admissible `(P,Q)`: pruning the complements gives an admissible pair of value `≥ \|R\|+\|C\|-d = val(P,Q) - Σκ`, no concavity assumed | sec3 `sec:ledger` Steps 3–4, sec5 Remark `rem:algorithm` |
+| `exists_two_out_add_in_le` | Triangles | oriented, no directed triangle ⇒ some `v` has `2 d⁺(v) + d⁻(v) + 1 ≤ n` | sec6 Corollary `cor:triangles` (i) |
+| `ch3_symmetric`, `ch3_symmetric_loopless` | Triangles | all out- and in-degrees `≥ n/3` ⇒ a loop, a digon or a directed triangle (the symmetric Caccetta–Häggkvist case for `k = 3`) | sec6 Corollary `cor:triangles` (ii) |
+| `regular_girth_four` | Triangles | `r`-regular, no directed triangle ⇒ `3r + 1 ≤ n` | sec6 Corollary `cor:triangles` (iii) |
+| `triangleFree_iff_grid`, `seed_compatible_iff` | Triangles | no directed triangle ⇔ `F₁²Δ ∩ F₂Δ = ∅`; the seed `(Δ ∪ F₁Δ, Δ)` is compatible ⇔ oriented and triangle-free | sec6 Lemma `lem:girth-grid` |
 
 ## Where the formal proof differs from the paper (same mathematics, different route)
 

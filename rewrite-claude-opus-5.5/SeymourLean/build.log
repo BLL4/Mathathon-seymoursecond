@@ -1,24 +1,31 @@
-# lake build (Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)), 2026-11-15T13:11Z
-# Mathlib rev:    "rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
+# lake build (Lean (version 4.35.0, arm64-apple-darwin24.6.0, commit eb6cafb7290e8bd5f2937522d8d804f58f02bafc, Release)), 2026-11-15T16:41Z
+# Mathlib rev: "rev": "56a005855ea17e0b0958f73ec801ae140b0a1679",
 $ lake build
+  [DecidableEq V]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
   omit [DecidableEq V] in theorem ...
-  omit [DecidableEq V] in theorem ...
-  omit [DecidableEq V] in theorem ...
-modifies the current goal, which was modified by the flexible tactic `simp` on line 278!
-Copyright too short!
-  omit [Fintype α] [Fintype β] [DecidableEq β] in theorem ...
-Copyright too short!
-info: SeymourLean/Generic.lean:228:4: `exact hv0 h1`
-uses `h1`, which was modified by the flexible tactic `simp` on line 227!
-Copyright too short!
-Copyright too short!
-  Set.s̲diff_subset
-  Set.s̲diff_subset
-Copyright too short!
-info: SeymourLean/Final.lean:24:0: 'Seymour.seymour_second_neighbourhood' depends on axioms: [propext, Classical.choice, Quot.sound]
-Copyright too short!
-  omit [Fintype X] [DecidableEq X] [DecidableRel adj] in theorem ...
-Build completed successfully (2119 jobs).
+
+  • [DecidableEq V] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+  • [DecidableEq V] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+  • [DecidableEq V] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+  • [DecidableEq V] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+  • [DecidableEq V] (#3)
+
+Consider removing this hypothesis and using `classical` in the proof instead. For terms, consider using `open scoped Classical in` at the term level (not the command level).
+
+Build completed successfully (2120 jobs).
 
 $ lake env lean CheckAxioms.lean
 Seymour.seymour_second_neighbourhood : ∀ (V : Type) [inst : Fintype V] [inst_1 : DecidableEq V] [Nonempty V]
@@ -34,3 +41,9 @@ Seymour.seymour_second_neighbourhood : ∀ (V : Type) [inst : Fintype V] [inst_1
 'Seymour.Zset_swap' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.gain_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.step_value' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.exists_two_out_add_in_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.ch3_symmetric' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.ch3_symmetric_loopless' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.regular_girth_four' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.triangleFree_iff_grid' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.seed_compatible_iff' depends on axioms: [propext, Classical.choice, Quot.sound]

@@ -168,3 +168,211 @@ $\delta^\pm\ge\lceil n/3\rceil$, which includes the case $3\mid n$.)
 
 (iii) Girth four excludes directed triangles, and (i) gives $n-1\ge3r$.
 \end{proof}
+
+\subsection{Towards the Caccetta--H\"aggkvist conjecture for triangles}\label{sec:ch}
+
+\begin{idea}[What this subsection does]
+\Cref{cor:triangles}(ii) is the \emph{symmetric} case of the Caccetta--H\"aggkvist
+conjecture for triangles. We record what \cref{thm:main} and its weighted forms give
+towards the full conjecture, isolate a strengthening of \cref{thm:main} that would
+settle it (\cref{conj:inheavy}), prove that strengthening for tournaments, report
+computer evidence for it, and explain where the proof of
+\cref{sec:pairs,sec:pruning,sec:contradiction} would have to change.
+\end{idea}
+
+Caccetta and H\"aggkvist~\cite{CaccettaHaggkvist1978} conjectured that every digraph on
+$n$ vertices with minimum outdegree at least $n/k$ contains a directed cycle of length at
+most $k$. The case $k=3$ is open; the best bound is that minimum outdegree $0.3465n$
+suffices~\cite{HladkyKralNorin2017}. Loops and digons are cycles of length at most
+three, so the case $k=3$ is the statement
+\begingroup
+\renewcommand{\theHequation}{CH3}
+\begin{equation}\label{eq:ch3}\tag{CH$_3$}
+ \parbox{0.78\textwidth}{\centering every oriented graph on $n$ vertices without
+ directed triangles has a vertex $v$ with $d^+(v)<n/3$.}
+\end{equation}
+\endgroup
+
+\paragraph{The symmetric case.}
+Sullivan's survey~\cite[Section~3]{Sullivan2006} records that Seymour's conjecture
+implies the special case of~\eqref{eq:ch3} in which the minimum indegree is also at
+least $n/3$. This is \cref{cor:triangles}(ii), and with \cref{thm:main} it is now a
+theorem. It is sharp: for $n=3m+1$, the circulant with arcs $i\to i+s$ for
+$s\in\{1,\dots,m\}$ (indices modulo $n$) has no directed triangle, because three steps
+add up to at most $3m<n$, and $d^+=d^-=m=(n-1)/3$ at every vertex. Previously, the
+bound $\abs{\Ntwo(v)}\ge\gamma\abs{\Nout(v)}$ of Huang and Peng~\cite{HuangPeng2024}
+with $\gamma=0.715538$ gave, by the argument of \cref{cor:triangles}(i), the same
+conclusion only under $\delta^\pm\ge n/(2+\gamma)\approx0.368n$.
+
+\paragraph{What the weighted forms give.}
+The weighted form of \cref{thm:main} carries the argument of \cref{cor:triangles}(i)
+over to every weighting, and in particular to every induced subgraph.
+
+\begin{proposition}\label{prop:ch-weighted}
+Let $D$ be an oriented graph without directed triangles and $\eta:V(D)\to[0,\infty)$.
+Some vertex $v$ satisfies
+\begin{equation}\label{eq:ch-weighted}
+ 2\eta(\Nout(v))+\eta(N^-_1(v))+\eta(v)\le\eta(V(D)).
+\end{equation}
+In particular, for every nonempty $S\subseteq V(D)$ some vertex $v$ (not necessarily in
+$S$) has $2\abs{\Nout(v)\cap S}+\abs{N^-_1(v)\cap S}+[v\in S]\le\abs S$.
+\end{proposition}
+
+\begin{proof}
+\Cref{cor:weighted}(i) gives $v$ with $\eta(\Nout(v))\le\eta(\Ntwo(v))$, and the four
+sets $\{v\}$, $\Nout(v)$, $\Ntwo(v)$, $N^-_1(v)$ are pairwise disjoint by the proof of
+\cref{cor:triangles}(i). For the second statement take $\eta=\mathbf 1_S$.
+\end{proof}
+
+So in a counterexample to~\eqref{eq:ch3}, where $d^+\ge n/3$ everywhere, some vertex has
+indegree at most $n/3-1$, and the same holds in every blow-up of it by independent
+sets. The hypothesis of~\eqref{eq:ch3} bounds outdegrees from below, and \cref{thm:main}
+bounds the indegree of a Seymour vertex from above only. What is missing is a Seymour
+vertex whose indegree is at least its outdegree.
+
+\begin{conjecture}[In-heavy Seymour vertex]\label{conj:inheavy}
+Every nonempty oriented graph has a vertex $v$ with
+$\abs{\Ntwo(v)}\ge\abs{\Nout(v)}$ and $d^-(v)\ge d^+(v)$.
+\end{conjecture}
+
+\begin{lemma}\label{lem:conj-implies-ch}
+For oriented graphs $D$ on $n$ vertices without directed triangles, each of the
+following statements implies the next, and the last one is~\eqref{eq:ch3}:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item \cref{conj:inheavy} holds for $D$;
+\item some vertex $v$ of $D$ satisfies $\abs{\Ntwo(v)}+d^-(v)\ge2d^+(v)$;
+\item some vertex $v$ of $D$ satisfies $3d^+(v)\le n-1$.
+\end{enumerate}
+If (b) holds for all oriented graphs without directed triangles, then so does its
+weighted form: for every $\eta:V(D)\to[0,\infty)$ some $v$ has
+$\eta(\Ntwo(v))+\eta(N^-_1(v))\ge2\eta(\Nout(v))$.
+\end{lemma}
+
+\begin{proof}
+(a)$\Rightarrow$(b) is immediate, and (b)$\Rightarrow$(c) is
+$n-1\ge d^+(v)+\abs{\Ntwo(v)}+d^-(v)\ge3d^+(v)$ by the disjointness in
+\cref{fig:triangles}. For the weighted form, replace every vertex $x$ by an independent
+set of $k_x$ copies as in the proof of \cref{cor:weighted}(i). The blow-up is oriented,
+and a directed triangle in it would project to a directed triangle of $D$, since copies
+of one vertex are not adjacent. For a copy $v'$ of $v$, the sets $N^-_1(v')$, $\Nout(v')$
+and $\Ntwo(v')$ are the unions of the blocks of $N^-_1(v)$, $\Nout(v)$ and $\Ntwo(v)$, so
+(b) for the blow-up is the weighted statement with $\eta(x)=k_x$. Real weights follow by
+approximation, as there.
+\end{proof}
+
+\begin{proposition}[Tournaments]\label{prop:tournament-inheavy}
+\Cref{conj:inheavy} holds for every tournament.
+\end{proposition}
+
+\begin{proof}
+Let $v_1,\dots,v_n$ be a \emph{median order} of the tournament: an ordering of the
+vertices with the maximum number of forward arcs $v_iv_j$, $i<j$. Havet and
+Thomass\'e~\cite{HavetThomasse2000} proved that the last vertex $v_n$ is a Seymour
+vertex. Moving $v_n$ to the front turns its $d^+(v_n)$ out-arcs, all of them backward,
+into forward arcs, and its $d^-(v_n)$ in-arcs into backward arcs; by maximality,
+$d^-(v_n)\ge d^+(v_n)$.
+\end{proof}
+
+\begin{remark}[Computer evidence]\label{rem:ch-evidence}
+The script \texttt{experiments/ch\_triangle.py} finds no counterexample to
+\cref{conj:inheavy} among all $14{,}408{,}716$ labelled oriented graphs with at most six
+vertices, all tournaments with at most seven vertices, and random oriented graphs and
+tournaments with up to $20$ vertices; nor to statements (a) and (b) of
+\cref{lem:conj-implies-ch} among all $4{,}200{,}048$ labelled triangle-free oriented
+graphs with at most six vertices, random triangle-free oriented graphs with up to $15$
+vertices, and their weighted forms with random weights. By linear programming it also
+checks, on all triangle-free oriented graphs with at most five vertices, the fractional
+form of (a): there is a probability vector $\eta$ with $\eta(\Ntwo(v))\ge\eta(\Nout(v))$
+and $\eta(N^-_1(v))\ge\eta(\Nout(v))$ for \emph{every} vertex $v$ at once. (By Ville's
+theorem, as in the proof of \cref{cor:weighted}(ii), such an $\eta$ exists for the
+reverse of $D$ exactly when for all $\xi,\zeta\ge0$ some vertex $v$ of $D$ has
+$\xi(\Ntwo(v))+\zeta(N^-_1(v))\ge(\xi+\zeta)(\Nout(v))$; the case $\xi=\zeta$ is the
+weighted form of (b), and $\zeta=0$ is \cref{cor:weighted}(i).) The inequality in (b)
+holds with equality at the best vertex for the directed cycles and for the circulants
+above, so (b) is best possible if true.
+\end{remark}
+
+\paragraph{Where the proof would have to change.}
+Like orientation (\cref{lem:admissible-iff-oriented}), the absence of short cycles is
+a statement about pairs.
+
+\begin{lemma}[Short cycles in the grid]\label{lem:girth-grid}
+Use the arc relation of a digraph $D$ in the definitions of \cref{sec:pairs}. For
+$a,b\ge1$, a point $(i,j)$ lies in $\Ff^a\Delta\cap\Fs^b\Delta$ if and only if $D$ has a
+walk of $b$ steps from $i$ to $j$ and a walk of $a$ steps from $j$ to $i$. Consequently
+an oriented graph $D$ has no directed triangle if and only if
+$\Ff^2\Delta\cap\Fs\Delta=\varnothing$ (equivalently,
+$\Ff\Delta\cap\Fs^2\Delta=\varnothing$), and then $(\Delta\cup\Ff\Delta,\Delta)$ and
+$(\Delta,\Delta\cup\Fs\Delta)$ are admissible pairs.
+\end{lemma}
+
+\begin{proof}
+Starting from $(i,i)\in\Delta$, each application of $\Fs$ moves the second coordinate
+along an arc, so $(i,j)\in\Fs^b\Delta$ says that $j$ is reached from $i$ in $b$ steps;
+likewise $(i,j)\in\Ff^a\Delta$ says that $i$ is reached from $j$ in $a$ steps. A closed
+walk of length three in an oriented graph has three distinct vertices (a repeated vertex
+would give a loop or a digon), so it is a directed triangle. Finally,
+$\Ff(\Delta\cup\Ff\Delta)=\Ff\Delta\cup\Ff^2\Delta$ is disjoint from $\Fs\Delta$ when $D$
+is oriented and has no directed triangle, and symmetrically for the other pair.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.0]
+ \begin{scope}[xshift=-4.0cm,yshift=-1.5cm]
+  \node[vtx] (a) at (90:1.1) {$0$}; \node[vtx] (b) at (0:1.1) {$1$};
+  \node[vtx] (c) at (-90:1.1) {$2$}; \node[vtx] (d) at (180:1.1) {$3$};
+  \draw[arc] (a)--(b); \draw[arc] (b)--(c); \draw[arc] (c)--(d); \draw[arc] (d)--(a);
+ \end{scope}
+ \foreach \j in {0,...,3} \node[font=\small] at (\j,0.65) {$\j$};
+ \foreach \i in {0,...,3} \node[font=\small] at (-0.7,-\i) {$\i$};
+ \foreach \i in {0,...,3} \foreach \j in {0,...,3} \node[gridpt] at (\j,-\i) {};
+ \foreach \i/\j in {0/1,1/2,2/3,3/0} \node[Rpt] at (\j,-\i) {};
+ \foreach \i/\j in {1/0,2/1,3/2,0/3} \node[Lpt] at (\j,-\i) {};
+ \foreach \i/\j in {2/0,3/1,0/2,1/3}
+  \node[circle,draw=famL!70!black,fill=famL!25,inner sep=0pt,minimum size=3.2mm] at (\j,-\i) {};
+ \foreach \i in {0,...,3} \node[dot] at (\i,-\i) {};
+ \begin{scope}[xshift=4.6cm,yshift=0.1cm,font=\small]
+  \node[dot] at (0,0) {}; \node[anchor=west] at (0.3,0) {$\Delta$};
+  \node[Rpt] at (0,-0.6) {}; \node[anchor=west] at (0.3,-0.6) {$\Fs\Delta$: $(i,j)$ with $i\to j$};
+  \node[Lpt] at (0,-1.2) {}; \node[anchor=west] at (0.3,-1.2) {$\Ff\Delta$: $(i,j)$ with $j\to i$};
+  \node[circle,draw=famL!70!black,fill=famL!25,inner sep=0pt,minimum size=3.2mm] at (0,-1.8) {};
+  \node[anchor=west] at (0.3,-1.8) {$\Ff^2\Delta$: $(i,j)$ with $j\to\cdot\to i$};
+ \end{scope}
+\end{tikzpicture}
+\caption{\Cref{lem:girth-grid} for the directed $4$-cycle (rows $=$ first coordinate).
+The squares of $\Fs\Delta$ avoid the disks of $\Ff\Delta$ (no digons) and the pale
+disks of $\Ff^2\Delta$ (no directed triangles), so $(\Delta\cup\Ff\Delta,\Delta)$ is
+admissible. Here $\Ff^2\Delta=\Fs^2\Delta$ (a $4$-cycle), so
+$(\Delta\cup\Ff\Delta,\Delta\cup\Fs\Delta)$ is not.}
+\label{fig:girth-grid}
+\end{figure}
+
+\begin{remark}[Why the hypothesis of \eqref{eq:ch3} is invisible to the proof]\label{rem:ch-obstacle}
+\emph{Stage 3.} The run of \cref{rem:algorithm} can be started from the larger seeds of
+\cref{lem:girth-grid}, and
+\cref{cl:lines-proper,cl:diag-free,cl:H-uncovered,cl:new-admissible} go through
+unchanged, since they use only $\Delta\subseteq P\cap Q$. But the conclusion of the run
+does not depend on the seed: it is a line $U$ with $\kappa(U)\ge0$, a violation of
+strict concavity. The hypothesis of~\eqref{eq:ch3} is a lower bound on outdegrees, not a
+concavity statement, so the run says nothing about it. (The larger seed is not even
+preserved: $\Rf=X^2\setminus\Fs^2Q$ need not contain $\Ff\Delta$.)
+
+\emph{Stage 1.} Let $D$ be a counterexample to~\eqref{eq:ch3} with the fewest vertices
+and then the fewest arcs. Deleting an arc $u\to w$ leaves an oriented graph without
+directed triangles, which by minimality has a vertex of outdegree below $n/3$; only
+$d^+(u)$ changed, so $d^+(u)=\lceil n/3\rceil$. The arc-deletion argument of
+\cref{lem:subset-deficit} therefore yields only that $D$ is out-regular, and nothing
+about sets. For \cref{conj:inheavy} it fares a little better: deleting the arcs from
+$S$ to $E\setminus T$ as in the proof of \cref{lem:subset-deficit}, the in-heavy
+Seymour vertex $v$ of the smaller graph must lie in $S$ (outside $S$, outdegrees are
+unchanged, while second out-neighborhoods and indegrees can only grow back). But $v$
+can fail the conjecture in $D$ in two ways, $\abs{\Ntwo(v)}<d^+(v)$ or $d^-(v)<d^+(v)$,
+and only the first one feeds the growth bound of \cref{lem:subset-deficit}. A proof of
+\cref{conj:inheavy} along the lines of this paper would need a replacement for Stage~1
+that handles the second alternative, or an objective in Stage~3 that keeps track of
+indegrees. We leave both as open problems.
+\end{remark}
+
+\Cref{cor:triangles} and the triangle case of \cref{lem:girth-grid} are formalized in
+\texttt{Triangles.lean} (\cref{app:checks}).
