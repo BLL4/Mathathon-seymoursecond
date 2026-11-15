@@ -63,7 +63,10 @@ oriented and has no directed triangle), the triangle case of
 \cref{sec:related} that the theorem settles at once: \texttt{sullivan\_min}
 (Sullivan's Conjecture~6.7, $d^+(v)+\abs{\Ntwo(v)}\ge2\min(d^-(v),d^+(v))$ for some
 $v$) and \texttt{thomasse\_nonneighbours} (Thomass\'e's Conjecture~6.12, with the
-non-neighbours counted explicitly). \texttt{InHeavy.lean} formalizes
+non-neighbours counted explicitly), and \texttt{min\_outdegree\_seymour} (Theorem~3.2
+of~\cite{BrantnerBrockmanKaySnively2009}: without transitive triangles every vertex
+of minimum outdegree is a Seymour vertex, no appeal to \cref{thm:main}).
+\texttt{InHeavy.lean} formalizes
 \cref{prop:inheavy-minimal}(a), (b) and (d) for any class of relations
 closed under arc deletion: \texttt{inheavy\_of\_closed} (no closed
 nonempty proper set), \texttt{indeg\_ge\_outdeg\_sub\_one}

@@ -618,6 +618,51 @@ def verify_counterexample(name, n, arcs):
     raise ValueError(name)
 
 
+def run_bbks(N, trials, seed=17):
+    """Two checks on Brantner-Brockman-Kay-Snively (arXiv:0808.0946): Theorem 3.2 (no
+    transitive triangle => every vertex of minimum outdegree is Seymour) on all oriented
+    graphs with n <= N, and the identity behind their Theorem 4.3, A(D[H])(d,h) =
+    A_H(h) + |H| A_D(d) with A = d+ - d2+ for the lexicographic product, on random pairs."""
+    def transitive_triangle_free(n, out):
+        return all(not (out[x] & out[y]) for x in range(n) for y in members(out[x]))
+
+    tot = bad = 0
+    for n in range(1, N + 1):
+        for out, inn in all_oriented_graphs(n):
+            if transitive_triangle_free(n, out):
+                tot += 1
+                dp = [bits(out[v]) for v in range(n)]
+                mo = min(dp)
+                if any(dp[v] == mo and bits(second_out(n, out, v)) < dp[v] for v in range(n)):
+                    bad += 1
+    print(f"Theorem 3.2: {tot} oriented graphs with n <= {N} and no transitive triangle, "
+          f"{bad} with a non-Seymour vertex of minimum outdegree")
+    rng = random.Random(seed)
+    ok = True
+    for _ in range(trials):
+        nD, nH = rng.randint(2, 6), rng.randint(2, 5)
+        oD, _ = random_oriented(nD, rng)
+        oH, _ = random_oriented(nH, rng)
+        n = nD * nH
+        out = [0] * n
+        for d1 in range(nD):
+            for h1 in range(nH):
+                v = d1 * nH + h1
+                for h2 in members(oH[h1]):
+                    out[v] |= 1 << (d1 * nH + h2)
+                for d2 in members(oD[d1]):
+                    for h2 in range(nH):
+                        out[v] |= 1 << (d2 * nH + h2)
+        for d1 in range(nD):
+            for h1 in range(nH):
+                v = d1 * nH + h1
+                A = bits(out[v]) - bits(second_out(n, out, v))
+                AH = bits(oH[h1]) - bits(second_out(nH, oH, h1))
+                AD = bits(oD[d1]) - bits(second_out(nD, oD, d1))
+                ok = ok and A == AH + nH * AD
+    print(f"Theorem 4.3 identity A(D[H]) = A_H + |H| A_D on {trials} random pairs: {ok}")
+
+
 def main():
     a = sys.argv[1:]
     if not a:
@@ -640,6 +685,8 @@ def main():
         run_randeul(int(a[1]), int(a[2]), int(a[3]) if len(a) > 3 else 5)
     elif mode == "tk":
         run_tk(int(a[1]))
+    elif mode == "bbks":
+        run_bbks(int(a[1]), int(a[2]) if len(a) > 2 else 200)
     elif mode == "digon":
         run_digon(int(a[1]))
     elif mode == "randdigon":

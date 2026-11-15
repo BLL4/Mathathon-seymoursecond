@@ -186,6 +186,13 @@ Modes: `all N` (all labelled oriented graphs, N ≤ 6), `random N TRIALS`, `tf N
   ζ = (3,0,0,0,3,3) of Remark 6.10 certify it: the coefficient of every p_u in
   Σ ξ_v(p(N₂⁻(v)) − p(N⁻(v))) + ζ_v(p(N₁⁺(v)) − p(N⁻(v))) equals −1. It also fails on
   9 of 500 random triangle-free graphs on 8 vertices and 13 of 300 on 9.
+* `bbks N TRIALS` checks two statements of Brantner–Brockman–Kay–Snively
+  (arXiv:0808.0946): their Theorem 3.2 (no transitive triangle ⇒ every vertex of
+  minimum outdegree is Seymour; 593,984 such graphs with ≤ 6 vertices, no exception;
+  also proved in `SeymourLean/Related.lean`) and the identity behind their Theorem 4.3,
+  A(D[H])(d,h) = A_H(h) + |H|·A_D(d) with A = d⁺ − d⁺₂ for the lexicographic product
+  (200 random pairs). Their Theorem 4.1 (properties of a minimal counterexample to
+  Seymour's conjecture) is vacuous now that the conjecture is a theorem.
 * ALLMIN holds on all oriented graphs with ≤ 6 vertices and on the 60,000 random graphs
   on 7 and 8 vertices, but fails on the 8-vertex tournament listed in the `verify`
   example of the script (vertex 0 has the minimum outdegree 3 and only two second

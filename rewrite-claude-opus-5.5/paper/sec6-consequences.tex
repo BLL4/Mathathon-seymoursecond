@@ -197,7 +197,9 @@ three, so the case $k=3$ is the statement
 Sullivan's survey~\cite[Section~3]{Sullivan2006} records that Seymour's conjecture
 implies the special case of~\eqref{eq:ch3} in which the minimum indegree is also at
 least $n/3$. This is \cref{cor:triangles}(ii), and with \cref{thm:main} it is now a
-theorem. It is sharp: for $n=3m+1$, the circulant with arcs $i\to i+s$ for
+theorem. (Some papers state the implication without the indegree condition, for
+instance \cite[Section~1]{BrantnerBrockmanKaySnively2009}; that is an overstatement,
+and the rest of this subsection is about what is missing.) It is sharp: for $n=3m+1$, the circulant with arcs $i\to i+s$ for
 $s\in\{1,\dots,m\}$ (indices modulo $n$) has no directed triangle, because three steps
 add up to at most $3m<n$, and $d^+=d^-=m=(n-1)/3$ at every vertex. Previously, the
 bound $\abs{\Ntwo(v)}\ge\gamma\abs{\Nout(v)}$ of Huang and Peng~\cite{HuangPeng2024}
@@ -586,7 +588,13 @@ $\varnothing\ne B\subsetneq\Nout(v)$: deleting the arcs from $v$ to $B$ leaves a
 sink-free graph with fewer arcs whose Seymour vertices lie in $\{v,s\}$ (vertices other
 than $v$ keep $\Nout$ and lose part of $\Ntwo$), so $v$ is a Seymour vertex of $D$
 minus these arcs. With $B=\{b\}$ this gives $d^+(v)-1\le\abs{\Ntwo(v)}+1$, so every
-vertex of a minimal counterexample has $\abs{\Ntwo(v)}\ge d^+(v)-2$. Stage~3, however,
+vertex of a minimal counterexample has $\abs{\Ntwo(v)}\ge d^+(v)-2$; this is the
+single-arc deletion of Brantner, Brockman, Kay and
+Snively~\cite[Theorem~4.1]{BrantnerBrockmanKaySnively2009}, who derived a list of
+such constraints for minimal counterexamples to Seymour's conjecture itself (now
+vacuous) and showed that one counterexample would yield infinitely many strongly
+connected ones, by the product $D[H]$ of \cref{sec:blowup} with any $H$ whose
+vertices all have $d^+\ge\abs{\Ntwo}$. Stage~3, however,
 ends with \emph{one} line of nonnegative $\kappa$ and cannot be asked for two.
 \end{enumerate}
 
@@ -629,7 +637,11 @@ start: admissible pairs exist only for oriented relations
 On at most six vertices \emph{every} such vertex is, but in the tournament on
 $\{0,\dots,7\}$ with arcs $01,02,03$, $12,23,31$, $14,15,24,25,34,35$,
 $40,50,60,70$, $61,62,63,71,72,73$, $45,46,56,57,74,67$ the vertex $0$ has the minimum
-outdegree $3$ and $\Ntwo(0)=\{4,5\}$. The method does not see outdegrees.
+outdegree $3$ and $\Ntwo(0)=\{4,5\}$. Without transitive triangles every vertex of
+minimum outdegree is a Seymour vertex: if $v\to u$ then $\Nout(u)\subseteq\Ntwo(v)$,
+so $d^+(v)\le d^+(u)\le\abs{\Ntwo(v)}$
+\cite[Theorem~3.2]{BrantnerBrockmanKaySnively2009}; Lean:
+\texttt{min\_outdegree\_seymour}. The method itself does not see outdegrees.
 \item \emph{Infinite graphs}~\cite[Conjecture~6.11]{Sullivan2006}: does a locally finite
 infinite oriented graph (all outdegrees finite) have a Seymour vertex? The proof uses a
 counterexample with fewest arcs. By (f), an infinite counterexample has no finite

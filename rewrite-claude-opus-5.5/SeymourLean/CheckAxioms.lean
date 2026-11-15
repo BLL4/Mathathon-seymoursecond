@@ -33,3 +33,4 @@ The expected output is recorded in `build.log`. -/
 -- Related.lean (Section 6.4: Sullivan's Conjecture 6.7 and Thomassé's Conjecture 6.12)
 #print axioms Seymour.sullivan_min
 #print axioms Seymour.thomasse_nonneighbours
+#print axioms Seymour.min_outdegree_seymour

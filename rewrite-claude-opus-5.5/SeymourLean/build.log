@@ -30,3 +30,4 @@ Seymour.seymour_second_neighbourhood : ∀ (V : Type) [inst : Fintype V] [inst_1
 'Seymour.subset_deficit_inheavy' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.sullivan_min' depends on axioms: [propext, Classical.choice, Quot.sound]
 'Seymour.thomasse_nonneighbours' depends on axioms: [propext, Classical.choice, Quot.sound]
+'Seymour.min_outdegree_seymour' depends on axioms: [propext, Classical.choice, Quot.sound]

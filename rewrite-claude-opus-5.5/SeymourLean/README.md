@@ -78,6 +78,7 @@ The definitions are in `SeymourLean/Defs.lean`:
 | `subset_deficit_inheavy`, `triangleFree_delArcs` | InHeavy | every nonempty set of in-heavy vertices with an arc leaving it has `\|F²S \ FS\| < \|FS \ S\|` in a minimal counterexample; triangle-freeness survives arc deletion | sec6 Proposition `prop:inheavy-minimal` (d) |
 | `sullivan_min` | Related | some `v` has `2 min(d⁻(v), d⁺(v)) ≤ d⁺(v) + d⁺₂(v)` (Sullivan's Conjecture 6.7) | sec6 §6.4 (c) |
 | `thomasse_nonneighbours` | Related | oriented, no directed triangle ⇒ some `v` has at most as many out-neighbours as non-neighbours (Thomassé's Conjecture 6.12) | sec6 §6.4 (a) |
+| `min_outdegree_seymour` | Related | oriented, no transitive triangle ⇒ every vertex of minimum outdegree is a Seymour vertex (Brantner–Brockman–Kay–Snively, Theorem 3.2; independent of the main theorem) | sec6 §6.4 (n) |
 
 ## Where the formal proof differs from the paper (same mathematics, different route)
 

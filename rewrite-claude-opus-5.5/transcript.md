@@ -1,6 +1,6 @@
 # Transcript of the Claude Code session on the Seymour paper
 
-Session `3ce2e957-d885-461a-bd37-fd214bf36439`, exported 2026-11-15 16:43 by `tools/export_transcript.py`. 50 user messages, 49 replies.
+Session `3ce2e957-d885-461a-bd37-fd214bf36439`, exported 2026-11-15 17:33 by `tools/export_transcript.py`. 51 user messages, 50 replies.
 
 What is included: every message typed by the user and every reply written by Claude, verbatim, in order; each tool call as a one-line note (🔧); and markers where the context window was compacted. Not included: tool outputs, file contents, and Claude's private reasoning. Re-run the script to bring this file up to date.
 
@@ -1966,3 +1966,60 @@ The paper rebuilt cleanly. Checking the table placement and the last search resu
 > 🔧 `Read` — /private/tmp/claude-503/-Users-lidicky-claude-mathaton/3ce2e957-d885-461a-bd37-fd214bf36439/scratchpad/rel/...
 > 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/README.md
 > 🔧 `Bash` — Sync, export transcript, commit and push the related-conjectures work
+Pushed as `54bed02`. Everything below is in Section 6.4 of the paper (pages 40 to 43), with the search script `experiments/related.py` and the Lean file `SeymourLean/Related.lean`.
+
+**Settled by the theorem.** Thomassé's non-neighbour conjecture and the girth-four regular case of Behzad–Chartrand–Wall (both already Corollary 6.2), Sullivan's "compromise" Conjecture 6.7 (a vertex with d⁺ + d⁺₂ ≥ 2 min(d⁻, d⁺)), Seacrest's subset form (he proved it equivalent), and two easy ones: every closed set contains a Seymour vertex, and a loopless digraph with digons has a vertex with d⁺₂ ≥ d⁺ − 2s(v), where s(v) counts digons at v. Thomassé's and Sullivan's statements are now proved in Lean with standard axioms only.
+
+**Refuted.** DeVos's Conjecture 6.28 in Sullivan's survey asks for one probability vector on a triangle-free graph that is out-heavy and in-Seymour at every vertex. The six-vertex graph and the weights of Remark 6.10 kill it: the Farkas combination has coefficient −1 at every vertex, so no such vector exists. Random triangle-free graphs on 8 and 9 vertices fail too. The "on average" weakening the survey mentions is the theorem itself.
+
+**Open, with a chance for the method.**
+- **Bai–Li–Park's matching form** (a matching of N⁺(v) into N⁺₂(v) along arcs, July 2026). Stage 1 transfers verbatim, so a minimal counterexample is strongly connected with the subset deficit. It stops at Stage 3: Hall's condition failing gives a deficit for part of the out-neighbourhood, not the whole.
+- **Two Seymour vertices in sink-free graphs** (Havet–Thomassé for tournaments). Half of Stage 1 transfers: in a minimal counterexample every vertex has d⁺₂ ≥ d⁺ − 2. Stage 3 produces one line with κ ≥ 0 and cannot be asked for two.
+
+**Open, out of reach.** Sullivan's conjecture d⁺₂ ≥ d⁻ (arc deletion changes in-degrees, and the ledger never compares the two grid families), Burckel's k-th neighbourhood and distance conjectures, the Eulerian average and Thomassé–Kral' conjectures (averages, where the theorem controls one vertex), the sharper digon form d⁺₂ ≥ d⁺ − s(v) (the grid needs orientation), locally finite infinite graphs, and the rainbow conjecture.
+
+**Counterexample searches found nothing** for any open statement: all 14.4 million oriented graphs on at most 6 vertices, all triangle-free and girth-5 graphs on at most 6, all 785,147 Eulerian oriented graphs on at most 7, all loopless digraphs on at most 5, and random graphs up to 16 vertices. One side observation: on at most 6 vertices every vertex of minimum outdegree is a Seymour vertex, but an 8-vertex tournament in the paper breaks this, so that small-graph evidence misleads.
+
+Sources:
+- [Sullivan, survey of CH-related problems (arXiv:math/0605646)](https://arxiv.org/html/math/0605646v1)
+- [Bai, Li, Park, Towards a strengthening of the second neighborhood conjecture (arXiv:2607.18047)](https://arxiv.org/abs/2607.18047)
+- [Li, Liang, The second out-neighbourhood for local tournaments (arXiv:1812.01800)](https://arxiv.org/abs/1812.01800)
+- [Espuny Díaz, Girão, Granet, Kronenberg, random graphs and reductions (arXiv:2403.02842)](https://arxiv.org/abs/2403.02842)
+- [Seacrest, subsets of vertices (arXiv:1808.06293)](https://arxiv.org/abs/1808.06293)
+- [Dara, Francis, Jacob, Narayanan, extending results on SNC (arXiv:1808.02247)](https://arxiv.org/abs/1808.02247)
+- [Ghazal, A remark on the second neighborhood problem (arXiv:1509.03282)](https://arxiv.org/abs/1509.03282)
+- [Ghazal, oriented graphs missing combs (arXiv:1602.08631)](https://arxiv.org/html/1602.08631)
+- [Bouya, Oporowski, linear-algebra forms (arXiv:1907.12614)](https://arxiv.org/html/1907.12614v1)
+- [Halkiewicz, Pisa graphs (arXiv:2601.21563, withdrawn)](https://arxiv.org/abs/2601.21563)
+
+## User — 2026-11-15 23:25 UTC
+
+How about this:  https://arxiv.org/abs/0808.0946 ?
+
+## Claude — 2026-11-15 23:26 UTC
+> 🔧 `WebFetch` — Give the authors, title, year, journal, and the full abstract. List every theorem, conjecture, question and...
+> 🔧 `WebFetch` — This is Brantner, Brockman, Kay, Snively, "Contributions to Seymour's second neighborhood conjecture". List...
+> 🔧 `Bash` — Extract the text of the Brantner–Brockman–Kay–Snively paper and list its statements
+> 🔧 `Bash` — Read the definitions and the sufficient conditions of the paper
+> 🔧 `Bash` — Read the minimal-counterexample theorem and the infinite-family construction
+> 🔧 `Bash` — Find where the paper cites this reference and how the blow-up is stated
+> 🔧 `Bash` — Check Theorem 3.2 and the product identity of the paper by computer
+> 🔧 `Bash` — Read the existing citations of the paper in the intro and reduction sections
+> 🔧 `WebFetch` — In this published version (Involve 2009) of Brantner, Brockman, Kay, Snively, "Contributions to Seymour's s...
+I'm pulling the paper's LaTeX source and the published Involve text to check the proofs and its claim about Caccetta–Häggkvist.
+> 🔧 `Bash` — Download the arXiv source and extract the text of the published version
+> 🔧 `Bash` — Read the published version's claims, definitions, main theorem and conclusions
+> 🔧 `Bash` — Check Theorem 3.2's hypothesis, the Lean N2 definition, and the paper's symmetric-case sentence
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/SeymourLean/SeymourLean/Related.lean
+> 🔧 `Bash` — Build Lean with the minimum-outdegree theorem
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/sec6-consequences.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/paper/lean-status.tex
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/SeymourLean/README.md
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/related.py
+> 🔧 `Bash` — Regenerate the Lean build log with the axiom check
+> 🔧 `Bash` — Run the two computer checks on the Brantner et al. paper
+> 🔧 `Bash` — Rebuild the paper and check for warnings
+> 🔧 `Edit` — /Users/lidicky/claude/mathaton/rewrite-claude-opus-5.5/experiments/README.md

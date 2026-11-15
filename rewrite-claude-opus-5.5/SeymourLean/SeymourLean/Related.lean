@@ -72,4 +72,27 @@ theorem thomasse_nonneighbours [Nonempty V] (hor : IsOriented adj) (htri : Trian
       card_union_of_disjoint h1in]
   omega
 
+/-- No transitive triangle `x → y → z` with `x → z`. -/
+def NoTransitiveTriangle {W : Type*} (adj : W → W → Prop) : Prop :=
+  ∀ x y z, adj x y → adj y z → ¬ adj x z
+
+/-- Theorem 3.2 of Brantner, Brockman, Kay and Snively (arXiv:0808.0946): in an oriented
+graph without transitive triangles, every vertex of minimum outdegree is a Seymour vertex.
+If `v → u` then `N⁺₁(u) ⊆ N⁺₂(v)`, because `u`'s out-neighbours are not `v` (no digon) and
+not out-neighbours of `v` (no transitive triangle), so `d⁺(v) ≤ d⁺(u) ≤ d⁺₂(v)`. -/
+theorem min_outdegree_seymour (hor : IsOriented adj) (htt : NoTransitiveTriangle adj)
+    (v : V) (hmin : ∀ u, (N1 adj v).card ≤ (N1 adj u).card) :
+    (N1 adj v).card ≤ (N2 adj v).card := by
+  rcases (N1 adj v).eq_empty_or_nonempty with h | ⟨u, hu⟩
+  · simp [h]
+  · have hvu : adj v u := mem_N1.1 hu
+    have hsub : N1 adj u ⊆ N2 adj v := by
+      intro w hw
+      have huw : adj u w := mem_N1.1 hw
+      refine mem_N2.2 ⟨?_, ?_, u, hvu, huw⟩
+      · rintro rfl
+        exact hor.2 _ _ hvu huw
+      · exact fun hvw => htt v u w hvu huw hvw
+    exact (hmin u).trans (card_le_card hsub)
+
 end Seymour
