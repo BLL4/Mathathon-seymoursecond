@@ -1,0 +1,2 @@
+# Preserve message text verbatim, including original trailing whitespace.
+transcript.md -whitespace

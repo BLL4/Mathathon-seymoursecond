@@ -2,6 +2,7 @@
 
 This folder contains a modified, illustrated exposition of the supplied OpenAI preprint of September 23, 2026. Original source files were not changed. The original work is licensed under Apache 2.0; see [the repository license](../LICENSE).
 
+- [Conversation transcript](transcript.md), starting with the first recorded message. Refresh with `python3 rewrite-codex/update-transcript.py` from the repository root; ongoing maintenance instructions are in [AGENTS.md](AGENTS.md).
 - [Illustrated article](main.pdf), with [LaTeX entry point](main.tex). It retains the complete argument, reorganizes the pruning proof into seven claims, and adds a reading guide, eleven figures, proof explanations, a worked pruning example, and a direct explanation of the vertex-weighted consequence.
 - [Visual twenty-minute presentation](talk.pdf), with [source](talk.tex) and a separate [speaker-notes PDF](talk-notes.pdf): seventeen frames, with diagrams on all sixteen substantive frames. It emphasizes the constructions and main ideas. Notes allocate 0:00–20:00; this is a planned duration, not a measured rehearsal.
 - [Technical presentation](talk-technical.pdf), with [source](talk-technical.tex), preserves the previous sixteen-frame deck and its detailed rank argument.
