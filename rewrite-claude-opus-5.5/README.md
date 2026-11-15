@@ -114,5 +114,12 @@ strengthening of Seymour's theorem, Conjecture 6.4 ("some Seymour vertex has
 d⁻(v) ≥ d⁺(v)"), which is proved for tournaments via median orders and tested
 by `experiments/ch_triangle.py` on all oriented graphs with ≤ 6 vertices, all
 tournaments with ≤ 7 vertices and random graphs with up to 20 vertices.
-Remark 6.9 explains why the proof's three stages do not see the hypothesis
+Proposition 6.8 (formalized in `SeymourLean/InHeavy.lean`) describes a
+minimal counterexample to that conjecture: strongly connected, d⁻ ≥ d⁺ − 1
+everywhere, and the subset deficit of Lemma 2.2 holds for every set of
+in-heavy vertices; the vertices with d⁻ = d⁺ − 1 are the gap (Remark 6.9).
+Remark 6.10 records three proof strategies that computer experiments rule
+out (a single distribution, Fisher-type averaging, every median order), and
+Conjecture 6.11 asks for a median order ending in a Seymour vertex.
+Remark 6.13 explains why the proof's three stages do not see the hypothesis
 δ⁺ ≥ n/3.

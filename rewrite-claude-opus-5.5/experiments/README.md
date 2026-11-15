@@ -105,3 +105,29 @@ random tournaments with 9, 11, 14 and 20 vertices (350,000) and on random
 oriented graphs with 8–16 vertices (350,000). For the triangle-free circulants
 Z_n with connection set {1,…,⌊(n−1)/3⌋} the inequality of S1 is tight, so S1 is
 best possible if true.
+
+## Finer probes: `ch_probe.py` (paper, Remarks on barriers and the median-order conjecture)
+
+`python3 -I ch_probe.py median N TRIALS [tournaments|all]`, `lp N TRIALS`, `s2lp N TRIALS`
+(needs scipy for the LP modes; `median` enumerates all N! orders, so N ≤ 9).
+
+* **Median orders.** For tournaments the last vertex of every (local) median order is a
+  Seymour vertex (Havet–Thomassé; the sanity run on 300 random 6-tournaments confirms
+  it). For oriented graphs this fails: among the 59,049 oriented graphs with 5 vertices,
+  180 have a median order ending in a non-Seymour vertex, and 2,100 have such a local
+  median order; failures persist for random triangle-free graphs with 6–8 vertices. But
+  **some median order ends in a Seymour vertex** in every graph tested: all oriented
+  graphs with ≤ 5 vertices, all triangle-free ones with ≤ 5 vertices, random oriented,
+  triangle-free and tournament graphs with 6–9 vertices. This is Conjecture 6.11 of the
+  paper; it implies Conjecture 6.4 because the last vertex of a median order has d⁻ ≥ d⁺.
+* **No single distribution.** The fractional form of Conjecture 6.4 (one probability
+  vector η with η(N₂⁺(v)) ≥ η(N₁⁺(v)) and η(N⁻(v)) ≥ η(N₁⁺(v)) at every vertex) holds for
+  all triangle-free oriented graphs with ≤ 5 vertices but fails for 222 of 60,000 random
+  triangle-free graphs on 6 vertices, 401 of 30,000 on 7, 432 of 15,000 on 8 and 295 of
+  6,000 on 9. Exact certificate for the 6-vertex graph with arcs 03, 10, 15, 20, 24, 34,
+  35, 41, 52 (found by brute force over integer weights ≤ 3): ξ = (0,1,1,1,0,0),
+  ζ = (3,0,0,0,3,3) give ξ(N₂⁺(v)) + ζ(N⁻(v)) < (ξ+ζ)(N₁⁺(v)) at all six vertices.
+* **No Fisher-type averaging.** Over probability vectors p that are out-heavy at every
+  vertex (p(N₁⁺(u)) ≥ p(N⁻(u))), the minimum of Σ p(v)(d⁺⁺(v) − d⁺(v)) is negative for
+  36 of the 549 triangle-free graphs on 4 vertices and 3,470 of 30,535 on 5 (minimum −1),
+  and the same holds for Σ p(v)(d⁺⁺ + d⁻ − 2d⁺); over in-heavy p it fails almost always.

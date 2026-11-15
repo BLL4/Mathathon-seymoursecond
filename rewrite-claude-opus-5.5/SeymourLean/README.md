@@ -73,6 +73,9 @@ The definitions are in `SeymourLean/Defs.lean`:
 | `ch3_symmetric`, `ch3_symmetric_loopless` | Triangles | all out- and in-degrees `≥ n/3` ⇒ a loop, a digon or a directed triangle (the symmetric Caccetta–Häggkvist case for `k = 3`) | sec6 Corollary `cor:triangles` (ii) |
 | `regular_girth_four` | Triangles | `r`-regular, no directed triangle ⇒ `3r + 1 ≤ n` | sec6 Corollary `cor:triangles` (iii) |
 | `triangleFree_iff_grid`, `seed_compatible_iff` | Triangles | no directed triangle ⇔ `F₁²Δ ∩ F₂Δ = ∅`; the seed `(Δ ∪ F₁Δ, Δ)` is compatible ⇔ oriented and triangle-free | sec6 Lemma `lem:girth-grid` |
+| `inheavy_of_sink`, `inheavy_of_closed` | InHeavy | a sink is an in-heavy Seymour vertex; a minimal counterexample to Conjecture `conj:inheavy` has no closed nonempty proper set | sec6 Proposition `prop:inheavy-minimal` (a) |
+| `inheavy_delArcs_mem`, `indeg_ge_outdeg_sub_one` | InHeavy | the in-heavy Seymour vertex of the arc-deleted graph lies in `S`; every vertex of a minimal counterexample has `d⁺(u) ≤ d⁻(u) + 1` (any class closed under arc deletion) | sec6 Proposition `prop:inheavy-minimal` (b) |
+| `subset_deficit_inheavy`, `triangleFree_delArcs` | InHeavy | every nonempty set of in-heavy vertices with an arc leaving it has `\|F²S \ FS\| < \|FS \ S\|` in a minimal counterexample; triangle-freeness survives arc deletion | sec6 Proposition `prop:inheavy-minimal` (d) |
 
 ## Where the formal proof differs from the paper (same mathematics, different route)
 

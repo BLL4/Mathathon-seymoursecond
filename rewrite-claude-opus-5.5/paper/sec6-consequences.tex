@@ -280,17 +280,129 @@ vertices, all tournaments with at most seven vertices, and random oriented graph
 tournaments with up to $20$ vertices; nor to statements (a) and (b) of
 \cref{lem:conj-implies-ch} among all $4{,}200{,}048$ labelled triangle-free oriented
 graphs with at most six vertices, random triangle-free oriented graphs with up to $15$
-vertices, and their weighted forms with random weights. By linear programming it also
-checks, on all triangle-free oriented graphs with at most five vertices, the fractional
-form of (a): there is a probability vector $\eta$ with $\eta(\Ntwo(v))\ge\eta(\Nout(v))$
-and $\eta(N^-_1(v))\ge\eta(\Nout(v))$ for \emph{every} vertex $v$ at once. (By Ville's
-theorem, as in the proof of \cref{cor:weighted}(ii), such an $\eta$ exists for the
-reverse of $D$ exactly when for all $\xi,\zeta\ge0$ some vertex $v$ of $D$ has
-$\xi(\Ntwo(v))+\zeta(N^-_1(v))\ge(\xi+\zeta)(\Nout(v))$; the case $\xi=\zeta$ is the
-weighted form of (b), and $\zeta=0$ is \cref{cor:weighted}(i).) The inequality in (b)
+vertices, and their weighted forms with random weights. The inequality in (b)
 holds with equality at the best vertex for the directed cycles and for the circulants
 above, so (b) is best possible if true.
 \end{remark}
+
+\paragraph{What a minimal counterexample would look like.}
+The arc-deletion argument of \cref{lem:subset-deficit} also works for
+\cref{conj:inheavy}. It needs one change, and the change is the whole difficulty.
+
+\begin{proposition}[Minimal counterexamples to \cref{conj:inheavy}]\label{prop:inheavy-minimal}
+Let $\mathcal C$ be the class of all oriented graphs, or the class of oriented graphs
+without directed triangles. Suppose \cref{conj:inheavy} fails in $\mathcal C$ and let
+$D\in\mathcal C$ be a counterexample with the fewest vertices and, subject to this, the
+fewest arcs. Put $M=\{v: d^-(v)\ge d^+(v)\}$ and $L=V(D)\setminus M$. Then:
+\begin{enumerate}[label=\textup{(\alph*)}]
+\item $D$ has no sink and no nonempty proper vertex set closed under out-arcs; in
+particular $D$ is strongly connected.
+\item Every vertex satisfies $d^-(v)\ge d^+(v)-1$. So $L=\{v: d^-(v)=d^+(v)-1\}$, and
+$\abs L=\sum_{v\in M}\bigl(d^-(v)-d^+(v)\bigr)$.
+\item No vertex of $M$ is a Seymour vertex, every Seymour vertex lies in $L$, and both
+$L$ and $M$ are nonempty.
+\item Every nonempty $S\subseteq M$ satisfies the subset deficit
+$\abs{F^2S\setminus FS}<\abs{FS\setminus S}$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Call a vertex $v$ \emph{good} if $\abs{\Ntwo(v)}\ge\abs{\Nout(v)}$ and $d^-(v)\ge d^+(v)$;
+$D$ has no good vertex, and every member of $\mathcal C$ with fewer vertices, or with the
+same vertex set and fewer arcs, has one. Deleting arcs and taking induced subgraphs
+stay in $\mathcal C$.
+
+(a) A sink $v$ has $d^+(v)=0$ and is good. If $\varnothing\ne S\subsetneq V(D)$ is closed
+under out-arcs, then $D[S]\in\mathcal C$ has fewer vertices and hence a good vertex $a$. Its
+first and second out-neighborhoods in $D[S]$ and in $D$ coincide because $S$ is closed,
+and its indegree in $D$ is at least its indegree in $D[S]$; so $a$ is good in $D$, a
+contradiction. The set of vertices reachable from any $v$ is closed, hence equal to
+$V(D)$.
+
+(b) Let $u\to w$ be an arc and $D'=D-uw$. Then $D'\in\mathcal C$ has fewer arcs, so it has a
+good vertex $v$. Suppose $v\ne u$. Then $\Nout(v)$ is the same in $D$ and $D'$; every
+two-step path of $D'$ is one of $D$, so $N^+_{2,D'}(v)\subseteq\Ntwo(v)$; and
+$N^-_{1,D'}(v)\subseteq N^-_1(v)$. Hence $v$ is good in $D$, a contradiction. So $v=u$,
+and $d^+(u)-1=d^+_{D'}(u)\le d^-_{D'}(u)\le d^-(u)$. By (a) every vertex has an out-arc,
+so this applies to all $u$. Finally $\sum_v\bigl(d^+(v)-d^-(v)\bigr)=0$ gives
+$\abs L=\sum_{v\in M}(d^-(v)-d^+(v))$.
+
+(c) A vertex of $M$ is in-heavy and not good, so it is not a Seymour vertex. If $L$ were
+empty, \cref{thm:main} would give a Seymour vertex, which would lie in $M$. If $M$
+were empty, $d^-<d^+$ everywhere would contradict $\sum_v(d^+(v)-d^-(v))=0$.
+
+(d) Fix $\varnothing\ne S\subseteq M$; by (c) $S\ne V(D)$, and by (a) some arc leaves $S$.
+Now follow the proof of \cref{lem:subset-deficit}: for $T\subseteq E=FS\setminus S$,
+delete all arcs from $S$ to $E\setminus T$ and let $v$ be a good vertex of the resulting
+graph $D_T\in\mathcal C$. As in (b), $v\in S$: outside $S$ out-neighborhoods are unchanged
+while second out-neighborhoods and in-neighborhoods only shrink, so a good vertex of
+$D_T$ outside $S$ would be good in $D$. Since $v\in S\subseteq M$ is in-heavy and not
+good, it is not a Seymour vertex of $D$, while it is a Seymour vertex of $D_T$. These
+two facts about $v$ are all that the proof of \cref{lem:subset-deficit} uses about the
+vertex it finds, so the rest of that proof applies verbatim and gives the subset
+deficit for $S$.
+\end{proof}
+
+\begin{remark}[The gap]\label{rem:inheavy-gap}
+If (d) held for \emph{all} nonempty proper sets, \cref{lem:blowup} and
+\cref{prop:no-concave} would finish the proof of \cref{conj:inheavy} exactly as they
+finish the proof of \cref{thm:main}. The obstacle is the nonempty set $L$ of vertices
+with $d^-=d^+-1$: a good vertex $v$ of $D_T$ that lies in $L$ fails the conjecture in $D$
+only through $d^-(v)=d^+(v)-1$, which the deletion does not change, so the growth
+bound of \cref{lem:subset-deficit} is not available for sets meeting $L$. Stage~3 needs
+strict concavity of every line of the extremal pair, and nothing keeps the lines away
+from $L$. So it suffices to prove \cref{conj:inheavy} for strongly connected oriented
+graphs with $d^-\ge d^+-1$ everywhere whose in-heavy vertices are non-Seymour and
+satisfy the subset deficit, and in which the set $L$ is nonempty with
+$\abs L=\sum_{M}(d^--d^+)$. Parts (a), (b) and (d) are formalized in
+\texttt{InHeavy.lean} for any class closed under arc deletion.
+\end{remark}
+
+\begin{remark}[Three things a proof cannot be]\label{rem:ch-barriers}
+Computer experiments (the script \texttt{ch\_probe.py} in \texttt{experiments/})
+rule out three natural strategies for \cref{conj:inheavy}, already for triangle-free
+graphs.
+
+\emph{(1) No single distribution.} Unlike \cref{cor:weighted}(ii), the conjecture has no
+``one $\eta$ for all vertices'' form. The statement ``there is a probability vector
+$\eta$ with $\eta(\Ntwo(v))\ge\eta(\Nout(v))$ and $\eta(N^-_1(v))\ge\eta(\Nout(v))$ for
+every $v$'' holds for all triangle-free oriented graphs with at most five vertices but
+fails for the triangle-free graph on $\{0,\dots,5\}$ with arcs
+$03,\,10,\,15,\,20,\,24,\,34,\,35,\,41,\,52$. Equivalently (Ville's theorem, as in the
+proof of \cref{cor:weighted}(ii)), the two-weight statement ``for all $\xi,\zeta\ge0$
+some $v$ has $\xi(\Ntwo(v))+\zeta(N^-_1(v))\ge(\xi+\zeta)(\Nout(v))$'' is false: in this
+graph, $\xi=(0,1,1,1,0,0)$ and $\zeta=(3,0,0,0,3,3)$ violate it at every vertex (the
+left side is $0,5,5,5,0,0$, the right side $1,6,6,6,1,1$). The case $\xi=\zeta$ is the
+weighted form of \cref{lem:conj-implies-ch}(b), which survives all tests, and
+$\zeta=0$ is \cref{cor:weighted}(i), which is a theorem; the mixed cases are what fail.
+
+\emph{(2) No Fisher-type averaging.} Fisher's proof of Seymour's conjecture for
+tournaments~\cite{Fisher1996} averages over an optimal strategy $p$ of the tournament
+game. Here, statement (b) of \cref{lem:conj-implies-ch} would follow from
+$\sum_vp(v)\bigl(\abs{\Ntwo(v)}+d^-(v)-2d^+(v)\bigr)\ge0$ for some probability vector $p$,
+and if $p$ is out-heavy everywhere ($p(\Nout(u))\ge p(N^-_1(u))$ for all $u$, which some
+$p$ always is), it would suffice that $\sum_vp(v)\bigl(\abs{\Ntwo(v)}-d^+(v)\bigr)\ge0$. For
+the graph $0\to2$, $0\to3$, $2\to1$, $3\to1$ every out-heavy $p$ is supported on
+$\{0,1\}$ with $p(1)\ge p(0)$, and both sums equal $-p(0)$, so the minimum is $-\tfrac12$.
+
+\emph{(3) Not every median order.} The last vertex of a median order always has
+$d^-\ge d^+$, and for tournaments it is a Seymour vertex
+(\cref{prop:tournament-inheavy}). For oriented graphs this fails: the triangle-free
+graph on $\{0,\dots,5\}$ with arcs $02,\,15,\,21,\,23,\,31,\,35,\,40,\,42,\,50,\,54$ has a
+median order ending in a non-Seymour vertex, and local median orders (those with the
+feedback property only) fail more often. But in every graph tested, all oriented graphs
+with at most five vertices and random oriented and triangle-free graphs with up to
+nine vertices, \emph{some} median order ends in a Seymour vertex.
+\end{remark}
+
+\begin{conjecture}[Median orders]\label{conj:median}
+Every nonempty oriented graph has a median order whose last vertex is a Seymour vertex.
+\end{conjecture}
+
+\Cref{conj:median} implies \cref{conj:inheavy}, since the last vertex of a median order
+has $d^-\ge d^+$, and it holds for tournaments by~\cite{HavetThomasse2000}. The evidence
+for it is thinner than for \cref{conj:inheavy} (median orders cost $n!$ to enumerate),
+and we state it as the most concrete form of the question.
 
 \paragraph{Where the proof would have to change.}
 Like orientation (\cref{lem:admissible-iff-oriented}), the absence of short cycles is
@@ -363,15 +475,12 @@ and then the fewest arcs. Deleting an arc $u\to w$ leaves an oriented graph with
 directed triangles, which by minimality has a vertex of outdegree below $n/3$; only
 $d^+(u)$ changed, so $d^+(u)=\lceil n/3\rceil$. The arc-deletion argument of
 \cref{lem:subset-deficit} therefore yields only that $D$ is out-regular, and nothing
-about sets. For \cref{conj:inheavy} it fares a little better: deleting the arcs from
-$S$ to $E\setminus T$ as in the proof of \cref{lem:subset-deficit}, the in-heavy
-Seymour vertex $v$ of the smaller graph must lie in $S$ (outside $S$, outdegrees are
-unchanged, while second out-neighborhoods and indegrees can only grow back). But $v$
-can fail the conjecture in $D$ in two ways, $\abs{\Ntwo(v)}<d^+(v)$ or $d^-(v)<d^+(v)$,
-and only the first one feeds the growth bound of \cref{lem:subset-deficit}. A proof of
-\cref{conj:inheavy} along the lines of this paper would need a replacement for Stage~1
-that handles the second alternative, or an objective in Stage~3 that keeps track of
-indegrees. We leave both as open problems.
+about sets. For \cref{conj:inheavy} it fares better (\cref{prop:inheavy-minimal}): the
+subset deficit holds for all sets of in-heavy vertices, but the vertices with
+$d^-=d^+-1$ escape it (\cref{rem:inheavy-gap}). A proof of \cref{conj:inheavy} along
+the lines of this paper would need a replacement for Stage~1 that handles these
+vertices, or an objective in Stage~3 that keeps track of indegrees. We leave both as
+open problems.
 \end{remark}
 
 \Cref{cor:triangles} and the triangle case of \cref{lem:girth-grid} are formalized in

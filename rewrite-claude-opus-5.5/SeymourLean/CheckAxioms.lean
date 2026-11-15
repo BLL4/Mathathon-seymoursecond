@@ -24,3 +24,8 @@ The expected output is recorded in `build.log`. -/
 #print axioms Seymour.regular_girth_four
 #print axioms Seymour.triangleFree_iff_grid
 #print axioms Seymour.seed_compatible_iff
+
+-- InHeavy.lean (Proposition prop:inheavy-minimal)
+#print axioms Seymour.inheavy_of_closed
+#print axioms Seymour.indeg_ge_outdeg_sub_one
+#print axioms Seymour.subset_deficit_inheavy
